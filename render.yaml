@@ -1,5 +1,6 @@
 databases:
   - name: lindice-db
+    region: virginia
     plan: free
     databaseName: lindice
     user: lindice
@@ -8,6 +9,7 @@ services:
   - type: web
     name: lindice-app
     runtime: python
+    region: virginia
     plan: free
     buildCommand: "bash build.sh"
     startCommand: "python -m gunicorn config.wsgi:application --bind 0.0.0.0:$PORT"
