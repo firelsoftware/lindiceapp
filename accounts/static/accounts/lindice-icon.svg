@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Líndice">
+  <rect width="64" height="64" rx="14" fill="#ffffff"/>
+  <rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="#d9e2ec" stroke-width="2"/>
+  <rect x="15" y="12" width="10" height="40" rx="2" fill="#4d63b7"/>
+  <rect x="15" y="42" width="36" height="9" rx="2" fill="#4d63b7"/>
+  <rect x="29" y="31" width="22" height="8" rx="2" fill="#7a2d84"/>
+  <rect x="42" y="21" width="9" height="8" rx="2" fill="#9fb5ca"/>
+</svg>

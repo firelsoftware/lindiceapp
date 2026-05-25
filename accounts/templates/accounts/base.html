@@ -1,22 +1,50 @@
+{% load static %}
 <!doctype html>
 <html lang="pt-br">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lindice</title>
+    <meta name="theme-color" content="#4d63b7">
+    <title>Líndice</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'accounts/lindice-icon.svg' %}">
+    <link rel="manifest" href="{% static 'accounts/site.webmanifest' %}">
     <style>
+        :root {
+            --brand-blue: #4d63b7;
+            --brand-purple: #7a2d84;
+            --brand-mist: #9fb5ca;
+            --ink: #182230;
+            --muted: #5f6c7b;
+            --line: #d9e2ec;
+            --surface: #ffffff;
+            --page: #f4f6f8;
+            --success: #0f766e;
+            --danger: #b42318;
+            --shadow: 0 18px 48px rgba(24, 34, 48, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            color: #1f2933;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                linear-gradient(180deg, rgba(77, 99, 183, 0.07), rgba(244, 246, 248, 0) 260px),
+                var(--page);
+            color: var(--ink);
+            line-height: 1.5;
         }
 
         .topbar {
-            background: #ffffff;
-            color: #4d63b7;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.96);
+            color: var(--brand-blue);
             padding: 16px 32px;
-            border-bottom: 1px solid #d9e2ec;
+            border-bottom: 1px solid var(--line);
         }
 
         .brand {
@@ -33,9 +61,11 @@
             position: relative;
             width: 42px;
             height: 42px;
-            border: 1px solid #d9e2ec;
+            flex: 0 0 auto;
+            border: 1px solid var(--line);
             border-radius: 10px;
-            background: #ffffff;
+            background: var(--surface);
+            box-shadow: 0 8px 18px rgba(77, 99, 183, 0.12);
         }
 
         .brand-logo span {
@@ -49,7 +79,7 @@
             top: 8px;
             width: 7px;
             height: 26px;
-            background: #4d63b7;
+            background: var(--brand-blue);
         }
 
         .brand-logo .logo-two {
@@ -57,7 +87,7 @@
             top: 28px;
             width: 24px;
             height: 6px;
-            background: #4d63b7;
+            background: var(--brand-blue);
         }
 
         .brand-logo .logo-three {
@@ -65,7 +95,7 @@
             top: 21px;
             width: 15px;
             height: 5px;
-            background: #7a2d84;
+            background: var(--brand-purple);
         }
 
         .brand-logo .logo-four {
@@ -73,63 +103,112 @@
             top: 14px;
             width: 7px;
             height: 5px;
-            background: #9fb5ca;
+            background: var(--brand-mist);
         }
 
         .brand-name {
-            color: #4d63b7;
+            color: var(--brand-blue);
         }
 
         main {
             max-width: 960px;
             margin: 40px auto;
-            padding: 24px;
-            background: #ffffff;
-            border: 1px solid #d9e2ec;
-            border-radius: 6px;
+            padding: 32px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        h1,
+        h2,
+        h3 {
+            letter-spacing: 0;
+            line-height: 1.18;
+        }
+
+        h1 {
+            margin: 0 0 22px;
+            font-size: 34px;
+        }
+
+        h2 {
+            margin: 30px 0 14px;
+            font-size: 24px;
+        }
+
+        h3 {
+            margin: 22px 0 10px;
+            font-size: 18px;
+        }
+
+        p {
+            color: var(--muted);
         }
 
         label {
             display: block;
             margin-top: 14px;
             font-weight: 700;
+            color: var(--ink);
         }
 
         input,
         textarea,
         select {
             width: 100%;
-            box-sizing: border-box;
             margin-top: 6px;
-            padding: 10px;
+            padding: 12px 13px;
             border: 1px solid #bcccdc;
-            border-radius: 4px;
+            border-radius: 6px;
+            background: #ffffff;
+            color: var(--ink);
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 112px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--brand-blue);
+            box-shadow: 0 0 0 3px rgba(77, 99, 183, 0.16);
+            outline: none;
         }
 
         button,
         .button {
             display: inline-block;
             margin-top: 18px;
-            padding: 10px 14px;
+            min-height: 42px;
+            padding: 11px 16px;
             border: 0;
-            border-radius: 4px;
-            background: #4d63b7;
+            border-radius: 6px;
+            background: var(--brand-blue);
             color: #ffffff;
+            font-weight: 700;
             text-decoration: none;
             cursor: pointer;
+            transition: background 0.15s ease, transform 0.15s ease;
         }
 
         button:hover,
         .button:hover {
-            background: #7a2d84;
+            background: var(--brand-purple);
+            color: #ffffff;
+            transform: translateY(-1px);
         }
 
         a {
-            color: #4d63b7;
+            color: var(--brand-blue);
+            font-weight: 700;
         }
 
         a:hover {
-            color: #7a2d84;
+            color: var(--brand-purple);
         }
 
         table {
@@ -141,13 +220,27 @@
         th,
         td {
             padding: 10px;
-            border-bottom: 1px solid #d9e2ec;
+            border-bottom: 1px solid var(--line);
             text-align: left;
+        }
+
+        th {
+            color: var(--muted);
+            font-size: 13px;
+            text-transform: uppercase;
         }
 
         .errorlist,
         .messages {
-            color: #b42318;
+            color: var(--danger);
+        }
+
+        .messages {
+            padding: 12px 14px;
+            border: 1px solid #fecdca;
+            border-radius: 6px;
+            background: #fffbfa;
+            list-style-position: inside;
         }
 
         .carousel {
@@ -156,9 +249,10 @@
 
         .carousel-item {
             display: none;
-            padding: 16px;
-            border: 1px solid #d9e2ec;
-            border-radius: 6px;
+            padding: 18px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #fbfcfe;
         }
 
         .carousel-item.active {
@@ -171,15 +265,15 @@
             max-height: 420px;
             object-fit: contain;
             margin: 12px 0;
-            border-radius: 4px;
+            border-radius: 8px;
         }
 
         .purchase {
             margin-top: 24px;
-            padding: 18px;
-            border: 1px solid #d9e2ec;
-            border-left: 5px solid #9fb5ca;
-            border-radius: 6px;
+            padding: 20px;
+            border: 1px solid var(--line);
+            border-left: 5px solid var(--brand-mist);
+            border-radius: 8px;
             background: #ffffff;
         }
 
@@ -188,7 +282,7 @@
         }
 
         .purchase-meta {
-            color: #52606d;
+            color: var(--muted);
             margin-bottom: 12px;
         }
 
@@ -219,7 +313,7 @@
             width: 128px;
             height: 128px;
             flex: 0 0 auto;
-            border: 1px solid #d9e2ec;
+            border: 1px solid var(--line);
             border-radius: 24px;
             background: #ffffff;
             overflow: hidden;
@@ -236,7 +330,7 @@
             top: 24px;
             width: 18px;
             height: 76px;
-            background: #4d63b7;
+            background: var(--brand-blue);
         }
 
         .step-two {
@@ -244,7 +338,7 @@
             top: 82px;
             width: 70px;
             height: 18px;
-            background: #4d63b7;
+            background: var(--brand-blue);
         }
 
         .step-three {
@@ -252,7 +346,7 @@
             top: 62px;
             width: 46px;
             height: 14px;
-            background: #7a2d84;
+            background: var(--brand-purple);
         }
 
         .step-four {
@@ -260,7 +354,7 @@
             top: 42px;
             width: 24px;
             height: 14px;
-            background: #9fb5ca;
+            background: var(--brand-mist);
         }
 
         .brand-preview-line {
@@ -268,7 +362,7 @@
             height: 12px;
             margin: 20px 0;
             border-radius: 999px;
-            background: linear-gradient(90deg, #9fb5ca, #4d63b7, #7a2d84);
+            background: linear-gradient(90deg, var(--brand-mist), var(--brand-blue), var(--brand-purple));
         }
 
         .swatches {
@@ -290,7 +384,7 @@
 
         @media (max-width: 640px) {
             .topbar {
-                padding: 14px 20px;
+                padding: 12px 18px;
             }
 
             .brand {
@@ -329,14 +423,11 @@
             }
 
             main {
-                width: 100%;
+                width: calc(100% - 24px);
                 max-width: none;
-                box-sizing: border-box;
-                margin: 24px 0;
-                padding: 22px 20px;
-                border-right: 0;
-                border-left: 0;
-                border-radius: 0;
+                margin: 16px auto;
+                padding: 22px 18px;
+                border-radius: 8px;
             }
 
             h1 {
@@ -351,9 +442,10 @@
 
             button,
             .button {
+                width: 100%;
                 min-height: 44px;
-                box-sizing: border-box;
                 padding: 12px 16px;
+                text-align: center;
             }
 
             table {
@@ -370,7 +462,7 @@
             }
 
             .purchase {
-                padding: 16px;
+                padding: 16px 14px;
                 overflow: hidden;
             }
 
