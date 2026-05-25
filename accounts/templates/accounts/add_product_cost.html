@@ -1,0 +1,14 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Lancar custo extra</h1>
+<p>Produto: <strong>{{ product.product_code }} - {{ product.name }}</strong></p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar custo</button>
+</form>
+
+<p><a href="{% url 'product_detail' product.id %}">Voltar para o produto</a></p>
+{% endblock %}

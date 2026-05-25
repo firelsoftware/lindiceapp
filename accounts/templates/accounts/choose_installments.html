@@ -1,0 +1,55 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Escolher parcelamento</h1>
+
+<p>Venda: <strong>{{ sale.description }}</strong></p>
+<p>Valor original: <strong>R$ {{ sale.total_amount|floatformat:2 }}</strong></p>
+<p>Maximo liberado: <strong>{{ sale.max_installments_allowed }}x</strong></p>
+<p>Parcela minima mensal: <strong>R$ 70,00</strong></p>
+<p>Algumas opcoes podem nao aparecer quando a parcela ficaria abaixo do minimo.</p>
+
+{% if sale.products.exists %}
+    <h2>Produtos da venda</h2>
+    <div class="carousel" data-carousel>
+        {% for product in sale.products.all %}
+            <article class="carousel-item{% if forloop.first %} active{% endif %}">
+                <h3>{{ product.product_code }} - {{ product.name }}</h3>
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% endif %}
+                {% if product.shoe_size %}
+                    <p>Tamanho: {{ product.shoe_size }}</p>
+                {% endif %}
+                {% if product.notes %}
+                    <p>{{ product.notes }}</p>
+                {% endif %}
+            </article>
+        {% endfor %}
+        <button type="button" data-prev>Anterior</button>
+        <button type="button" data-next>Proximo</button>
+    </div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Confirmar parcelamento</button>
+</form>
+
+<p><a href="{% url 'dashboard' %}">Voltar ao painel</a></p>
+<script>
+    const carousel = document.querySelector("[data-carousel]");
+    if (carousel) {
+        const items = carousel.querySelectorAll(".carousel-item");
+        let index = 0;
+        const show = (nextIndex) => {
+            items[index].classList.remove("active");
+            index = (nextIndex + items.length) % items.length;
+            items[index].classList.add("active");
+        };
+        carousel.querySelector("[data-prev]").addEventListener("click", () => show(index - 1));
+        carousel.querySelector("[data-next]").addEventListener("click", () => show(index + 1));
+    }
+</script>
+{% endblock %}

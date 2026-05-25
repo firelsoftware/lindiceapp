@@ -1,0 +1,56 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>{{ product.product_code }} - {{ product.name }}</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 420px; width: 100%; border-radius: 6px;">
+{% endif %}
+
+<p>Status: <strong>{{ product.get_status_display }}</strong></p>
+<p>Tamanho: {{ product.shoe_size }}</p>
+<p>Valor de compra: R$ {{ product.purchase_price|floatformat:2 }}</p>
+<p>Valor de venda: R$ {{ product.sale_price|floatformat:2 }}</p>
+<p>Outros custos: R$ {{ product.extra_cost_total|floatformat:2 }}</p>
+<p>Lucro previsto: R$ {{ product.profit|floatformat:2 }}</p>
+
+{% if product.notes %}
+    <p>Observacoes: {{ product.notes }}</p>
+{% endif %}
+
+<p><a class="button" href="{% url 'add_product_cost' product.id %}">Lancar custo extra</a></p>
+
+<h2>Custos extras</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Valor</th>
+            <th>Motivo</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cost in costs %}
+            <tr>
+                <td>{{ cost.created_at|date:"d/m/Y" }}</td>
+                <td>R$ {{ cost.amount|floatformat:2 }}</td>
+                <td>{{ cost.reason }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3">Nenhum custo extra lancado.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><a href="{% url 'product_list' %}">Voltar para produtos</a></p>
+{% endblock %}

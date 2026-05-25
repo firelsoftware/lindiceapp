@@ -1,0 +1,38 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Minhas medidas</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <h2>Calcados</h2>
+    <p>{{ form.shoe_size.label_tag }} {{ form.shoe_size }}</p>
+
+    <h2>Dedos da mao direita</h2>
+    <p>{{ form.right_thumb.label_tag }} {{ form.right_thumb }}</p>
+    <p>{{ form.right_index.label_tag }} {{ form.right_index }}</p>
+    <p>{{ form.right_middle.label_tag }} {{ form.right_middle }}</p>
+    <p>{{ form.right_ring.label_tag }} {{ form.right_ring }}</p>
+    <p>{{ form.right_little.label_tag }} {{ form.right_little }}</p>
+
+    <h2>Dedos da mao esquerda</h2>
+    <p>{{ form.left_thumb.label_tag }} {{ form.left_thumb }}</p>
+    <p>{{ form.left_index.label_tag }} {{ form.left_index }}</p>
+    <p>{{ form.left_middle.label_tag }} {{ form.left_middle }}</p>
+    <p>{{ form.left_ring.label_tag }} {{ form.left_ring }}</p>
+    <p>{{ form.left_little.label_tag }} {{ form.left_little }}</p>
+
+    <button type="submit">Salvar medidas</button>
+</form>
+
+<p><a href="{% url 'dashboard' %}">Voltar ao painel</a></p>
+{% endblock %}

@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lindice</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1f2933;
+        }
+
+        .topbar {
+            background: #ffffff;
+            color: #4d63b7;
+            padding: 16px 32px;
+            border-bottom: 1px solid #d9e2ec;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 960px;
+            margin: 0 auto;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .brand-logo {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            border: 1px solid #d9e2ec;
+            border-radius: 10px;
+            background: #ffffff;
+        }
+
+        .brand-logo span {
+            position: absolute;
+            display: block;
+            border-radius: 2px;
+        }
+
+        .brand-logo .logo-one {
+            left: 10px;
+            top: 8px;
+            width: 7px;
+            height: 26px;
+            background: #4d63b7;
+        }
+
+        .brand-logo .logo-two {
+            left: 10px;
+            top: 28px;
+            width: 24px;
+            height: 6px;
+            background: #4d63b7;
+        }
+
+        .brand-logo .logo-three {
+            left: 19px;
+            top: 21px;
+            width: 15px;
+            height: 5px;
+            background: #7a2d84;
+        }
+
+        .brand-logo .logo-four {
+            left: 27px;
+            top: 14px;
+            width: 7px;
+            height: 5px;
+            background: #9fb5ca;
+        }
+
+        .brand-name {
+            color: #4d63b7;
+        }
+
+        main {
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 24px;
+            background: #ffffff;
+            border: 1px solid #d9e2ec;
+            border-radius: 6px;
+        }
+
+        label {
+            display: block;
+            margin-top: 14px;
+            font-weight: 700;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 6px;
+            padding: 10px;
+            border: 1px solid #bcccdc;
+            border-radius: 4px;
+        }
+
+        button,
+        .button {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 10px 14px;
+            border: 0;
+            border-radius: 4px;
+            background: #4d63b7;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button:hover,
+        .button:hover {
+            background: #7a2d84;
+        }
+
+        a {
+            color: #4d63b7;
+        }
+
+        a:hover {
+            color: #7a2d84;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #d9e2ec;
+            text-align: left;
+        }
+
+        .errorlist,
+        .messages {
+            color: #b42318;
+        }
+
+        .carousel {
+            margin: 20px 0;
+        }
+
+        .carousel-item {
+            display: none;
+            padding: 16px;
+            border: 1px solid #d9e2ec;
+            border-radius: 6px;
+        }
+
+        .carousel-item.active {
+            display: block;
+        }
+
+        .carousel-item img {
+            display: block;
+            max-width: 100%;
+            max-height: 420px;
+            object-fit: contain;
+            margin: 12px 0;
+            border-radius: 4px;
+        }
+
+        .purchase {
+            margin-top: 24px;
+            padding: 18px;
+            border: 1px solid #d9e2ec;
+            border-left: 5px solid #9fb5ca;
+            border-radius: 6px;
+            background: #ffffff;
+        }
+
+        .purchase h3 {
+            margin-top: 0;
+        }
+
+        .purchase-meta {
+            color: #52606d;
+            margin-bottom: 12px;
+        }
+
+        .brand-preview {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            padding: 36px 0;
+        }
+
+        .brand-preview h1 {
+            margin: 0;
+            font-size: 72px;
+            line-height: 1;
+        }
+
+        .brand-preview-title {
+            color: #4d63b7;
+        }
+
+        .brand-preview p {
+            color: #52606d;
+            font-size: 22px;
+        }
+
+        .brand-preview-logo {
+            position: relative;
+            width: 128px;
+            height: 128px;
+            flex: 0 0 auto;
+            border: 1px solid #d9e2ec;
+            border-radius: 24px;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .step {
+            position: absolute;
+            display: block;
+            border-radius: 4px;
+        }
+
+        .step-one {
+            left: 30px;
+            top: 24px;
+            width: 18px;
+            height: 76px;
+            background: #4d63b7;
+        }
+
+        .step-two {
+            left: 30px;
+            top: 82px;
+            width: 70px;
+            height: 18px;
+            background: #4d63b7;
+        }
+
+        .step-three {
+            left: 54px;
+            top: 62px;
+            width: 46px;
+            height: 14px;
+            background: #7a2d84;
+        }
+
+        .step-four {
+            left: 76px;
+            top: 42px;
+            width: 24px;
+            height: 14px;
+            background: #9fb5ca;
+        }
+
+        .brand-preview-line {
+            width: 360px;
+            height: 12px;
+            margin: 20px 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #9fb5ca, #4d63b7, #7a2d84);
+        }
+
+        .swatches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .swatches span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 132px;
+            height: 54px;
+            border-radius: 6px;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        @media (max-width: 640px) {
+            .topbar {
+                padding: 14px 20px;
+            }
+
+            .brand {
+                font-size: 24px;
+            }
+
+            .brand-logo {
+                width: 38px;
+                height: 38px;
+                border-radius: 9px;
+            }
+
+            .brand-logo .logo-one {
+                left: 9px;
+                top: 7px;
+                width: 6px;
+                height: 24px;
+            }
+
+            .brand-logo .logo-two {
+                left: 9px;
+                top: 26px;
+                width: 22px;
+            }
+
+            .brand-logo .logo-three {
+                left: 17px;
+                top: 20px;
+                width: 14px;
+            }
+
+            .brand-logo .logo-four {
+                left: 25px;
+                top: 13px;
+                width: 6px;
+            }
+
+            main {
+                width: 100%;
+                max-width: none;
+                box-sizing: border-box;
+                margin: 24px 0;
+                padding: 22px 20px;
+                border-right: 0;
+                border-left: 0;
+                border-radius: 0;
+            }
+
+            h1 {
+                font-size: 30px;
+                line-height: 1.15;
+            }
+
+            h2 {
+                font-size: 24px;
+                line-height: 1.2;
+            }
+
+            button,
+            .button {
+                min-height: 44px;
+                box-sizing: border-box;
+                padding: 12px 16px;
+            }
+
+            table {
+                display: block;
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            th,
+            td {
+                min-width: 110px;
+                vertical-align: top;
+            }
+
+            .purchase {
+                padding: 16px;
+                overflow: hidden;
+            }
+
+            .purchase-meta {
+                line-height: 1.45;
+            }
+
+            .brand-preview {
+                display: block;
+                padding: 12px 0;
+            }
+
+            .brand-preview h1 {
+                margin-top: 18px;
+                font-size: 48px;
+            }
+
+            .brand-preview p {
+                font-size: 18px;
+            }
+
+            .brand-preview-line {
+                width: 100%;
+            }
+
+            .swatches span {
+                width: calc(50% - 6px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <span class="brand-logo" aria-hidden="true">
+                <span class="logo-one"></span>
+                <span class="logo-two"></span>
+                <span class="logo-three"></span>
+                <span class="logo-four"></span>
+            </span>
+            <span class="brand-name">Líndice</span>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Cadastro</h1>
+<p>Campos com * sao obrigatorios.</p>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enviar cadastro</button>
+</form>
+
+<p>Ja tem cadastro? <a href="{% url 'login' %}">Entrar</a></p>
+{% endblock %}

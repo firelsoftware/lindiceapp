@@ -1,0 +1,77 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Ola, {{ request.user.preferred_name }}</h1>
+
+<p><a class="button" href="{% url 'measurements' %}">Minhas medidas</a></p>
+
+{% if pending_sales %}
+    <h2>Escolher parcelamento</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Venda</th>
+                <th>Valor</th>
+                <th>Maximo liberado</th>
+                <th>Acao</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in pending_sales %}
+                <tr>
+                    <td>{{ sale.description }}</td>
+                    <td>R$ {{ sale.total_amount|floatformat:2 }}</td>
+                    <td>{{ sale.max_installments_allowed }}x</td>
+                    <td><a href="{% url 'choose_installments' sale.id %}">Escolher</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+<h2>Minhas compras</h2>
+
+{% for group in purchase_groups %}
+    <section class="purchase">
+        <h3>{{ group.title }}</h3>
+        <p class="purchase-meta">
+            {% if group.code %}Codigo da venda: {{ group.code }} | {% endif %}
+            {% if group.created_at %}Data da compra: {{ group.created_at|date:"d/m/Y" }} | {% endif %}
+            {% if group.installments %}Parcelamento: {{ group.installments }}x | {% endif %}
+            Total da compra: R$ {{ group.total|floatformat:2 }}
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Parcela</th>
+                    <th>Vencimento</th>
+                    <th>Valor</th>
+                    <th>Atraso</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for debt in group.debts %}
+                    <tr>
+                        <td>{{ debt.description }}</td>
+                        <td>{{ debt.due_date }}</td>
+                        <td>R$ {{ debt.amount|floatformat:2 }}</td>
+                        <td>{{ debt.days_late }} dias</td>
+                        <td>R$ {{ debt.total_amount|floatformat:2 }}</td>
+                        <td>{% if debt.paid %}Pago{% else %}Pendente{% endif %}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% empty %}
+    <p>Nenhuma compra cadastrada.</p>
+{% endfor %}
+
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Sair</button>
+</form>
+{% endblock %}

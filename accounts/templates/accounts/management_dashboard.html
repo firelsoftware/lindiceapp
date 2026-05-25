@@ -1,0 +1,129 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Painel de gestao</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<p>
+    <a class="button" href="{% url 'create_credit_sale' %}">Lancar venda parcelada</a>
+    <a class="button" href="{% url 'create_product' %}">Cadastrar produto</a>
+    <a class="button" href="{% url 'product_list' %}">Produtos</a>
+    <a class="button" href="{% url 'profit_report' %}">Relatorio de lucro</a>
+    <a class="button" href="{% url 'admin:index' %}">Painel de superusuario</a>
+</p>
+
+<h2>Cadastros pendentes</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Telefone</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for profile in pending_profiles %}
+            <tr>
+                <td>{{ profile.user.full_name }}</td>
+                <td>{{ profile.phone }}</td>
+                <td>{{ profile.get_registration_status_display }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3">Nenhum cadastro pendente.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Vendas aguardando escolha do cliente</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Codigo</th>
+            <th>Venda</th>
+            <th>Valor</th>
+            <th>Maximo</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sale in pending_sales %}
+            <tr>
+                <td>{{ sale.client.full_name }}</td>
+                <td>{{ sale.sale_code }}</td>
+                <td>{{ sale.description }}</td>
+                <td>R$ {{ sale.total_amount|floatformat:2 }}</td>
+                <td>{{ sale.max_installments_allowed }}x</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5">Nenhuma venda aguardando escolha.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Produtos disponiveis</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Produto</th>
+            <th>Compra</th>
+            <th>Venda</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in available_products %}
+            <tr>
+                <td><a href="{% url 'product_detail' product.id %}">{{ product.product_code }}</a></td>
+                <td>{{ product.name }}</td>
+                <td>R$ {{ product.purchase_price|floatformat:2 }}</td>
+                <td>R$ {{ product.sale_price|floatformat:2 }}</td>
+                <td>{{ product.get_status_display }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5">Nenhum produto disponivel.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Ultimos parcelamentos escolhidos</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Codigo</th>
+            <th>Venda</th>
+            <th>Parcelas</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sale in accepted_sales %}
+            <tr>
+                <td>{{ sale.client.full_name }}</td>
+                <td>{{ sale.sale_code }}</td>
+                <td>{{ sale.description }}</td>
+                <td>{{ sale.selected_installments }}x</td>
+                <td>R$ {{ sale.selected_total_with_interest|floatformat:2 }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5">Nenhum parcelamento escolhido ainda.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Relatorio de lucro e prejuizo</h1>
+
+<section class="purchase">
+    <h2>Resultado previsto geral</h2>
+    <p>Total em valores de venda: <strong>R$ {{ total_sale|floatformat:2 }}</strong></p>
+    <p>Total em valores de compra: <strong>R$ {{ total_purchase|floatformat:2 }}</strong></p>
+    <p>Total de custos extras: <strong>R$ {{ total_extra_costs|floatformat:2 }}</strong></p>
+    <p>Resultado previsto: <strong>R$ {{ gross_profit|floatformat:2 }}</strong></p>
+    <p>Produtos vendidos: {{ sold_products }}</p>
+    <p>Produtos disponiveis: {{ available_products }}</p>
+</section>
+
+<section class="purchase">
+    <h2>Lucro real por periodo</h2>
+
+    <form method="get">
+        <label for="inicio">Inicio</label>
+        <input id="inicio" name="inicio" type="date" value="{{ start_date|date:'Y-m-d' }}">
+
+        <label for="fim">Fim</label>
+        <input id="fim" name="fim" type="date" value="{{ end_date|date:'Y-m-d' }}">
+
+        <button type="submit">Filtrar periodo</button>
+    </form>
+
+    <p>Total vendido no periodo: <strong>R$ {{ real_sale|floatformat:2 }}</strong></p>
+    <p>Total de compra dos produtos vendidos: <strong>R$ {{ real_purchase|floatformat:2 }}</strong></p>
+    <p>Custos extras dos produtos vendidos: <strong>R$ {{ real_extra_costs|floatformat:2 }}</strong></p>
+    <p>Lucro real do periodo: <strong>R$ {{ real_profit|floatformat:2 }}</strong></p>
+</section>
+
+<h2>Produtos vendidos no periodo</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Produto</th>
+            <th>Compra</th>
+            <th>Venda</th>
+            <th>Custos extras</th>
+            <th>Lucro real</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in real_products %}
+            <tr>
+                <td>{{ product.product_code }}</td>
+                <td>{{ product.name }}</td>
+                <td>R$ {{ product.purchase_price|floatformat:2 }}</td>
+                <td>R$ {{ product.sale_price|floatformat:2 }}</td>
+                <td>R$ {{ product.extra_cost_total|floatformat:2 }}</td>
+                <td>R$ {{ product.profit|floatformat:2 }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">Nenhum produto vendido neste periodo.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Visao geral dos produtos</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Produto</th>
+            <th>Compra</th>
+            <th>Venda</th>
+            <th>Custos extras</th>
+            <th>Lucro/prejuizo</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.product_code }}</td>
+                <td>{{ product.name }}</td>
+                <td>R$ {{ product.purchase_price|floatformat:2 }}</td>
+                <td>R$ {{ product.sale_price|floatformat:2 }}</td>
+                <td>R$ {{ product.extra_cost_total|floatformat:2 }}</td>
+                <td>R$ {{ product.profit|floatformat:2 }}</td>
+                <td>{{ product.get_status_display }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="7">Nenhum produto cadastrado.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><a href="{% url 'management_dashboard' %}">Voltar para gestao</a></p>
+{% endblock %}

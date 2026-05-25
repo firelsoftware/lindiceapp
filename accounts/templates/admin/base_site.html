@@ -1,0 +1,5 @@
+{% extends "admin/base_site.html" %}
+
+{% block welcome-msg %}
+    Bem vindo(a) <strong>{% firstof user.preferred_name user.full_name user.email %}</strong>
+{% endblock %}

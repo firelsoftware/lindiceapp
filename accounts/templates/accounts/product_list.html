@@ -1,0 +1,40 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Produtos</h1>
+
+<p><a class="button" href="{% url 'create_product' %}">Cadastrar produto</a></p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Produto</th>
+            <th>Tamanho</th>
+            <th>Compra</th>
+            <th>Venda</th>
+            <th>Lucro previsto</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+            <tr>
+                <td><a href="{% url 'product_detail' product.id %}">{{ product.product_code }}</a></td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.shoe_size }}</td>
+                <td>R$ {{ product.purchase_price|floatformat:2 }}</td>
+                <td>R$ {{ product.sale_price|floatformat:2 }}</td>
+                <td>R$ {{ product.profit|floatformat:2 }}</td>
+                <td>{{ product.get_status_display }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="7">Nenhum produto cadastrado.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><a href="{% url 'management_dashboard' %}">Voltar para gestao</a></p>
+{% endblock %}
