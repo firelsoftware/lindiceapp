@@ -110,6 +110,52 @@
             color: var(--brand-blue);
         }
 
+        .topbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .topbar-inner .brand {
+            margin: 0;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .nav-link,
+        .nav-button {
+            display: inline-flex;
+            align-items: center;
+            min-height: 36px;
+            margin: 0;
+            padding: 8px 10px;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            background: transparent;
+            color: var(--brand-blue);
+            font: inherit;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover,
+        .nav-button:hover {
+            border-color: #dbe4ff;
+            background: #eef2ff;
+            color: var(--brand-purple);
+            transform: none;
+        }
+
         main {
             max-width: 960px;
             margin: 40px auto;
@@ -476,6 +522,23 @@
                 font-size: 24px;
             }
 
+            .topbar-inner {
+                display: block;
+            }
+
+            .main-nav {
+                justify-content: flex-start;
+                margin-top: 12px;
+            }
+
+            .nav-link,
+            .nav-button {
+                width: auto;
+                min-height: 36px;
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+
             .brand-logo {
                 width: 38px;
                 height: 38px;
@@ -589,14 +652,35 @@
 </head>
 <body>
     <header class="topbar">
-        <div class="brand">
-            <span class="brand-logo" aria-hidden="true">
-                <span class="logo-one"></span>
-                <span class="logo-two"></span>
-                <span class="logo-three"></span>
-                <span class="logo-four"></span>
-            </span>
-            <span class="brand-name">Líndice</span>
+        <div class="topbar-inner">
+            <div class="brand">
+                <span class="brand-logo" aria-hidden="true">
+                    <span class="logo-one"></span>
+                    <span class="logo-two"></span>
+                    <span class="logo-three"></span>
+                    <span class="logo-four"></span>
+                </span>
+                <span class="brand-name">Líndice</span>
+            </div>
+
+            {% if request.user.is_authenticated %}
+                <nav class="main-nav" aria-label="Navegacao principal">
+                    {% if request.user.is_staff %}
+                        <a class="nav-link" href="{% url 'management_dashboard' %}">Gestao</a>
+                        <a class="nav-link" href="{% url 'create_credit_sale' %}">Nova venda</a>
+                        <a class="nav-link" href="{% url 'product_list' %}">Produtos</a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'dashboard' %}">Painel</a>
+                        <a class="nav-link" href="{% url 'profile' %}">Perfil</a>
+                        <a class="nav-link" href="{% url 'measurements' %}">Medidas</a>
+                    {% endif %}
+                    <a class="nav-link" href="{% url 'change_password' %}">Senha</a>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="nav-button" type="submit">Sair</button>
+                    </form>
+                </nav>
+            {% endif %}
         </div>
     </header>
 
