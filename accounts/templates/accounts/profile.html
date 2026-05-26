@@ -1,0 +1,27 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Meu perfil</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if profile.profile_photo %}
+    <div class="profile-photo-preview">
+        <img src="{{ profile.profile_photo.url }}" alt="Foto de {{ request.user.preferred_name }}">
+    </div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Salvar foto</button>
+</form>
+
+<p><a href="{% url 'dashboard' %}">Voltar ao painel</a></p>
+{% endblock %}

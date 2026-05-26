@@ -3,7 +3,25 @@
 {% block content %}
 <h1>Ola, {{ request.user.preferred_name }}</h1>
 
-<p><a class="button" href="{% url 'measurements' %}">Minhas medidas</a></p>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if request.user.profile.profile_photo %}
+    <div class="profile-photo-preview profile-photo-small">
+        <img src="{{ request.user.profile.profile_photo.url }}" alt="Foto de {{ request.user.preferred_name }}">
+    </div>
+{% endif %}
+
+<p class="action-row">
+    <a class="button" href="{% url 'profile' %}">Meu perfil</a>
+    <a class="button" href="{% url 'measurements' %}">Minhas medidas</a>
+    <a class="button" href="{% url 'change_password' %}">Alterar senha</a>
+</p>
 
 {% if pending_sales %}
     <h2>Escolher parcelamento</h2>

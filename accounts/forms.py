@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
@@ -117,6 +118,32 @@ class MeasurementsForm(forms.Form):
             },
         }
         profile.save(update_fields=["shoe_size", "finger_sizes"])
+
+
+class ProfilePhotoForm(forms.ModelForm):
+    class Meta:
+        model = ClientProfile
+        fields = ("profile_photo",)
+        labels = {
+            "profile_photo": "Foto do cliente",
+        }
+        help_texts = {
+            "profile_photo": "Envie uma foto se quiser facilitar sua identificacao no atendimento.",
+        }
+
+    def clean_profile_photo(self):
+        photo = self.cleaned_data.get("profile_photo")
+
+        if photo and hasattr(photo, "content_type") and not photo.content_type.startswith("image/"):
+            raise ValidationError("Envie um arquivo de imagem.")
+
+        return photo
+
+
+class UserPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(label="Senha atual", widget=forms.PasswordInput)
+    new_password1 = forms.CharField(label="Nova senha", widget=forms.PasswordInput)
+    new_password2 = forms.CharField(label="Confirmar nova senha", widget=forms.PasswordInput)
 
 
 class CreditSaleForm(forms.ModelForm):

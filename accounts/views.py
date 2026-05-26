@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.dateparse import parse_date
 from django.utils import timezone
 
-from .forms import CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, RegisterForm
+from .forms import CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, UserPasswordChangeForm
 from .models import CreditSale, ClientProfile, Product, ProductCost
 from .utils import generate_phone_code
 
@@ -197,6 +197,47 @@ def measurements(request):
         form = MeasurementsForm(initial=initial)
 
     return render(request, "accounts/measurements.html", {"form": form})
+
+
+@login_required
+def profile(request):
+    if request.user.is_staff:
+        return redirect("management_dashboard")
+
+    profile = request.user.profile
+
+    if not profile.phone_verified:
+        return redirect("verify_phone")
+
+    if request.method == "POST":
+        form = ProfilePhotoForm(request.POST, request.FILES, instance=profile)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Foto atualizada com sucesso.")
+
+            return redirect("profile")
+    else:
+        form = ProfilePhotoForm(instance=profile)
+
+    return render(request, "accounts/profile.html", {"form": form, "profile": profile})
+
+
+@login_required
+def change_password(request):
+    if request.method == "POST":
+        form = UserPasswordChangeForm(request.user, request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Senha alterada com sucesso.")
+
+            return redirect("dashboard")
+    else:
+        form = UserPasswordChangeForm(request.user)
+
+    return render(request, "accounts/change_password.html", {"form": form})
 
 
 @login_required
