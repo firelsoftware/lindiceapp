@@ -35,6 +35,14 @@
             <dd>{{ profile.get_registration_status_display }}</dd>
         </div>
         <div>
+            <dt>Limite pre-aprovado</dt>
+            <dd>R$ {{ profile.pre_approved_credit_limit|floatformat:2 }}</dd>
+        </div>
+        <div>
+            <dt>Parcelas liberadas</dt>
+            <dd>{{ profile.default_max_installments }}x</dd>
+        </div>
+        <div>
             <dt>Telefone verificado</dt>
             <dd>{% if profile.phone_verified %}Sim{% else %}Nao{% endif %}</dd>
         </div>

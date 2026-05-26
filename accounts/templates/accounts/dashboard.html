@@ -1,7 +1,7 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<h1>Ola, {{ request.user.preferred_name }}</h1>
+<h1>Minhas compras</h1>
 
 {% if messages %}
     <ul class="messages">
@@ -10,18 +10,6 @@
         {% endfor %}
     </ul>
 {% endif %}
-
-{% if request.user.profile.profile_photo %}
-    <div class="profile-photo-preview profile-photo-small">
-        <img src="{{ request.user.profile.profile_photo.url }}" alt="Foto de {{ request.user.preferred_name }}">
-    </div>
-{% endif %}
-
-<p class="action-row">
-    <a class="button" href="{% url 'profile' %}">Meu perfil</a>
-    <a class="button" href="{% url 'measurements' %}">Minhas medidas</a>
-    <a class="button" href="{% url 'account' %}">Minha conta</a>
-</p>
 
 {% if pending_sales %}
     <h2>Escolher parcelamento</h2>
@@ -47,7 +35,11 @@
     </table>
 {% endif %}
 
-<h2>Minhas compras</h2>
+<section class="info-panel">
+    <h2>Meu limite</h2>
+    <p>Limite pre-aprovado: <strong>R$ {{ request.user.profile.pre_approved_credit_limit|floatformat:2 }}</strong></p>
+    <p>Parcelamento liberado: ate {{ request.user.profile.default_max_installments }}x.</p>
+</section>
 
 {% for group in purchase_groups %}
     <section class="purchase">
@@ -87,5 +79,11 @@
 {% empty %}
     <p>Nenhuma compra cadastrada.</p>
 {% endfor %}
+
+<section class="info-panel">
+    <h2>Minhas medidas</h2>
+    <p>Confira ou atualize suas medidas quando precisar.</p>
+    <a class="button" href="{% url 'measurements' %}">Abrir minhas medidas</a>
+</section>
 
 {% endblock %}

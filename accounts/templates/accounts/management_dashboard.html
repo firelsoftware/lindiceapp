@@ -17,7 +17,6 @@
     <a class="button" href="{% url 'create_product' %}">Cadastrar produto</a>
     <a class="button" href="{% url 'product_list' %}">Produtos</a>
     <a class="button" href="{% url 'profit_report' %}">Relatorio de lucro</a>
-    <a class="button" href="{% url 'account' %}">Minha conta</a>
     <a class="button" href="{% url 'admin:index' %}">Painel de superusuario</a>
 </p>
 
@@ -28,6 +27,7 @@
             <th>Cliente</th>
             <th>Telefone</th>
             <th>Status</th>
+            <th>Limite</th>
             <th>Acao</th>
         </tr>
     </thead>
@@ -37,11 +37,12 @@
                 <td><a href="{% url 'review_client_profile' profile.id %}">{{ profile.user.full_name }}</a></td>
                 <td>{{ profile.phone }}</td>
                 <td>{{ profile.get_registration_status_display }}</td>
+                <td>R$ {{ profile.pre_approved_credit_limit|floatformat:2 }}</td>
                 <td><a class="button" href="{% url 'review_client_profile' profile.id %}">Analisar</a></td>
             </tr>
         {% empty %}
             <tr>
-                <td colspan="4">Nenhum cadastro pendente.</td>
+                <td colspan="5">Nenhum cadastro pendente.</td>
             </tr>
         {% endfor %}
     </tbody>

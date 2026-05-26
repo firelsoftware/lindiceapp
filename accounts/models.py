@@ -65,6 +65,7 @@ class ClientProfile(models.Model):
     shoe_size = models.DecimalField(max_digits=4, decimal_places=1, null=True, blank=True)
     finger_sizes = models.JSONField(default=dict, blank=True)
     extra_data = models.JSONField(default=dict, blank=True)
+    pre_approved_credit_limit = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     default_max_installments = models.PositiveSmallIntegerField(default=5)
     registration_status = models.CharField(
         max_length=20,

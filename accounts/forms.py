@@ -146,14 +146,24 @@ class ProfilePhotoForm(forms.ModelForm):
 class ClientApprovalForm(forms.ModelForm):
     class Meta:
         model = ClientProfile
-        fields = ("admin_notes", "default_max_installments")
+        fields = ("pre_approved_credit_limit", "default_max_installments", "admin_notes")
         labels = {
+            "pre_approved_credit_limit": "Limite pre-aprovado",
             "admin_notes": "Observacoes internas",
             "default_max_installments": "Limite padrao de parcelas",
         }
         widgets = {
+            "pre_approved_credit_limit": forms.NumberInput(attrs={"min": 0, "step": "0.01"}),
             "default_max_installments": forms.NumberInput(attrs={"min": 1, "max": 10}),
         }
+
+    def clean_pre_approved_credit_limit(self):
+        credit_limit = self.cleaned_data["pre_approved_credit_limit"]
+
+        if credit_limit < 0:
+            raise ValidationError("Informe um limite igual ou maior que zero.")
+
+        return credit_limit
 
     def clean_default_max_installments(self):
         installments = self.cleaned_data["default_max_installments"]

@@ -110,6 +110,162 @@
             color: var(--brand-blue);
         }
 
+        .app-shell {
+            position: relative;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .user-area:hover {
+            color: inherit;
+        }
+
+        .user-avatar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            flex: 0 0 auto;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            background: #eef2ff;
+            color: var(--brand-blue);
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .user-greeting {
+            min-width: 0;
+        }
+
+        .user-greeting strong,
+        .user-greeting span {
+            display: block;
+        }
+
+        .user-greeting strong {
+            color: var(--ink);
+            font-size: 18px;
+            line-height: 1.2;
+        }
+
+        .user-greeting span {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.25;
+        }
+
+        .menu-toggle {
+            display: inline-grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
+            margin: 0;
+            padding: 0;
+            flex: 0 0 auto;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 8px 20px rgba(24, 34, 48, 0.08);
+        }
+
+        .menu-toggle:hover {
+            background: #ffffff;
+            transform: none;
+        }
+
+        .menu-icon {
+            display: grid;
+            gap: 4px;
+            width: 22px;
+        }
+
+        .menu-icon span {
+            display: block;
+            height: 3px;
+            border-radius: 999px;
+        }
+
+        .menu-icon span:nth-child(1) {
+            width: 15px;
+            background: var(--brand-mist);
+        }
+
+        .menu-icon span:nth-child(2) {
+            width: 22px;
+            background: var(--brand-blue);
+        }
+
+        .menu-icon span:nth-child(3) {
+            width: 18px;
+            background: var(--brand-purple);
+        }
+
+        .menu-icon span:nth-child(4) {
+            width: 11px;
+            background: #2f3e8f;
+        }
+
+        .app-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            display: none;
+            min-width: 230px;
+            padding: 10px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: var(--shadow);
+        }
+
+        .app-shell.menu-open .app-menu {
+            display: grid;
+            gap: 4px;
+        }
+
+        .menu-link,
+        .menu-button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            min-height: 42px;
+            margin: 0;
+            padding: 10px 12px;
+            border: 0;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--ink);
+            font: inherit;
+            font-weight: 700;
+            text-align: left;
+            text-decoration: none;
+        }
+
+        .menu-link:hover,
+        .menu-button:hover {
+            background: #eef2ff;
+            color: var(--brand-purple);
+            transform: none;
+        }
+
         .topbar-inner {
             display: flex;
             align-items: center;
@@ -523,12 +679,13 @@
             }
 
             .topbar-inner {
-                display: block;
+                display: flex;
             }
 
-            .main-nav {
-                justify-content: flex-start;
-                margin-top: 12px;
+            .app-menu {
+                left: 0;
+                right: 0;
+                min-width: 0;
             }
 
             .nav-link,
@@ -652,31 +809,62 @@
 </head>
 <body>
     <header class="topbar">
-        <div class="topbar-inner">
-            <div class="brand">
-                <span class="brand-logo" aria-hidden="true">
-                    <span class="logo-one"></span>
-                    <span class="logo-two"></span>
-                    <span class="logo-three"></span>
-                    <span class="logo-four"></span>
-                </span>
-                <span class="brand-name">Líndice</span>
-            </div>
+        <div class="topbar-inner app-shell" data-app-menu>
+            {% if request.user.is_authenticated %}
+                <a class="user-area" href="{% url 'profile' %}" aria-label="Abrir meu perfil">
+                    <span class="user-avatar">
+                        {% if request.user.profile.profile_photo %}
+                            <img src="{{ request.user.profile.profile_photo.url }}" alt="Foto de {{ request.user.preferred_name }}">
+                        {% else %}
+                            Foto
+                        {% endif %}
+                    </span>
+                    <span class="user-greeting">
+                        <strong>Ola, {{ request.user.preferred_name }}</strong>
+                        {% if request.user.profile.profile_photo %}
+                            <span>Líndice</span>
+                        {% else %}
+                            <span>Toque para colocar sua foto</span>
+                        {% endif %}
+                    </span>
+                </a>
+            {% else %}
+                <div class="brand">
+                    <span class="brand-logo" aria-hidden="true">
+                        <span class="logo-one"></span>
+                        <span class="logo-two"></span>
+                        <span class="logo-three"></span>
+                        <span class="logo-four"></span>
+                    </span>
+                    <span class="brand-name">Líndice</span>
+                </div>
+            {% endif %}
 
             {% if request.user.is_authenticated %}
-                <nav class="main-nav" aria-label="Navegacao principal">
+                <button class="menu-toggle" type="button" data-menu-toggle aria-label="Abrir menu" aria-expanded="false">
+                    <span class="menu-icon" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </button>
+
+                <nav class="app-menu" aria-label="Menu do aplicativo" data-menu-panel>
                     {% if request.user.is_staff %}
-                        <a class="nav-link" href="{% url 'management_dashboard' %}">Gestao</a>
-                        <a class="nav-link" href="{% url 'create_credit_sale' %}">Nova venda</a>
-                        <a class="nav-link" href="{% url 'product_list' %}">Produtos</a>
+                        <a class="menu-link" href="{% url 'management_dashboard' %}">Painel de gestao</a>
+                        <a class="menu-link" href="{% url 'create_credit_sale' %}">Lancar venda</a>
+                        <a class="menu-link" href="{% url 'product_list' %}">Produtos</a>
+                        <a class="menu-link" href="{% url 'profit_report' %}">Relatorio de lucro</a>
                     {% else %}
-                        <a class="nav-link" href="{% url 'dashboard' %}">Painel</a>
-                        <a class="nav-link" href="{% url 'measurements' %}">Medidas</a>
+                        <a class="menu-link" href="{% url 'dashboard' %}">Minhas compras</a>
+                        <a class="menu-link" href="{% url 'measurements' %}">Minhas medidas</a>
                     {% endif %}
-                    <a class="nav-link" href="{% url 'account' %}">Minha conta</a>
+                    <a class="menu-link" href="{% url 'account' %}">Minha conta</a>
+                    <a class="menu-link" href="{% url 'change_password' %}">Redefinir senha</a>
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
-                        <button class="nav-button" type="submit">Sair</button>
+                        <button class="menu-button" type="submit">Sair</button>
                     </form>
                 </nav>
             {% endif %}
@@ -686,5 +874,38 @@
     <main>
         {% block content %}{% endblock %}
     </main>
+
+    <script>
+        (function () {
+            var shell = document.querySelector("[data-app-menu]");
+            var toggle = document.querySelector("[data-menu-toggle]");
+
+            if (!shell || !toggle) {
+                return;
+            }
+
+            function setMenu(open) {
+                shell.classList.toggle("menu-open", open);
+                toggle.setAttribute("aria-expanded", open ? "true" : "false");
+            }
+
+            toggle.addEventListener("click", function (event) {
+                event.stopPropagation();
+                setMenu(!shell.classList.contains("menu-open"));
+            });
+
+            document.addEventListener("click", function (event) {
+                if (!shell.contains(event.target)) {
+                    setMenu(false);
+                }
+            });
+
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    setMenu(false);
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
