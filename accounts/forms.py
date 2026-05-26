@@ -196,7 +196,8 @@ CreditSaleProductFormSet = inlineformset_factory(
     CreditSale,
     CreditSaleProduct,
     form=CreditSaleProductForm,
-    extra=3,
+    extra=1,
+    max_num=20,
     can_delete=False,
 )
 

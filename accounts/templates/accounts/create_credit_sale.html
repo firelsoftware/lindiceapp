@@ -8,18 +8,61 @@
     {{ form.as_p }}
 
     <h2>Produtos da venda</h2>
-    <p>Voce pode cadastrar ate 3 produtos agora. Cada produto recebe um codigo proprio depois de salvar.</p>
+    <p>Adicione somente os produtos desta venda. Cada produto recebe um codigo proprio depois de salvar.</p>
     {{ product_formset.management_form }}
-    {% for product_form in product_formset %}
-        <section>
-            <h3>Produto {{ forloop.counter }}</h3>
-            {{ product_form.as_p }}
+    <div id="product-forms">
+        {% for product_form in product_formset %}
+            <section class="product-form">
+                <h3>Produto {{ forloop.counter }}</h3>
+                {{ product_form.as_p }}
+            </section>
+        {% endfor %}
+    </div>
+
+    <template id="empty-product-form">
+        <section class="product-form">
+            <h3>Produto __number__</h3>
+            {{ product_formset.empty_form.as_p }}
         </section>
-    {% endfor %}
+    </template>
+
+    <button type="button" class="button button-secondary" id="add-product">Adicionar produto</button>
 
     <button type="submit">Enviar para escolha do cliente</button>
 </form>
 
 <p>Ate 3x sem juros. De 4x a 10x, o sistema aplica a tabela de juros configurada.</p>
 <p><a href="{% url 'management_dashboard' %}">Voltar ao painel de gestao</a></p>
+
+<script>
+    const productForms = document.getElementById("product-forms");
+    const addProductButton = document.getElementById("add-product");
+    const emptyProductTemplate = document.getElementById("empty-product-form");
+    const totalFormsInput = document.getElementById("id_products-TOTAL_FORMS");
+    const maxFormsInput = document.getElementById("id_products-MAX_NUM_FORMS");
+
+    const updateAddProductButton = () => {
+        const totalForms = Number(totalFormsInput.value);
+        const maxForms = Number(maxFormsInput.value || 0);
+
+        if (maxForms && totalForms >= maxForms) {
+            addProductButton.disabled = true;
+            addProductButton.textContent = "Limite de produtos atingido";
+        }
+    };
+
+    addProductButton.addEventListener("click", () => {
+        const formIndex = Number(totalFormsInput.value);
+        const nextNumber = formIndex + 1;
+        const html = emptyProductTemplate.innerHTML
+            .replaceAll("__prefix__", formIndex)
+            .replaceAll("__number__", nextNumber);
+
+        productForms.insertAdjacentHTML("beforeend", html);
+        totalFormsInput.value = nextNumber;
+        updateAddProductButton();
+    });
+
+    updateAddProductButton();
+</script>
 {% endblock %}
