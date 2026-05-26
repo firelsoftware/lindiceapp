@@ -551,6 +551,43 @@
             margin-top: 0;
         }
 
+        details.info-panel {
+            padding: 0;
+        }
+
+        details.info-panel[open] {
+            padding: 20px;
+        }
+
+        details.info-panel[open] .limit-summary {
+            margin: -20px -20px 16px;
+        }
+
+        .limit-summary {
+            display: block;
+            padding: 14px 16px;
+            border-radius: 8px;
+            background: var(--brand-blue);
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .limit-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .limit-summary::after {
+            content: "+";
+            float: right;
+            font-weight: 700;
+        }
+
+        details[open] > .limit-summary::after {
+            content: "-";
+        }
+
         .info-list {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));

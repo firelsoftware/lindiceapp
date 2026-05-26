@@ -35,12 +35,6 @@
     </table>
 {% endif %}
 
-<section class="info-panel">
-    <h2>Meu limite</h2>
-    <p>Limite pre-aprovado: <strong>R$ {{ request.user.profile.pre_approved_credit_limit|floatformat:2 }}</strong></p>
-    <p>Parcelamento liberado: ate {{ request.user.profile.default_max_installments }}x.</p>
-</section>
-
 {% for group in purchase_groups %}
     <section class="purchase">
         <h3>{{ group.title }}</h3>
@@ -83,7 +77,13 @@
 <section class="info-panel">
     <h2>Minhas medidas</h2>
     <p>Confira ou atualize suas medidas quando precisar.</p>
-    <a class="button" href="{% url 'measurements' %}">Abrir minhas medidas</a>
+    <a class="button" href="{% url 'measurements' %}">Ver ou atualizar medidas</a>
 </section>
+
+<details class="info-panel">
+    <summary class="limit-summary">Meu limite</summary>
+    <p>Limite pre-aprovado: <strong>R$ {{ request.user.profile.pre_approved_credit_limit|floatformat:2 }}</strong></p>
+    <p>Parcelamento liberado: ate {{ request.user.profile.default_max_installments }}x.</p>
+</details>
 
 {% endblock %}
