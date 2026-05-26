@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 
 from .models import CreditSale, CreditSaleProduct, ClientProfile, Product, ProductCost, User
-from .utils import clean_digits, cpf_hash, cpf_last_digits
+from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
 
 
 class RegisterForm(UserCreationForm):
@@ -52,6 +52,9 @@ class RegisterForm(UserCreationForm):
 
         if len(cpf_digits) != 11:
             raise ValidationError("Informe um CPF com 11 numeros.")
+
+        if not is_valid_cpf(cpf_digits):
+            raise ValidationError("Informe um CPF valido.")
 
         if ClientProfile.objects.filter(cpf_hash=cpf_hash(cpf_digits)).exists():
             raise ValidationError("Ja existe um cadastro com este CPF.")
