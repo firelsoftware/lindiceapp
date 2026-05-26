@@ -1,0 +1,76 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Analisar cadastro</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <h2>{{ profile.user.full_name }}</h2>
+    <dl class="info-list">
+        <div>
+            <dt>Email</dt>
+            <dd>{{ profile.user.email }}</dd>
+        </div>
+        <div>
+            <dt>Nome preferido</dt>
+            <dd>{{ profile.user.preferred_name }}</dd>
+        </div>
+        <div>
+            <dt>Telefone</dt>
+            <dd>{{ profile.phone }}</dd>
+        </div>
+        <div>
+            <dt>CPF</dt>
+            <dd>Final {{ profile.cpf_last_digits }}</dd>
+        </div>
+        <div>
+            <dt>Status</dt>
+            <dd>{{ profile.get_registration_status_display }}</dd>
+        </div>
+        <div>
+            <dt>Telefone verificado</dt>
+            <dd>{% if profile.phone_verified %}Sim{% else %}Nao{% endif %}</dd>
+        </div>
+        <div>
+            <dt>Endereco</dt>
+            <dd>{{ profile.address|linebreaksbr }}</dd>
+        </div>
+    </dl>
+</section>
+
+{% if profile.profile_photo %}
+    <section class="info-panel">
+        <h2>Foto do cliente</h2>
+        <div class="profile-photo-preview">
+            <img src="{{ profile.profile_photo.url }}" alt="Foto de {{ profile.user.preferred_name }}">
+        </div>
+    </section>
+{% endif %}
+
+<section class="info-panel">
+    <h2>Documentos</h2>
+    <p>
+        <a class="button" href="{{ profile.residence_proof.url }}" target="_blank" rel="noopener">
+            Abrir comprovante de residencia
+        </a>
+    </p>
+</section>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="action-row">
+        <button type="submit" name="action" value="approve">Aprovar cadastro</button>
+        <button type="submit" class="button-secondary" name="action" value="reject">Rejeitar cadastro</button>
+    </div>
+</form>
+
+<p><a href="{% url 'management_dashboard' %}">Voltar ao painel de gestao</a></p>
+{% endblock %}

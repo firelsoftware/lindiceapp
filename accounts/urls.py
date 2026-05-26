@@ -15,6 +15,7 @@ urlpatterns = [
     path("medidas/", views.measurements, name="measurements"),
     path("parcelamento/<int:sale_id>/", views.choose_installments, name="choose_installments"),
     path("gestao/", views.management_dashboard, name="management_dashboard"),
+    path("gestao/cadastros/<int:profile_id>/", views.review_client_profile, name="review_client_profile"),
     path("gestao/vendas/nova/", views.create_credit_sale, name="create_credit_sale"),
     path("gestao/produtos/", views.product_list, name="product_list"),
     path("gestao/produtos/novo/", views.create_product, name="create_product"),

@@ -140,6 +140,27 @@ class ProfilePhotoForm(forms.ModelForm):
         return photo
 
 
+class ClientApprovalForm(forms.ModelForm):
+    class Meta:
+        model = ClientProfile
+        fields = ("admin_notes", "default_max_installments")
+        labels = {
+            "admin_notes": "Observacoes internas",
+            "default_max_installments": "Limite padrao de parcelas",
+        }
+        widgets = {
+            "default_max_installments": forms.NumberInput(attrs={"min": 1, "max": 10}),
+        }
+
+    def clean_default_max_installments(self):
+        installments = self.cleaned_data["default_max_installments"]
+
+        if installments < 1 or installments > 10:
+            raise ValidationError("Informe um valor entre 1 e 10 parcelas.")
+
+        return installments
+
+
 class UserPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(label="Senha atual", widget=forms.PasswordInput)
     new_password1 = forms.CharField(label="Nova senha", widget=forms.PasswordInput)

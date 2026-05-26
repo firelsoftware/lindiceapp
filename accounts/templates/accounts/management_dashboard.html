@@ -13,6 +13,7 @@
 
 <p>
     <a class="button" href="{% url 'create_credit_sale' %}">Lancar venda parcelada</a>
+    <a class="button" href="#cadastros-pendentes">Analisar cadastros</a>
     <a class="button" href="{% url 'create_product' %}">Cadastrar produto</a>
     <a class="button" href="{% url 'product_list' %}">Produtos</a>
     <a class="button" href="{% url 'profit_report' %}">Relatorio de lucro</a>
@@ -20,25 +21,27 @@
     <a class="button" href="{% url 'admin:index' %}">Painel de superusuario</a>
 </p>
 
-<h2>Cadastros pendentes</h2>
+<h2 id="cadastros-pendentes">Cadastros pendentes</h2>
 <table>
     <thead>
         <tr>
             <th>Cliente</th>
             <th>Telefone</th>
             <th>Status</th>
+            <th>Acao</th>
         </tr>
     </thead>
     <tbody>
         {% for profile in pending_profiles %}
             <tr>
-                <td>{{ profile.user.full_name }}</td>
+                <td><a href="{% url 'review_client_profile' profile.id %}">{{ profile.user.full_name }}</a></td>
                 <td>{{ profile.phone }}</td>
                 <td>{{ profile.get_registration_status_display }}</td>
+                <td><a class="button" href="{% url 'review_client_profile' profile.id %}">Analisar</a></td>
             </tr>
         {% empty %}
             <tr>
-                <td colspan="3">Nenhum cadastro pendente.</td>
+                <td colspan="4">Nenhum cadastro pendente.</td>
             </tr>
         {% endfor %}
     </tbody>

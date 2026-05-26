@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.dateparse import parse_date
 from django.utils import timezone
 
-from .forms import CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, UserPasswordChangeForm
+from .forms import ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, UserPasswordChangeForm
 from .models import CreditSale, ClientProfile, Product, ProductCost
 from .utils import generate_phone_code
 
@@ -287,6 +287,41 @@ def management_dashboard(request):
             "available_products": available_products,
         },
     )
+
+
+@staff_member_required(login_url="login")
+def review_client_profile(request, profile_id):
+    profile = get_object_or_404(ClientProfile, id=profile_id)
+
+    if request.method == "POST":
+        form = ClientApprovalForm(request.POST, instance=profile)
+        action = request.POST.get("action")
+
+        if form.is_valid():
+            profile = form.save(commit=False)
+
+            if action == "approve":
+                profile.registration_status = ClientProfile.APPROVED
+                profile.approved_at = timezone.now()
+                profile.approved_by = request.user
+                message = "Cadastro aprovado com sucesso."
+            elif action == "reject":
+                profile.registration_status = ClientProfile.REJECTED
+                profile.approved_at = None
+                profile.approved_by = None
+                message = "Cadastro rejeitado."
+            else:
+                messages.error(request, "Acao invalida.")
+                return redirect("review_client_profile", profile_id=profile.id)
+
+            profile.save()
+            messages.success(request, message)
+
+            return redirect("management_dashboard")
+    else:
+        form = ClientApprovalForm(instance=profile)
+
+    return render(request, "accounts/review_client_profile.html", {"form": form, "profile": profile})
 
 
 @staff_member_required(login_url="login")
