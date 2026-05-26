@@ -156,6 +156,11 @@ def dashboard(request):
 
 
 @login_required
+def account(request):
+    return render(request, "accounts/account.html")
+
+
+@login_required
 def measurements(request):
     if request.user.is_staff:
         return redirect("management_dashboard")

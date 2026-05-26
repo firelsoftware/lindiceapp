@@ -671,10 +671,9 @@
                         <a class="nav-link" href="{% url 'product_list' %}">Produtos</a>
                     {% else %}
                         <a class="nav-link" href="{% url 'dashboard' %}">Painel</a>
-                        <a class="nav-link" href="{% url 'profile' %}">Perfil</a>
                         <a class="nav-link" href="{% url 'measurements' %}">Medidas</a>
                     {% endif %}
-                    <a class="nav-link" href="{% url 'change_password' %}">Senha</a>
+                    <a class="nav-link" href="{% url 'account' %}">Minha conta</a>
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <button class="nav-button" type="submit">Sair</button>

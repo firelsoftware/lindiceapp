@@ -1,0 +1,54 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Minha conta</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <h2>Dados de acesso</h2>
+    <dl class="info-list">
+        <div>
+            <dt>Nome</dt>
+            <dd>{{ request.user.full_name }}</dd>
+        </div>
+        <div>
+            <dt>Email</dt>
+            <dd>{{ request.user.email }}</dd>
+        </div>
+        <div>
+            <dt>Tipo de acesso</dt>
+            <dd>{% if request.user.is_staff %}Gestao{% else %}Cliente{% endif %}</dd>
+        </div>
+    </dl>
+</section>
+
+<section class="info-panel">
+    <h2>Acoes da conta</h2>
+    <p class="action-row">
+        {% if not request.user.is_staff %}
+            <a class="button" href="{% url 'profile' %}">Meu perfil</a>
+            <a class="button" href="{% url 'measurements' %}">Minhas medidas</a>
+        {% endif %}
+        <a class="button" href="{% url 'change_password' %}">Alterar senha</a>
+    </p>
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="button-secondary">Sair da conta</button>
+    </form>
+</section>
+
+<p>
+    {% if request.user.is_staff %}
+        <a href="{% url 'management_dashboard' %}">Voltar ao painel de gestao</a>
+    {% else %}
+        <a href="{% url 'dashboard' %}">Voltar ao painel</a>
+    {% endif %}
+</p>
+{% endblock %}

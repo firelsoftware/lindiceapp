@@ -10,6 +10,7 @@ urlpatterns = [
     path("sair/", auth_views.LogoutView.as_view(), name="logout"),
     path("verificar-telefone/", views.verify_phone, name="verify_phone"),
     path("painel/", views.dashboard, name="dashboard"),
+    path("minha-conta/", views.account, name="account"),
     path("perfil/", views.profile, name="profile"),
     path("senha/", views.change_password, name="change_password"),
     path("medidas/", views.measurements, name="measurements"),
