@@ -6,7 +6,7 @@ from . import views
 urlpatterns = [
     path("", views.home, name="home"),
     path("cadastro/", views.register, name="register"),
-    path("login/", auth_views.LoginView.as_view(template_name="accounts/login.html"), name="login"),
+    path("login/", auth_views.LoginView.as_view(template_name="accounts/login.html", redirect_authenticated_user=True), name="login"),
     path("sair/", auth_views.LogoutView.as_view(), name="logout"),
     path("verificar-telefone/", views.verify_phone, name="verify_phone"),
     path("painel/", views.dashboard, name="dashboard"),
