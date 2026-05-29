@@ -1,0 +1,39 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Politica de privacidade</h1>
+
+<p>Esta politica resume como o Líndice usa os dados informados na loja e no aplicativo.</p>
+
+<section class="info-panel">
+    <h2>Dados coletados</h2>
+    <p>Podemos coletar nome, email, telefone, endereco de entrega, dados de cadastro, medidas informadas pelo cliente, comprovantes enviados e informacoes dos pedidos.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Uso dos dados</h2>
+    <p>Usamos os dados para criar cadastro, analisar pedidos, processar compras, acompanhar entregas, prestar atendimento e manter registros operacionais da loja.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Pagamentos</h2>
+    <p>Os pagamentos online sao processados pelo Mercado Pago. O Líndice nao armazena dados completos de cartao.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Compartilhamento</h2>
+    <p>Dados de entrega podem ser usados para concluir pedidos junto ao fornecedor dropshipping e transportadoras. Nao vendemos dados pessoais.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Seguranca</h2>
+    <p>Usamos HTTPS, controle de acesso administrativo e variaveis de ambiente para credenciais. Ainda assim, nenhum sistema e totalmente imune a riscos.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Contato</h2>
+    <p>Para solicitar correcao ou exclusao de dados, entre em contato pelo canal oficial da loja.</p>
+</section>
+
+<p><a href="{% url 'store_front' %}">Voltar para loja</a></p>
+{% endblock %}

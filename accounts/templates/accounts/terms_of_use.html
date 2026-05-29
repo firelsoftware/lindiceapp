@@ -1,0 +1,34 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Termos de uso</h1>
+
+<p>Estes termos descrevem as regras iniciais de uso da loja Líndice.</p>
+
+<section class="info-panel">
+    <h2>Compras</h2>
+    <p>Ao fazer um pedido, o cliente confirma que os dados informados estao corretos, incluindo telefone, email, endereco e tamanho escolhido.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Disponibilidade</h2>
+    <p>Os produtos podem depender de estoque do fornecedor. Se houver indisponibilidade apos o pagamento, entraremos em contato para combinar troca, credito ou cancelamento.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Pagamento</h2>
+    <p>O pagamento online e feito pelo Mercado Pago. O pedido so segue para compra no fornecedor depois da confirmacao do pagamento.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Entrega</h2>
+    <p>A entrega depende do fornecedor e da transportadora. O codigo de rastreio sera informado quando estiver disponivel.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Atendimento</h2>
+    <p>Em caso de duvida, erro no pedido ou necessidade de suporte, o cliente deve entrar em contato pelos canais oficiais do Líndice.</p>
+</section>
+
+<p><a href="{% url 'store_front' %}">Voltar para loja</a></p>
+{% endblock %}

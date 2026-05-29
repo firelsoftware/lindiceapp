@@ -95,6 +95,14 @@ def brand_preview(request):
     return render(request, "accounts/brand_preview.html")
 
 
+def privacy_policy(request):
+    return render(request, "accounts/privacy_policy.html")
+
+
+def terms_of_use(request):
+    return render(request, "accounts/terms_of_use.html")
+
+
 def store_front(request):
     products = SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0).order_by("name")
     query = request.GET.get("q", "").strip()
