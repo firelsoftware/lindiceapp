@@ -33,6 +33,23 @@
     </div>
 </div>
 
+{% if not supplier_catalog_configured or not mercado_pago_configured %}
+    <section class="info-panel">
+        <h2>Checklist da loja</h2>
+        {% if supplier_catalog_configured %}
+            <p><span class="badge badge-success">Catalogo do fornecedor configurado</span></p>
+        {% else %}
+            <p><span class="badge badge-warning">Catalogo do fornecedor pendente</span> Configure <strong>SHOE_SUPPLIER_CATALOG_URL</strong> no Render.</p>
+        {% endif %}
+
+        {% if mercado_pago_configured %}
+            <p><span class="badge badge-success">Mercado Pago configurado</span></p>
+        {% else %}
+            <p><span class="badge badge-warning">Mercado Pago pendente</span> Configure <strong>MERCADO_PAGO_ACCESS_TOKEN</strong> antes de aceitar pagamento real.</p>
+        {% endif %}
+    </section>
+{% endif %}
+
 <h2 id="cadastros-pendentes">Cadastros pendentes</h2>
 <table>
     <thead>

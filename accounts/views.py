@@ -470,6 +470,8 @@ def management_dashboard(request):
             "available_products": available_products,
             "store_paid_count": store_paid_count,
             "store_pending_payment_count": store_pending_payment_count,
+            "supplier_catalog_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
+            "mercado_pago_configured": bool(settings.MERCADO_PAGO_ACCESS_TOKEN),
         },
     )
 
