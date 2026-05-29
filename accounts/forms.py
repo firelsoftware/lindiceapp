@@ -290,6 +290,10 @@ class ProductCostForm(forms.ModelForm):
 
 class StoreOrderForm(forms.ModelForm):
     selected_size = forms.ChoiceField(label="Tamanho")
+    accept_terms = forms.BooleanField(
+        label="Li e aceito os termos de uso e a politica de privacidade",
+        required=True,
+    )
 
     class Meta:
         model = StoreOrder

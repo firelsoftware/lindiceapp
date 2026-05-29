@@ -1,4 +1,5 @@
 from decimal import Decimal
+from unittest.mock import patch
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
@@ -116,6 +117,7 @@ class StoreFlowTests(TestCase):
                 "customer_phone": "61999999999",
                 "shipping_address": "Rua Teste, 1",
                 "notes": "",
+                "accept_terms": "on",
             },
         )
         order = StoreOrder.objects.get()
@@ -167,3 +169,56 @@ class StoreFlowTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertFalse(product.is_visible)
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
+    def test_checkout_requires_terms_acceptance(self):
+        product = self.create_supplier_product()
+
+        response = self.client.post(
+            f"/loja/produto/{product.id}/comprar/",
+            {
+                "selected_size": "35",
+                "customer_name": "Cliente Teste",
+                "customer_email": "cliente@example.com",
+                "customer_phone": "61999999999",
+                "shipping_address": "Rua Teste, 1",
+                "notes": "",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(StoreOrder.objects.count(), 0)
+
+    @patch("accounts.views.get_payment")
+    def test_mercado_pago_webhook_marks_order_as_paid(self, mocked_get_payment):
+        product = self.create_supplier_product()
+        order = StoreOrder.objects.create(
+            product=product,
+            product_name=product.name,
+            supplier_code=product.supplier_code,
+            selected_size="35",
+            customer_name="Cliente Teste",
+            customer_email="cliente@example.com",
+            customer_phone="61999999999",
+            shipping_address="Rua Teste, 1",
+            unit_price=Decimal("99.90"),
+            supplier_cost=Decimal("55.00"),
+            total_amount=Decimal("99.90"),
+            estimated_profit=Decimal("44.90"),
+        )
+        mocked_get_payment.return_value = {
+            "id": "123",
+            "status": "approved",
+            "external_reference": order.order_code,
+        }
+
+        response = self.client.post(
+            "/loja/mercado-pago/webhook/",
+            data={"data": {"id": "123"}},
+            content_type="application/json",
+        )
+        order.refresh_from_db()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(order.status, StoreOrder.PAID)
+        self.assertEqual(order.mercado_pago_payment_id, "123")
