@@ -1,5 +1,6 @@
 from django.conf import settings
 import json
+from decimal import Decimal, InvalidOperation
 
 from django.contrib import messages
 from django.contrib.auth import login, update_session_auth_hash
@@ -7,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
 from django.db.models import Sum
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.dateparse import parse_date
@@ -138,11 +140,11 @@ def store_checkout(request, product_id):
             except MercadoPagoNotConfigured:
                 messages.warning(request, "Pedido criado. Configure o Mercado Pago para ativar o pagamento online.")
 
-                return redirect("store_order_detail", order_code=order.order_code)
+                return redirect("store_order_detail", public_token=order.public_token)
             except MercadoPagoRequestError as exc:
                 messages.error(request, f"Pedido criado, mas o pagamento nao foi iniciado: {exc}")
 
-                return redirect("store_order_detail", order_code=order.order_code)
+                return redirect("store_order_detail", public_token=order.public_token)
 
             order.mercado_pago_preference_id = preference["id"]
             order.mercado_pago_init_point = preference["init_point"]
@@ -155,8 +157,8 @@ def store_checkout(request, product_id):
     return render(request, "accounts/store_checkout.html", {"form": form, "product": product})
 
 
-def store_order_detail(request, order_code):
-    order = get_object_or_404(StoreOrder, order_code=order_code)
+def store_order_detail(request, public_token):
+    order = get_object_or_404(StoreOrder, public_token=public_token)
 
     return render(request, "accounts/store_order_detail.html", {"order": order})
 
@@ -177,7 +179,7 @@ def payment_success(request):
             if payment.get("status") == "approved":
                 order.mark_paid(str(payment.get("id", payment_id)))
 
-        return redirect("store_order_detail", order_code=order.order_code)
+        return redirect("store_order_detail", public_token=order.public_token)
 
     return render(request, "accounts/store_payment_return.html", {"title": "Pagamento recebido", "message": "Obrigado. Seu pagamento esta em processamento."})
 
@@ -499,15 +501,73 @@ def product_list(request):
 @staff_member_required(login_url="login")
 def supplier_products(request):
     products = SupplierProduct.objects.order_by("-last_seen_at", "name")
+    query = request.GET.get("q", "").strip()
+    visibility = request.GET.get("visibilidade", "")
+
+    if query:
+        products = products.filter(
+            Q(name__icontains=query)
+            | Q(supplier_code__icontains=query)
+            | Q(category__icontains=query)
+            | Q(brand__icontains=query)
+            | Q(sizes__icontains=query)
+        )
+
+    if visibility == "visible":
+        products = products.filter(is_visible=True)
+    elif visibility == "hidden":
+        products = products.filter(is_visible=False)
+    elif visibility == "stock":
+        products = products.filter(is_active=True, stock_quantity__gt=0)
+    elif visibility == "inactive":
+        products = products.filter(is_active=False)
+
+    if request.method == "POST":
+        visible_ids = set(request.POST.getlist("visible_products"))
+        updated = 0
+
+        for product in products:
+            product.is_visible = str(product.id) in visible_ids
+            price_value = request.POST.get(f"price_{product.id}", "").strip().replace(",", ".")
+
+            if price_value:
+                try:
+                    product.suggested_sale_price = Decimal(price_value)
+                except InvalidOperation:
+                    messages.error(request, f"Preco invalido para {product.name}.")
+
+                    return redirect("supplier_products")
+
+            if product.suggested_sale_price < 0:
+                messages.error(request, f"Preco invalido para {product.name}.")
+
+                return redirect("supplier_products")
+
+            if product.is_visible and product.suggested_sale_price < product.dropshipping_cost:
+                messages.error(request, f"O preco de {product.name} esta menor que o custo dropshipping.")
+
+                return redirect("supplier_products")
+
+            product.save(update_fields=["is_visible", "suggested_sale_price", "updated_at"])
+            updated += 1
+
+        messages.success(request, f"Loja atualizada: {updated} produtos revisados.")
+
+        return redirect("supplier_products")
 
     return render(
         request,
         "accounts/supplier_products.html",
-        {
-            "products": products,
-            "catalog_url_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
-        },
-    )
+          {
+              "products": products,
+              "catalog_url_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
+              "query": query,
+              "visibility": visibility,
+              "total_products": SupplierProduct.objects.count(),
+              "visible_products": SupplierProduct.objects.filter(is_visible=True).count(),
+              "stock_products": SupplierProduct.objects.filter(is_active=True, stock_quantity__gt=0).count(),
+          },
+      )
 
 
 @staff_member_required(login_url="login")

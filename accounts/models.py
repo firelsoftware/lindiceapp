@@ -1,4 +1,5 @@
 from decimal import Decimal, ROUND_HALF_UP
+import uuid
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -219,6 +220,9 @@ class SupplierProduct(models.Model):
     def __str__(self):
         return f"{self.supplier_code} - {self.name}"
 
+    def store_margin(self):
+        return self.suggested_sale_price - self.dropshipping_cost
+
 
 class StoreOrder(models.Model):
     PENDING_PAYMENT = "pending_payment"
@@ -238,6 +242,7 @@ class StoreOrder(models.Model):
     ]
 
     order_code = models.CharField(max_length=20, unique=True, blank=True)
+    public_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     product = models.ForeignKey(SupplierProduct, on_delete=models.PROTECT, related_name="store_orders")
     product_name = models.CharField(max_length=180)
     supplier_code = models.CharField(max_length=120)

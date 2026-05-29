@@ -1,4 +1,5 @@
 {% extends "accounts/base.html" %}
+{% load l10n %}
 
 {% block content %}
 <h1>Produtos do fornecedor</h1>
@@ -25,42 +26,118 @@
     {% endif %}
 </section>
 
-<table>
-    <thead>
-        <tr>
-            <th>Codigo</th>
-            <th>Produto</th>
-            <th>Tamanhos</th>
-            <th>Estoque</th>
-            <th>Custo dropshipping</th>
-            <th>Visivel</th>
-            <th>Atualizado</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for product in products %}
+<div class="summary-grid">
+    <div class="summary-item">
+        <strong>{{ total_products }}</strong>
+        <span>Importados</span>
+    </div>
+    <div class="summary-item">
+        <strong>{{ visible_products }}</strong>
+        <span>Na loja</span>
+    </div>
+    <div class="summary-item">
+        <strong>{{ stock_products }}</strong>
+        <span>Com estoque</span>
+    </div>
+</div>
+
+<form class="toolbar" method="get">
+    <div class="toolbar-field">
+        <label for="q">Buscar</label>
+        <input id="q" name="q" value="{{ query }}" placeholder="Produto, codigo, marca, tamanho">
+    </div>
+    <div class="toolbar-field">
+        <label for="visibilidade">Filtro</label>
+        <select id="visibilidade" name="visibilidade">
+            <option value="" {% if not visibility %}selected{% endif %}>Todos</option>
+            <option value="visible" {% if visibility == "visible" %}selected{% endif %}>Na loja</option>
+            <option value="hidden" {% if visibility == "hidden" %}selected{% endif %}>Ocultos</option>
+            <option value="stock" {% if visibility == "stock" %}selected{% endif %}>Com estoque</option>
+            <option value="inactive" {% if visibility == "inactive" %}selected{% endif %}>Inativos</option>
+        </select>
+    </div>
+    <button type="submit">Filtrar</button>
+    <a class="button button-secondary" href="{% url 'supplier_products' %}">Limpar</a>
+</form>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="table-actions">
+        {% if products %}
+            <button type="submit">Salvar vitrine da loja</button>
+        {% endif %}
+        <a class="button button-secondary" href="{% url 'store_front' %}" target="_blank" rel="noopener">Ver loja publica</a>
+    </div>
+
+    <table>
+        <thead>
             <tr>
-                <td>{{ product.supplier_code }}</td>
-                <td>
-                    {% if product.product_url %}
-                        <a href="{{ product.product_url }}" target="_blank" rel="noopener">{{ product.name }}</a>
-                    {% else %}
-                        {{ product.name }}
-                    {% endif %}
-                </td>
-                <td>{{ product.sizes }}</td>
-                <td>{{ product.stock_quantity }}</td>
-                <td>R$ {{ product.dropshipping_cost|floatformat:2 }}</td>
-                <td>{% if product.is_visible %}Sim{% else %}Nao{% endif %}</td>
-                <td>{% if product.last_seen_at %}{{ product.last_seen_at|date:"d/m/Y H:i" }}{% else %}-{% endif %}</td>
+                <th>Loja</th>
+                <th>Foto</th>
+                <th>Codigo</th>
+                <th>Produto</th>
+                <th>Tamanhos</th>
+                <th>Estoque</th>
+                <th>Custo dropshipping</th>
+                <th>Preco na loja</th>
+                <th>Atualizado</th>
             </tr>
-        {% empty %}
-            <tr>
-                <td colspan="7">Nenhum produto do fornecedor importado ainda.</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <td class="check-cell">
+                        <input type="checkbox" name="visible_products" value="{{ product.id }}" {% if product.is_visible %}checked{% endif %} aria-label="Mostrar {{ product.name }} na loja">
+                    </td>
+                    <td>
+                        <div class="thumb">
+                            {% if product.image_url %}
+                                <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>{{ product.supplier_code }}</td>
+                    <td>
+                        {% if product.product_url %}
+                            <a href="{{ product.product_url }}" target="_blank" rel="noopener">{{ product.name }}</a>
+                        {% else %}
+                            {{ product.name }}
+                        {% endif %}
+                        <br>
+                        {% if product.is_active %}
+                            <span class="badge badge-success">Ativo</span>
+                        {% else %}
+                            <span class="badge badge-muted">Inativo</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ product.sizes }}</td>
+                    <td>
+                        {% if product.stock_quantity > 0 %}
+                            <span class="badge badge-success">{{ product.stock_quantity }}</span>
+                        {% else %}
+                            <span class="badge badge-warning">Sem estoque</span>
+                        {% endif %}
+                    </td>
+                    <td>R$ {{ product.dropshipping_cost|floatformat:2 }}</td>
+                    <td>
+                        <input class="compact-input" type="number" name="price_{{ product.id }}" value="{{ product.suggested_sale_price|unlocalize }}" min="0" step="0.01" aria-label="Preco de {{ product.name }}">
+                        <br>
+                        <small>Margem: R$ {{ product.store_margin|floatformat:2 }}</small>
+                    </td>
+                    <td>{% if product.last_seen_at %}{{ product.last_seen_at|date:"d/m/Y H:i" }}{% else %}-{% endif %}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="9">Nenhum produto encontrado.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if products %}
+        <button type="submit">Salvar vitrine da loja</button>
+    {% endif %}
+</form>
 
 <p><a href="{% url 'management_dashboard' %}">Voltar para gestao</a></p>
 {% endblock %}

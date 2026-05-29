@@ -315,3 +315,14 @@ class StoreOrderForm(forms.ModelForm):
             sizes = ["Confirmar tamanho"]
 
         self.fields["selected_size"].choices = [(size, size) for size in sizes]
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if not self.product.is_active or not self.product.is_visible or self.product.stock_quantity <= 0:
+            raise ValidationError("Este produto nao esta disponivel para compra no momento.")
+
+        if self.product.suggested_sale_price <= 0:
+            raise ValidationError("Este produto ainda nao tem preco definido para venda.")
+
+        return cleaned_data
