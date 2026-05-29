@@ -1,5 +1,6 @@
 from decimal import Decimal, ROUND_HALF_UP
 import uuid
+import re
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -284,6 +285,14 @@ class StoreOrder(models.Model):
         self.mercado_pago_payment_id = payment_id or self.mercado_pago_payment_id
         self.paid_at = self.paid_at or timezone.now()
         self.save(update_fields=["status", "mercado_pago_payment_id", "paid_at", "updated_at"])
+
+    def whatsapp_url(self):
+        digits = re.sub(r"\D", "", self.customer_phone)
+
+        if digits and not digits.startswith("55"):
+            digits = f"55{digits}"
+
+        return f"https://wa.me/{digits}" if digits else ""
 
     def __str__(self):
         return f"{self.order_code} - {self.customer_name} - {self.product_name}"

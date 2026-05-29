@@ -457,6 +457,8 @@ def management_dashboard(request):
     pending_sales = CreditSale.objects.filter(status=CreditSale.PENDING).order_by("-created_at")
     accepted_sales = CreditSale.objects.filter(status=CreditSale.ACCEPTED).order_by("-accepted_at")[:10]
     available_products = Product.objects.filter(status=Product.AVAILABLE).order_by("-created_at")[:10]
+    store_paid_count = StoreOrder.objects.filter(status=StoreOrder.PAID).count()
+    store_pending_payment_count = StoreOrder.objects.filter(status=StoreOrder.PENDING_PAYMENT).count()
 
     return render(
         request,
@@ -466,6 +468,8 @@ def management_dashboard(request):
             "pending_sales": pending_sales,
             "accepted_sales": accepted_sales,
             "available_products": available_products,
+            "store_paid_count": store_paid_count,
+            "store_pending_payment_count": store_pending_payment_count,
         },
     )
 

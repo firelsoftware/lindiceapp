@@ -22,6 +22,17 @@
     <a class="button" href="{% url 'admin:index' %}">Painel de superusuario</a>
 </p>
 
+<div class="summary-grid">
+    <div class="summary-item">
+        <strong>{{ store_paid_count }}</strong>
+        <span>Pagos para comprar</span>
+    </div>
+    <div class="summary-item">
+        <strong>{{ store_pending_payment_count }}</strong>
+        <span>Aguardando pagamento</span>
+    </div>
+</div>
+
 <h2 id="cadastros-pendentes">Cadastros pendentes</h2>
 <table>
     <thead>

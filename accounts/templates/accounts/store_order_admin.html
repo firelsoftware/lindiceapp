@@ -12,7 +12,16 @@
 {% endif %}
 
 <section class="info-panel">
-    <h2>{{ order.get_status_display }}</h2>
+    <h2><span class="badge">{{ order.get_status_display }}</span></h2>
+    {% if order.status == order.PAID %}
+        <p><strong>Proximo passo:</strong> abra o produto no fornecedor, faca a compra dropshipping e marque o pedido como comprado no fornecedor.</p>
+    {% elif order.status == order.PENDING_PAYMENT %}
+        <p><strong>Proximo passo:</strong> aguardar confirmacao do Mercado Pago ou conferir se o cliente precisa de ajuda para pagar.</p>
+    {% elif order.status == order.SUPPLIER_ORDERED %}
+        <p><strong>Proximo passo:</strong> aguardar rastreio e marcar como enviado quando tiver o codigo.</p>
+    {% elif order.status == order.SHIPPED %}
+        <p><strong>Proximo passo:</strong> acompanhar entrega com o cliente.</p>
+    {% endif %}
     <dl class="info-list">
         <div>
             <dt>Cliente</dt>
@@ -24,7 +33,12 @@
         </div>
         <div>
             <dt>Telefone</dt>
-            <dd>{{ order.customer_phone }}</dd>
+            <dd>
+                {{ order.customer_phone }}
+                {% if order.whatsapp_url %}
+                    <br><a href="{{ order.whatsapp_url }}" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+                {% endif %}
+            </dd>
         </div>
         <div>
             <dt>Produto</dt>
@@ -50,6 +64,10 @@
             <dt>Endereco</dt>
             <dd>{{ order.shipping_address|linebreaksbr }}</dd>
         </div>
+        <div>
+            <dt>Observacoes</dt>
+            <dd>{{ order.notes|default:"-"|linebreaksbr }}</dd>
+        </div>
     </dl>
 </section>
 
@@ -57,30 +75,36 @@
     <p><a class="button" href="{{ order.product.product_url }}" target="_blank" rel="noopener">Abrir produto no fornecedor</a></p>
 {% endif %}
 
-<form method="post">
-    {% csrf_token %}
-    <label for="supplier_order_reference">Referencia do pedido no fornecedor:</label>
-    <input id="supplier_order_reference" name="supplier_order_reference" value="{{ order.supplier_order_reference }}">
-    <button type="submit" name="action" value="mark_supplier_ordered">Marcar como comprado no fornecedor</button>
-</form>
-
-<form method="post">
-    {% csrf_token %}
-    <label for="tracking_code">Codigo de rastreio:</label>
-    <input id="tracking_code" name="tracking_code" value="{{ order.tracking_code }}">
-    <button type="submit" name="action" value="mark_shipped">Marcar como enviado</button>
-</form>
-
-<div class="action-row">
+<section class="info-panel">
+    <h2>Operacao</h2>
     <form method="post">
         {% csrf_token %}
-        <button type="submit" class="button-secondary" name="action" value="mark_paid">Marcar pago manualmente</button>
+        <label for="supplier_order_reference">Referencia do pedido no fornecedor:</label>
+        <input id="supplier_order_reference" name="supplier_order_reference" value="{{ order.supplier_order_reference }}">
+        <button type="submit" name="action" value="mark_supplier_ordered">Marcar como comprado no fornecedor</button>
     </form>
+
     <form method="post">
         {% csrf_token %}
-        <button type="submit" class="button-secondary" name="action" value="cancel">Cancelar pedido</button>
+        <label for="tracking_code">Codigo de rastreio:</label>
+        <input id="tracking_code" name="tracking_code" value="{{ order.tracking_code }}">
+        <button type="submit" name="action" value="mark_shipped">Marcar como enviado</button>
     </form>
-</div>
+</section>
+
+<section class="info-panel">
+    <h2>Ajustes manuais</h2>
+    <div class="action-row">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="button-secondary" name="action" value="mark_paid">Marcar pago manualmente</button>
+        </form>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="button-secondary" name="action" value="cancel">Cancelar pedido</button>
+        </form>
+    </div>
+</section>
 
 <p><a href="{% url 'store_orders' %}">Voltar para pedidos</a></p>
 {% endblock %}
