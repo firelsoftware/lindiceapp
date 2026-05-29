@@ -175,6 +175,7 @@ if USE_SUPABASE_STORAGE:
                 "access_key": SUPABASE_S3_ACCESS_KEY_ID,
                 "secret_key": SUPABASE_S3_SECRET_ACCESS_KEY,
                 "addressing_style": "path",
+                "signature_version": "s3v4",
                 "default_acl": None,
                 "file_overwrite": False,
                 "querystring_auth": True,

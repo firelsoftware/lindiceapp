@@ -1,5 +1,6 @@
 from django.conf import settings
 import json
+import logging
 from decimal import Decimal, InvalidOperation
 
 from django.contrib import messages
@@ -21,6 +22,8 @@ from .models import CreditSale, ClientProfile, Product, ProductCost, StoreOrder,
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_checkout_preference, get_payment
 from .supplier_import import import_supplier_catalog
 from .utils import generate_phone_code
+
+logger = logging.getLogger(__name__)
 
 
 def legacy_installment_total(description):
@@ -725,7 +728,14 @@ def create_product(request):
         form = ProductForm(request.POST, request.FILES)
 
         if form.is_valid():
-            product = form.save()
+            try:
+                product = form.save()
+            except Exception:
+                logger.exception("Erro ao cadastrar produto")
+                messages.error(request, "Nao foi possivel salvar o produto agora. Confira a foto enviada e tente novamente.")
+
+                return render(request, "accounts/create_product.html", {"form": form}, status=500)
+
             messages.success(request, f"Produto {product.product_code} cadastrado com sucesso.")
 
             return redirect("product_detail", product_id=product.id)
