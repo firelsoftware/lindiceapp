@@ -4,6 +4,24 @@
 <h1>Loja Líndice</h1>
 <p>Escolha seu calcado, informe seus dados e pague com seguranca pelo Mercado Pago.</p>
 
+<form class="toolbar" method="get">
+    <div class="toolbar-field">
+        <label for="q">Buscar produto</label>
+        <input id="q" name="q" value="{{ query }}" placeholder="Sandalia, tenis, marca">
+    </div>
+    <div class="toolbar-field">
+        <label for="tamanho">Tamanho</label>
+        <select id="tamanho" name="tamanho">
+            <option value="" {% if not size %}selected{% endif %}>Todos</option>
+            {% for option in size_options %}
+                <option value="{{ option }}" {% if size == option %}selected{% endif %}>{{ option }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit">Filtrar</button>
+    <a class="button button-secondary" href="{% url 'store_front' %}">Limpar</a>
+</form>
+
 <div class="store-grid">
     {% for product in products %}
         <article class="store-product">
@@ -14,14 +32,20 @@
             </a>
             <div class="store-product-body">
                 <h2><a href="{% url 'store_product_detail' product.id %}">{{ product.name }}</a></h2>
-                <p>{{ product.category }}</p>
+                {% if product.category %}
+                    <p><span class="badge">{{ product.category }}</span></p>
+                {% endif %}
                 <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
                 <p>Tamanhos: {{ product.sizes|default:"consultar" }}</p>
+                <p>Compra segura via Mercado Pago.</p>
                 <a class="button" href="{% url 'store_product_detail' product.id %}">Ver produto</a>
             </div>
         </article>
     {% empty %}
-        <p>Nenhum produto disponivel na loja ainda.</p>
+        <section class="info-panel">
+            <h2>Nenhum produto encontrado</h2>
+            <p>Remova os filtros ou volte mais tarde para ver novas opcoes.</p>
+        </section>
     {% endfor %}
 </div>
 {% endblock %}

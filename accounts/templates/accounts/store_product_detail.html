@@ -10,11 +10,18 @@
     <div>
         <h1>{{ product.name }}</h1>
         <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
+        <p>
+            <span class="badge badge-success">Disponivel</span>
+            {% if product.category %}<span class="badge">{{ product.category }}</span>{% endif %}
+        </p>
         <p>Tamanhos disponiveis: {{ product.sizes|default:"consultar" }}</p>
-        <p>Estoque do fornecedor: {{ product.stock_quantity }}</p>
         {% if product.description %}
             <p>{{ product.description }}</p>
         {% endif %}
+        <section class="info-panel">
+            <h2>Como funciona</h2>
+            <p>Voce paga pelo Mercado Pago. Depois da confirmacao, fazemos o pedido no fornecedor e acompanhamos o envio.</p>
+        </section>
         <a class="button" href="{% url 'store_checkout' product.id %}">Comprar</a>
         <p><a href="{% url 'store_front' %}">Voltar para loja</a></p>
     </div>

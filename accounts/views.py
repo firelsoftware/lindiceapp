@@ -96,8 +96,44 @@ def brand_preview(request):
 
 def store_front(request):
     products = SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0).order_by("name")
+    query = request.GET.get("q", "").strip()
+    size = request.GET.get("tamanho", "").strip()
 
-    return render(request, "accounts/store_front.html", {"products": products})
+    if query:
+        products = products.filter(
+            Q(name__icontains=query)
+            | Q(category__icontains=query)
+            | Q(brand__icontains=query)
+            | Q(description__icontains=query)
+        )
+
+    if size:
+        products = products.filter(sizes__icontains=size)
+
+    size_options = (
+        SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0)
+        .exclude(sizes="")
+        .values_list("sizes", flat=True)
+    )
+    parsed_sizes = sorted(
+        {
+            item.strip()
+            for value in size_options
+            for item in value.replace("/", ",").replace(";", ",").split(",")
+            if item.strip()
+        }
+    )
+
+    return render(
+        request,
+        "accounts/store_front.html",
+        {
+            "products": products,
+            "query": query,
+            "size": size,
+            "size_options": parsed_sizes,
+        },
+    )
 
 
 def store_product_detail(request, product_id):
@@ -601,8 +637,34 @@ def import_supplier_products(request):
 @staff_member_required(login_url="login")
 def store_orders(request):
     orders = StoreOrder.objects.order_by("-created_at")
+    status = request.GET.get("status", "")
+    query = request.GET.get("q", "").strip()
 
-    return render(request, "accounts/store_orders.html", {"orders": orders})
+    if status:
+        orders = orders.filter(status=status)
+
+    if query:
+        orders = orders.filter(
+            Q(order_code__icontains=query)
+            | Q(customer_name__icontains=query)
+            | Q(customer_email__icontains=query)
+            | Q(customer_phone__icontains=query)
+            | Q(product_name__icontains=query)
+        )
+
+    return render(
+        request,
+        "accounts/store_orders.html",
+        {
+            "orders": orders,
+            "status": status,
+            "query": query,
+            "status_choices": StoreOrder.STATUS_CHOICES,
+            "pending_supplier_count": StoreOrder.objects.filter(status=StoreOrder.PAID).count(),
+            "pending_payment_count": StoreOrder.objects.filter(status=StoreOrder.PENDING_PAYMENT).count(),
+            "shipped_count": StoreOrder.objects.filter(status=StoreOrder.SHIPPED).count(),
+        },
+    )
 
 
 @staff_member_required(login_url="login")

@@ -11,6 +11,39 @@
     </ul>
 {% endif %}
 
+<div class="summary-grid">
+    <div class="summary-item">
+        <strong>{{ pending_supplier_count }}</strong>
+        <span>Comprar no fornecedor</span>
+    </div>
+    <div class="summary-item">
+        <strong>{{ pending_payment_count }}</strong>
+        <span>Aguardando pagamento</span>
+    </div>
+    <div class="summary-item">
+        <strong>{{ shipped_count }}</strong>
+        <span>Enviados</span>
+    </div>
+</div>
+
+<form class="toolbar" method="get">
+    <div class="toolbar-field">
+        <label for="q">Buscar</label>
+        <input id="q" name="q" value="{{ query }}" placeholder="Pedido, cliente, telefone, produto">
+    </div>
+    <div class="toolbar-field">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+            <option value="" {% if not status %}selected{% endif %}>Todos</option>
+            {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if status == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit">Filtrar</button>
+    <a class="button button-secondary" href="{% url 'store_orders' %}">Limpar</a>
+</form>
+
 <table>
     <thead>
         <tr>
@@ -29,7 +62,7 @@
                 <td>{{ order.customer_name }}</td>
                 <td>{{ order.product_name }}</td>
                 <td>R$ {{ order.total_amount|floatformat:2 }}</td>
-                <td>{{ order.get_status_display }}</td>
+                <td><span class="badge">{{ order.get_status_display }}</span></td>
                 <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
             </tr>
         {% empty %}
