@@ -87,6 +87,7 @@
             {% for product in products %}
                 <tr>
                     <td class="check-cell">
+                        <input type="hidden" name="product_ids" value="{{ product.id }}">
                         <input type="checkbox" name="visible_products" value="{{ product.id }}" {% if product.is_visible %}checked{% endif %} aria-label="Mostrar {{ product.name }} na loja">
                     </td>
                     <td>
@@ -138,6 +139,18 @@
         <button type="submit">Salvar vitrine da loja</button>
     {% endif %}
 </form>
+
+{% if products.paginator.num_pages > 1 %}
+    <p>
+        Pagina {{ products.number }} de {{ products.paginator.num_pages }} |
+        {% if products.has_previous %}
+            <a href="?page={{ products.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if visibility %}&visibilidade={{ visibility }}{% endif %}">Anterior</a>
+        {% endif %}
+        {% if products.has_next %}
+            <a href="?page={{ products.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if visibility %}&visibilidade={{ visibility }}{% endif %}">Proxima</a>
+        {% endif %}
+    </p>
+{% endif %}
 
 <p><a href="{% url 'management_dashboard' %}">Voltar para gestao</a></p>
 {% endblock %}

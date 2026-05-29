@@ -10,6 +10,7 @@ from django.db import transaction
 from django.db.models import Sum
 from django.db.models import Q
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.dateparse import parse_date
 from django.utils import timezone
@@ -566,9 +567,11 @@ def supplier_products(request):
 
     if request.method == "POST":
         visible_ids = set(request.POST.getlist("visible_products"))
+        edited_ids = request.POST.getlist("product_ids")
+        edited_products = SupplierProduct.objects.filter(id__in=edited_ids)
         updated = 0
 
-        for product in products:
+        for product in edited_products:
             product.is_visible = str(product.id) in visible_ids
             price_value = request.POST.get(f"price_{product.id}", "").strip().replace(",", ".")
 
@@ -597,14 +600,17 @@ def supplier_products(request):
 
         return redirect("supplier_products")
 
+    paginator = Paginator(products, 50)
+    page_obj = paginator.get_page(request.GET.get("page"))
+
     return render(
         request,
         "accounts/supplier_products.html",
-          {
-              "products": products,
-              "catalog_url_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
-              "query": query,
-              "visibility": visibility,
+        {
+            "products": page_obj,
+            "catalog_url_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
+            "query": query,
+            "visibility": visibility,
               "total_products": SupplierProduct.objects.count(),
               "visible_products": SupplierProduct.objects.filter(is_visible=True).count(),
               "stock_products": SupplierProduct.objects.filter(is_active=True, stock_quantity__gt=0).count(),
