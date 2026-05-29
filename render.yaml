@@ -17,3 +17,13 @@ services:
         value: ".onrender.com,app.lindice.com.br"
       - key: DJANGO_CSRF_TRUSTED_ORIGINS
         value: "https://*.onrender.com,https://app.lindice.com.br"
+      - key: SUPABASE_STORAGE_BUCKET
+        sync: false
+      - key: SUPABASE_STORAGE_ENDPOINT_URL
+        sync: false
+      - key: SUPABASE_STORAGE_REGION
+        sync: false
+      - key: SUPABASE_S3_ACCESS_KEY_ID
+        sync: false
+      - key: SUPABASE_S3_SECRET_ACCESS_KEY
+        sync: false

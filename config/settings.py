@@ -139,20 +139,66 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-if not DEBUG:
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+SUPABASE_STORAGE_BUCKET = os.environ.get("SUPABASE_STORAGE_BUCKET", "")
+SUPABASE_STORAGE_ENDPOINT_URL = os.environ.get("SUPABASE_STORAGE_ENDPOINT_URL", "")
+SUPABASE_S3_ACCESS_KEY_ID = os.environ.get("SUPABASE_S3_ACCESS_KEY_ID", "")
+SUPABASE_S3_SECRET_ACCESS_KEY = os.environ.get("SUPABASE_S3_SECRET_ACCESS_KEY", "")
+SUPABASE_STORAGE_REGION = os.environ.get("SUPABASE_STORAGE_REGION", "")
+
+USE_SUPABASE_STORAGE = all(
+    [
+        SUPABASE_STORAGE_BUCKET,
+        SUPABASE_STORAGE_ENDPOINT_URL,
+        SUPABASE_S3_ACCESS_KEY_ID,
+        SUPABASE_S3_SECRET_ACCESS_KEY,
+        SUPABASE_STORAGE_REGION,
+    ]
+)
+
+STATICFILES_BACKEND = (
+    "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    if not DEBUG
+    else "django.contrib.staticfiles.storage.StaticFilesStorage"
+)
+
+if USE_SUPABASE_STORAGE:
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "bucket_name": SUPABASE_STORAGE_BUCKET,
+                "endpoint_url": SUPABASE_STORAGE_ENDPOINT_URL,
+                "region_name": SUPABASE_STORAGE_REGION,
+                "access_key": SUPABASE_S3_ACCESS_KEY_ID,
+                "secret_key": SUPABASE_S3_SECRET_ACCESS_KEY,
+                "addressing_style": "path",
+                "default_acl": None,
+                "file_overwrite": False,
+                "querystring_auth": True,
+                "querystring_expire": 3600,
+                "object_parameters": {
+                    "CacheControl": "max-age=86400",
+                },
+            },
+        },
+        "staticfiles": {
+            "BACKEND": STATICFILES_BACKEND,
+        },
+    }
+elif not DEBUG:
     STORAGES = {
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
         },
         "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+            "BACKEND": STATICFILES_BACKEND,
         },
     }
 
 AUTH_USER_MODEL = "accounts.User"
-
-MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
 
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "login"

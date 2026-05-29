@@ -43,4 +43,16 @@ O banco local `db.sqlite3` nao deve ser enviado como banco de producao. O ideal 
 
 Ao trocar o banco de producao para Supabase, confirme que o deploy rodou as migracoes antes de remover qualquer banco antigo.
 
-Arquivos enviados por clientes, como comprovantes e fotos, ficam em `media/`. Para uso real com muitos clientes, o ideal e trocar para um armazenamento externo, como S3/R2. Para um MVP, da para comecar simples e evoluir depois.
+Arquivos enviados por clientes, como comprovantes e fotos de produtos, devem ficar no Supabase Storage. Crie um bucket privado, por exemplo `lindice-media`, gere credenciais S3 no Supabase e configure no Render:
+
+```text
+SUPABASE_STORAGE_BUCKET=lindice-media
+SUPABASE_STORAGE_ENDPOINT_URL=https://SEU_PROJECT_REF.storage.supabase.co/storage/v1/s3
+SUPABASE_STORAGE_REGION=REGIAO_DO_PROJETO
+SUPABASE_S3_ACCESS_KEY_ID=...
+SUPABASE_S3_SECRET_ACCESS_KEY=...
+```
+
+As credenciais S3 sao de uso exclusivo no servidor. Nao coloque esses valores no GitHub.
+
+Depois do redeploy, novos uploads vao para o Supabase Storage. Arquivos antigos que estavam no disco do Render nao migram sozinhos; se uma foto antiga aparecer quebrada, reenvie a foto pelo app.
