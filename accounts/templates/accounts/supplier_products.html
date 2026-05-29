@@ -1,0 +1,66 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Produtos do fornecedor</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <h2>Importar catalogo</h2>
+    {% if catalog_url_configured %}
+        <p>O catalogo esta configurado por variavel de ambiente. Use este botao no maximo quando precisar atualizar o estoque.</p>
+        <form method="post" action="{% url 'import_supplier_products' %}">
+            {% csrf_token %}
+            <button type="submit">Atualizar catalogo do fornecedor</button>
+        </form>
+    {% else %}
+        <p>Configure a variavel <strong>SHOE_SUPPLIER_CATALOG_URL</strong> no Render para habilitar a importacao.</p>
+        <p>Quando tiver a URL CSV ou XML da Revenda de Calcados, ela deve ficar em variavel de ambiente, nao no codigo.</p>
+    {% endif %}
+</section>
+
+<table>
+    <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Produto</th>
+            <th>Tamanhos</th>
+            <th>Estoque</th>
+            <th>Custo dropshipping</th>
+            <th>Visivel</th>
+            <th>Atualizado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.supplier_code }}</td>
+                <td>
+                    {% if product.product_url %}
+                        <a href="{{ product.product_url }}" target="_blank" rel="noopener">{{ product.name }}</a>
+                    {% else %}
+                        {{ product.name }}
+                    {% endif %}
+                </td>
+                <td>{{ product.sizes }}</td>
+                <td>{{ product.stock_quantity }}</td>
+                <td>R$ {{ product.dropshipping_cost|floatformat:2 }}</td>
+                <td>{% if product.is_visible %}Sim{% else %}Nao{% endif %}</td>
+                <td>{% if product.last_seen_at %}{{ product.last_seen_at|date:"d/m/Y H:i" }}{% else %}-{% endif %}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="7">Nenhum produto do fornecedor importado ainda.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><a href="{% url 'management_dashboard' %}">Voltar para gestao</a></p>
+{% endblock %}

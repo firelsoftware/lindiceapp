@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils import timezone
 
-from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Product, ProductCost, User
+from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Product, ProductCost, SupplierProduct, User
 
 
 @admin.register(User)
@@ -98,3 +98,11 @@ class ProductAdmin(admin.ModelAdmin):
 class ProductCostAdmin(admin.ModelAdmin):
     list_display = ("product", "amount", "created_at")
     search_fields = ("product__product_code", "product__name", "reason")
+
+
+@admin.register(SupplierProduct)
+class SupplierProductAdmin(admin.ModelAdmin):
+    list_display = ("supplier_code", "name", "stock_quantity", "dropshipping_cost", "suggested_sale_price", "is_active", "is_visible", "last_seen_at")
+    list_filter = ("source", "is_active", "is_visible", "last_seen_at")
+    search_fields = ("supplier_code", "name", "category", "brand")
+    readonly_fields = ("raw_data", "last_seen_at", "created_at", "updated_at")

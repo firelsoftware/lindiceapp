@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -9,7 +10,8 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 
 from .forms import ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, UserPasswordChangeForm
-from .models import CreditSale, ClientProfile, Product, ProductCost
+from .models import CreditSale, ClientProfile, Product, ProductCost, SupplierProduct
+from .supplier_import import import_supplier_catalog
 from .utils import generate_phone_code
 
 
@@ -356,6 +358,48 @@ def product_list(request):
     products = Product.objects.order_by("-created_at")
 
     return render(request, "accounts/product_list.html", {"products": products})
+
+
+@staff_member_required(login_url="login")
+def supplier_products(request):
+    products = SupplierProduct.objects.order_by("-last_seen_at", "name")
+
+    return render(
+        request,
+        "accounts/supplier_products.html",
+        {
+            "products": products,
+            "catalog_url_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
+        },
+    )
+
+
+@staff_member_required(login_url="login")
+def import_supplier_products(request):
+    if request.method != "POST":
+        return redirect("supplier_products")
+
+    if not settings.SHOE_SUPPLIER_CATALOG_URL:
+        messages.error(request, "Configure SHOE_SUPPLIER_CATALOG_URL antes de importar o catalogo.")
+
+        return redirect("supplier_products")
+
+    try:
+        result = import_supplier_catalog(
+            settings.SHOE_SUPPLIER_CATALOG_URL,
+            settings.SHOE_SUPPLIER_CATALOG_FORMAT,
+        )
+    except Exception as exc:
+        messages.error(request, f"Nao foi possivel importar o catalogo: {exc}")
+
+        return redirect("supplier_products")
+
+    messages.success(
+        request,
+        f"Catalogo atualizado: {result['created']} novos, {result['updated']} atualizados, {result['total']} lidos.",
+    )
+
+    return redirect("supplier_products")
 
 
 @staff_member_required(login_url="login")

@@ -176,6 +176,43 @@ class ProductCost(models.Model):
         return f"{self.product.product_code} - R$ {self.amount}"
 
 
+class SupplierProduct(models.Model):
+    SOURCE_REVENDA_CALCADOS = "revenda_calcados"
+
+    SOURCE_CHOICES = [
+        (SOURCE_REVENDA_CALCADOS, "Revenda de Calcados"),
+    ]
+
+    source = models.CharField(max_length=50, choices=SOURCE_CHOICES, default=SOURCE_REVENDA_CALCADOS)
+    supplier_code = models.CharField(max_length=120)
+    name = models.CharField(max_length=180)
+    description = models.TextField(blank=True)
+    category = models.CharField(max_length=120, blank=True)
+    brand = models.CharField(max_length=120, blank=True)
+    image_url = models.URLField(blank=True)
+    product_url = models.URLField(blank=True)
+    wholesale_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    dropshipping_cost = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    suggested_sale_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    stock_quantity = models.IntegerField(default=0)
+    sizes = models.CharField(max_length=180, blank=True)
+    is_active = models.BooleanField(default=True)
+    is_visible = models.BooleanField(default=False)
+    raw_data = models.JSONField(default=dict, blank=True)
+    last_seen_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["source", "supplier_code"], name="unique_supplier_product_code"),
+        ]
+        ordering = ["name", "supplier_code"]
+
+    def __str__(self):
+        return f"{self.supplier_code} - {self.name}"
+
+
 class CreditSale(models.Model):
     PENDING = "pending"
     ACCEPTED = "accepted"
