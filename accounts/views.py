@@ -1,16 +1,21 @@
 from django.conf import settings
+import json
+
 from django.contrib import messages
 from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
 from django.db.models import Sum
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.dateparse import parse_date
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 
-from .forms import ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, UserPasswordChangeForm
-from .models import CreditSale, ClientProfile, Product, ProductCost, SupplierProduct
+from .forms import ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
+from .models import CreditSale, ClientProfile, Product, ProductCost, StoreOrder, SupplierProduct
+from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_checkout_preference, get_payment
 from .supplier_import import import_supplier_catalog
 from .utils import generate_phone_code
 
@@ -85,6 +90,137 @@ def home(request):
 
 def brand_preview(request):
     return render(request, "accounts/brand_preview.html")
+
+
+def store_front(request):
+    products = SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0).order_by("name")
+
+    return render(request, "accounts/store_front.html", {"products": products})
+
+
+def store_product_detail(request, product_id):
+    product = get_object_or_404(
+        SupplierProduct,
+        id=product_id,
+        is_active=True,
+        is_visible=True,
+        stock_quantity__gt=0,
+    )
+
+    return render(request, "accounts/store_product_detail.html", {"product": product})
+
+
+def store_checkout(request, product_id):
+    product = get_object_or_404(
+        SupplierProduct,
+        id=product_id,
+        is_active=True,
+        is_visible=True,
+        stock_quantity__gt=0,
+    )
+
+    if request.method == "POST":
+        form = StoreOrderForm(request.POST, product=product)
+
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.product = product
+            order.product_name = product.name
+            order.supplier_code = product.supplier_code
+            order.unit_price = product.suggested_sale_price
+            order.supplier_cost = product.dropshipping_cost
+            order.total_amount = product.suggested_sale_price
+            order.estimated_profit = product.suggested_sale_price - product.dropshipping_cost
+            order.save()
+
+            try:
+                preference = create_checkout_preference(order, request)
+            except MercadoPagoNotConfigured:
+                messages.warning(request, "Pedido criado. Configure o Mercado Pago para ativar o pagamento online.")
+
+                return redirect("store_order_detail", order_code=order.order_code)
+            except MercadoPagoRequestError as exc:
+                messages.error(request, f"Pedido criado, mas o pagamento nao foi iniciado: {exc}")
+
+                return redirect("store_order_detail", order_code=order.order_code)
+
+            order.mercado_pago_preference_id = preference["id"]
+            order.mercado_pago_init_point = preference["init_point"]
+            order.save(update_fields=["mercado_pago_preference_id", "mercado_pago_init_point", "updated_at"])
+
+            return redirect(order.mercado_pago_init_point)
+    else:
+        form = StoreOrderForm(product=product)
+
+    return render(request, "accounts/store_checkout.html", {"form": form, "product": product})
+
+
+def store_order_detail(request, order_code):
+    order = get_object_or_404(StoreOrder, order_code=order_code)
+
+    return render(request, "accounts/store_order_detail.html", {"order": order})
+
+
+def payment_success(request):
+    order_code = request.GET.get("external_reference", "")
+    payment_id = request.GET.get("payment_id", "")
+
+    if order_code:
+        order = get_object_or_404(StoreOrder, order_code=order_code)
+
+        if payment_id:
+            try:
+                payment = get_payment(payment_id)
+            except (MercadoPagoNotConfigured, MercadoPagoRequestError):
+                payment = {}
+
+            if payment.get("status") == "approved":
+                order.mark_paid(str(payment.get("id", payment_id)))
+
+        return redirect("store_order_detail", order_code=order.order_code)
+
+    return render(request, "accounts/store_payment_return.html", {"title": "Pagamento recebido", "message": "Obrigado. Seu pagamento esta em processamento."})
+
+
+def payment_failure(request):
+    return render(request, "accounts/store_payment_return.html", {"title": "Pagamento nao concluido", "message": "O pagamento nao foi concluido. Voce pode tentar novamente."})
+
+
+def payment_pending(request):
+    return render(request, "accounts/store_payment_return.html", {"title": "Pagamento pendente", "message": "Seu pagamento ainda esta pendente. Assim que confirmar, o pedido sera atualizado."})
+
+
+@csrf_exempt
+def mercado_pago_webhook(request):
+    payment_id = request.GET.get("data.id") or request.GET.get("id")
+
+    if request.body:
+        try:
+            payload = json.loads(request.body.decode("utf-8"))
+        except json.JSONDecodeError:
+            payload = {}
+
+        payment_id = payment_id or str(payload.get("data", {}).get("id", "") or payload.get("id", ""))
+
+    if not payment_id:
+        return JsonResponse({"ok": True, "ignored": "missing payment id"})
+
+    try:
+        payment = get_payment(payment_id)
+    except (MercadoPagoNotConfigured, MercadoPagoRequestError):
+        return JsonResponse({"ok": False}, status=503)
+
+    order_code = payment.get("external_reference", "")
+
+    if payment.get("status") == "approved" and order_code:
+        try:
+            order = StoreOrder.objects.get(order_code=order_code)
+        except StoreOrder.DoesNotExist:
+            return JsonResponse({"ok": False, "error": "order not found"}, status=404)
+
+        order.mark_paid(str(payment.get("id", payment_id)))
+
+    return JsonResponse({"ok": True})
 
 
 def register(request):
@@ -400,6 +536,45 @@ def import_supplier_products(request):
     )
 
     return redirect("supplier_products")
+
+
+@staff_member_required(login_url="login")
+def store_orders(request):
+    orders = StoreOrder.objects.order_by("-created_at")
+
+    return render(request, "accounts/store_orders.html", {"orders": orders})
+
+
+@staff_member_required(login_url="login")
+def store_order_admin(request, order_code):
+    order = get_object_or_404(StoreOrder, order_code=order_code)
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        if action == "mark_supplier_ordered":
+            order.status = StoreOrder.SUPPLIER_ORDERED
+            order.supplier_ordered_at = timezone.now()
+            order.supplier_order_reference = request.POST.get("supplier_order_reference", "").strip()
+            order.save(update_fields=["status", "supplier_ordered_at", "supplier_order_reference", "updated_at"])
+            messages.success(request, "Pedido marcado como feito no fornecedor.")
+        elif action == "mark_shipped":
+            order.status = StoreOrder.SHIPPED
+            order.tracking_code = request.POST.get("tracking_code", "").strip()
+            order.shipped_at = timezone.now()
+            order.save(update_fields=["status", "tracking_code", "shipped_at", "updated_at"])
+            messages.success(request, "Pedido marcado como enviado.")
+        elif action == "mark_paid":
+            order.mark_paid()
+            messages.success(request, "Pedido marcado como pago manualmente.")
+        elif action == "cancel":
+            order.status = StoreOrder.CANCELED
+            order.save(update_fields=["status", "updated_at"])
+            messages.success(request, "Pedido cancelado.")
+
+        return redirect("store_order_admin", order_code=order.order_code)
+
+    return render(request, "accounts/store_order_admin.html", {"order": order})
 
 
 @staff_member_required(login_url="login")

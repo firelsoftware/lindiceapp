@@ -5,6 +5,14 @@ from . import views
 
 urlpatterns = [
     path("", views.home, name="home"),
+    path("loja/", views.store_front, name="store_front"),
+    path("loja/produto/<int:product_id>/", views.store_product_detail, name="store_product_detail"),
+    path("loja/produto/<int:product_id>/comprar/", views.store_checkout, name="store_checkout"),
+    path("loja/pedido/<str:order_code>/", views.store_order_detail, name="store_order_detail"),
+    path("loja/pagamento/sucesso/", views.payment_success, name="payment_success"),
+    path("loja/pagamento/falha/", views.payment_failure, name="payment_failure"),
+    path("loja/pagamento/pendente/", views.payment_pending, name="payment_pending"),
+    path("loja/mercado-pago/webhook/", views.mercado_pago_webhook, name="mercado_pago_webhook"),
     path("cadastro/", views.register, name="register"),
     path("login/", auth_views.LoginView.as_view(template_name="accounts/login.html", redirect_authenticated_user=True), name="login"),
     path("sair/", auth_views.LogoutView.as_view(), name="logout"),
@@ -18,6 +26,8 @@ urlpatterns = [
     path("gestao/", views.management_dashboard, name="management_dashboard"),
     path("gestao/cadastros/<int:profile_id>/", views.review_client_profile, name="review_client_profile"),
     path("gestao/vendas/nova/", views.create_credit_sale, name="create_credit_sale"),
+    path("gestao/loja/pedidos/", views.store_orders, name="store_orders"),
+    path("gestao/loja/pedidos/<str:order_code>/", views.store_order_admin, name="store_order_admin"),
     path("gestao/produtos/", views.product_list, name="product_list"),
     path("gestao/fornecedor/produtos/", views.supplier_products, name="supplier_products"),
     path("gestao/fornecedor/importar/", views.import_supplier_products, name="import_supplier_products"),

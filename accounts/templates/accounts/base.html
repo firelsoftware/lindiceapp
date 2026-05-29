@@ -511,6 +511,69 @@
             margin-top: 0;
         }
 
+        .store-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+
+        .store-product {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #ffffff;
+        }
+
+        .store-product-media {
+            display: block;
+            aspect-ratio: 1 / 1;
+            background: #eef2ff;
+        }
+
+        .store-product-media img,
+        .store-detail-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .store-product-body {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 14px;
+        }
+
+        .store-product-body h2 {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .store-price {
+            color: var(--brand-purple);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .store-detail {
+            display: grid;
+            grid-template-columns: minmax(240px, 0.85fr) minmax(0, 1.15fr);
+            gap: 24px;
+        }
+
+        .store-detail-media {
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            aspect-ratio: 1 / 1;
+            background: #eef2ff;
+        }
+
         .action-row {
             display: flex;
             flex-wrap: wrap;
@@ -820,6 +883,10 @@
                 line-height: 1.45;
             }
 
+            .store-detail {
+                grid-template-columns: 1fr;
+            }
+
             .brand-preview {
                 display: block;
                 padding: 12px 0;
@@ -893,6 +960,7 @@
                         <a class="menu-link" href="{% url 'create_credit_sale' %}">Lancar venda</a>
                         <a class="menu-link" href="{% url 'product_list' %}">Produtos</a>
                         <a class="menu-link" href="{% url 'supplier_products' %}">Fornecedor</a>
+                        <a class="menu-link" href="{% url 'store_orders' %}">Pedidos da loja</a>
                         <a class="menu-link" href="{% url 'profit_report' %}">Relatorio de lucro</a>
                     {% else %}
                         <a class="menu-link" href="{% url 'dashboard' %}">Minhas compras</a>

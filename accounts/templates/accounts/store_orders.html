@@ -1,0 +1,44 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Pedidos da loja</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Pedido</th>
+            <th>Cliente</th>
+            <th>Produto</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Data</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+            <tr>
+                <td><a href="{% url 'store_order_admin' order.order_code %}">{{ order.order_code }}</a></td>
+                <td>{{ order.customer_name }}</td>
+                <td>{{ order.product_name }}</td>
+                <td>R$ {{ order.total_amount|floatformat:2 }}</td>
+                <td>{{ order.get_status_display }}</td>
+                <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">Nenhum pedido da loja ainda.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><a href="{% url 'management_dashboard' %}">Voltar para gestao</a></p>
+{% endblock %}

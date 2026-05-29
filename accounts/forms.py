@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 
-from .models import CreditSale, CreditSaleProduct, ClientProfile, Product, ProductCost, User
+from .models import CreditSale, CreditSaleProduct, ClientProfile, Product, ProductCost, StoreOrder, User
 from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
 
 
@@ -286,3 +286,32 @@ class ProductCostForm(forms.ModelForm):
             "amount": "Valor do custo",
             "reason": "Motivo/observacao",
         }
+
+
+class StoreOrderForm(forms.ModelForm):
+    selected_size = forms.ChoiceField(label="Tamanho")
+
+    class Meta:
+        model = StoreOrder
+        fields = ("selected_size", "customer_name", "customer_email", "customer_phone", "shipping_address", "notes")
+        labels = {
+            "customer_name": "Nome completo",
+            "customer_email": "Email",
+            "customer_phone": "Telefone/WhatsApp",
+            "shipping_address": "Endereco completo de entrega",
+            "notes": "Observacoes",
+        }
+        widgets = {
+            "shipping_address": forms.Textarea(attrs={"rows": 4}),
+            "notes": forms.Textarea(attrs={"rows": 3}),
+        }
+
+    def __init__(self, *args, product, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.product = product
+        sizes = [size.strip() for size in (product.sizes or "").replace("/", ",").replace(";", ",").split(",") if size.strip()]
+
+        if not sizes:
+            sizes = ["Confirmar tamanho"]
+
+        self.fields["selected_size"].choices = [(size, size) for size in sizes]

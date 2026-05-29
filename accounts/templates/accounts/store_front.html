@@ -1,0 +1,27 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Loja Líndice</h1>
+<p>Escolha seu calcado, informe seus dados e pague com seguranca pelo Mercado Pago.</p>
+
+<div class="store-grid">
+    {% for product in products %}
+        <article class="store-product">
+            <a class="store-product-media" href="{% url 'store_product_detail' product.id %}">
+                {% if product.image_url %}
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                {% endif %}
+            </a>
+            <div class="store-product-body">
+                <h2><a href="{% url 'store_product_detail' product.id %}">{{ product.name }}</a></h2>
+                <p>{{ product.category }}</p>
+                <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
+                <p>Tamanhos: {{ product.sizes|default:"consultar" }}</p>
+                <a class="button" href="{% url 'store_product_detail' product.id %}">Ver produto</a>
+            </div>
+        </article>
+    {% empty %}
+        <p>Nenhum produto disponivel na loja ainda.</p>
+    {% endfor %}
+</div>
+{% endblock %}

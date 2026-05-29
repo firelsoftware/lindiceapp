@@ -1,0 +1,27 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Finalizar compra</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <h2>{{ product.name }}</h2>
+    <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
+    <p>Depois do pagamento aprovado, faremos o pedido ao fornecedor e enviaremos as atualizacoes para voce.</p>
+</section>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Ir para pagamento</button>
+</form>
+
+<p><a href="{% url 'store_product_detail' product.id %}">Voltar ao produto</a></p>
+{% endblock %}

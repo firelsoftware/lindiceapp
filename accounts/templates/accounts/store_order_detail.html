@@ -1,0 +1,45 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Pedido {{ order.order_code }}</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <h2>{{ order.get_status_display }}</h2>
+    <dl class="info-list">
+        <div>
+            <dt>Produto</dt>
+            <dd>{{ order.product_name }}</dd>
+        </div>
+        <div>
+            <dt>Tamanho</dt>
+            <dd>{{ order.selected_size }}</dd>
+        </div>
+        <div>
+            <dt>Total</dt>
+            <dd>R$ {{ order.total_amount|floatformat:2 }}</dd>
+        </div>
+        <div>
+            <dt>Cliente</dt>
+            <dd>{{ order.customer_name }}</dd>
+        </div>
+        <div>
+            <dt>Rastreio</dt>
+            <dd>{{ order.tracking_code|default:"Ainda nao informado" }}</dd>
+        </div>
+    </dl>
+</section>
+
+{% if order.status == order.PENDING_PAYMENT and order.mercado_pago_init_point %}
+    <a class="button" href="{{ order.mercado_pago_init_point }}">Pagar agora</a>
+{% endif %}
+
+<p><a href="{% url 'store_front' %}">Voltar para loja</a></p>
+{% endblock %}

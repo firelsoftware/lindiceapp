@@ -1,0 +1,22 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<section class="store-detail">
+    <div class="store-detail-media">
+        {% if product.image_url %}
+            <img src="{{ product.image_url }}" alt="{{ product.name }}">
+        {% endif %}
+    </div>
+    <div>
+        <h1>{{ product.name }}</h1>
+        <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
+        <p>Tamanhos disponiveis: {{ product.sizes|default:"consultar" }}</p>
+        <p>Estoque do fornecedor: {{ product.stock_quantity }}</p>
+        {% if product.description %}
+            <p>{{ product.description }}</p>
+        {% endif %}
+        <a class="button" href="{% url 'store_checkout' product.id %}">Comprar</a>
+        <p><a href="{% url 'store_front' %}">Voltar para loja</a></p>
+    </div>
+</section>
+{% endblock %}

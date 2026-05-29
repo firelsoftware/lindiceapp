@@ -128,6 +128,13 @@ def build_product_code(created_at):
     return f"P{monthly_count}{created_at:%m%y}"
 
 
+def build_store_order_code(created_at):
+    month_start = created_at.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    monthly_count = StoreOrder.objects.filter(created_at__gte=month_start).exclude(order_code="").count() + 1
+
+    return f"LJ{monthly_count:04d}{created_at:%m%y}"
+
+
 class Product(models.Model):
     AVAILABLE = "available"
     SOLD = "sold"
@@ -211,6 +218,70 @@ class SupplierProduct(models.Model):
 
     def __str__(self):
         return f"{self.supplier_code} - {self.name}"
+
+
+class StoreOrder(models.Model):
+    PENDING_PAYMENT = "pending_payment"
+    PAID = "paid"
+    PAYMENT_FAILED = "payment_failed"
+    SUPPLIER_ORDERED = "supplier_ordered"
+    SHIPPED = "shipped"
+    CANCELED = "canceled"
+
+    STATUS_CHOICES = [
+        (PENDING_PAYMENT, "Aguardando pagamento"),
+        (PAID, "Pago - comprar no fornecedor"),
+        (PAYMENT_FAILED, "Pagamento recusado"),
+        (SUPPLIER_ORDERED, "Pedido feito no fornecedor"),
+        (SHIPPED, "Enviado ao cliente"),
+        (CANCELED, "Cancelado"),
+    ]
+
+    order_code = models.CharField(max_length=20, unique=True, blank=True)
+    product = models.ForeignKey(SupplierProduct, on_delete=models.PROTECT, related_name="store_orders")
+    product_name = models.CharField(max_length=180)
+    supplier_code = models.CharField(max_length=120)
+    selected_size = models.CharField(max_length=30)
+    quantity = models.PositiveSmallIntegerField(default=1)
+    customer_name = models.CharField(max_length=150)
+    customer_email = models.EmailField()
+    customer_phone = models.CharField(max_length=30)
+    shipping_address = models.TextField()
+    notes = models.TextField(blank=True)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    supplier_cost = models.DecimalField(max_digits=10, decimal_places=2)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    estimated_profit = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default=PENDING_PAYMENT)
+    mercado_pago_preference_id = models.CharField(max_length=120, blank=True)
+    mercado_pago_payment_id = models.CharField(max_length=120, blank=True)
+    mercado_pago_init_point = models.URLField(blank=True)
+    paid_at = models.DateTimeField(null=True, blank=True)
+    supplier_ordered_at = models.DateTimeField(null=True, blank=True)
+    supplier_order_reference = models.CharField(max_length=120, blank=True)
+    tracking_code = models.CharField(max_length=120, blank=True)
+    shipped_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if not self.order_code:
+            self.order_code = build_store_order_code(self.created_at)
+            super().save(update_fields=["order_code"])
+
+    def mark_paid(self, payment_id=""):
+        self.status = self.PAID
+        self.mercado_pago_payment_id = payment_id or self.mercado_pago_payment_id
+        self.paid_at = self.paid_at or timezone.now()
+        self.save(update_fields=["status", "mercado_pago_payment_id", "paid_at", "updated_at"])
+
+    def __str__(self):
+        return f"{self.order_code} - {self.customer_name} - {self.product_name}"
 
 
 class CreditSale(models.Model):

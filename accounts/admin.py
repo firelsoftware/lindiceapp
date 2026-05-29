@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils import timezone
 
-from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Product, ProductCost, SupplierProduct, User
+from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Product, ProductCost, StoreOrder, SupplierProduct, User
 
 
 @admin.register(User)
@@ -106,3 +106,11 @@ class SupplierProductAdmin(admin.ModelAdmin):
     list_filter = ("source", "is_active", "is_visible", "last_seen_at")
     search_fields = ("supplier_code", "name", "category", "brand")
     readonly_fields = ("raw_data", "last_seen_at", "created_at", "updated_at")
+
+
+@admin.register(StoreOrder)
+class StoreOrderAdmin(admin.ModelAdmin):
+    list_display = ("order_code", "customer_name", "product_name", "total_amount", "status", "created_at")
+    list_filter = ("status", "created_at")
+    search_fields = ("order_code", "customer_name", "customer_email", "customer_phone", "product_name", "supplier_code")
+    readonly_fields = ("order_code", "created_at", "updated_at", "paid_at", "supplier_ordered_at", "shipped_at")

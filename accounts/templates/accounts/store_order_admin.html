@@ -1,0 +1,86 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Pedido {{ order.order_code }}</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <h2>{{ order.get_status_display }}</h2>
+    <dl class="info-list">
+        <div>
+            <dt>Cliente</dt>
+            <dd>{{ order.customer_name }}</dd>
+        </div>
+        <div>
+            <dt>Email</dt>
+            <dd>{{ order.customer_email }}</dd>
+        </div>
+        <div>
+            <dt>Telefone</dt>
+            <dd>{{ order.customer_phone }}</dd>
+        </div>
+        <div>
+            <dt>Produto</dt>
+            <dd>{{ order.product_name }} | Tam. {{ order.selected_size }}</dd>
+        </div>
+        <div>
+            <dt>Total recebido</dt>
+            <dd>R$ {{ order.total_amount|floatformat:2 }}</dd>
+        </div>
+        <div>
+            <dt>Custo fornecedor</dt>
+            <dd>R$ {{ order.supplier_cost|floatformat:2 }}</dd>
+        </div>
+        <div>
+            <dt>Margem estimada</dt>
+            <dd>R$ {{ order.estimated_profit|floatformat:2 }}</dd>
+        </div>
+        <div>
+            <dt>Codigo fornecedor</dt>
+            <dd>{{ order.supplier_code }}</dd>
+        </div>
+        <div>
+            <dt>Endereco</dt>
+            <dd>{{ order.shipping_address|linebreaksbr }}</dd>
+        </div>
+    </dl>
+</section>
+
+{% if order.product.product_url %}
+    <p><a class="button" href="{{ order.product.product_url }}" target="_blank" rel="noopener">Abrir produto no fornecedor</a></p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <label for="supplier_order_reference">Referencia do pedido no fornecedor:</label>
+    <input id="supplier_order_reference" name="supplier_order_reference" value="{{ order.supplier_order_reference }}">
+    <button type="submit" name="action" value="mark_supplier_ordered">Marcar como comprado no fornecedor</button>
+</form>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="tracking_code">Codigo de rastreio:</label>
+    <input id="tracking_code" name="tracking_code" value="{{ order.tracking_code }}">
+    <button type="submit" name="action" value="mark_shipped">Marcar como enviado</button>
+</form>
+
+<div class="action-row">
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="button-secondary" name="action" value="mark_paid">Marcar pago manualmente</button>
+    </form>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="button-secondary" name="action" value="cancel">Cancelar pedido</button>
+    </form>
+</div>
+
+<p><a href="{% url 'store_orders' %}">Voltar para pedidos</a></p>
+{% endblock %}
