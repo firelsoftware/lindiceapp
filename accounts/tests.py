@@ -145,3 +145,25 @@ class StoreFlowTests(TestCase):
         response = self.client.get(f"/loja/pedido/{order.order_code}/")
 
         self.assertEqual(response.status_code, 404)
+
+    def test_supplier_panel_rejects_visible_product_below_cost(self):
+        staff = User.objects.create_superuser(
+            email="admin-loja@example.com",
+            password="Teste12345!",
+            full_name="Admin Loja",
+            preferred_name="Admin",
+        )
+        product = self.create_supplier_product(is_visible=False)
+        self.client.force_login(staff)
+
+        response = self.client.post(
+            "/gestao/fornecedor/produtos/",
+            {
+                "visible_products": [str(product.id)],
+                f"price_{product.id}": "10.00",
+            },
+        )
+        product.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(product.is_visible)
