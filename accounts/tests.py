@@ -134,6 +134,19 @@ class RegistrationFlowTests(TestCase):
         self.assertNotContains(response, "Codigo de desenvolvimento")
         self.assertNotContains(response, "123456")
 
+    @patch("accounts.views.RegisterForm.save")
+    def test_registration_storage_error_returns_form_message(self, mocked_save):
+        mocked_save.side_effect = RuntimeError("storage unavailable")
+        data = self.registration_payload(
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+        )
+
+        response = self.client.post("/cadastro/", data=data)
+
+        self.assertEqual(response.status_code, 500)
+        self.assertContains(response, "Nao foi possivel enviar o comprovante agora", status_code=500)
+        self.assertEqual(User.objects.count(), 0)
+
 
 class StoreFlowTests(TestCase):
     def create_supplier_product(self, **overrides):

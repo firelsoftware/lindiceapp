@@ -278,7 +278,18 @@ def register(request):
         form = RegisterForm(request.POST, request.FILES)
 
         if form.is_valid():
-            user = form.save()
+            try:
+                with transaction.atomic():
+                    user = form.save()
+            except Exception:
+                logger.exception("Erro ao criar cadastro")
+                form.add_error(
+                    "residence_proof",
+                    "Nao foi possivel enviar o comprovante agora. Tente novamente em instantes.",
+                )
+
+                return render(request, "accounts/register.html", {"form": form}, status=500)
+
             profile = user.profile
             if settings.PHONE_VERIFICATION_REQUIRED:
                 profile.phone_verification_code = generate_phone_code()
