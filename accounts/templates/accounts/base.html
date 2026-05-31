@@ -217,14 +217,20 @@
             place-items: center;
             width: 48px;
             height: 48px;
-            border: 1px solid var(--line);
+            border: 1px solid var(--brand-mist);
             border-radius: 12px;
-            background: #ffffff;
-            color: var(--ink);
+            background: #f7f2fb;
+            color: var(--brand-purple);
             font-size: 22px;
             line-height: 1;
             text-decoration: none;
             box-shadow: 0 8px 20px rgba(24, 34, 48, 0.08);
+        }
+
+        .notification-bell-symbol {
+            color: var(--brand-purple);
+            font-family: "Segoe UI Symbol", "Arial Unicode MS", sans-serif;
+            font-size: 24px;
         }
 
         .notification-count {
@@ -1201,7 +1207,7 @@
             {% if request.user.is_authenticated %}
                 <div class="topbar-actions">
                     <a class="notification-bell" href="{% url 'notifications_list' %}" aria-label="Abrir notificacoes">
-                        <span aria-hidden="true">&#128276;</span>
+                        <span class="notification-bell-symbol" aria-hidden="true">&#128276;&#65038;</span>
                         {% if notification_unread_count %}
                             <span class="notification-count">{{ notification_unread_count }}</span>
                         {% endif %}
