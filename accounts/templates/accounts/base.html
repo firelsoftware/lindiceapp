@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#4d63b7">
     <title>Líndice</title>
     <link rel="icon" type="image/svg+xml" href="{% static 'accounts/lindice-icon.svg' %}">
+    <link rel="apple-touch-icon" href="{% static 'accounts/lindice-icon-192.png' %}">
     <link rel="manifest" href="{% static 'accounts/site.webmanifest' %}">
     <style>
         :root {
@@ -58,52 +59,16 @@
         }
 
         .brand-logo {
-            position: relative;
             width: 42px;
             height: 42px;
             flex: 0 0 auto;
-            border: 1px solid var(--line);
-            border-radius: 10px;
-            background: var(--surface);
-            box-shadow: 0 8px 18px rgba(77, 99, 183, 0.12);
-        }
-
-        .brand-logo span {
-            position: absolute;
             display: block;
-            border-radius: 2px;
         }
 
-        .brand-logo .logo-one {
-            left: 10px;
-            top: 8px;
-            width: 7px;
-            height: 26px;
-            background: var(--brand-blue);
-        }
-
-        .brand-logo .logo-two {
-            left: 10px;
-            top: 28px;
-            width: 24px;
-            height: 6px;
-            background: var(--brand-blue);
-        }
-
-        .brand-logo .logo-three {
-            left: 19px;
-            top: 21px;
-            width: 15px;
-            height: 5px;
-            background: var(--brand-purple);
-        }
-
-        .brand-logo .logo-four {
-            left: 27px;
-            top: 14px;
-            width: 7px;
-            height: 5px;
-            background: var(--brand-mist);
+        .brand-logo img {
+            display: block;
+            width: 100%;
+            height: 100%;
         }
 
         .brand-name {
@@ -112,6 +77,59 @@
 
         .app-shell {
             position: relative;
+        }
+
+        .app-splash {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: grid;
+            place-items: center;
+            background: #ffffff;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 260ms ease, visibility 260ms ease;
+            animation: splash-layer 1150ms ease forwards;
+        }
+
+        .app-splash.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            animation: none;
+        }
+
+        .app-splash img {
+            width: min(64vw, 270px);
+            height: auto;
+            filter: drop-shadow(0 24px 38px rgba(24, 34, 48, 0.18));
+            animation: splash-arrive 520ms ease-out both;
+        }
+
+        @keyframes splash-arrive {
+            from {
+                opacity: 0;
+                transform: scale(0.94);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes splash-layer {
+            0%,
+            76% {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            100% {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
         }
 
         .user-area {
@@ -925,32 +943,6 @@
             .brand-logo {
                 width: 38px;
                 height: 38px;
-                border-radius: 9px;
-            }
-
-            .brand-logo .logo-one {
-                left: 9px;
-                top: 7px;
-                width: 6px;
-                height: 24px;
-            }
-
-            .brand-logo .logo-two {
-                left: 9px;
-                top: 26px;
-                width: 22px;
-            }
-
-            .brand-logo .logo-three {
-                left: 17px;
-                top: 20px;
-                width: 14px;
-            }
-
-            .brand-logo .logo-four {
-                left: 25px;
-                top: 13px;
-                width: 6px;
             }
 
             main {
@@ -1038,6 +1030,10 @@
     </style>
 </head>
 <body>
+    <div class="app-splash" data-app-splash aria-hidden="true">
+        <img src="{% static 'accounts/lindice-icon.svg' %}" alt="">
+    </div>
+
     <header class="topbar">
         <div class="topbar-inner app-shell" data-app-menu>
             {% if request.user.is_authenticated %}
@@ -1060,11 +1056,8 @@
                 </a>
             {% else %}
                 <div class="brand">
-                    <span class="brand-logo" aria-hidden="true">
-                        <span class="logo-one"></span>
-                        <span class="logo-two"></span>
-                        <span class="logo-three"></span>
-                        <span class="logo-four"></span>
+                    <span class="brand-logo">
+                        <img src="{% static 'accounts/lindice-icon.svg' %}" alt="">
                     </span>
                     <span class="brand-name">Líndice</span>
                 </div>
@@ -1114,6 +1107,24 @@
     </footer>
 
     <script>
+        (function () {
+            var splash = document.querySelector("[data-app-splash]");
+
+            if (!splash) {
+                return;
+            }
+
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || sessionStorage.getItem("lindiceSplashSeen")) {
+                splash.classList.add("is-hidden");
+                return;
+            }
+
+            sessionStorage.setItem("lindiceSplashSeen", "1");
+            window.setTimeout(function () {
+                splash.classList.add("is-hidden");
+            }, 900);
+        })();
+
         (function () {
             var shell = document.querySelector("[data-app-menu]");
             var toggle = document.querySelector("[data-menu-toggle]");
