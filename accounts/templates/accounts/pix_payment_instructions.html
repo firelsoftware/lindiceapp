@@ -25,6 +25,9 @@
 {% endif %}
 
 <p>Depois do pagamento, aguarde a confirmacao da loja.</p>
+{% if sale.payment_status != sale.PAYMENT_PAID %}
+    <p><a class="button button-secondary" href="{% url 'choose_installments' sale.id %}">Escolher outra forma de pagamento</a></p>
+{% endif %}
 <p><a href="{% url 'dashboard' %}">Voltar para minhas compras</a></p>
 
 <script>

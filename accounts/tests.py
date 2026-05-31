@@ -241,6 +241,31 @@ class CreditSalePaymentChoiceTests(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
+    @patch("accounts.views.create_credit_sale_card_preference")
+    def test_unpaid_pix_choice_can_be_changed_to_card(self, mocked_preference):
+        mocked_preference.return_value = {
+            "id": "pref-change",
+            "init_point": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=pref-change",
+        }
+        user = self.create_client()
+        sale = self.create_sale(user)
+        sale.choose_payment(CreditSale.PIX)
+        self.client.force_login(user)
+
+        response = self.client.post(
+            f"/parcelamento/{sale.id}/",
+            {
+                "payment_method": CreditSale.CARD,
+                "installments": "3",
+                "accept_terms": "on",
+            },
+        )
+        sale.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(sale.selected_payment_method, CreditSale.CARD)
+        self.assertEqual(sale.mercado_pago_preference_id, "pref-change")
+
     def test_card_choice_has_interest_only_from_six_installments(self):
         user = self.create_client()
         sale = self.create_sale(user)
@@ -316,6 +341,16 @@ class CreditSalePaymentChoiceTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(sale.selected_payment_method, CreditSale.CREDIT)
         self.assertEqual(Debt.objects.filter(credit_sale=sale).count(), 2)
+
+    def test_changing_credit_choice_replaces_existing_debts(self):
+        user = self.create_client()
+        sale = self.create_sale(user)
+        sale.refresh_from_db()
+
+        sale.choose_payment(CreditSale.CREDIT, 2)
+        sale.choose_payment(CreditSale.CREDIT, 1)
+
+        self.assertEqual(Debt.objects.filter(credit_sale=sale).count(), 1)
 
     def test_credit_choice_rejects_installment_below_minimum(self):
         user = self.create_client()

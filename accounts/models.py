@@ -436,6 +436,14 @@ class CreditSale(models.Model):
         }
 
     def choose_payment(self, payment_method, installments=None):
+        if self.payment_status == self.PAYMENT_PAID:
+            raise ValueError("Pagamento ja confirmado.")
+
+        self.debts.all().delete()
+        self.mercado_pago_preference_id = ""
+        self.mercado_pago_payment_id = ""
+        self.mercado_pago_init_point = ""
+
         if payment_method == self.PIX:
             option = self.pix_option()
             self.selected_payment_method = self.PIX

@@ -77,6 +77,9 @@ def build_purchase_groups(user):
                     "total": sale.selected_total_with_interest or sum(debt.amount for debt in linked_debts),
                     "installments": sale.selected_installments,
                     "payment_method": sale.get_selected_payment_method_display() if sale.selected_payment_method else "",
+                    "sale_id": sale.id,
+                    "payment_status": sale.get_payment_status_display(),
+                    "mercado_pago_init_point": sale.mercado_pago_init_point,
                     "created_at": sale.created_at,
                 }
             )
@@ -520,7 +523,13 @@ def choose_installments(request, sale_id):
     if request.user.is_staff:
         return redirect("management_dashboard")
 
-    sale = get_object_or_404(CreditSale, id=sale_id, client=request.user, status=CreditSale.PENDING)
+    sale = get_object_or_404(
+        CreditSale,
+        id=sale_id,
+        client=request.user,
+        status__in=[CreditSale.PENDING, CreditSale.ACCEPTED],
+        payment_status=CreditSale.PAYMENT_PENDING,
+    )
     profile = request.user.profile
 
     if not profile.phone_verified:

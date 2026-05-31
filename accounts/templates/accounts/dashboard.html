@@ -29,6 +29,9 @@
         {% if group.payment_method == "Cartao" and group.mercado_pago_init_point and group.payment_status != "Pago" %}
             <p><a class="button" href="{{ group.mercado_pago_init_point }}">Pagar com Mercado Pago</a></p>
         {% endif %}
+        {% if group.sale_id and group.payment_status != "Pago" %}
+            <p><a class="button button-secondary" href="{% url 'choose_installments' group.sale_id %}">Escolher outra forma de pagamento</a></p>
+        {% endif %}
 
         <table>
             <thead>
