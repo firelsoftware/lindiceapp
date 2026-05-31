@@ -22,6 +22,10 @@
             Total da compra: R$ {{ group.total|floatformat:2 }}
         </p>
 
+        {% if group.payment_method == "Pix" and group.sale_id %}
+            <p><a class="button" href="{% url 'pix_payment_instructions' group.sale_id %}">Ver chave Pix</a></p>
+        {% endif %}
+
         <table>
             <thead>
                 <tr>

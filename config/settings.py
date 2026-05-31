@@ -240,6 +240,7 @@ MERCADO_PAGO_ACCESS_TOKEN = os.environ.get("MERCADO_PAGO_ACCESS_TOKEN", "")
 PUBLIC_SITE_URL = os.environ.get("PUBLIC_SITE_URL", "")
 STORE_CONTACT_EMAIL = os.environ.get("STORE_CONTACT_EMAIL", "lindicecalcados@gmail.com")
 STORE_RESPONSIBLE_NAME = os.environ.get("STORE_RESPONSIBLE_NAME", "Fabrício Pereira da Silva Alves")
+STORE_PIX_KEY = os.environ.get("STORE_PIX_KEY", "")
 PHONE_VERIFICATION_REQUIRED = env_bool("PHONE_VERIFICATION_REQUIRED", default=True)
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

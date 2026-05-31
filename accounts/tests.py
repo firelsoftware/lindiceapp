@@ -191,6 +191,7 @@ class CreditSalePaymentChoiceTests(TestCase):
 
         return CreditSale.objects.create(**data)
 
+    @override_settings(STORE_PIX_KEY="d92f4cae-454c-4f33-97b2-6a513b292b24")
     def test_pix_choice_applies_discount_without_debts(self):
         user = self.create_client()
         sale = self.create_sale(user)
@@ -206,11 +207,39 @@ class CreditSalePaymentChoiceTests(TestCase):
         )
         sale.refresh_from_db()
 
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, f"/pagamento/pix/{sale.id}/")
         self.assertEqual(sale.status, CreditSale.ACCEPTED)
         self.assertEqual(sale.selected_payment_method, CreditSale.PIX)
         self.assertEqual(sale.selected_total_with_interest, Decimal("180.00"))
         self.assertEqual(Debt.objects.count(), 0)
+
+    @override_settings(STORE_PIX_KEY="d92f4cae-454c-4f33-97b2-6a513b292b24")
+    def test_pix_page_shows_discounted_total_and_key(self):
+        user = self.create_client()
+        sale = self.create_sale(user)
+        sale.choose_payment(CreditSale.PIX)
+        self.client.force_login(user)
+
+        response = self.client.get(f"/pagamento/pix/{sale.id}/")
+
+        self.assertContains(response, "R$ 180,00")
+        self.assertContains(response, "d92f4cae-454c-4f33-97b2-6a513b292b24")
+
+    def test_pix_page_is_private_to_sale_owner(self):
+        user = self.create_client()
+        sale = self.create_sale(user)
+        sale.choose_payment(CreditSale.PIX)
+        other_user = User.objects.create_user(
+            email="outro-cliente@example.com",
+            password="Teste12345!",
+            full_name="Outro Cliente",
+            preferred_name="Outro",
+        )
+        self.client.force_login(other_user)
+
+        response = self.client.get(f"/pagamento/pix/{sale.id}/")
+
+        self.assertEqual(response.status_code, 404)
 
     def test_card_choice_has_interest_only_from_six_installments(self):
         user = self.create_client()

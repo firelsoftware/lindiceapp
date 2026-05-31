@@ -27,6 +27,8 @@ services:
         value: "lindicecalcados@gmail.com"
       - key: STORE_RESPONSIBLE_NAME
         value: "Fabrício Pereira da Silva Alves"
+      - key: STORE_PIX_KEY
+        sync: false
       - key: MERCADO_PAGO_ACCESS_TOKEN
         sync: false
       - key: SHOE_SUPPLIER_CATALOG_URL

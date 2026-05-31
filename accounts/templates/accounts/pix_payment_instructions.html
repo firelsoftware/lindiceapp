@@ -1,0 +1,42 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Pagamento por Pix</h1>
+
+<section class="info-panel">
+    <h2>{{ sale.description }}</h2>
+    <p>Valor com 10% de desconto:</p>
+    <p class="store-price">R$ {{ sale.selected_total_with_interest|floatformat:2 }}</p>
+</section>
+
+{% if pix_key %}
+    <section class="info-panel">
+        <h2>Chave Pix</h2>
+        <p>Envie o pagamento para {{ responsible_name }}.</p>
+        <input id="pix-key" value="{{ pix_key }}" readonly>
+        <button type="button" id="copy-pix-key">Copiar chave Pix</button>
+        <p id="copy-pix-feedback" aria-live="polite"></p>
+    </section>
+{% else %}
+    <section class="info-panel">
+        <h2>Chave Pix indisponivel</h2>
+        <p>Entre em contato com a loja para receber a chave Pix.</p>
+    </section>
+{% endif %}
+
+<p>Depois do pagamento, aguarde a confirmacao da loja.</p>
+<p><a href="{% url 'dashboard' %}">Voltar para minhas compras</a></p>
+
+<script>
+    const copyPixKeyButton = document.getElementById("copy-pix-key");
+    const pixKeyInput = document.getElementById("pix-key");
+    const copyPixFeedback = document.getElementById("copy-pix-feedback");
+
+    if (copyPixKeyButton && pixKeyInput) {
+        copyPixKeyButton.addEventListener("click", async () => {
+            await navigator.clipboard.writeText(pixKeyInput.value);
+            copyPixFeedback.textContent = "Chave Pix copiada.";
+        });
+    }
+</script>
+{% endblock %}

@@ -89,6 +89,7 @@ def build_purchase_groups(user):
                     "total": sale.selected_total_with_interest or sale.total_amount,
                     "installments": sale.selected_installments,
                     "payment_method": sale.get_selected_payment_method_display(),
+                    "sale_id": sale.id,
                     "created_at": sale.created_at,
                 }
             )
@@ -527,6 +528,9 @@ def choose_installments(request, sale_id):
 
             messages.success(request, "Forma de pagamento escolhida com sucesso.")
 
+            if sale.selected_payment_method == CreditSale.PIX:
+                return redirect("pix_payment_instructions", sale_id=sale.id)
+
             return redirect("dashboard")
     else:
         form = InstallmentChoiceForm(sale=sale)
@@ -540,6 +544,27 @@ def choose_installments(request, sale_id):
             "pix_option": sale.pix_option(),
             "card_options": sale.card_options(),
             "credit_options": sale.credit_options(),
+        },
+    )
+
+
+@login_required
+def pix_payment_instructions(request, sale_id):
+    sale = get_object_or_404(
+        CreditSale,
+        id=sale_id,
+        client=request.user,
+        status=CreditSale.ACCEPTED,
+        selected_payment_method=CreditSale.PIX,
+    )
+
+    return render(
+        request,
+        "accounts/pix_payment_instructions.html",
+        {
+            "sale": sale,
+            "pix_key": settings.STORE_PIX_KEY,
+            "responsible_name": settings.STORE_RESPONSIBLE_NAME,
         },
     )
 

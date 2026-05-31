@@ -25,6 +25,7 @@ urlpatterns = [
     path("senha/", views.change_password, name="change_password"),
     path("medidas/", views.measurements, name="measurements"),
     path("parcelamento/<int:sale_id>/", views.choose_installments, name="choose_installments"),
+    path("pagamento/pix/<int:sale_id>/", views.pix_payment_instructions, name="pix_payment_instructions"),
     path("gestao/", views.management_dashboard, name="management_dashboard"),
     path("gestao/cadastros/<int:profile_id>/", views.review_client_profile, name="review_client_profile"),
     path("gestao/vendas/nova/", views.create_credit_sale, name="create_credit_sale"),

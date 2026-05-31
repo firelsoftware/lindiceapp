@@ -36,6 +36,7 @@ DJANGO_CSRF_TRUSTED_ORIGINS=https://seu-dominio.com.br,https://www.seu-dominio.c
 PUBLIC_SITE_URL=https://seu-dominio.com.br
 STORE_CONTACT_EMAIL=contato@seu-dominio.com.br
 STORE_RESPONSIBLE_NAME=Nome completo do responsavel
+STORE_PIX_KEY=chave-pix-da-loja
 MERCADO_PAGO_ACCESS_TOKEN=...
 SHOE_SUPPLIER_CATALOG_URL=...
 PHONE_VERIFICATION_REQUIRED=false
