@@ -2,10 +2,11 @@ from decimal import Decimal
 from unittest.mock import patch
 
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import Client, TestCase, override_settings
+from django.test import Client, RequestFactory, TestCase, override_settings
 
 from .forms import RegisterForm
 from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, StoreOrder, SupplierProduct, User
+from .payments import create_credit_sale_card_preference
 from .utils import cpf_hash, is_valid_cpf
 
 
@@ -405,6 +406,58 @@ class CreditSalePaymentChoiceTests(TestCase):
         self.assertContains(store_response, "Bota cano curto")
         self.assertContains(store_response, "Finalizar compra")
         self.assertNotContains(dashboard_response, "Bota cano curto")
+
+
+class MercadoPagoPayloadTests(TestCase):
+    def create_sale(self):
+        user = User.objects.create_user(
+            email="cliente-real@example.com",
+            password="Teste12345!",
+            full_name="Cliente Real",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash=cpf_hash("52998224725"),
+            cpf_last_digits="4725",
+            phone="61999999999",
+            phone_verified=True,
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+        )
+        sale = CreditSale.objects.create(
+            client=user,
+            description="Bota teste",
+            total_amount=Decimal("200.00"),
+            max_installments_allowed=10,
+            first_due_date="2026-06-10",
+        )
+        sale.choose_payment(CreditSale.CARD, 5)
+
+        return sale
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="TEST-token")
+    @patch("accounts.payments.mercado_pago_request")
+    def test_test_checkout_does_not_send_real_customer_data(self, mocked_request):
+        mocked_request.return_value = {"id": "pref", "init_point": "https://example.com"}
+        sale = self.create_sale()
+
+        create_credit_sale_card_preference(sale, RequestFactory().get("/"))
+        payload = mocked_request.call_args.args[1]
+
+        self.assertNotIn("payer", payload)
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="APP_USR-token")
+    @patch("accounts.payments.mercado_pago_request")
+    def test_production_checkout_sends_customer_data(self, mocked_request):
+        mocked_request.return_value = {"id": "pref", "init_point": "https://example.com"}
+        sale = self.create_sale()
+
+        create_credit_sale_card_preference(sale, RequestFactory().get("/"))
+        payload = mocked_request.call_args.args[1]
+
+        self.assertEqual(payload["payer"]["email"], "cliente-real@example.com")
 
 
 class StoreFlowTests(TestCase):

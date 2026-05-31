@@ -23,6 +23,10 @@ def site_url(request):
     return request.build_absolute_uri("/").rstrip("/")
 
 
+def is_test_environment():
+    return settings.MERCADO_PAGO_ACCESS_TOKEN.startswith("TEST-")
+
+
 def mercado_pago_request(path, payload=None, method="POST"):
     if not settings.MERCADO_PAGO_ACCESS_TOKEN:
         raise MercadoPagoNotConfigured("Configure MERCADO_PAGO_ACCESS_TOKEN para ativar pagamentos.")
@@ -64,11 +68,6 @@ def create_checkout_preference(order, request):
                 "unit_price": float(order.unit_price),
             }
         ],
-        "payer": {
-            "name": order.customer_name,
-            "email": order.customer_email,
-            "phone": {"number": order.customer_phone},
-        },
         "external_reference": order.order_code,
         "back_urls": {
             "success": f"{base_url}/loja/pagamento/sucesso/",
@@ -78,6 +77,14 @@ def create_checkout_preference(order, request):
         "notification_url": f"{base_url}/loja/mercado-pago/webhook/",
         "auto_return": "approved",
     }
+
+    if not is_test_environment():
+        payload["payer"] = {
+            "name": order.customer_name,
+            "email": order.customer_email,
+            "phone": {"number": order.customer_phone},
+        }
+
     response = mercado_pago_request("/checkout/preferences", payload)
 
     return {
@@ -97,11 +104,6 @@ def create_credit_sale_card_preference(sale, request):
                 "unit_price": float(sale.selected_total_with_interest),
             }
         ],
-        "payer": {
-            "name": sale.client.full_name,
-            "email": sale.client.email,
-            "phone": {"number": sale.client.profile.phone},
-        },
         "external_reference": f"credit-sale:{sale.id}",
         "back_urls": {
             "success": f"{base_url}/pagamento/mercado-pago/sucesso/",
@@ -120,6 +122,14 @@ def create_credit_sale_card_preference(sale, request):
             "installments": sale.selected_installments,
         },
     }
+
+    if not is_test_environment():
+        payload["payer"] = {
+            "name": sale.client.full_name,
+            "email": sale.client.email,
+            "phone": {"number": sale.client.profile.phone},
+        }
+
     response = mercado_pago_request("/checkout/preferences", payload)
 
     return {
