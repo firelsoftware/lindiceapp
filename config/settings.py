@@ -93,6 +93,7 @@ if not DEBUG:
     MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
 ROOT_URLCONF = "config.urls"
+CSRF_FAILURE_VIEW = "accounts.views.csrf_failure"
 
 TEMPLATES = [
     {

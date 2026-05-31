@@ -2,7 +2,7 @@ from decimal import Decimal
 from unittest.mock import patch
 
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase, override_settings
+from django.test import Client, TestCase, override_settings
 
 from .forms import RegisterForm
 from .models import ClientProfile, StoreOrder, SupplierProduct, User
@@ -146,6 +146,16 @@ class RegistrationFlowTests(TestCase):
         self.assertEqual(response.status_code, 500)
         self.assertContains(response, "Nao foi possivel enviar o comprovante agora", status_code=500)
         self.assertEqual(User.objects.count(), 0)
+
+
+class CsrfFailureTests(TestCase):
+    def test_csrf_failure_redirects_to_login(self):
+        client = Client(enforce_csrf_checks=True)
+
+        response = client.post("/login/", {"username": "cliente@example.com", "password": "senha"})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/login/")
 
 
 class StoreFlowTests(TestCase):

@@ -26,6 +26,16 @@ from .utils import generate_phone_code
 logger = logging.getLogger(__name__)
 
 
+def csrf_failure(request, reason=""):
+    logger.warning("Falha de CSRF: %s", reason)
+    messages.warning(request, "Sua sessao expirou. Entre novamente para continuar.")
+
+    if request.user.is_authenticated:
+        return redirect("dashboard")
+
+    return redirect("login")
+
+
 def legacy_installment_total(description):
     marker = " de "
 
