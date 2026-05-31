@@ -71,6 +71,8 @@
     </p>
 </section>
 
+<p><a class="button" href="{% url 'create_manual_debt' %}?cliente={{ profile.user_id }}">Lancar debito para este cliente</a></p>
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

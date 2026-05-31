@@ -1,0 +1,17 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Lancar debito</h1>
+
+<section class="info-panel">
+    <p>Use esta tela para registrar um valor combinado diretamente com o cliente. Ele recebera uma notificacao no aplicativo.</p>
+</section>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Lancar debito</button>
+</form>
+
+<p><a href="{% url 'management_dashboard' %}">Voltar ao painel de gestao</a></p>
+{% endblock %}

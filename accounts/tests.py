@@ -1,11 +1,14 @@
+from datetime import datetime, timedelta
 from decimal import Decimal
 from unittest.mock import patch
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, RequestFactory, TestCase, override_settings
+from django.utils import timezone
 
 from .forms import RegisterForm
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PaymentAlert, StoreOrder, SupplierProduct, User
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, StoreOrder, SupplierProduct, User
+from .notifications import generate_due_notifications
 from .payments import create_credit_sale_card_preference
 from .utils import cpf_hash, is_valid_cpf
 
@@ -664,3 +667,77 @@ class StoreFlowTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(order.status, StoreOrder.PAYMENT_FAILED)
         self.assertTrue(PaymentAlert.objects.filter(store_order=order, payment_id="order-payment-rejected").exists())
+
+
+class NotificationTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user(
+            email="gestao@example.com",
+            password="Teste12345!",
+            full_name="Gestao",
+            preferred_name="Gestao",
+            is_staff=True,
+        )
+        self.client_user = User.objects.create_user(
+            email="cliente-notificacao@example.com",
+            password="Teste12345!",
+            full_name="Cliente Notificacao",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=self.client_user,
+            phone="61999999999",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+        )
+
+    def test_generates_due_soon_notifications_only_once_for_client_and_staff(self):
+        now = timezone.make_aware(datetime(2026, 6, 1, 12, 0))
+        Debt.objects.create(
+            client=self.client_user,
+            description="Parcela teste",
+            amount=Decimal("100.00"),
+            due_date=now.date() + timedelta(days=2),
+        )
+
+        generate_due_notifications(now)
+        generate_due_notifications(now)
+
+        self.assertEqual(Notification.objects.filter(kind=Notification.DUE_SOON).count(), 2)
+        self.assertTrue(self.client_user.notifications.filter(kind=Notification.DUE_SOON).exists())
+        self.assertTrue(self.staff.notifications.filter(kind=Notification.DUE_SOON).exists())
+
+    def test_generates_due_today_notification_after_21_hours(self):
+        debt = Debt.objects.create(
+            client=self.client_user,
+            description="Parcela teste",
+            amount=Decimal("100.00"),
+            due_date=datetime(2026, 6, 1).date(),
+        )
+
+        generate_due_notifications(timezone.make_aware(datetime(2026, 6, 1, 20, 59)))
+        self.assertFalse(self.client_user.notifications.filter(kind=Notification.DUE_TODAY).exists())
+
+        generate_due_notifications(timezone.make_aware(datetime(2026, 6, 1, 21, 0)))
+        notification = self.client_user.notifications.get(kind=Notification.DUE_TODAY, debt=debt)
+        self.assertIn("Evite multa e juros por atraso.", notification.message)
+
+    def test_staff_can_launch_manual_debt_for_pending_registration(self):
+        self.client_user.profile.registration_status = ClientProfile.PENDING
+        self.client_user.profile.save(update_fields=["registration_status"])
+        self.client.force_login(self.staff)
+
+        response = self.client.post(
+            "/gestao/debitos/novo/",
+            {
+                "client": self.client_user.id,
+                "description": "Entrada solicitada",
+                "amount": "75.90",
+                "due_date": "2026-06-10",
+            },
+        )
+
+        debt = Debt.objects.get(client=self.client_user, description="Entrada solicitada")
+        self.assertRedirects(response, "/gestao/")
+        self.assertTrue(self.client_user.notifications.filter(kind=Notification.MANUAL_DEBT, debt=debt).exists())

@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 
-from .models import CreditSale, CreditSaleProduct, ClientProfile, Product, ProductCost, StoreOrder, User
+from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Product, ProductCost, StoreOrder, User
 from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
 
 
@@ -214,6 +214,29 @@ class CreditSaleForm(forms.ModelForm):
             raise ValidationError("Informe um valor entre 1 e 10 parcelas.")
 
         return max_installments
+
+
+class ManualDebtForm(forms.ModelForm):
+    class Meta:
+        model = Debt
+        fields = ("client", "description", "amount", "due_date")
+        labels = {
+            "client": "Cliente",
+            "description": "Descricao do debito",
+            "amount": "Valor",
+            "due_date": "Data de vencimento",
+        }
+        widgets = {
+            "due_date": forms.DateInput(attrs={"type": "date"}),
+            "amount": forms.NumberInput(attrs={"min": "0.01", "step": "0.01"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["client"].queryset = User.objects.filter(
+            profile__registration_status__in=[ClientProfile.PENDING, ClientProfile.APPROVED],
+            is_staff=False,
+        ).order_by("full_name")
 
 
 class InstallmentChoiceForm(forms.Form):

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils import timezone
 
-from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Product, ProductCost, StoreOrder, SupplierProduct, User
+from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Notification, Product, ProductCost, StoreOrder, SupplierProduct, User
 
 
 @admin.register(User)
@@ -60,6 +60,13 @@ class DebtAdmin(admin.ModelAdmin):
     list_display = ("client", "description", "amount", "due_date", "paid", "total_amount")
     list_filter = ("paid", "due_date")
     search_fields = ("client__email", "client__full_name", "description")
+
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ("recipient", "title", "kind", "read_at", "created_at")
+    list_filter = ("kind", "read_at", "created_at")
+    search_fields = ("recipient__email", "recipient__full_name", "title", "message")
 
 
 @admin.register(CreditSale)

@@ -631,3 +631,38 @@ class Debt(models.Model):
 
     def __str__(self):
         return f"{self.client.email} - R$ {self.total_amount():.2f}"
+
+
+class Notification(models.Model):
+    DUE_SOON = "due_soon"
+    DUE_TODAY = "due_today"
+    MANUAL_DEBT = "manual_debt"
+    KIND_CHOICES = (
+        (DUE_SOON, "Vencimento proximo"),
+        (DUE_TODAY, "Vencimento hoje"),
+        (MANUAL_DEBT, "Debito lancado"),
+    )
+
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications")
+    debt = models.ForeignKey(Debt, on_delete=models.CASCADE, null=True, blank=True, related_name="notifications")
+    kind = models.CharField(max_length=30, choices=KIND_CHOICES)
+    title = models.CharField(max_length=160)
+    message = models.TextField()
+    unique_key = models.CharField(max_length=220, unique=True)
+    read_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    @property
+    def is_read(self):
+        return self.read_at is not None
+
+    def mark_as_read(self):
+        if self.read_at is None:
+            self.read_at = timezone.now()
+            self.save(update_fields=["read_at"])
+
+    def __str__(self):
+        return f"{self.recipient.email} - {self.title}"

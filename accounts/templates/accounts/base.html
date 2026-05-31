@@ -204,6 +204,79 @@
             box-shadow: 0 8px 20px rgba(24, 34, 48, 0.08);
         }
 
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 0 0 auto;
+        }
+
+        .notification-bell {
+            position: relative;
+            display: inline-grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: #ffffff;
+            color: var(--ink);
+            font-size: 22px;
+            line-height: 1;
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(24, 34, 48, 0.08);
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            display: inline-grid;
+            place-items: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 5px;
+            border: 2px solid #ffffff;
+            border-radius: 999px;
+            background: #b42318;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .page-heading-row,
+        .notification-item {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .notification-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .notification-item {
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #ffffff;
+        }
+
+        .notification-item h2 {
+            margin: 0 0 6px;
+            font-size: 18px;
+        }
+
+        .notification-item p {
+            margin: 0 0 8px;
+        }
+
+        .notification-unread {
+            border-left: 5px solid var(--brand-purple);
+        }
+
         .menu-toggle:hover {
             background: #ffffff;
             transform: none;
@@ -989,6 +1062,11 @@
                 min-width: 0;
             }
 
+            .notification-item,
+            .page-heading-row {
+                display: grid;
+            }
+
             .nav-link,
             .nav-button {
                 width: auto;
@@ -1121,19 +1199,28 @@
             {% endif %}
 
             {% if request.user.is_authenticated %}
-                <button class="menu-toggle" type="button" data-menu-toggle aria-label="Abrir menu" aria-expanded="false">
-                    <span class="menu-icon" aria-hidden="true">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </span>
-                </button>
+                <div class="topbar-actions">
+                    <a class="notification-bell" href="{% url 'notifications_list' %}" aria-label="Abrir notificacoes">
+                        <span aria-hidden="true">&#128276;</span>
+                        {% if notification_unread_count %}
+                            <span class="notification-count">{{ notification_unread_count }}</span>
+                        {% endif %}
+                    </a>
+                    <button class="menu-toggle" type="button" data-menu-toggle aria-label="Abrir menu" aria-expanded="false">
+                        <span class="menu-icon" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
+                </div>
 
                 <nav class="app-menu" aria-label="Menu do aplicativo" data-menu-panel>
                     {% if request.user.is_staff %}
                         <a class="menu-link" href="{% url 'management_dashboard' %}">Painel de gestao</a>
                         <a class="menu-link" href="{% url 'create_credit_sale' %}">Lancar venda</a>
+                        <a class="menu-link" href="{% url 'create_manual_debt' %}">Lancar debito</a>
                         <a class="menu-link" href="{% url 'product_list' %}">Produtos</a>
                         <a class="menu-link" href="{% url 'supplier_products' %}">Fornecedor</a>
                         <a class="menu-link" href="{% url 'store_orders' %}">Pedidos da loja</a>

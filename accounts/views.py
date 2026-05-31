@@ -17,8 +17,9 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
-from .models import CreditSale, ClientProfile, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct
+from .forms import ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
+from .models import CreditSale, ClientProfile, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct
+from .notifications import create_manual_debt_notification, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_checkout_preference, create_credit_sale_card_preference, get_payment
 from .supplier_import import import_supplier_catalog
 from .utils import generate_phone_code
@@ -679,6 +680,7 @@ def credit_sale_payment_pending(request):
 
 @staff_member_required(login_url="login")
 def management_dashboard(request):
+    generate_due_notifications()
     pending_profiles = ClientProfile.objects.filter(registration_status=ClientProfile.PENDING).order_by("user__full_name")
     pending_sales = CreditSale.objects.filter(status=CreditSale.PENDING).order_by("-created_at")
     accepted_sales = CreditSale.objects.filter(status=CreditSale.ACCEPTED).order_by("-accepted_at")[:10]
@@ -705,6 +707,32 @@ def management_dashboard(request):
             "phone_verification_required": settings.PHONE_VERIFICATION_REQUIRED,
         },
     )
+
+
+@login_required
+def notifications_list(request):
+    generate_due_notifications()
+    notifications = request.user.notifications.select_related("debt")[:100]
+
+    return render(request, "accounts/notifications.html", {"notifications": notifications})
+
+
+@login_required
+def notification_mark_read(request, notification_id):
+    notification = get_object_or_404(Notification, id=notification_id, recipient=request.user)
+
+    if request.method == "POST":
+        notification.mark_as_read()
+
+    return redirect("notifications_list")
+
+
+@login_required
+def notifications_mark_all_read(request):
+    if request.method == "POST":
+        request.user.notifications.filter(read_at__isnull=True).update(read_at=timezone.now())
+
+    return redirect("notifications_list")
 
 
 @staff_member_required(login_url="login")
@@ -740,6 +768,29 @@ def review_client_profile(request, profile_id):
         form = ClientApprovalForm(instance=profile)
 
     return render(request, "accounts/review_client_profile.html", {"form": form, "profile": profile})
+
+
+@staff_member_required(login_url="login")
+def create_manual_debt(request):
+    initial = {}
+    client_id = request.GET.get("cliente")
+
+    if client_id:
+        initial["client"] = client_id
+
+    if request.method == "POST":
+        form = ManualDebtForm(request.POST)
+
+        if form.is_valid():
+            debt = form.save()
+            create_manual_debt_notification(debt)
+            messages.success(request, "Debito lancado e cliente notificado com sucesso.")
+
+            return redirect("management_dashboard")
+    else:
+        form = ManualDebtForm(initial=initial)
+
+    return render(request, "accounts/create_manual_debt.html", {"form": form})
 
 
 @staff_member_required(login_url="login")

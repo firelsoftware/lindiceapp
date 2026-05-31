@@ -105,6 +105,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "accounts.context_processors.notifications",
             ],
         },
     },
@@ -161,6 +162,7 @@ TIME_ZONE = "America/Sao_Paulo"
 USE_I18N = True
 
 USE_TZ = True
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Arquivos estaticos do projeto.
