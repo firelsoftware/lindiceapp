@@ -37,6 +37,22 @@ DEBUG = env_bool("DJANGO_DEBUG", default=True)
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS")
 
+if not DEBUG:
+    production_allowed_hosts = [".onrender.com", ".lindice.com.br", "app.lindice.com.br"]
+    production_csrf_origins = [
+        "https://*.onrender.com",
+        "https://*.lindice.com.br",
+        "https://app.lindice.com.br",
+    ]
+
+    for host in production_allowed_hosts:
+        if host not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS.append(host)
+
+    for origin in production_csrf_origins:
+        if origin not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS.append(origin)
+
 
 # Aplicativos habilitados no projeto.
 
