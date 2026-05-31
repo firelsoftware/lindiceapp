@@ -606,7 +606,10 @@ def choose_installments(request, sale_id):
             "form": form,
             "sale": sale,
             "pix_option": sale.pix_option(),
+            "card_payment_enabled": settings.CARD_PAYMENT_ENABLED,
+            "card_options": sale.card_options(),
             "credit_options": sale.credit_options(),
+            "card_installments": [option["installments"] for option in sale.card_options()],
             "credit_installments": [option["installments"] for option in sale.credit_options()],
         },
     )

@@ -44,9 +44,13 @@
         </label>
 
         <label class="payment-option">
-            <input type="radio" name="payment_method" value="card" disabled>
+            <input type="radio" name="payment_method" value="card" {% if not card_payment_enabled %}disabled{% endif %} {% if form.payment_method.value == "card" %}checked{% endif %}>
             <strong>Cartao</strong>
-            <span>Opcao ainda nao disponivel.</span>
+            {% if card_payment_enabled %}
+                <span>Sem juros ate 5x. Juros a partir de 6x.</span>
+            {% else %}
+                <span>Opcao ainda nao disponivel.</span>
+            {% endif %}
         </label>
 
         <label class="payment-option">
@@ -56,7 +60,7 @@
         </label>
     </section>
 
-    <label for="{{ form.installments.id_for_label }}">Parcelas para crediario</label>
+    <label for="{{ form.installments.id_for_label }}">Parcelas para {% if card_payment_enabled %}cartao ou {% endif %}crediario</label>
     {{ form.installments }}
     {% if form.installments.errors %}
         <div class="errorlist">{{ form.installments.errors }}</div>
@@ -76,6 +80,32 @@
     {% endif %}
 
     <div class="payment-tables">
+        {% if card_payment_enabled %}
+            <section>
+                <h2>Cartao</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parcelas</th>
+                            <th>Parcela</th>
+                            <th>Juros</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for option in card_options %}
+                            <tr>
+                                <td>{{ option.installments }}x</td>
+                                <td>R$ {{ option.installment_amount|floatformat:2 }}</td>
+                                <td>{{ option.monthly_rate|floatformat:2 }}%</td>
+                                <td>R$ {{ option.total|floatformat:2 }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        {% endif %}
+
         <section>
             <h2>Crediario</h2>
             <p>Parcela minima mensal: <strong>R$ 70,00</strong></p>
@@ -106,11 +136,13 @@
 </form>
 
 <p><a href="{% url 'dashboard' %}">Voltar ao painel</a></p>
+{{ card_installments|json_script:"card-installments" }}
 {{ credit_installments|json_script:"credit-installments" }}
 <script>
     const installmentSelect = document.getElementById("{{ form.installments.id_for_label }}");
     const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
     const installmentOptions = {
+        card: JSON.parse(document.getElementById("card-installments").textContent),
         credit: JSON.parse(document.getElementById("credit-installments").textContent),
     };
 

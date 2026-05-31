@@ -268,7 +268,13 @@ class CreditSalePaymentChoiceTests(TestCase):
         self.assertEqual(sale.card_options()[4]["monthly_rate"], Decimal("0.00"))
         self.assertGreater(sale.card_options()[5]["monthly_rate"], Decimal("0.00"))
 
-    def test_card_choice_does_not_redirect_to_mercado_pago(self):
+    @override_settings(CARD_PAYMENT_ENABLED=True)
+    @patch("accounts.views.create_credit_sale_card_preference")
+    def test_enabled_card_choice_redirects_to_mercado_pago(self, mocked_preference):
+        mocked_preference.return_value = {
+            "id": "pref-123",
+            "init_point": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=pref-123",
+        }
         user = self.create_client()
         sale = self.create_sale(user)
         self.client.force_login(user)
@@ -283,10 +289,13 @@ class CreditSalePaymentChoiceTests(TestCase):
         )
         sale.refresh_from_db()
 
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Opcao ainda nao disponivel")
-        self.assertEqual(sale.mercado_pago_preference_id, "")
-        self.assertEqual(sale.selected_payment_method, "")
+        self.assertRedirects(
+            response,
+            "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=pref-123",
+            fetch_redirect_response=False,
+        )
+        self.assertEqual(sale.mercado_pago_preference_id, "pref-123")
+        self.assertEqual(sale.selected_payment_method, CreditSale.CARD)
 
     @patch("accounts.views.get_payment")
     def test_mercado_pago_webhook_marks_credit_sale_as_paid(self, mocked_get_payment):
