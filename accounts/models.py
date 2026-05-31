@@ -301,6 +301,11 @@ class StoreOrder(models.Model):
         self.paid_at = self.paid_at or timezone.now()
         self.save(update_fields=["status", "mercado_pago_payment_id", "paid_at", "updated_at"])
 
+    def mark_payment_failed(self, payment_id=""):
+        self.status = self.PAYMENT_FAILED
+        self.mercado_pago_payment_id = payment_id or self.mercado_pago_payment_id
+        self.save(update_fields=["status", "mercado_pago_payment_id", "updated_at"])
+
     def whatsapp_url(self):
         digits = re.sub(r"\D", "", self.customer_phone)
 
@@ -336,10 +341,12 @@ class CreditSale(models.Model):
 
     PAYMENT_PENDING = "pending"
     PAYMENT_PAID = "paid"
+    PAYMENT_FAILED = "failed"
 
     PAYMENT_STATUS_CHOICES = [
         (PAYMENT_PENDING, "Aguardando pagamento"),
         (PAYMENT_PAID, "Pago"),
+        (PAYMENT_FAILED, "Pagamento recusado"),
     ]
 
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="credit_sales")
@@ -440,6 +447,7 @@ class CreditSale(models.Model):
             raise ValueError("Pagamento ja confirmado.")
 
         self.debts.all().delete()
+        self.payment_status = self.PAYMENT_PENDING
         self.mercado_pago_preference_id = ""
         self.mercado_pago_payment_id = ""
         self.mercado_pago_init_point = ""
@@ -500,6 +508,11 @@ class CreditSale(models.Model):
         self.mercado_pago_payment_id = payment_id or self.mercado_pago_payment_id
         self.save(update_fields=["payment_status", "mercado_pago_payment_id"])
 
+    def mark_payment_failed(self, payment_id=""):
+        self.payment_status = self.PAYMENT_FAILED
+        self.mercado_pago_payment_id = payment_id or self.mercado_pago_payment_id
+        self.save(update_fields=["payment_status", "mercado_pago_payment_id"])
+
     def __str__(self):
         return f"{self.sale_code} - {self.client.email} - {self.description}"
 
@@ -541,6 +554,32 @@ class CreditSaleProduct(models.Model):
 
     def __str__(self):
         return f"{self.product_code} - {self.name}"
+
+
+class PaymentAlert(models.Model):
+    payment_id = models.CharField(max_length=120, unique=True)
+    credit_sale = models.ForeignKey(
+        CreditSale,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="payment_alerts",
+    )
+    store_order = models.ForeignKey(
+        StoreOrder,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="payment_alerts",
+    )
+    status_detail = models.CharField(max_length=180, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Pagamento recusado: {self.payment_id}"
 
 
 class Debt(models.Model):

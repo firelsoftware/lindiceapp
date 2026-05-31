@@ -33,6 +33,38 @@
     </div>
 </div>
 
+{% if payment_alerts %}
+    <section class="info-panel">
+        <h2>Pagamentos recusados</h2>
+        <p><span class="badge badge-warning">Atencao</span> O Mercado Pago recusou as tentativas abaixo. Entre em contato com o cliente se precisar ajudar.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Cliente</th>
+                    <th>Referencia</th>
+                    <th>Motivo Mercado Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alert in payment_alerts %}
+                    <tr>
+                        <td>{{ alert.created_at|date:"d/m/Y H:i" }}</td>
+                        {% if alert.credit_sale %}
+                            <td>{{ alert.credit_sale.client.full_name }}</td>
+                            <td>{{ alert.credit_sale.sale_code }} - {{ alert.credit_sale.description }}</td>
+                        {% else %}
+                            <td>{{ alert.store_order.customer_name }}</td>
+                            <td>{{ alert.store_order.order_code }} - {{ alert.store_order.product_name }}</td>
+                        {% endif %}
+                        <td>{{ alert.status_detail|default:"Recusado pela analise do Mercado Pago" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endif %}
+
 {% if not supplier_catalog_configured or not mercado_pago_configured or not public_site_url_configured or not pix_key_configured %}
     <section class="info-panel">
         <h2>Checklist da loja</h2>

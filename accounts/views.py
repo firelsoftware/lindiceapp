@@ -18,7 +18,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
-from .models import CreditSale, ClientProfile, Product, ProductCost, StoreOrder, SupplierProduct
+from .models import CreditSale, ClientProfile, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_checkout_preference, create_credit_sale_card_preference, get_payment
 from .supplier_import import import_supplier_catalog
 from .utils import generate_phone_code
@@ -317,24 +317,47 @@ def mercado_pago_webhook(request):
 
     order_code = payment.get("external_reference", "")
 
-    if payment.get("status") == "approved" and order_code.startswith("credit-sale:"):
+    payment_status = payment.get("status")
+    payment_reference = str(payment.get("id", payment_id))
+
+    if order_code.startswith("credit-sale:"):
         try:
             sale_id = int(order_code.split(":", 1)[1])
             sale = CreditSale.objects.get(id=sale_id)
         except (ValueError, CreditSale.DoesNotExist):
             return JsonResponse({"ok": False, "error": "sale not found"}, status=404)
 
-        sale.mark_paid(str(payment.get("id", payment_id)))
+        if payment_status == "approved":
+            sale.mark_paid(payment_reference)
+        elif payment_status == "rejected":
+            sale.mark_payment_failed(payment_reference)
+            PaymentAlert.objects.get_or_create(
+                payment_id=payment_reference,
+                defaults={
+                    "credit_sale": sale,
+                    "status_detail": payment.get("status_detail", ""),
+                },
+            )
 
         return JsonResponse({"ok": True})
 
-    if payment.get("status") == "approved" and order_code:
+    if order_code:
         try:
             order = StoreOrder.objects.get(order_code=order_code)
         except StoreOrder.DoesNotExist:
             return JsonResponse({"ok": False, "error": "order not found"}, status=404)
 
-        order.mark_paid(str(payment.get("id", payment_id)))
+        if payment_status == "approved":
+            order.mark_paid(payment_reference)
+        elif payment_status == "rejected":
+            order.mark_payment_failed(payment_reference)
+            PaymentAlert.objects.get_or_create(
+                payment_id=payment_reference,
+                defaults={
+                    "store_order": order,
+                    "status_detail": payment.get("status_detail", ""),
+                },
+            )
 
     return JsonResponse({"ok": True})
 
@@ -528,7 +551,7 @@ def choose_installments(request, sale_id):
         id=sale_id,
         client=request.user,
         status__in=[CreditSale.PENDING, CreditSale.ACCEPTED],
-        payment_status=CreditSale.PAYMENT_PENDING,
+        payment_status__in=[CreditSale.PAYMENT_PENDING, CreditSale.PAYMENT_FAILED],
     )
     profile = request.user.profile
 
@@ -661,6 +684,7 @@ def management_dashboard(request):
     available_products = Product.objects.filter(status=Product.AVAILABLE).order_by("-created_at")[:10]
     store_paid_count = StoreOrder.objects.filter(status=StoreOrder.PAID).count()
     store_pending_payment_count = StoreOrder.objects.filter(status=StoreOrder.PENDING_PAYMENT).count()
+    payment_alerts = PaymentAlert.objects.select_related("credit_sale__client", "store_order")[:10]
 
     return render(
         request,
@@ -672,6 +696,7 @@ def management_dashboard(request):
             "available_products": available_products,
             "store_paid_count": store_paid_count,
             "store_pending_payment_count": store_pending_payment_count,
+            "payment_alerts": payment_alerts,
             "supplier_catalog_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
             "mercado_pago_configured": bool(settings.MERCADO_PAGO_ACCESS_TOKEN),
             "public_site_url_configured": bool(settings.PUBLIC_SITE_URL),

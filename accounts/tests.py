@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, RequestFactory, TestCase, override_settings
 
 from .forms import RegisterForm
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, StoreOrder, SupplierProduct, User
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PaymentAlert, StoreOrder, SupplierProduct, User
 from .payments import create_credit_sale_card_preference
 from .utils import cpf_hash, is_valid_cpf
 
@@ -324,6 +324,34 @@ class CreditSalePaymentChoiceTests(TestCase):
         self.assertEqual(sale.payment_status, CreditSale.PAYMENT_PAID)
         self.assertEqual(sale.mercado_pago_payment_id, "payment-123")
 
+    @patch("accounts.views.get_payment")
+    def test_mercado_pago_webhook_records_rejected_credit_sale(self, mocked_get_payment):
+        user = self.create_client()
+        sale = self.create_sale(user)
+        sale.choose_payment(CreditSale.CARD, 5)
+        mocked_get_payment.return_value = {
+            "id": "payment-rejected",
+            "status": "rejected",
+            "status_detail": "cc_rejected_other_reason",
+            "external_reference": f"credit-sale:{sale.id}",
+        }
+
+        response = self.client.post(
+            "/loja/mercado-pago/webhook/",
+            data={"data": {"id": "payment-rejected"}},
+            content_type="application/json",
+        )
+        sale.refresh_from_db()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(sale.payment_status, CreditSale.PAYMENT_FAILED)
+        self.assertTrue(PaymentAlert.objects.filter(credit_sale=sale, payment_id="payment-rejected").exists())
+
+        self.client.force_login(user)
+        retry_response = self.client.get(f"/parcelamento/{sale.id}/")
+
+        self.assertEqual(retry_response.status_code, 200)
+
     def test_credit_choice_creates_debts(self):
         user = self.create_client()
         sale = self.create_sale(user)
@@ -606,3 +634,38 @@ class StoreFlowTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(order.status, StoreOrder.PAID)
         self.assertEqual(order.mercado_pago_payment_id, "123")
+
+    @patch("accounts.views.get_payment")
+    def test_mercado_pago_webhook_records_rejected_store_order(self, mocked_get_payment):
+        product = self.create_supplier_product()
+        order = StoreOrder.objects.create(
+            product=product,
+            product_name=product.name,
+            supplier_code=product.supplier_code,
+            selected_size="35",
+            customer_name="Cliente Teste",
+            customer_email="cliente@example.com",
+            customer_phone="61999999999",
+            shipping_address="Rua Teste, 1",
+            unit_price=Decimal("99.90"),
+            supplier_cost=Decimal("55.00"),
+            total_amount=Decimal("99.90"),
+            estimated_profit=Decimal("44.90"),
+        )
+        mocked_get_payment.return_value = {
+            "id": "order-payment-rejected",
+            "status": "rejected",
+            "status_detail": "cc_rejected_other_reason",
+            "external_reference": order.order_code,
+        }
+
+        response = self.client.post(
+            "/loja/mercado-pago/webhook/",
+            data={"data": {"id": "order-payment-rejected"}},
+            content_type="application/json",
+        )
+        order.refresh_from_db()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(order.status, StoreOrder.PAYMENT_FAILED)
+        self.assertTrue(PaymentAlert.objects.filter(store_order=order, payment_id="order-payment-rejected").exists())
