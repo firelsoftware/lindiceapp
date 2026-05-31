@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils import timezone
 
 from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Notification, Product, ProductCost, StoreOrder, SupplierProduct, User
+from .notifications import create_registration_approved_notification
 
 
 @admin.register(User)
@@ -48,11 +49,20 @@ class ClientProfileAdmin(admin.ModelAdmin):
     )
 
     def save_model(self, request, obj, form, change):
+        was_approved = False
+
+        if change:
+            previous = ClientProfile.objects.filter(pk=obj.pk).only("registration_status").first()
+            was_approved = previous and previous.registration_status == ClientProfile.APPROVED
+
         if obj.registration_status == ClientProfile.APPROVED and obj.approved_at is None:
             obj.approved_at = timezone.now()
             obj.approved_by = request.user
 
         super().save_model(request, obj, form, change)
+
+        if obj.registration_status == ClientProfile.APPROVED and not was_approved:
+            create_registration_approved_notification(obj)
 
 
 @admin.register(Debt)

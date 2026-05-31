@@ -636,11 +636,15 @@ class Debt(models.Model):
 class Notification(models.Model):
     DUE_SOON = "due_soon"
     DUE_TODAY = "due_today"
+    OVERDUE = "overdue"
     MANUAL_DEBT = "manual_debt"
+    REGISTRATION_APPROVED = "registration_approved"
     KIND_CHOICES = (
         (DUE_SOON, "Vencimento proximo"),
         (DUE_TODAY, "Vencimento hoje"),
+        (OVERDUE, "Pagamento em atraso"),
         (MANUAL_DEBT, "Debito lancado"),
+        (REGISTRATION_APPROVED, "Cadastro aprovado"),
     )
 
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications")

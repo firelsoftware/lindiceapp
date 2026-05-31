@@ -741,3 +741,40 @@ class NotificationTests(TestCase):
         debt = Debt.objects.get(client=self.client_user, description="Entrada solicitada")
         self.assertRedirects(response, "/gestao/")
         self.assertTrue(self.client_user.notifications.filter(kind=Notification.MANUAL_DEBT, debt=debt).exists())
+
+    def test_staff_approval_notifies_client(self):
+        profile = self.client_user.profile
+        profile.registration_status = ClientProfile.PENDING
+        profile.save(update_fields=["registration_status"])
+        self.client.force_login(self.staff)
+
+        response = self.client.post(
+            f"/gestao/cadastros/{profile.id}/",
+            {
+                "pre_approved_credit_limit": "500.00",
+                "default_max_installments": "5",
+                "admin_notes": "",
+                "action": "approve",
+            },
+        )
+
+        self.assertRedirects(response, "/gestao/")
+        self.assertTrue(self.client_user.notifications.filter(kind=Notification.REGISTRATION_APPROVED).exists())
+
+    def test_generates_overdue_notification_on_first_day_and_every_three_days_after(self):
+        debt = Debt.objects.create(
+            client=self.client_user,
+            description="Parcela atrasada",
+            amount=Decimal("100.00"),
+            due_date=datetime(2026, 6, 1).date(),
+        )
+
+        generate_due_notifications(timezone.make_aware(datetime(2026, 6, 2, 10, 0)))
+        generate_due_notifications(timezone.make_aware(datetime(2026, 6, 3, 10, 0)))
+        generate_due_notifications(timezone.make_aware(datetime(2026, 6, 4, 10, 0)))
+        generate_due_notifications(timezone.make_aware(datetime(2026, 6, 5, 10, 0)))
+
+        client_notifications = self.client_user.notifications.filter(kind=Notification.OVERDUE, debt=debt)
+        self.assertEqual(client_notifications.count(), 2)
+        self.assertTrue(client_notifications.filter(message__contains="ha 1 dia(s)").exists())
+        self.assertTrue(client_notifications.filter(message__contains="ha 4 dia(s)").exists())

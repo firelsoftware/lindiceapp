@@ -19,7 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .forms import ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
 from .models import CreditSale, ClientProfile, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct
-from .notifications import create_manual_debt_notification, generate_due_notifications
+from .notifications import create_manual_debt_notification, create_registration_approved_notification, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_checkout_preference, create_credit_sale_card_preference, get_payment
 from .supplier_import import import_supplier_catalog
 from .utils import generate_phone_code
@@ -738,6 +738,7 @@ def notifications_mark_all_read(request):
 @staff_member_required(login_url="login")
 def review_client_profile(request, profile_id):
     profile = get_object_or_404(ClientProfile, id=profile_id)
+    was_approved = profile.registration_status == ClientProfile.APPROVED
 
     if request.method == "POST":
         form = ClientApprovalForm(request.POST, instance=profile)
@@ -761,6 +762,10 @@ def review_client_profile(request, profile_id):
                 return redirect("review_client_profile", profile_id=profile.id)
 
             profile.save()
+
+            if action == "approve" and not was_approved:
+                create_registration_approved_notification(profile)
+
             messages.success(request, message)
 
             return redirect("management_dashboard")

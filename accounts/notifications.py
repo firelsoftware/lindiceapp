@@ -26,6 +26,18 @@ def create_manual_debt_notification(debt):
     )
 
 
+def create_registration_approved_notification(profile):
+    return Notification.objects.get_or_create(
+        unique_key=f"profile:{profile.id}:approved:client:{profile.user_id}",
+        defaults={
+            "recipient": profile.user,
+            "kind": Notification.REGISTRATION_APPROVED,
+            "title": "Cadastro aprovado",
+            "message": "Seu cadastro foi aprovado. Voce ja pode acessar a loja e usar os recursos liberados para sua conta.",
+        },
+    )
+
+
 def _notify_staff(debt, kind, key_suffix, title, message):
     user_model = get_user_model()
 
@@ -94,5 +106,33 @@ def generate_due_notifications(now=None):
                 (
                     f"{debt.client.full_name}: {debt.description}, "
                     f"R$ {format_brl(debt.total_amount())}. Entre em contato com o cliente."
+                ),
+            )
+
+        days_late = (today - debt.due_date).days
+
+        if days_late >= 1 and (days_late - 1) % 3 == 0:
+            Notification.objects.get_or_create(
+                unique_key=f"debt:{debt.id}:overdue:{today}:client:{debt.client_id}",
+                defaults={
+                    "recipient": debt.client,
+                    "debt": debt,
+                    "kind": Notification.OVERDUE,
+                    "title": "Pagamento em atraso",
+                    "message": (
+                        f"{debt.description}: pagamento em atraso ha {days_late} dia(s). "
+                        f"Total atualizado: R$ {format_brl(debt.total_amount())}. "
+                        "Regularize o pagamento para evitar novos juros."
+                    ),
+                },
+            )
+            _notify_staff(
+                debt,
+                Notification.OVERDUE,
+                f"overdue:{today}",
+                "Cliente com pagamento em atraso",
+                (
+                    f"{debt.client.full_name}: {debt.description}, atraso de {days_late} dia(s), "
+                    f"total atualizado R$ {format_brl(debt.total_amount())}."
                 ),
             )
