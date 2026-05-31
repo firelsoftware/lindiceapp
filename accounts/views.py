@@ -131,8 +131,19 @@ def terms_of_use(request):
 
 def store_front(request):
     products = SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0).order_by("name")
+    reserved_sales = CreditSale.objects.none()
     query = request.GET.get("q", "").strip()
     size = request.GET.get("tamanho", "").strip()
+
+    if request.user.is_authenticated and not request.user.is_staff:
+        profile = request.user.profile
+
+        if profile.phone_verified and profile.registration_status == ClientProfile.APPROVED:
+            reserved_sales = (
+                request.user.credit_sales.filter(status=CreditSale.PENDING)
+                .prefetch_related("products")
+                .order_by("-created_at")
+            )
 
     if query:
         products = products.filter(
@@ -167,6 +178,7 @@ def store_front(request):
             "query": query,
             "size": size,
             "size_options": parsed_sizes,
+            "reserved_sales": reserved_sales,
         },
     )
 
@@ -382,9 +394,7 @@ def dashboard(request):
         return render(request, "accounts/registration_pending.html", {"profile": profile})
 
     purchase_groups = build_purchase_groups(request.user)
-    pending_sales = request.user.credit_sales.filter(status=CreditSale.PENDING).order_by("-created_at")
-
-    return render(request, "accounts/dashboard.html", {"purchase_groups": purchase_groups, "pending_sales": pending_sales})
+    return render(request, "accounts/dashboard.html", {"purchase_groups": purchase_groups})
 
 
 @login_required
@@ -470,7 +480,7 @@ def change_password(request):
             update_session_auth_hash(request, user)
             messages.success(request, "Senha alterada com sucesso.")
 
-            return redirect("dashboard")
+            return redirect("store_front")
     else:
         form = UserPasswordChangeForm(request.user)
 

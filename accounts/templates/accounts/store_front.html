@@ -2,7 +2,38 @@
 
 {% block content %}
 <h1>Loja Líndice</h1>
-<p>Escolha seu calcado, informe seus dados e pague com seguranca pelo Mercado Pago.</p>
+<p>Confira os itens separados para voce e veja as novidades da loja.</p>
+
+{% if reserved_sales %}
+    <h2>Separado para voce</h2>
+    <div class="store-grid">
+        {% for sale in reserved_sales %}
+            <article class="store-product">
+                {% with first_product=sale.products.first %}
+                    <div class="store-product-media">
+                        {% if first_product.image %}
+                            <img src="{{ first_product.image.url }}" alt="{{ first_product.name }}">
+                        {% endif %}
+                    </div>
+                    <div class="store-product-body">
+                        <h2>{{ sale.description }}</h2>
+                        {% if first_product %}
+                            <p>{{ first_product.name }}</p>
+                            {% if first_product.shoe_size %}
+                                <p>Tamanho: {{ first_product.shoe_size }}</p>
+                            {% endif %}
+                        {% endif %}
+                        {% if sale.products.count > 1 %}
+                            <p>{{ sale.products.count }} itens separados.</p>
+                        {% endif %}
+                        <p class="store-price">R$ {{ sale.total_amount|floatformat:2 }}</p>
+                        <a class="button" href="{% url 'choose_installments' sale.id %}">Finalizar compra</a>
+                    </div>
+                {% endwith %}
+            </article>
+        {% endfor %}
+    </div>
+{% endif %}
 
 <form class="toolbar" method="get">
     <div class="toolbar-field">

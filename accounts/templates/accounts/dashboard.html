@@ -11,30 +11,6 @@
     </ul>
 {% endif %}
 
-{% if pending_sales %}
-    <h2>Finalizar compras</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Venda</th>
-                <th>Valor</th>
-                <th>Maximo liberado</th>
-                <th>Acao</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sale in pending_sales %}
-                <tr>
-                    <td>{{ sale.description }}</td>
-                    <td>R$ {{ sale.total_amount|floatformat:2 }}</td>
-                    <td>{{ sale.max_installments_allowed }}x</td>
-                    <td><a href="{% url 'choose_installments' sale.id %}">Finalizar</a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endif %}
-
 {% for group in purchase_groups %}
     <section class="purchase">
         <h3>{{ group.title }}</h3>
@@ -76,7 +52,8 @@
         </table>
     </section>
 {% empty %}
-    <p>Nenhuma compra cadastrada.</p>
+    <p>Nenhuma compra finalizada.</p>
+    <p><a class="button" href="{% url 'store_front' %}">Ir para loja</a></p>
 {% endfor %}
 
 <section class="info-panel">

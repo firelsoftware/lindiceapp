@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 
 from .forms import RegisterForm
-from .models import ClientProfile, CreditSale, Debt, StoreOrder, SupplierProduct, User
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, StoreOrder, SupplierProduct, User
 from .utils import cpf_hash, is_valid_cpf
 
 
@@ -253,6 +253,24 @@ class CreditSalePaymentChoiceTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Escolha uma opcao de parcela disponivel")
         self.assertEqual(sale.status, CreditSale.PENDING)
+
+    def test_pending_sale_appears_in_store_but_not_completed_purchases(self):
+        user = self.create_client()
+        sale = self.create_sale(user)
+        CreditSaleProduct.objects.create(
+            sale=sale,
+            name="Bota cano curto",
+            shoe_size="36",
+        )
+        self.client.force_login(user)
+
+        store_response = self.client.get("/loja/")
+        dashboard_response = self.client.get("/painel/")
+
+        self.assertContains(store_response, "Separado para voce")
+        self.assertContains(store_response, "Bota cano curto")
+        self.assertContains(store_response, "Finalizar compra")
+        self.assertNotContains(dashboard_response, "Bota cano curto")
 
 
 class StoreFlowTests(TestCase):
