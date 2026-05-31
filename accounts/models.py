@@ -101,6 +101,21 @@ INSTALLMENT_INTEREST_RATES = {
     10: Decimal("5.50"),
 }
 
+CARD_INSTALLMENT_INTEREST_RATES = {
+    1: Decimal("0.00"),
+    2: Decimal("0.00"),
+    3: Decimal("0.00"),
+    4: Decimal("0.00"),
+    5: Decimal("0.00"),
+    6: Decimal("3.50"),
+    7: Decimal("4.00"),
+    8: Decimal("4.50"),
+    9: Decimal("5.00"),
+    10: Decimal("5.50"),
+}
+
+PIX_DISCOUNT_PERCENT = Decimal("10.00")
+
 
 def money(value):
     return value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
@@ -303,10 +318,20 @@ class CreditSale(models.Model):
     ACCEPTED = "accepted"
     CANCELED = "canceled"
 
+    PIX = "pix"
+    CARD = "card"
+    CREDIT = "credit"
+
     STATUS_CHOICES = [
         (PENDING, "Aguardando escolha do cliente"),
         (ACCEPTED, "Parcelamento escolhido"),
         (CANCELED, "Cancelada"),
+    ]
+
+    PAYMENT_METHOD_CHOICES = [
+        (PIX, "Pix"),
+        (CARD, "Cartao"),
+        (CREDIT, "Crediario"),
     ]
 
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="credit_sales")
@@ -320,6 +345,7 @@ class CreditSale(models.Model):
     first_due_date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=PENDING)
     selected_installments = models.PositiveSmallIntegerField(null=True, blank=True)
+    selected_payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES, blank=True)
     selected_monthly_interest_percent = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     selected_installment_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     selected_total_with_interest = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -341,6 +367,9 @@ class CreditSale(models.Model):
             super().save(update_fields=["sale_code"])
 
     def installment_options(self):
+        return self.credit_options()
+
+    def credit_options(self):
         options = []
         max_installments = min(self.max_installments_allowed, 10)
 
@@ -363,17 +392,66 @@ class CreditSale(models.Model):
 
         return options
 
-    def choose_installments(self, installments):
+    def card_options(self):
+        options = []
+        max_installments = min(self.max_installments_allowed, 10)
+
+        for installments in range(1, max_installments + 1):
+            monthly_rate = CARD_INSTALLMENT_INTEREST_RATES[installments]
+            rate = monthly_rate / Decimal("100")
+            total = self.total_amount if monthly_rate == 0 else self.total_amount * ((Decimal("1.00") + rate) ** installments)
+            total = money(total)
+            installment_amount = money(total / Decimal(installments))
+            options.append(
+                {
+                    "installments": installments,
+                    "monthly_rate": monthly_rate,
+                    "installment_amount": installment_amount,
+                    "total": total,
+                }
+            )
+
+        return options
+
+    def pix_option(self):
+        discount = money(self.total_amount * (PIX_DISCOUNT_PERCENT / Decimal("100")))
+        total = money(self.total_amount - discount)
+
+        return {
+            "discount": discount,
+            "discount_percent": PIX_DISCOUNT_PERCENT,
+            "total": total,
+        }
+
+    def choose_payment(self, payment_method, installments=None):
+        if payment_method == self.PIX:
+            option = self.pix_option()
+            self.selected_payment_method = self.PIX
+            self.selected_installments = 1
+            self.selected_monthly_interest_percent = Decimal("0.00")
+            self.selected_installment_amount = option["total"]
+            self.selected_total_with_interest = option["total"]
+            self.status = self.ACCEPTED
+            self.accepted_at = timezone.now()
+            self.save()
+
+            return
+
+        if installments is None:
+            raise ValueError("Escolha a quantidade de parcelas.")
+
+        options = self.card_options() if payment_method == self.CARD else self.credit_options()
         selected_option = None
 
-        for option in self.installment_options():
+        for option in options:
             if option["installments"] == installments:
                 selected_option = option
                 break
 
         if selected_option is None:
-            raise ValueError("Opcao de parcelamento invalida.")
+            raise ValueError("Opcao de pagamento invalida.")
 
+        self.selected_payment_method = payment_method
         self.selected_installments = installments
         self.selected_monthly_interest_percent = selected_option["monthly_rate"]
         self.selected_installment_amount = selected_option["installment_amount"]
@@ -381,6 +459,9 @@ class CreditSale(models.Model):
         self.status = self.ACCEPTED
         self.accepted_at = timezone.now()
         self.save()
+
+        if payment_method != self.CREDIT:
+            return
 
         for number in range(1, installments + 1):
             Debt.objects.create(
@@ -390,6 +471,9 @@ class CreditSale(models.Model):
                 amount=selected_option["installment_amount"],
                 due_date=add_months(self.first_due_date, number - 1),
             )
+
+    def choose_installments(self, installments):
+        self.choose_payment(self.CREDIT, installments)
 
     def __str__(self):
         return f"{self.sale_code} - {self.client.email} - {self.description}"

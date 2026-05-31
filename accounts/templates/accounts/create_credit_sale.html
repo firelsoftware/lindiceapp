@@ -1,7 +1,7 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<h1>Lancar venda parcelada</h1>
+<h1>Lancar venda para o cliente</h1>
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -31,7 +31,7 @@
     <button type="submit">Enviar para escolha do cliente</button>
 </form>
 
-<p>Ate 3x sem juros. De 4x a 10x, o sistema aplica a tabela de juros configurada.</p>
+<p>O cliente escolhe Pix com 10% de desconto, cartao com juros a partir de 6x ou crediario com a tabela de parcelas aprovada.</p>
 <p><a href="{% url 'management_dashboard' %}">Voltar ao painel de gestao</a></p>
 
 <script>

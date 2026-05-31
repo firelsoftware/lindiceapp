@@ -1,13 +1,11 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<h1>Escolher parcelamento</h1>
+<h1>Finalizar compra</h1>
 
 <p>Venda: <strong>{{ sale.description }}</strong></p>
 <p>Valor original: <strong>R$ {{ sale.total_amount|floatformat:2 }}</strong></p>
 <p>Maximo liberado: <strong>{{ sale.max_installments_allowed }}x</strong></p>
-<p>Parcela minima mensal: <strong>R$ 70,00</strong></p>
-<p>Algumas opcoes podem nao aparecer quando a parcela ficaria abaixo do minimo.</p>
 
 {% if sale.products.exists %}
     <h2>Produtos da venda</h2>
@@ -33,8 +31,89 @@
 
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Confirmar parcelamento</button>
+    {% if form.non_field_errors %}
+        <div class="errorlist">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <section class="payment-options">
+        <label class="payment-option">
+            <input type="radio" name="payment_method" value="pix" {% if form.payment_method.value == "pix" %}checked{% endif %}>
+            <strong>Pix</strong>
+            <span>10% de desconto</span>
+            <span>R$ {{ pix_option.total|floatformat:2 }}</span>
+        </label>
+
+        <label class="payment-option">
+            <input type="radio" name="payment_method" value="card" {% if form.payment_method.value == "card" %}checked{% endif %}>
+            <strong>Cartao</strong>
+            <span>Sem juros ate 5x. Juros a partir de 6x.</span>
+        </label>
+
+        <label class="payment-option">
+            <input type="radio" name="payment_method" value="credit" {% if form.payment_method.value == "credit" %}checked{% endif %}>
+            <strong>Crediario</strong>
+            <span>Parcelas e juros do seu limite aprovado.</span>
+        </label>
+    </section>
+
+    <label for="{{ form.installments.id_for_label }}">Parcelas para cartao ou crediario</label>
+    {{ form.installments }}
+    {% if form.installments.errors %}
+        <div class="errorlist">{{ form.installments.errors }}</div>
+    {% endif %}
+
+    <div class="payment-tables">
+        <section>
+            <h2>Cartao</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parcelas</th>
+                        <th>Parcela</th>
+                        <th>Juros</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for option in card_options %}
+                        <tr>
+                            <td>{{ option.installments }}x</td>
+                            <td>R$ {{ option.installment_amount|floatformat:2 }}</td>
+                            <td>{{ option.monthly_rate|floatformat:2 }}%</td>
+                            <td>R$ {{ option.total|floatformat:2 }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Crediario</h2>
+            <p>Parcela minima mensal: <strong>R$ 70,00</strong></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parcelas</th>
+                        <th>Parcela</th>
+                        <th>Juros</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for option in credit_options %}
+                        <tr>
+                            <td>{{ option.installments }}x</td>
+                            <td>R$ {{ option.installment_amount|floatformat:2 }}</td>
+                            <td>{{ option.monthly_rate|floatformat:2 }}%</td>
+                            <td>R$ {{ option.total|floatformat:2 }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <button type="submit">Confirmar forma de pagamento</button>
 </form>
 
 <p><a href="{% url 'dashboard' %}">Voltar ao painel</a></p>

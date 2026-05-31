@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 
 from .forms import RegisterForm
-from .models import ClientProfile, StoreOrder, SupplierProduct, User
+from .models import ClientProfile, CreditSale, Debt, StoreOrder, SupplierProduct, User
 from .utils import cpf_hash, is_valid_cpf
 
 
@@ -156,6 +156,103 @@ class CsrfFailureTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response["Location"], "/login/")
+
+
+class CreditSalePaymentChoiceTests(TestCase):
+    def create_client(self):
+        user = User.objects.create_user(
+            email="cliente-compra@example.com",
+            password="Teste12345!",
+            full_name="Cliente Compra",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash=cpf_hash("52998224725"),
+            cpf_last_digits="4725",
+            phone="61999999999",
+            phone_verified=True,
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+        )
+
+        return user
+
+    def create_sale(self, user, **overrides):
+        data = {
+            "client": user,
+            "description": "Bota teste",
+            "total_amount": Decimal("200.00"),
+            "max_installments_allowed": 10,
+            "first_due_date": "2026-06-10",
+        }
+        data.update(overrides)
+
+        return CreditSale.objects.create(**data)
+
+    def test_pix_choice_applies_discount_without_debts(self):
+        user = self.create_client()
+        sale = self.create_sale(user)
+        self.client.force_login(user)
+
+        response = self.client.post(
+            f"/parcelamento/{sale.id}/",
+            {
+                "payment_method": CreditSale.PIX,
+                "installments": "",
+            },
+        )
+        sale.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(sale.status, CreditSale.ACCEPTED)
+        self.assertEqual(sale.selected_payment_method, CreditSale.PIX)
+        self.assertEqual(sale.selected_total_with_interest, Decimal("180.00"))
+        self.assertEqual(Debt.objects.count(), 0)
+
+    def test_card_choice_has_interest_only_from_six_installments(self):
+        user = self.create_client()
+        sale = self.create_sale(user)
+
+        self.assertEqual(sale.card_options()[4]["monthly_rate"], Decimal("0.00"))
+        self.assertGreater(sale.card_options()[5]["monthly_rate"], Decimal("0.00"))
+
+    def test_credit_choice_creates_debts(self):
+        user = self.create_client()
+        sale = self.create_sale(user)
+        self.client.force_login(user)
+
+        response = self.client.post(
+            f"/parcelamento/{sale.id}/",
+            {
+                "payment_method": CreditSale.CREDIT,
+                "installments": "2",
+            },
+        )
+        sale.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(sale.selected_payment_method, CreditSale.CREDIT)
+        self.assertEqual(Debt.objects.filter(credit_sale=sale).count(), 2)
+
+    def test_credit_choice_rejects_installment_below_minimum(self):
+        user = self.create_client()
+        sale = self.create_sale(user, total_amount=Decimal("100.00"))
+        self.client.force_login(user)
+
+        response = self.client.post(
+            f"/parcelamento/{sale.id}/",
+            {
+                "payment_method": CreditSale.CREDIT,
+                "installments": "2",
+            },
+        )
+        sale.refresh_from_db()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Escolha uma opcao de parcela disponivel")
+        self.assertEqual(sale.status, CreditSale.PENDING)
 
 
 class StoreFlowTests(TestCase):

@@ -216,21 +216,45 @@ class CreditSaleForm(forms.ModelForm):
 
 
 class InstallmentChoiceForm(forms.Form):
-    installments = forms.ChoiceField(label="Escolha o parcelamento")
+    payment_method = forms.ChoiceField(
+        label="Forma de pagamento",
+        choices=CreditSale.PAYMENT_METHOD_CHOICES,
+        widget=forms.RadioSelect,
+    )
+    installments = forms.ChoiceField(label="Parcelas", required=False)
 
     def __init__(self, *args, sale, **kwargs):
         super().__init__(*args, **kwargs)
         self.sale = sale
-        self.fields["installments"].choices = [
-            (
-                option["installments"],
-                f"{option['installments']}x de R$ {option['installment_amount']} | juros {option['monthly_rate']}% a.m. | total R$ {option['total']}",
-            )
-            for option in sale.installment_options()
+        self.fields["installments"].choices = [("", "Selecione")] + [
+            (option["installments"], f"{option['installments']}x")
+            for option in sale.card_options()
         ]
 
     def clean_installments(self):
-        return int(self.cleaned_data["installments"])
+        value = self.cleaned_data.get("installments")
+
+        if not value:
+            return None
+
+        return int(value)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        payment_method = cleaned_data.get("payment_method")
+        installments = cleaned_data.get("installments")
+
+        if payment_method in {CreditSale.CARD, CreditSale.CREDIT} and installments is None:
+            raise ValidationError("Escolha a quantidade de parcelas.")
+
+        if installments is not None:
+            options = self.sale.card_options() if payment_method == CreditSale.CARD else self.sale.credit_options()
+            valid_installments = {option["installments"] for option in options}
+
+            if installments not in valid_installments:
+                raise ValidationError("Escolha uma opcao de parcela disponivel para esta forma de pagamento.")
+
+        return cleaned_data
 
 
 class CreditSaleProductForm(forms.ModelForm):

@@ -12,7 +12,7 @@
 {% endif %}
 
 {% if pending_sales %}
-    <h2>Escolher parcelamento</h2>
+    <h2>Finalizar compras</h2>
     <table>
         <thead>
             <tr>
@@ -28,7 +28,7 @@
                     <td>{{ sale.description }}</td>
                     <td>R$ {{ sale.total_amount|floatformat:2 }}</td>
                     <td>{{ sale.max_installments_allowed }}x</td>
-                    <td><a href="{% url 'choose_installments' sale.id %}">Escolher</a></td>
+                    <td><a href="{% url 'choose_installments' sale.id %}">Finalizar</a></td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -41,6 +41,7 @@
         <p class="purchase-meta">
             {% if group.code %}Codigo da venda: {{ group.code }} | {% endif %}
             {% if group.created_at %}Data da compra: {{ group.created_at|date:"d/m/Y" }} | {% endif %}
+            {% if group.payment_method %}Pagamento: {{ group.payment_method }} | {% endif %}
             {% if group.installments %}Parcelamento: {{ group.installments }}x | {% endif %}
             Total da compra: R$ {{ group.total|floatformat:2 }}
         </p>
@@ -65,6 +66,10 @@
                         <td>{{ debt.days_late }} dias</td>
                         <td>R$ {{ debt.total_amount|floatformat:2 }}</td>
                         <td>{% if debt.paid %}Pago{% else %}Pendente{% endif %}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">Pagamento escolhido. Aguarde a confirmacao da loja.</td>
                     </tr>
                 {% endfor %}
             </tbody>

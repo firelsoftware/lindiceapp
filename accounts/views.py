@@ -76,6 +76,19 @@ def build_purchase_groups(user):
                     "debts": linked_debts,
                     "total": sale.selected_total_with_interest or sum(debt.amount for debt in linked_debts),
                     "installments": sale.selected_installments,
+                    "payment_method": sale.get_selected_payment_method_display() if sale.selected_payment_method else "",
+                    "created_at": sale.created_at,
+                }
+            )
+        elif sale.selected_payment_method in {CreditSale.PIX, CreditSale.CARD}:
+            groups.append(
+                {
+                    "title": sale.description,
+                    "code": sale.sale_code,
+                    "debts": [],
+                    "total": sale.selected_total_with_interest or sale.total_amount,
+                    "installments": sale.selected_installments,
+                    "payment_method": sale.get_selected_payment_method_display(),
                     "created_at": sale.created_at,
                 }
             )
@@ -483,15 +496,28 @@ def choose_installments(request, sale_id):
 
         if form.is_valid():
             with transaction.atomic():
-                sale.choose_installments(form.cleaned_data["installments"])
+                sale.choose_payment(
+                    form.cleaned_data["payment_method"],
+                    form.cleaned_data["installments"],
+                )
 
-            messages.success(request, "Parcelamento escolhido com sucesso.")
+            messages.success(request, "Forma de pagamento escolhida com sucesso.")
 
             return redirect("dashboard")
     else:
         form = InstallmentChoiceForm(sale=sale)
 
-    return render(request, "accounts/choose_installments.html", {"form": form, "sale": sale})
+    return render(
+        request,
+        "accounts/choose_installments.html",
+        {
+            "form": form,
+            "sale": sale,
+            "pix_option": sale.pix_option(),
+            "card_options": sale.card_options(),
+            "credit_options": sale.credit_options(),
+        },
+    )
 
 
 @staff_member_required(login_url="login")

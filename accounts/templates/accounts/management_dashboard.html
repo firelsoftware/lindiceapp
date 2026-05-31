@@ -12,7 +12,7 @@
 {% endif %}
 
 <p>
-    <a class="button" href="{% url 'create_credit_sale' %}">Lancar venda parcelada</a>
+    <a class="button" href="{% url 'create_credit_sale' %}">Lancar venda</a>
     <a class="button" href="#cadastros-pendentes">Analisar cadastros</a>
     <a class="button" href="{% url 'create_product' %}">Cadastrar produto</a>
     <a class="button" href="{% url 'product_list' %}">Produtos</a>
@@ -91,7 +91,7 @@
     </tbody>
 </table>
 
-<h2>Vendas aguardando escolha do cliente</h2>
+<h2>Vendas aguardando cliente finalizar</h2>
 <table>
     <thead>
         <tr>
@@ -147,13 +147,14 @@
     </tbody>
 </table>
 
-<h2>Ultimos parcelamentos escolhidos</h2>
+<h2>Ultimas formas de pagamento escolhidas</h2>
 <table>
     <thead>
         <tr>
             <th>Cliente</th>
             <th>Codigo</th>
             <th>Venda</th>
+            <th>Pagamento</th>
             <th>Parcelas</th>
             <th>Total</th>
         </tr>
@@ -164,12 +165,13 @@
                 <td>{{ sale.client.full_name }}</td>
                 <td>{{ sale.sale_code }}</td>
                 <td>{{ sale.description }}</td>
+                <td>{{ sale.get_selected_payment_method_display|default:"-" }}</td>
                 <td>{{ sale.selected_installments }}x</td>
                 <td>R$ {{ sale.selected_total_with_interest|floatformat:2 }}</td>
             </tr>
         {% empty %}
             <tr>
-                <td colspan="5">Nenhum parcelamento escolhido ainda.</td>
+                <td colspan="6">Nenhuma forma de pagamento escolhida ainda.</td>
             </tr>
         {% endfor %}
     </tbody>
