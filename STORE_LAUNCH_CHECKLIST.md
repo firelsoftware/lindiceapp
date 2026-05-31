@@ -4,6 +4,7 @@
 
 - Configurar `MERCADO_PAGO_ACCESS_TOKEN` no Render.
 - Configurar `PUBLIC_SITE_URL` com o dominio publico da loja.
+- Configurar `STORE_PIX_KEY` no Render.
 - Configurar `SHOE_SUPPLIER_CATALOG_URL` no Render.
 - Conferir `PHONE_VERIFICATION_REQUIRED`: usar `false` enquanto nao houver envio real de SMS/WhatsApp; trocar para `true` depois da integracao.
 - Atualizar catalogo do fornecedor no painel de gestao.
