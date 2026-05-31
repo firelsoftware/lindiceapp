@@ -34,6 +34,7 @@ python manage.py createsuperuser
 DJANGO_ALLOWED_HOSTS=.onrender.com,seu-dominio.com.br,www.seu-dominio.com.br
 DJANGO_CSRF_TRUSTED_ORIGINS=https://seu-dominio.com.br,https://www.seu-dominio.com.br
 PUBLIC_SITE_URL=https://seu-dominio.com.br
+STORE_CONTACT_EMAIL=contato@seu-dominio.com.br
 MERCADO_PAGO_ACCESS_TOKEN=...
 SHOE_SUPPLIER_CATALOG_URL=...
 PHONE_VERIFICATION_REQUIRED=false

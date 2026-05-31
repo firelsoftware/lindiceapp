@@ -201,6 +201,7 @@ class CreditSalePaymentChoiceTests(TestCase):
             {
                 "payment_method": CreditSale.PIX,
                 "installments": "",
+                "accept_terms": "on",
             },
         )
         sale.refresh_from_db()
@@ -228,6 +229,7 @@ class CreditSalePaymentChoiceTests(TestCase):
             {
                 "payment_method": CreditSale.CREDIT,
                 "installments": "2",
+                "accept_terms": "on",
             },
         )
         sale.refresh_from_db()
@@ -246,12 +248,30 @@ class CreditSalePaymentChoiceTests(TestCase):
             {
                 "payment_method": CreditSale.CREDIT,
                 "installments": "2",
+                "accept_terms": "on",
             },
         )
         sale.refresh_from_db()
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Escolha uma opcao de parcela disponivel")
+        self.assertEqual(sale.status, CreditSale.PENDING)
+
+    def test_payment_choice_requires_terms_acceptance(self):
+        user = self.create_client()
+        sale = self.create_sale(user)
+        self.client.force_login(user)
+
+        response = self.client.post(
+            f"/parcelamento/{sale.id}/",
+            {
+                "payment_method": CreditSale.PIX,
+                "installments": "",
+            },
+        )
+        sale.refresh_from_db()
+
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(sale.status, CreditSale.PENDING)
 
     def test_pending_sale_appears_in_store_but_not_completed_purchases(self):

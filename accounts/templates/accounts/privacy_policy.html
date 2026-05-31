@@ -3,16 +3,16 @@
 {% block content %}
 <h1>Politica de privacidade</h1>
 
-<p>Esta politica resume como o Líndice usa os dados informados na loja e no aplicativo.</p>
+<p>Esta politica explica como o Líndice trata dados pessoais informados na loja e no aplicativo, em conformidade com a Lei Geral de Protecao de Dados Pessoais (LGPD).</p>
 
 <section class="info-panel">
     <h2>Dados coletados</h2>
-    <p>Podemos coletar nome, email, telefone, endereco de entrega, dados de cadastro, medidas informadas pelo cliente, comprovantes enviados e informacoes dos pedidos.</p>
+    <p>Podemos coletar nome, email, telefone, endereco, CPF protegido por hash, comprovante de residencia, foto de perfil, medidas informadas pelo cliente, dados de compras, pagamentos, entregas e atendimento.</p>
 </section>
 
 <section class="info-panel">
     <h2>Uso dos dados</h2>
-    <p>Usamos os dados para criar cadastro, analisar pedidos, processar compras, acompanhar entregas, prestar atendimento e manter registros operacionais da loja.</p>
+    <p>Usamos os dados para criar e analisar cadastros, avaliar limite de crediario, processar compras, acompanhar pagamentos e entregas, prestar atendimento, prevenir fraudes e cumprir obrigacoes legais.</p>
 </section>
 
 <section class="info-panel">
@@ -22,7 +22,12 @@
 
 <section class="info-panel">
     <h2>Compartilhamento</h2>
-    <p>Dados de entrega podem ser usados para concluir pedidos junto ao fornecedor dropshipping e transportadoras. Nao vendemos dados pessoais.</p>
+    <p>Quando necessario para prestar o servico, dados podem ser compartilhados com Mercado Pago, fornecedores, transportadoras, provedores de hospedagem e armazenamento em nuvem. Nao vendemos dados pessoais.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Armazenamento</h2>
+    <p>Documentos e arquivos enviados podem ser armazenados em servicos de nuvem contratados pela loja, incluindo Supabase Storage. O acesso administrativo e restrito.</p>
 </section>
 
 <section class="info-panel">
@@ -31,8 +36,13 @@
 </section>
 
 <section class="info-panel">
+    <h2>Direitos do titular</h2>
+    <p>O titular pode solicitar confirmacao de tratamento, acesso, correcao, informacoes sobre compartilhamento, revisao quando aplicavel e eliminacao de dados nos casos permitidos pela LGPD.</p>
+</section>
+
+<section class="info-panel">
     <h2>Contato</h2>
-    <p>Para solicitar correcao ou exclusao de dados, entre em contato pelo canal oficial da loja.</p>
+    <p>Para exercer seus direitos ou tirar duvidas sobre privacidade, envie email para <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
 </section>
 
 <p><a href="{% url 'store_front' %}">Voltar para loja</a></p>

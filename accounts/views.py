@@ -122,11 +122,11 @@ def brand_preview(request):
 
 
 def privacy_policy(request):
-    return render(request, "accounts/privacy_policy.html")
+    return render(request, "accounts/privacy_policy.html", {"contact_email": settings.STORE_CONTACT_EMAIL})
 
 
 def terms_of_use(request):
-    return render(request, "accounts/terms_of_use.html")
+    return render(request, "accounts/terms_of_use.html", {"contact_email": settings.STORE_CONTACT_EMAIL})
 
 
 def store_front(request):

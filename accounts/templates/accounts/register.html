@@ -3,6 +3,7 @@
 {% block content %}
 <h1>Cadastro</h1>
 <p>Campos com * sao obrigatorios.</p>
+<p>Ao enviar seus dados, consulte nossa <a href="{% url 'privacy_policy' %}" target="_blank" rel="noopener">politica de privacidade</a> e os <a href="{% url 'terms_of_use' %}" target="_blank" rel="noopener">termos de uso</a>.</p>
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}

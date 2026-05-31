@@ -222,6 +222,10 @@ class InstallmentChoiceForm(forms.Form):
         widget=forms.RadioSelect,
     )
     installments = forms.ChoiceField(label="Parcelas", required=False)
+    accept_terms = forms.BooleanField(
+        label="Li e aceito os termos de uso e a politica de privacidade",
+        required=True,
+    )
 
     def __init__(self, *args, sale, **kwargs):
         super().__init__(*args, **kwargs)

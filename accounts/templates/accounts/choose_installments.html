@@ -62,6 +62,19 @@
         <div class="errorlist">{{ form.installments.errors }}</div>
     {% endif %}
 
+    <p class="terms-accept">
+        {{ form.accept_terms }}
+        <label for="{{ form.accept_terms.id_for_label }}">
+            Li e aceito os
+            <a href="{% url 'terms_of_use' %}" target="_blank" rel="noopener">termos de uso</a>
+            e a
+            <a href="{% url 'privacy_policy' %}" target="_blank" rel="noopener">politica de privacidade</a>.
+        </label>
+    </p>
+    {% if form.accept_terms.errors %}
+        <div class="errorlist">{{ form.accept_terms.errors }}</div>
+    {% endif %}
+
     <div class="payment-tables">
         <section>
             <h2>Cartao</h2>

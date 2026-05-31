@@ -3,11 +3,11 @@
 {% block content %}
 <h1>Termos de uso</h1>
 
-<p>Estes termos descrevem as regras iniciais de uso da loja Líndice.</p>
+<p>Estes termos descrevem as regras de uso da loja e do aplicativo Líndice.</p>
 
 <section class="info-panel">
     <h2>Compras</h2>
-    <p>Ao fazer um pedido, o cliente confirma que os dados informados estao corretos, incluindo telefone, email, endereco e tamanho escolhido.</p>
+    <p>Ao finalizar uma compra, o cliente confirma que os dados informados estao corretos, incluindo telefone, email, endereco, produto e tamanho escolhido.</p>
 </section>
 
 <section class="info-panel">
@@ -17,7 +17,12 @@
 
 <section class="info-panel">
     <h2>Pagamento</h2>
-    <p>O pagamento online e feito pelo Mercado Pago. O pedido so segue para compra no fornecedor depois da confirmacao do pagamento.</p>
+    <p>O cliente pode escolher Pix com 10% de desconto, cartao ou crediario quando essas opcoes estiverem disponiveis. No cartao, podem incidir juros a partir de 6 parcelas. No crediario, as parcelas e os juros sao apresentados antes da confirmacao.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Crediario</h2>
+    <p>O crediario depende de analise e limite aprovado. Atrasos podem gerar multa e juros conforme informado no aplicativo e na contratacao. O cliente deve conferir valores, vencimentos e total antes de confirmar.</p>
 </section>
 
 <section class="info-panel">
@@ -27,7 +32,12 @@
 
 <section class="info-panel">
     <h2>Atendimento</h2>
-    <p>Em caso de duvida, erro no pedido ou necessidade de suporte, o cliente deve entrar em contato pelos canais oficiais do Líndice.</p>
+    <p>Em caso de duvida, erro no pedido, solicitacao sobre dados pessoais ou necessidade de suporte, envie email para <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Privacidade</h2>
+    <p>O tratamento de dados pessoais segue a <a href="{% url 'privacy_policy' %}">politica de privacidade</a> do Líndice.</p>
 </section>
 
 <p><a href="{% url 'store_front' %}">Voltar para loja</a></p>
