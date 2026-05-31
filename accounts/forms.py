@@ -230,6 +230,9 @@ class InstallmentChoiceForm(forms.Form):
     def __init__(self, *args, sale, **kwargs):
         super().__init__(*args, **kwargs)
         self.sale = sale
+        self.fields["payment_method"].choices = [
+            choice for choice in CreditSale.PAYMENT_METHOD_CHOICES if choice[0] != CreditSale.CARD
+        ]
         self.fields["installments"].choices = [("", "Selecione")] + [
             (option["installments"], f"{option['installments']}x")
             for option in sale.card_options()
