@@ -19,7 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .forms import ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
 from .models import CreditSale, ClientProfile, Product, ProductCost, StoreOrder, SupplierProduct
-from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_checkout_preference, get_payment
+from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_checkout_preference, create_credit_sale_card_preference, get_payment
 from .supplier_import import import_supplier_catalog
 from .utils import generate_phone_code
 
@@ -90,6 +90,8 @@ def build_purchase_groups(user):
                     "installments": sale.selected_installments,
                     "payment_method": sale.get_selected_payment_method_display(),
                     "sale_id": sale.id,
+                    "payment_status": sale.get_payment_status_display(),
+                    "mercado_pago_init_point": sale.mercado_pago_init_point,
                     "created_at": sale.created_at,
                 }
             )
@@ -312,6 +314,17 @@ def mercado_pago_webhook(request):
 
     order_code = payment.get("external_reference", "")
 
+    if payment.get("status") == "approved" and order_code.startswith("credit-sale:"):
+        try:
+            sale_id = int(order_code.split(":", 1)[1])
+            sale = CreditSale.objects.get(id=sale_id)
+        except (ValueError, CreditSale.DoesNotExist):
+            return JsonResponse({"ok": False, "error": "sale not found"}, status=404)
+
+        sale.mark_paid(str(payment.get("id", payment_id)))
+
+        return JsonResponse({"ok": True})
+
     if payment.get("status") == "approved" and order_code:
         try:
             order = StoreOrder.objects.get(order_code=order_code)
@@ -531,6 +544,25 @@ def choose_installments(request, sale_id):
             if sale.selected_payment_method == CreditSale.PIX:
                 return redirect("pix_payment_instructions", sale_id=sale.id)
 
+            if sale.selected_payment_method == CreditSale.CARD:
+                try:
+                    preference = create_credit_sale_card_preference(sale, request)
+                except MercadoPagoNotConfigured:
+                    messages.warning(request, "Cartao ainda nao esta disponivel. Entre em contato com a loja.")
+
+                    return redirect("dashboard")
+                except MercadoPagoRequestError:
+                    logger.exception("Erro ao iniciar pagamento com cartao")
+                    messages.error(request, "Nao foi possivel abrir o pagamento com cartao agora. Tente novamente.")
+
+                    return redirect("dashboard")
+
+                sale.mercado_pago_preference_id = preference["id"]
+                sale.mercado_pago_init_point = preference["init_point"]
+                sale.save(update_fields=["mercado_pago_preference_id", "mercado_pago_init_point"])
+
+                return redirect(sale.mercado_pago_init_point)
+
             return redirect("dashboard")
     else:
         form = InstallmentChoiceForm(sale=sale)
@@ -567,6 +599,47 @@ def pix_payment_instructions(request, sale_id):
             "responsible_name": settings.STORE_RESPONSIBLE_NAME,
         },
     )
+
+
+@login_required
+def credit_sale_payment_success(request):
+    payment_id = request.GET.get("payment_id", "")
+
+    if payment_id:
+        try:
+            payment = get_payment(payment_id)
+        except (MercadoPagoNotConfigured, MercadoPagoRequestError):
+            payment = {}
+
+        external_reference = payment.get("external_reference", "")
+
+        if payment.get("status") == "approved" and external_reference.startswith("credit-sale:"):
+            try:
+                sale_id = int(external_reference.split(":", 1)[1])
+                sale = CreditSale.objects.get(id=sale_id, client=request.user)
+            except (ValueError, CreditSale.DoesNotExist):
+                sale = None
+
+            if sale:
+                sale.mark_paid(str(payment.get("id", payment_id)))
+
+    messages.success(request, "Pagamento recebido. Aguarde a confirmacao da loja.")
+
+    return redirect("dashboard")
+
+
+@login_required
+def credit_sale_payment_failure(request):
+    messages.error(request, "Pagamento nao concluido. Voce pode tentar novamente em Minhas compras.")
+
+    return redirect("dashboard")
+
+
+@login_required
+def credit_sale_payment_pending(request):
+    messages.warning(request, "Pagamento pendente. Atualizaremos sua compra assim que houver confirmacao.")
+
+    return redirect("dashboard")
 
 
 @staff_member_required(login_url="login")

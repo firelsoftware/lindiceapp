@@ -86,5 +86,47 @@ def create_checkout_preference(order, request):
     }
 
 
+def create_credit_sale_card_preference(sale, request):
+    base_url = site_url(request)
+    payload = {
+        "items": [
+            {
+                "title": sale.description,
+                "quantity": 1,
+                "currency_id": "BRL",
+                "unit_price": float(sale.selected_total_with_interest),
+            }
+        ],
+        "payer": {
+            "name": sale.client.full_name,
+            "email": sale.client.email,
+            "phone": {"number": sale.client.profile.phone},
+        },
+        "external_reference": f"credit-sale:{sale.id}",
+        "back_urls": {
+            "success": f"{base_url}/pagamento/mercado-pago/sucesso/",
+            "failure": f"{base_url}/pagamento/mercado-pago/falha/",
+            "pending": f"{base_url}/pagamento/mercado-pago/pendente/",
+        },
+        "notification_url": f"{base_url}/loja/mercado-pago/webhook/",
+        "auto_return": "approved",
+        "payment_methods": {
+            "excluded_payment_types": [
+                {"id": "ticket"},
+                {"id": "bank_transfer"},
+                {"id": "atm"},
+                {"id": "debit_card"},
+            ],
+            "installments": sale.selected_installments,
+        },
+    }
+    response = mercado_pago_request("/checkout/preferences", payload)
+
+    return {
+        "id": response.get("id", ""),
+        "init_point": response.get("init_point") or response.get("sandbox_init_point", ""),
+    }
+
+
 def get_payment(payment_id):
     return mercado_pago_request(f"/v1/payments/{payment_id}", method="GET")

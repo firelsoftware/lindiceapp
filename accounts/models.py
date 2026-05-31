@@ -334,6 +334,14 @@ class CreditSale(models.Model):
         (CREDIT, "Crediario"),
     ]
 
+    PAYMENT_PENDING = "pending"
+    PAYMENT_PAID = "paid"
+
+    PAYMENT_STATUS_CHOICES = [
+        (PAYMENT_PENDING, "Aguardando pagamento"),
+        (PAYMENT_PAID, "Pago"),
+    ]
+
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="credit_sales")
     sale_code = models.CharField(max_length=20, unique=True, blank=True)
     description = models.CharField(max_length=200)
@@ -349,6 +357,10 @@ class CreditSale(models.Model):
     selected_monthly_interest_percent = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     selected_installment_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     selected_total_with_interest = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_PENDING)
+    mercado_pago_preference_id = models.CharField(max_length=120, blank=True)
+    mercado_pago_payment_id = models.CharField(max_length=120, blank=True)
+    mercado_pago_init_point = models.URLField(blank=True)
     created_by = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -474,6 +486,11 @@ class CreditSale(models.Model):
 
     def choose_installments(self, installments):
         self.choose_payment(self.CREDIT, installments)
+
+    def mark_paid(self, payment_id=""):
+        self.payment_status = self.PAYMENT_PAID
+        self.mercado_pago_payment_id = payment_id or self.mercado_pago_payment_id
+        self.save(update_fields=["payment_status", "mercado_pago_payment_id"])
 
     def __str__(self):
         return f"{self.sale_code} - {self.client.email} - {self.description}"

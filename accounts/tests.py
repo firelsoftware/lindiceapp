@@ -248,6 +248,56 @@ class CreditSalePaymentChoiceTests(TestCase):
         self.assertEqual(sale.card_options()[4]["monthly_rate"], Decimal("0.00"))
         self.assertGreater(sale.card_options()[5]["monthly_rate"], Decimal("0.00"))
 
+    @patch("accounts.views.create_credit_sale_card_preference")
+    def test_card_choice_redirects_to_mercado_pago(self, mocked_preference):
+        mocked_preference.return_value = {
+            "id": "pref-123",
+            "init_point": "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=pref-123",
+        }
+        user = self.create_client()
+        sale = self.create_sale(user)
+        self.client.force_login(user)
+
+        response = self.client.post(
+            f"/parcelamento/{sale.id}/",
+            {
+                "payment_method": CreditSale.CARD,
+                "installments": "5",
+                "accept_terms": "on",
+            },
+        )
+        sale.refresh_from_db()
+
+        self.assertRedirects(
+            response,
+            "https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=pref-123",
+            fetch_redirect_response=False,
+        )
+        self.assertEqual(sale.mercado_pago_preference_id, "pref-123")
+        self.assertEqual(sale.selected_payment_method, CreditSale.CARD)
+
+    @patch("accounts.views.get_payment")
+    def test_mercado_pago_webhook_marks_credit_sale_as_paid(self, mocked_get_payment):
+        user = self.create_client()
+        sale = self.create_sale(user)
+        sale.choose_payment(CreditSale.CARD, 5)
+        mocked_get_payment.return_value = {
+            "id": "payment-123",
+            "status": "approved",
+            "external_reference": f"credit-sale:{sale.id}",
+        }
+
+        response = self.client.post(
+            "/loja/mercado-pago/webhook/",
+            data={"data": {"id": "payment-123"}},
+            content_type="application/json",
+        )
+        sale.refresh_from_db()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(sale.payment_status, CreditSale.PAYMENT_PAID)
+        self.assertEqual(sale.mercado_pago_payment_id, "payment-123")
+
     def test_credit_choice_creates_debts(self):
         user = self.create_client()
         sale = self.create_sale(user)

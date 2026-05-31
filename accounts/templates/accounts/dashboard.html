@@ -18,12 +18,16 @@
             {% if group.code %}Codigo da venda: {{ group.code }} | {% endif %}
             {% if group.created_at %}Data da compra: {{ group.created_at|date:"d/m/Y" }} | {% endif %}
             {% if group.payment_method %}Pagamento: {{ group.payment_method }} | {% endif %}
+            {% if group.payment_status %}Status: {{ group.payment_status }} | {% endif %}
             {% if group.installments %}Parcelamento: {{ group.installments }}x | {% endif %}
             Total da compra: R$ {{ group.total|floatformat:2 }}
         </p>
 
         {% if group.payment_method == "Pix" and group.sale_id %}
             <p><a class="button" href="{% url 'pix_payment_instructions' group.sale_id %}">Ver chave Pix</a></p>
+        {% endif %}
+        {% if group.payment_method == "Cartao" and group.mercado_pago_init_point and group.payment_status != "Pago" %}
+            <p><a class="button" href="{{ group.mercado_pago_init_point }}">Pagar com Mercado Pago</a></p>
         {% endif %}
 
         <table>
