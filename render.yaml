@@ -17,6 +17,20 @@ services:
         value: ".onrender.com,app.lindice.com.br"
       - key: DJANGO_CSRF_TRUSTED_ORIGINS
         value: "https://*.onrender.com,https://app.lindice.com.br"
+      - key: DJANGO_SECURE_SSL_REDIRECT
+        value: "true"
+      - key: DJANGO_SECURE_HSTS_SECONDS
+        value: "3600"
+      - key: PUBLIC_SITE_URL
+        sync: false
+      - key: MERCADO_PAGO_ACCESS_TOKEN
+        sync: false
+      - key: SHOE_SUPPLIER_CATALOG_URL
+        sync: false
+      - key: SHOE_SUPPLIER_CATALOG_FORMAT
+        value: "csv"
+      - key: PHONE_VERIFICATION_REQUIRED
+        value: "false"
       - key: SUPABASE_STORAGE_BUCKET
         sync: false
       - key: SUPABASE_STORAGE_ENDPOINT_URL

@@ -33,7 +33,7 @@
     </div>
 </div>
 
-{% if not supplier_catalog_configured or not mercado_pago_configured %}
+{% if not supplier_catalog_configured or not mercado_pago_configured or not public_site_url_configured %}
     <section class="info-panel">
         <h2>Checklist da loja</h2>
         {% if supplier_catalog_configured %}
@@ -47,6 +47,19 @@
         {% else %}
             <p><span class="badge badge-warning">Mercado Pago pendente</span> Configure <strong>MERCADO_PAGO_ACCESS_TOKEN</strong> antes de aceitar pagamento real.</p>
         {% endif %}
+
+        {% if public_site_url_configured %}
+            <p><span class="badge badge-success">URL publica configurada</span></p>
+        {% else %}
+            <p><span class="badge badge-warning">URL publica pendente</span> Configure <strong>PUBLIC_SITE_URL</strong> para retornos e webhooks de pagamento.</p>
+        {% endif %}
+    </section>
+{% endif %}
+
+{% if not phone_verification_required %}
+    <section class="info-panel">
+        <h2>Verificacao de telefone</h2>
+        <p><span class="badge badge-warning">Verificacao desativada</span> Cadastros entram direto para analise manual ate a integracao com SMS ou WhatsApp.</p>
     </section>
 {% endif %}
 

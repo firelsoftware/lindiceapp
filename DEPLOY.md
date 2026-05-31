@@ -33,7 +33,13 @@ python manage.py createsuperuser
 ```text
 DJANGO_ALLOWED_HOSTS=.onrender.com,seu-dominio.com.br,www.seu-dominio.com.br
 DJANGO_CSRF_TRUSTED_ORIGINS=https://seu-dominio.com.br,https://www.seu-dominio.com.br
+PUBLIC_SITE_URL=https://seu-dominio.com.br
+MERCADO_PAGO_ACCESS_TOKEN=...
+SHOE_SUPPLIER_CATALOG_URL=...
+PHONE_VERIFICATION_REQUIRED=false
 ```
+
+Use `PHONE_VERIFICATION_REQUIRED=false` apenas enquanto nao houver envio real de codigo por SMS ou WhatsApp. Nesse modo, o cadastro segue direto para analise manual do administrador.
 
 ## Observacoes importantes
 

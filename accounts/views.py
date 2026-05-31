@@ -280,12 +280,19 @@ def register(request):
         if form.is_valid():
             user = form.save()
             profile = user.profile
-            profile.phone_verification_code = generate_phone_code()
-            profile.phone_verification_sent_at = timezone.now()
-            profile.save(update_fields=["phone_verification_code", "phone_verification_sent_at"])
+            if settings.PHONE_VERIFICATION_REQUIRED:
+                profile.phone_verification_code = generate_phone_code()
+                profile.phone_verification_sent_at = timezone.now()
+                profile.save(update_fields=["phone_verification_code", "phone_verification_sent_at"])
+            else:
+                profile.phone_verified = True
+                profile.save(update_fields=["phone_verified"])
             login(request, user)
 
-            return redirect("verify_phone")
+            if settings.PHONE_VERIFICATION_REQUIRED:
+                return redirect("verify_phone")
+
+            return redirect("dashboard")
     else:
         form = RegisterForm()
 
@@ -295,6 +302,9 @@ def register(request):
 @login_required
 def verify_phone(request):
     profile = request.user.profile
+
+    if not settings.PHONE_VERIFICATION_REQUIRED:
+        return redirect("dashboard")
 
     if profile.phone_verified:
         return redirect("dashboard")
@@ -319,7 +329,7 @@ def verify_phone(request):
         "accounts/verify_phone.html",
         {
             "form": form,
-            "development_code": profile.phone_verification_code,
+            "development_code": profile.phone_verification_code if settings.DEBUG else "",
         },
     )
 
@@ -484,6 +494,8 @@ def management_dashboard(request):
             "store_pending_payment_count": store_pending_payment_count,
             "supplier_catalog_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
             "mercado_pago_configured": bool(settings.MERCADO_PAGO_ACCESS_TOKEN),
+            "public_site_url_configured": bool(settings.PUBLIC_SITE_URL),
+            "phone_verification_required": settings.PHONE_VERIFICATION_REQUIRED,
         },
     )
 

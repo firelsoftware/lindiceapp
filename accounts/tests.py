@@ -76,6 +76,65 @@ class CPFValidationTests(TestCase):
         self.assertIn("Informe um CPF valido.", form.errors["cpf"])
 
 
+class RegistrationFlowTests(TestCase):
+    def registration_payload(self, **overrides):
+        data = {
+            "full_name": "Cliente Teste",
+            "preferred_name": "Cliente",
+            "email": "cliente-teste@example.com",
+            "password1": "Teste12345!",
+            "password2": "Teste12345!",
+            "cpf": "529.982.247-25",
+            "phone": "61999999999",
+            "address": "Rua Teste, 1",
+        }
+        data.update(overrides)
+
+        return data
+
+    @override_settings(PHONE_VERIFICATION_REQUIRED=False)
+    def test_registration_can_continue_to_manual_review_without_phone_verification(self):
+        data = self.registration_payload(
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+        )
+
+        response = self.client.post(
+            "/cadastro/",
+            data=data,
+        )
+        user = User.objects.get(email="cliente-teste@example.com")
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/painel/")
+        self.assertTrue(user.profile.phone_verified)
+        self.assertEqual(user.profile.phone_verification_code, "")
+
+    @override_settings(DEBUG=False, PHONE_VERIFICATION_REQUIRED=True, ALLOWED_HOSTS=["testserver"])
+    def test_phone_verification_code_is_hidden_outside_debug(self):
+        user = User.objects.create_user(
+            email="cliente-codigo@example.com",
+            password="Teste12345!",
+            full_name="Cliente Codigo",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash=cpf_hash("52998224725"),
+            cpf_last_digits="4725",
+            phone="61999999999",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            phone_verification_code="123456",
+        )
+        self.client.force_login(user)
+
+        response = self.client.get("/verificar-telefone/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Codigo de desenvolvimento")
+        self.assertNotContains(response, "123456")
+
+
 class StoreFlowTests(TestCase):
     def create_supplier_product(self, **overrides):
         data = {

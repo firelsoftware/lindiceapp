@@ -16,6 +16,18 @@ def env_bool(name, default=False):
     return value.lower() in {"1", "true", "yes", "on"}
 
 
+def env_int(name, default=0):
+    value = os.environ.get(name)
+
+    if value is None:
+        return default
+
+    try:
+        return int(value)
+    except ValueError:
+        return default
+
+
 def env_list(name, default=None):
     value = os.environ.get(name)
 
@@ -225,8 +237,12 @@ SHOE_SUPPLIER_CATALOG_URL = os.environ.get("SHOE_SUPPLIER_CATALOG_URL", "")
 SHOE_SUPPLIER_CATALOG_FORMAT = os.environ.get("SHOE_SUPPLIER_CATALOG_FORMAT", "csv")
 MERCADO_PAGO_ACCESS_TOKEN = os.environ.get("MERCADO_PAGO_ACCESS_TOKEN", "")
 PUBLIC_SITE_URL = os.environ.get("PUBLIC_SITE_URL", "")
+PHONE_VERIFICATION_REQUIRED = env_bool("PHONE_VERIFICATION_REQUIRED", default=True)
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = env_bool("DJANGO_SECURE_SSL_REDIRECT", default=not DEBUG)
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
+SECURE_HSTS_SECONDS = env_int("DJANGO_SECURE_HSTS_SECONDS", default=0 if DEBUG else 3600)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env_bool("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS", default=False)
+SECURE_HSTS_PRELOAD = env_bool("DJANGO_SECURE_HSTS_PRELOAD", default=False)
