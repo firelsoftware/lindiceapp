@@ -1,0 +1,90 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<div class="page-heading-row">
+    <h1>Clientes</h1>
+    <a class="button" href="{% url 'create_manual_debt' %}">Lancar debito</a>
+</div>
+
+<div class="summary-grid">
+    <div class="summary-item">
+        <strong>{{ clients_total }}</strong>
+        <span>Clientes cadastrados</span>
+    </div>
+    <div class="summary-item">
+        <strong>{{ clients_approved }}</strong>
+        <span>Aprovados</span>
+    </div>
+    <div class="summary-item">
+        <strong>{{ clients_pending }}</strong>
+        <span>Aguardando analise</span>
+    </div>
+    <div class="summary-item">
+        <strong>{{ clients_overdue }}</strong>
+        <span>Com atraso</span>
+    </div>
+</div>
+
+<form method="get" class="filter-form">
+    <p>
+        <label for="id_q">Buscar cliente</label>
+        <input id="id_q" type="search" name="q" value="{{ query }}" placeholder="Nome, email, telefone ou final do CPF">
+    </p>
+    <p>
+        <label for="id_cadastro">Situacao cadastral</label>
+        <select id="id_cadastro" name="cadastro">
+            <option value="">Todos</option>
+            <option value="pending"{% if registration_status == "pending" %} selected{% endif %}>Pendente</option>
+            <option value="approved"{% if registration_status == "approved" %} selected{% endif %}>Aprovado</option>
+            <option value="rejected"{% if registration_status == "rejected" %} selected{% endif %}>Rejeitado</option>
+        </select>
+    </p>
+    <p>
+        <label for="id_financeiro">Analise financeira</label>
+        <select id="id_financeiro" name="financeiro">
+            <option value="">Todos</option>
+            <option value="overdue"{% if financial_status == "overdue" %} selected{% endif %}>Com atraso</option>
+            <option value="open"{% if financial_status == "open" %} selected{% endif %}>Com saldo aberto</option>
+            <option value="loyal"{% if financial_status == "loyal" %} selected{% endif %}>Clientes fieis</option>
+        </select>
+    </p>
+    <button type="submit">Filtrar</button>
+    <a class="button button-secondary" href="{% url 'clients_list' %}">Limpar</a>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Cadastro</th>
+            <th>Relacionamento</th>
+            <th>Saldo aberto</th>
+            <th>Em atraso</th>
+            <th>Maior atraso</th>
+            <th>Acao</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for summary in client_summaries %}
+            <tr>
+                <td>
+                    <strong>{{ summary.profile.user.full_name }}</strong><br>
+                    <small>{{ summary.profile.phone }}</small>
+                </td>
+                <td>{{ summary.profile.get_registration_status_display }}</td>
+                <td><span class="badge {{ summary.relationship_badge }}">{{ summary.relationship_label }}</span></td>
+                <td>R$ {{ summary.open_total|floatformat:2 }}</td>
+                <td>R$ {{ summary.overdue_total|floatformat:2 }}</td>
+                <td>{{ summary.overdue_days }} dias</td>
+                <td><a class="button" href="{% url 'review_client_profile' summary.profile.id %}">Abrir ficha</a></td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="7">Nenhum cliente encontrado.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><a href="{% url 'management_dashboard' %}">Voltar ao painel de gestao</a></p>
+{% endblock %}

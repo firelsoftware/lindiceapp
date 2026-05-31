@@ -53,6 +53,40 @@
     </dl>
 </section>
 
+<section class="info-panel">
+    <h2>Analise financeira</h2>
+    <dl class="info-list">
+        <div>
+            <dt>Relacionamento</dt>
+            <dd><span class="badge {{ financial_summary.relationship_badge }}">{{ financial_summary.relationship_label }}</span></dd>
+        </div>
+        <div>
+            <dt>Saldo aberto</dt>
+            <dd>R$ {{ financial_summary.open_total|floatformat:2 }}</dd>
+        </div>
+        <div>
+            <dt>Total em atraso</dt>
+            <dd>R$ {{ financial_summary.overdue_total|floatformat:2 }}</dd>
+        </div>
+        <div>
+            <dt>Maior atraso atual</dt>
+            <dd>{{ financial_summary.overdue_days }} dias</dd>
+        </div>
+        <div>
+            <dt>Parcelas pagas</dt>
+            <dd>{{ financial_summary.paid_debts_count }}</dd>
+        </div>
+        <div>
+            <dt>Total ja pago</dt>
+            <dd>R$ {{ financial_summary.paid_total|floatformat:2 }}</dd>
+        </div>
+        <div>
+            <dt>Compras finalizadas</dt>
+            <dd>{{ financial_summary.accepted_sales_count }}</dd>
+        </div>
+    </dl>
+</section>
+
 {% if profile.profile_photo %}
     <section class="info-panel">
         <h2>Foto do cliente</h2>
@@ -111,5 +145,5 @@
     </div>
 </form>
 
-<p><a href="{% url 'management_dashboard' %}">Voltar ao painel de gestao</a></p>
+<p><a href="{% url 'clients_list' %}">Voltar para clientes</a></p>
 {% endblock %}

@@ -33,6 +33,7 @@ urlpatterns = [
     path("pagamento/mercado-pago/falha/", views.credit_sale_payment_failure, name="credit_sale_payment_failure"),
     path("pagamento/mercado-pago/pendente/", views.credit_sale_payment_pending, name="credit_sale_payment_pending"),
     path("gestao/", views.management_dashboard, name="management_dashboard"),
+    path("gestao/clientes/", views.clients_list, name="clients_list"),
     path("gestao/cadastros/<int:profile_id>/", views.review_client_profile, name="review_client_profile"),
     path("gestao/debitos/novo/", views.create_manual_debt, name="create_manual_debt"),
     path("gestao/vendas/nova/", views.create_credit_sale, name="create_credit_sale"),

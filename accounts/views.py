@@ -117,6 +117,47 @@ def build_purchase_groups(user):
     return groups
 
 
+def build_client_financial_summary(profile):
+    debts = list(profile.user.debts.order_by("due_date", "id"))
+    unpaid_debts = [debt for debt in debts if not debt.paid]
+    overdue_debts = [debt for debt in unpaid_debts if debt.days_late() > 0]
+    paid_debts = [debt for debt in debts if debt.paid]
+    overdue_days = max((debt.days_late() for debt in overdue_debts), default=0)
+    open_total = sum((debt.total_amount() for debt in unpaid_debts), Decimal("0.00"))
+    overdue_total = sum((debt.total_amount() for debt in overdue_debts), Decimal("0.00"))
+    paid_total = sum((debt.amount for debt in paid_debts), Decimal("0.00"))
+    accepted_sales_count = profile.user.credit_sales.filter(status=CreditSale.ACCEPTED).count()
+
+    if overdue_debts:
+        relationship_label = "Inadimplente"
+        relationship_badge = "badge-warning"
+    elif unpaid_debts:
+        relationship_label = "Em acompanhamento"
+        relationship_badge = "badge-info"
+    elif len(paid_debts) >= 3:
+        relationship_label = "Cliente fiel"
+        relationship_badge = "badge-success"
+    elif paid_debts:
+        relationship_label = "Bom historico"
+        relationship_badge = "badge-success"
+    else:
+        relationship_label = "Novo cliente"
+        relationship_badge = "badge-info"
+
+    return {
+        "profile": profile,
+        "debts": debts,
+        "open_total": open_total,
+        "overdue_total": overdue_total,
+        "overdue_days": overdue_days,
+        "paid_debts_count": len(paid_debts),
+        "paid_total": paid_total,
+        "accepted_sales_count": accepted_sales_count,
+        "relationship_label": relationship_label,
+        "relationship_badge": relationship_badge,
+    }
+
+
 def home(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
@@ -709,6 +750,56 @@ def management_dashboard(request):
     )
 
 
+@staff_member_required(login_url="login")
+def clients_list(request):
+    profiles = ClientProfile.objects.select_related("user").order_by("user__full_name")
+    query = request.GET.get("q", "").strip()
+    registration_status = request.GET.get("cadastro", "").strip()
+    financial_status = request.GET.get("financeiro", "").strip()
+
+    if query:
+        profiles = profiles.filter(
+            Q(user__full_name__icontains=query)
+            | Q(user__email__icontains=query)
+            | Q(phone__icontains=query)
+            | Q(cpf_last_digits__icontains=query)
+        )
+
+    if registration_status in {ClientProfile.PENDING, ClientProfile.APPROVED, ClientProfile.REJECTED}:
+        profiles = profiles.filter(registration_status=registration_status)
+
+    client_summaries = [build_client_financial_summary(profile) for profile in profiles]
+
+    if financial_status == "overdue":
+        client_summaries = [summary for summary in client_summaries if summary["overdue_total"] > 0]
+    elif financial_status == "open":
+        client_summaries = [summary for summary in client_summaries if summary["open_total"] > 0]
+    elif financial_status == "loyal":
+        client_summaries = [summary for summary in client_summaries if summary["relationship_label"] == "Cliente fiel"]
+
+    all_profiles = ClientProfile.objects.select_related("user")
+    all_summaries = [build_client_financial_summary(profile) for profile in all_profiles]
+
+    return render(
+        request,
+        "accounts/clients_list.html",
+        {
+            "client_summaries": client_summaries,
+            "query": query,
+            "registration_status": registration_status,
+            "financial_status": financial_status,
+            "clients_total": len(all_summaries),
+            "clients_approved": sum(
+                summary["profile"].registration_status == ClientProfile.APPROVED for summary in all_summaries
+            ),
+            "clients_pending": sum(
+                summary["profile"].registration_status == ClientProfile.PENDING for summary in all_summaries
+            ),
+            "clients_overdue": sum(summary["overdue_total"] > 0 for summary in all_summaries),
+        },
+    )
+
+
 @login_required
 def notifications_list(request):
     generate_due_notifications()
@@ -738,7 +829,7 @@ def notifications_mark_all_read(request):
 @staff_member_required(login_url="login")
 def review_client_profile(request, profile_id):
     profile = get_object_or_404(ClientProfile, id=profile_id)
-    debts = profile.user.debts.order_by("due_date", "id")
+    financial_summary = build_client_financial_summary(profile)
     was_approved = profile.registration_status == ClientProfile.APPROVED
 
     if request.method == "POST":
@@ -773,7 +864,16 @@ def review_client_profile(request, profile_id):
     else:
         form = ClientApprovalForm(instance=profile)
 
-    return render(request, "accounts/review_client_profile.html", {"debts": debts, "form": form, "profile": profile})
+    return render(
+        request,
+        "accounts/review_client_profile.html",
+        {
+            "debts": financial_summary["debts"],
+            "financial_summary": financial_summary,
+            "form": form,
+            "profile": profile,
+        },
+    )
 
 
 @staff_member_required(login_url="login")

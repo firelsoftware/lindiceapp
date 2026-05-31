@@ -773,6 +773,11 @@
             color: #9a3412;
         }
 
+        .badge-info {
+            background: #eef2ff;
+            color: var(--brand-blue);
+        }
+
         .badge-muted {
             background: #f1f5f9;
             color: var(--muted);
@@ -1225,6 +1230,7 @@
                 <nav class="app-menu" aria-label="Menu do aplicativo" data-menu-panel>
                     {% if request.user.is_staff %}
                         <a class="menu-link" href="{% url 'management_dashboard' %}">Painel de gestao</a>
+                        <a class="menu-link" href="{% url 'clients_list' %}">Clientes</a>
                         <a class="menu-link" href="{% url 'create_credit_sale' %}">Lancar venda</a>
                         <a class="menu-link" href="{% url 'create_manual_debt' %}">Lancar debito</a>
                         <a class="menu-link" href="{% url 'product_list' %}">Produtos</a>

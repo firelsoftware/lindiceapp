@@ -800,3 +800,88 @@ class NotificationTests(TestCase):
         self.assertEqual(client_notifications.count(), 2)
         self.assertTrue(client_notifications.filter(message__contains="ha 1 dia(s)").exists())
         self.assertTrue(client_notifications.filter(message__contains="ha 4 dia(s)").exists())
+
+
+class ClientPortfolioTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_user(
+            email="carteira@example.com",
+            password="Teste12345!",
+            full_name="Gestao Carteira",
+            preferred_name="Gestao",
+            is_staff=True,
+        )
+        self.client_user = User.objects.create_user(
+            email="maria@example.com",
+            password="Teste12345!",
+            full_name="Maria Cliente",
+            preferred_name="Maria",
+        )
+        self.profile = ClientProfile.objects.create(
+            user=self.client_user,
+            cpf_hash="cpf-hash-maria",
+            cpf_last_digits="1111",
+            phone="61988887777",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+        )
+        self.client.force_login(self.staff)
+
+    def test_clients_list_shows_registration_and_overdue_analysis(self):
+        Debt.objects.create(
+            client=self.client_user,
+            description="Parcela atrasada",
+            amount=Decimal("100.00"),
+            due_date=timezone.localdate() - timedelta(days=4),
+        )
+
+        response = self.client.get("/gestao/clientes/")
+
+        self.assertContains(response, "Maria Cliente")
+        self.assertContains(response, "Aprovado")
+        self.assertContains(response, "Inadimplente")
+        self.assertContains(response, "4 dias")
+
+    def test_clients_list_filters_by_query_and_overdue_status(self):
+        Debt.objects.create(
+            client=self.client_user,
+            description="Parcela atrasada",
+            amount=Decimal("100.00"),
+            due_date=timezone.localdate() - timedelta(days=1),
+        )
+        other_user = User.objects.create_user(
+            email="joao@example.com",
+            password="Teste12345!",
+            full_name="Joao Regular",
+            preferred_name="Joao",
+        )
+        ClientProfile.objects.create(
+            user=other_user,
+            cpf_hash="cpf-hash-joao",
+            cpf_last_digits="2222",
+            phone="61977776666",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+        )
+
+        response = self.client.get("/gestao/clientes/?q=Maria&financeiro=overdue")
+
+        self.assertContains(response, "Maria Cliente")
+        self.assertNotContains(response, "Joao Regular")
+
+    def test_client_profile_shows_financial_summary(self):
+        Debt.objects.create(
+            client=self.client_user,
+            description="Parcela aberta",
+            amount=Decimal("150.00"),
+            due_date=timezone.localdate() + timedelta(days=10),
+        )
+
+        response = self.client.get(f"/gestao/cadastros/{self.profile.id}/")
+
+        self.assertContains(response, "Analise financeira")
+        self.assertContains(response, "Em acompanhamento")
+        self.assertContains(response, "Saldo aberto")
+        self.assertContains(response, "R$ 150,00")
