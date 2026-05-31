@@ -399,6 +399,45 @@
             outline: none;
         }
 
+        .password-field {
+            position: relative;
+        }
+
+        .password-field input {
+            padding-right: 52px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 4px;
+            bottom: 4px;
+            display: inline-grid;
+            place-items: center;
+            width: 42px;
+            min-height: 38px;
+            margin: 0;
+            padding: 0;
+            border-radius: 6px;
+            background: transparent;
+            color: var(--brand-blue);
+        }
+
+        .password-toggle:hover {
+            background: #eef2ff;
+            color: var(--brand-purple);
+            transform: none;
+        }
+
+        .password-toggle svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 2;
+        }
+
         .terms-accept {
             display: flex;
             align-items: flex-start;
@@ -1172,6 +1211,34 @@
                 if (event.key === "Escape") {
                     setMenu(false);
                 }
+            });
+        })();
+
+        (function () {
+            var eyeIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+
+            document.querySelectorAll('input[type="password"]').forEach(function (input) {
+                var wrapper = document.createElement("div");
+                var toggle = document.createElement("button");
+
+                wrapper.className = "password-field";
+                input.parentNode.insertBefore(wrapper, input);
+                wrapper.appendChild(input);
+
+                toggle.type = "button";
+                toggle.className = "password-toggle";
+                toggle.setAttribute("aria-label", "Mostrar senha");
+                toggle.setAttribute("title", "Mostrar senha");
+                toggle.innerHTML = eyeIcon;
+                wrapper.appendChild(toggle);
+
+                toggle.addEventListener("click", function () {
+                    var showPassword = input.type === "password";
+
+                    input.type = showPassword ? "text" : "password";
+                    toggle.setAttribute("aria-label", showPassword ? "Ocultar senha" : "Mostrar senha");
+                    toggle.setAttribute("title", showPassword ? "Ocultar senha" : "Mostrar senha");
+                });
             });
         })();
     </script>
