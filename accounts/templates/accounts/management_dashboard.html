@@ -33,7 +33,7 @@
     </div>
 </div>
 
-{% if not supplier_catalog_configured or not mercado_pago_configured or not public_site_url_configured %}
+{% if not supplier_catalog_configured or not mercado_pago_configured or not public_site_url_configured or not pix_key_configured %}
     <section class="info-panel">
         <h2>Checklist da loja</h2>
         {% if supplier_catalog_configured %}
@@ -52,6 +52,12 @@
             <p><span class="badge badge-success">URL publica configurada</span></p>
         {% else %}
             <p><span class="badge badge-warning">URL publica pendente</span> Configure <strong>PUBLIC_SITE_URL</strong> para retornos e webhooks de pagamento.</p>
+        {% endif %}
+
+        {% if pix_key_configured %}
+            <p><span class="badge badge-success">Chave Pix configurada</span></p>
+        {% else %}
+            <p><span class="badge badge-warning">Chave Pix pendente</span> Configure <strong>STORE_PIX_KEY</strong> antes de oferecer Pix aos clientes.</p>
         {% endif %}
     </section>
 {% endif %}

@@ -130,7 +130,35 @@
 </form>
 
 <p><a href="{% url 'dashboard' %}">Voltar ao painel</a></p>
+{{ card_installments|json_script:"card-installments" }}
+{{ credit_installments|json_script:"credit-installments" }}
 <script>
+    const installmentSelect = document.getElementById("{{ form.installments.id_for_label }}");
+    const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
+    const installmentOptions = {
+        card: JSON.parse(document.getElementById("card-installments").textContent),
+        credit: JSON.parse(document.getElementById("credit-installments").textContent),
+    };
+
+    const updateInstallments = () => {
+        const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
+        const previousValue = installmentSelect.value;
+        const options = installmentOptions[paymentMethod] || [];
+
+        installmentSelect.replaceChildren(new Option("Selecione", ""));
+        options.forEach((installments) => {
+            installmentSelect.add(new Option(`${installments}x`, installments));
+        });
+        installmentSelect.disabled = paymentMethod === "pix" || !paymentMethod;
+
+        if (options.includes(Number(previousValue))) {
+            installmentSelect.value = previousValue;
+        }
+    };
+
+    paymentMethods.forEach((input) => input.addEventListener("change", updateInstallments));
+    updateInstallments();
+
     const carousel = document.querySelector("[data-carousel]");
     if (carousel) {
         const items = carousel.querySelectorAll(".carousel-item");

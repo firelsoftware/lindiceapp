@@ -585,6 +585,8 @@ def choose_installments(request, sale_id):
             "pix_option": sale.pix_option(),
             "card_options": sale.card_options(),
             "credit_options": sale.credit_options(),
+            "card_installments": [option["installments"] for option in sale.card_options()],
+            "credit_installments": [option["installments"] for option in sale.credit_options()],
         },
     )
 
@@ -673,6 +675,7 @@ def management_dashboard(request):
             "supplier_catalog_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
             "mercado_pago_configured": bool(settings.MERCADO_PAGO_ACCESS_TOKEN),
             "public_site_url_configured": bool(settings.PUBLIC_SITE_URL),
+            "pix_key_configured": bool(settings.STORE_PIX_KEY),
             "phone_verification_required": settings.PHONE_VERIFICATION_REQUIRED,
         },
     )
