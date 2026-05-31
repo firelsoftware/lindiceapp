@@ -742,6 +742,28 @@ class NotificationTests(TestCase):
         self.assertRedirects(response, "/gestao/")
         self.assertTrue(self.client_user.notifications.filter(kind=Notification.MANUAL_DEBT, debt=debt).exists())
 
+    def test_manual_debt_from_profile_returns_to_profile_and_is_visible(self):
+        profile = self.client_user.profile
+        profile.registration_status = ClientProfile.PENDING
+        profile.save(update_fields=["registration_status"])
+        self.client.force_login(self.staff)
+
+        response = self.client.post(
+            "/gestao/debitos/novo/",
+            {
+                "client": self.client_user.id,
+                "description": "Saldo anterior",
+                "amount": "125.50",
+                "due_date": "2026-06-15",
+                "return_profile_id": profile.id,
+            },
+            follow=True,
+        )
+
+        self.assertRedirects(response, f"/gestao/cadastros/{profile.id}/")
+        self.assertContains(response, "Saldo anterior")
+        self.assertContains(response, "R$ 125,50")
+
     def test_staff_approval_notifies_client(self):
         profile = self.client_user.profile
         profile.registration_status = ClientProfile.PENDING

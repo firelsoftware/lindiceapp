@@ -738,6 +738,7 @@ def notifications_mark_all_read(request):
 @staff_member_required(login_url="login")
 def review_client_profile(request, profile_id):
     profile = get_object_or_404(ClientProfile, id=profile_id)
+    debts = profile.user.debts.order_by("due_date", "id")
     was_approved = profile.registration_status == ClientProfile.APPROVED
 
     if request.method == "POST":
@@ -772,13 +773,14 @@ def review_client_profile(request, profile_id):
     else:
         form = ClientApprovalForm(instance=profile)
 
-    return render(request, "accounts/review_client_profile.html", {"form": form, "profile": profile})
+    return render(request, "accounts/review_client_profile.html", {"debts": debts, "form": form, "profile": profile})
 
 
 @staff_member_required(login_url="login")
 def create_manual_debt(request):
     initial = {}
     client_id = request.GET.get("cliente")
+    return_profile_id = request.GET.get("voltar_cadastro") or request.POST.get("return_profile_id")
 
     if client_id:
         initial["client"] = client_id
@@ -791,11 +793,14 @@ def create_manual_debt(request):
             create_manual_debt_notification(debt)
             messages.success(request, "Debito lancado e cliente notificado com sucesso.")
 
+            if return_profile_id:
+                return redirect("review_client_profile", profile_id=return_profile_id)
+
             return redirect("management_dashboard")
     else:
         form = ManualDebtForm(initial=initial)
 
-    return render(request, "accounts/create_manual_debt.html", {"form": form})
+    return render(request, "accounts/create_manual_debt.html", {"form": form, "return_profile_id": return_profile_id})
 
 
 @staff_member_required(login_url="login")

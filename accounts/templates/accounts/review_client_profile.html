@@ -71,7 +71,36 @@
     </p>
 </section>
 
-<p><a class="button" href="{% url 'create_manual_debt' %}?cliente={{ profile.user_id }}">Lancar debito para este cliente</a></p>
+<section class="info-panel">
+    <h2>Debitos lancados</h2>
+    <p><a class="button" href="{% url 'create_manual_debt' %}?cliente={{ profile.user_id }}&amp;voltar_cadastro={{ profile.id }}">Lancar debito para este cliente</a></p>
+    <table>
+        <thead>
+            <tr>
+                <th>Descricao</th>
+                <th>Vencimento</th>
+                <th>Valor</th>
+                <th>Total atualizado</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for debt in debts %}
+                <tr>
+                    <td>{{ debt.description }}</td>
+                    <td>{{ debt.due_date|date:"d/m/Y" }}</td>
+                    <td>R$ {{ debt.amount|floatformat:2 }}</td>
+                    <td>R$ {{ debt.total_amount|floatformat:2 }}</td>
+                    <td>{% if debt.paid %}Pago{% else %}Pendente{% endif %}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">Nenhum debito lancado para este cliente.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
 
 <form method="post">
     {% csrf_token %}
