@@ -19,10 +19,10 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
-from .models import CreditSale, ClientProfile, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .models import CreditSale, ClientProfile, Debt, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment
-from .supplier_import import import_supplier_catalog
+from .supplier_import import decode_catalog_content, import_supplier_catalog, import_supplier_catalog_content
 from .utils import generate_phone_code
 
 logger = logging.getLogger(__name__)
@@ -988,6 +988,8 @@ def choose_installments(request, sale_id):
             "welcome_discount_available": sale.available_welcome_discount_amount() > 0,
             "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
             "welcome_discount_preview": sale.available_welcome_discount_amount(),
+            "credit_late_fee_percent": Debt._meta.get_field("late_fee_percent").default,
+            "credit_monthly_interest_percent": Debt._meta.get_field("monthly_interest_percent").default,
         },
     )
 
@@ -1340,6 +1342,7 @@ def supplier_products(request):
         {
             "products": page_obj,
             "catalog_url_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
+            "supplier_dropshipping_url": settings.SHOE_SUPPLIER_DROPSHIPPING_URL,
             "query": query,
             "visibility": visibility,
               "total_products": SupplierProduct.objects.count(),
@@ -1354,16 +1357,25 @@ def import_supplier_products(request):
     if request.method != "POST":
         return redirect("supplier_products")
 
-    if not settings.SHOE_SUPPLIER_CATALOG_URL:
-        messages.error(request, "Configure SHOE_SUPPLIER_CATALOG_URL antes de importar o catalogo.")
+    uploaded_catalog = request.FILES.get("catalog_file")
+
+    if not uploaded_catalog and not settings.SHOE_SUPPLIER_CATALOG_URL:
+        messages.error(request, "Envie um CSV/XML ou configure SHOE_SUPPLIER_CATALOG_URL antes de importar o catalogo.")
 
         return redirect("supplier_products")
 
     try:
-        result = import_supplier_catalog(
-            settings.SHOE_SUPPLIER_CATALOG_URL,
-            settings.SHOE_SUPPLIER_CATALOG_FORMAT,
-        )
+        if uploaded_catalog:
+            raw_content = uploaded_catalog.read()
+            result = import_supplier_catalog_content(
+                decode_catalog_content(raw_content),
+                "xml" if uploaded_catalog.name.lower().endswith(".xml") else "csv",
+            )
+        else:
+            result = import_supplier_catalog(
+                settings.SHOE_SUPPLIER_CATALOG_URL,
+                settings.SHOE_SUPPLIER_CATALOG_FORMAT,
+            )
     except Exception as exc:
         messages.error(request, f"Nao foi possivel importar o catalogo: {exc}")
 

@@ -13,7 +13,23 @@
 {% endif %}
 
 <section class="info-panel">
+    <h2>Dropshipping Revenda de Calcados</h2>
+    <p>Use a area do fornecedor para ativar o dropshipping e obter o link do catalogo em CSV ou XML.</p>
+    {% if supplier_dropshipping_url %}
+        <p><a class="button button-secondary" href="{{ supplier_dropshipping_url }}" target="_blank" rel="noopener">Abrir Revenda / Shop Integra</a></p>
+    {% endif %}
+</section>
+
+<section class="info-panel">
     <h2>Importar catalogo</h2>
+    <p>Voce pode baixar a planilha da Revenda uma vez por dia e enviar aqui. O app so libera tamanhos com pelo menos 3 unidades em estoque.</p>
+    <form method="post" action="{% url 'import_supplier_products' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="catalog-file">CSV ou XML do dia</label>
+        <input id="catalog-file" name="catalog_file" type="file" accept=".csv,.xml,text/csv,text/xml,application/xml">
+        <button type="submit">Importar arquivo baixado</button>
+    </form>
+
     {% if catalog_url_configured %}
         <p>O catalogo esta configurado por variavel de ambiente. Use este botao no maximo quando precisar atualizar o estoque.</p>
         <form method="post" action="{% url 'import_supplier_products' %}">
@@ -22,7 +38,7 @@
         </form>
     {% else %}
         <p>Configure a variavel <strong>SHOE_SUPPLIER_CATALOG_URL</strong> no Render para habilitar a importacao.</p>
-        <p>Quando tiver a URL CSV ou XML da Revenda de Calcados, ela deve ficar em variavel de ambiente, nao no codigo.</p>
+        <p>Dentro da area do revendedor, procure o arquivo de produtos/estoque em CSV ou XML. Essa URL deve ficar em variavel de ambiente, nao no codigo.</p>
     {% endif %}
 </section>
 

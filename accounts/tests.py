@@ -10,6 +10,7 @@ from .forms import RegisterForm
 from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, StoreOrder, SupplierProduct, User
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference
+from .supplier_import import parse_csv, row_to_payload
 from .utils import cpf_hash, is_valid_cpf
 
 
@@ -242,6 +243,19 @@ class CreditSalePaymentChoiceTests(TestCase):
 
         self.assertContains(response, "Presente de boas-vindas")
         self.assertContains(response, "5% OFF")
+
+    def test_credit_payment_page_explains_late_fee_rules(self):
+        user = self.create_client()
+        sale = self.create_sale(user)
+        self.client.force_login(user)
+
+        response = self.client.get(f"/parcelamento/{sale.id}/")
+
+        self.assertContains(response, "Credi&aacute;rio*")
+        self.assertContains(response, "atraso gera multa de 2% e juros de 1%")
+        self.assertContains(response, "Regras do crediario")
+        self.assertContains(response, 'data-payment-panel="credit" hidden')
+        self.assertNotContains(response, "calculados proporcionalmente")
 
     def test_pix_page_is_private_to_sale_owner(self):
         user = self.create_client()
@@ -761,6 +775,81 @@ class StoreFlowTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertFalse(product.is_visible)
+
+    @override_settings(SHOE_SUPPLIER_DROPSHIPPING_URL="https://example.com/dropshipping")
+    def test_supplier_panel_links_to_dropshipping_area(self):
+        staff = User.objects.create_superuser(
+            email="admin-dropshipping@example.com",
+            password="Teste12345!",
+            full_name="Admin Dropshipping",
+            preferred_name="Admin",
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get("/gestao/fornecedor/produtos/")
+
+        self.assertContains(response, "Dropshipping Revenda de Calcados")
+        self.assertContains(response, "https://example.com/dropshipping")
+
+    def revenda_csv_content(self, stock="34,5|35,4|36,10"):
+        content = (
+            "REFERENCIA;NOMEPRODUTO;CATEGORIA;ESTOQUE;PRECOATACADO;PRECODROPSHIPPING;MARCA;DESCRICAO;URLPRODUTO;FOTOS;COR;GRUPO;\n"
+            f"67096B;Bota Bico Fino Cano Longo;Botas;{stock};179.90;197.89;Torricella;Material Napa;"
+            "https://www.revendadecalcados.com.br/produto-8775.html;"
+            "https://www.revendadecalcados.com.br/foto1.jpg,https://www.revendadecalcados.com.br/foto2.jpg;Caramelo;Botas;\n"
+        )
+
+        return content
+
+    def test_revenda_csv_payload_maps_stock_sizes_cost_and_first_image(self):
+        content = self.revenda_csv_content()
+
+        rows = parse_csv(content)
+        payload = row_to_payload(rows[0], 1)
+
+        self.assertEqual(payload["supplier_code"], "67096B")
+        self.assertEqual(payload["name"], "Bota Bico Fino Cano Longo")
+        self.assertEqual(payload["category"], "Botas")
+        self.assertEqual(payload["brand"], "Torricella")
+        self.assertEqual(payload["wholesale_price"], Decimal("179.90"))
+        self.assertEqual(payload["dropshipping_cost"], Decimal("197.89"))
+        self.assertEqual(payload["suggested_sale_price"], Decimal("277.05"))
+        self.assertEqual(payload["stock_quantity"], 19)
+        self.assertEqual(payload["sizes"], "34,35,36")
+        self.assertEqual(payload["image_url"], "https://www.revendadecalcados.com.br/foto1.jpg")
+
+    def test_revenda_csv_payload_keeps_only_sizes_with_safe_stock(self):
+        rows = parse_csv(self.revenda_csv_content(stock="34,2|35,3|36,1|37,8"))
+        payload = row_to_payload(rows[0], 1)
+
+        self.assertEqual(payload["stock_quantity"], 11)
+        self.assertEqual(payload["sizes"], "35,37")
+
+    def test_supplier_panel_imports_uploaded_revenda_csv(self):
+        staff = User.objects.create_superuser(
+            email="admin-upload-csv@example.com",
+            password="Teste12345!",
+            full_name="Admin Upload CSV",
+            preferred_name="Admin",
+        )
+        self.client.force_login(staff)
+
+        response = self.client.post(
+            "/gestao/fornecedor/importar/",
+            {
+                "catalog_file": SimpleUploadedFile(
+                    "produtos.csv",
+                    self.revenda_csv_content(stock="34,2|35,3|36,5").encode("latin-1"),
+                    content_type="text/csv",
+                ),
+            },
+        )
+        product = SupplierProduct.objects.get(supplier_code="67096B")
+
+        self.assertRedirects(response, "/gestao/fornecedor/produtos/")
+        self.assertEqual(product.stock_quantity, 8)
+        self.assertEqual(product.sizes, "35,36")
+        self.assertEqual(product.image_url, "https://www.revendadecalcados.com.br/foto1.jpg")
 
     @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
     def test_checkout_requires_terms_acceptance(self):

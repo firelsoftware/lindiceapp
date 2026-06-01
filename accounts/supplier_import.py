@@ -12,15 +12,20 @@ from django.utils import timezone
 from .models import SupplierProduct
 
 
+MIN_STOCK_PER_SIZE = 3
+STORE_PRICE_MULTIPLIER = Decimal("1.40")
+
+
 ALIASES = {
     "supplier_code": {"codigo", "cod", "sku", "referencia", "ref", "id", "produtoid"},
     "name": {"produto", "nome", "nomeproduto", "titulo", "title", "descricao", "descrição"},
     "description": {"detalhes", "descricaocompleta", "descrição completa", "description"},
     "category": {"categoria", "linha", "departamento", "tipo"},
     "brand": {"marca", "fabricante"},
-    "image_url": {"imagem", "foto", "urlimagem", "urlfoto", "imagem1", "foto1"},
+    "image_url": {"imagem", "foto", "fotos", "urlimagem", "urlfoto", "imagem1", "foto1"},
     "product_url": {"link", "url", "urlproduto", "produtourl"},
     "wholesale_price": {"preco", "preço", "precoatacado", "preçoatacado", "valor", "valoratacado"},
+    "dropshipping_cost": {"precodropshipping", "preçodropshipping", "custodropshipping", "dropshipping"},
     "stock_quantity": {"estoque", "quantidade", "qtde", "saldo", "disponivel", "disponível"},
     "sizes": {"tamanho", "tamanhos", "numeracao", "numeração", "numero", "número"},
 }
@@ -94,13 +99,29 @@ def fetch_catalog(url):
     request = urllib.request.Request(url, headers={"User-Agent": "Lindice/1.0"})
 
     with urllib.request.urlopen(request, timeout=40) as response:
-        charset = response.headers.get_content_charset() or "utf-8-sig"
-        return response.read().decode(charset, errors="replace")
+        return decode_catalog_content(response.read(), response.headers.get_content_charset())
+
+
+def decode_catalog_content(raw_content, charset=None):
+    if charset:
+        return raw_content.decode(charset, errors="replace")
+
+    content = raw_content.decode("utf-8-sig", errors="replace")
+
+    if "\ufffd" in content:
+        return raw_content.decode("latin-1", errors="replace")
+
+    return content
 
 
 def parse_csv(content):
     sample = content[:4096]
-    dialect = csv.Sniffer().sniff(sample, delimiters=",;|\t")
+    try:
+        dialect = csv.Sniffer().sniff(sample, delimiters=",;|\t")
+    except csv.Error:
+        dialect = csv.excel()
+        dialect.delimiter = ";"
+
     reader = csv.DictReader(io.StringIO(content), dialect=dialect)
 
     return list(reader)
@@ -129,10 +150,41 @@ def parse_xml(content):
     return rows
 
 
+def parse_stock_and_sizes(stock_value, fallback_sizes="", min_stock_per_size=MIN_STOCK_PER_SIZE):
+    stock_text = str(stock_value or "").strip()
+    total_stock = 0
+    sizes = []
+
+    if "|" in stock_text or "," in stock_text:
+        for item in stock_text.split("|"):
+            parts = [part.strip() for part in item.split(",", 1)]
+
+            if not parts or not parts[0]:
+                continue
+
+            size = parts[0]
+            quantity = parse_int(parts[1]) if len(parts) > 1 else 0
+            if quantity >= min_stock_per_size:
+                sizes.append(size)
+                total_stock += quantity
+
+        if sizes:
+            return total_stock, ",".join(sizes)
+
+        return 0, ""
+
+    return parse_int(stock_text), fallback_sizes[:180]
+
+
+def first_image_url(value):
+    return str(value or "").split(",", 1)[0].strip()
+
+
 def row_to_payload(row, row_number):
     supplier_code = find_value(row, "supplier_code") or build_fallback_code(row, row_number)
     wholesale_price = parse_money(find_value(row, "wholesale_price"))
-    dropshipping_cost = wholesale_price * Decimal("1.10")
+    dropshipping_cost = parse_money(find_value(row, "dropshipping_cost")) or wholesale_price * Decimal("1.10")
+    stock_quantity, sizes = parse_stock_and_sizes(find_value(row, "stock_quantity"), find_value(row, "sizes"))
 
     return {
         "supplier_code": supplier_code[:120],
@@ -140,27 +192,29 @@ def row_to_payload(row, row_number):
         "description": find_value(row, "description"),
         "category": find_value(row, "category")[:120],
         "brand": find_value(row, "brand")[:120],
-        "image_url": find_value(row, "image_url"),
+        "image_url": first_image_url(find_value(row, "image_url")),
         "product_url": find_value(row, "product_url"),
         "wholesale_price": wholesale_price,
         "dropshipping_cost": dropshipping_cost,
-        "suggested_sale_price": dropshipping_cost,
-        "stock_quantity": parse_int(find_value(row, "stock_quantity")),
-        "sizes": find_value(row, "sizes")[:180],
+        "suggested_sale_price": (dropshipping_cost * STORE_PRICE_MULTIPLIER).quantize(Decimal("0.01")),
+        "stock_quantity": stock_quantity,
+        "sizes": sizes,
         "raw_data": row,
         "is_active": True,
         "last_seen_at": timezone.now(),
     }
 
 
-def import_supplier_catalog(url, catalog_format="csv"):
-    content = fetch_catalog(url)
+def import_supplier_catalog_content(content, catalog_format="csv", deactivate_missing=True):
     catalog_format = (catalog_format or "csv").lower()
 
     if catalog_format == "xml":
         rows = parse_xml(content)
     else:
         rows = parse_csv(content)
+
+    if not rows:
+        raise ValueError("O catalogo nao trouxe produtos para importar.")
 
     created = 0
     updated = 0
@@ -181,7 +235,7 @@ def import_supplier_catalog(url, catalog_format="csv"):
         else:
             updated += 1
 
-    if seen_ids:
+    if seen_ids and deactivate_missing:
         SupplierProduct.objects.filter(source=SupplierProduct.SOURCE_REVENDA_CALCADOS).exclude(id__in=seen_ids).update(is_active=False)
 
     return {
@@ -189,3 +243,7 @@ def import_supplier_catalog(url, catalog_format="csv"):
         "updated": updated,
         "total": len(rows),
     }
+
+
+def import_supplier_catalog(url, catalog_format="csv"):
+    return import_supplier_catalog_content(fetch_catalog(url), catalog_format)

@@ -6,6 +6,7 @@
 - Configurar `PUBLIC_SITE_URL` com o dominio publico da loja.
 - Configurar `STORE_PIX_KEY` no Render.
 - Configurar `SHOE_SUPPLIER_CATALOG_URL` no Render.
+- Conferir `SHOE_SUPPLIER_DROPSHIPPING_URL` apontando para a area da Revenda de Calcados / Shop Integra.
 - Conferir `PHONE_VERIFICATION_REQUIRED`: usar `false` enquanto nao houver envio real de SMS/WhatsApp; trocar para `true` depois da integracao.
 - Atualizar catalogo do fornecedor no painel de gestao.
 - Marcar manualmente quais produtos ficam visiveis na loja.

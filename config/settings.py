@@ -238,6 +238,10 @@ LOGIN_URL = "login"
 CPF_HASH_SECRET = SECRET_KEY
 SHOE_SUPPLIER_CATALOG_URL = os.environ.get("SHOE_SUPPLIER_CATALOG_URL", "")
 SHOE_SUPPLIER_CATALOG_FORMAT = os.environ.get("SHOE_SUPPLIER_CATALOG_FORMAT", "csv")
+SHOE_SUPPLIER_DROPSHIPPING_URL = os.environ.get(
+    "SHOE_SUPPLIER_DROPSHIPPING_URL",
+    "https://www.revendadecalcados.com.br/areadorevendedor/dropshipping-shopintegra",
+)
 MERCADO_PAGO_ACCESS_TOKEN = os.environ.get("MERCADO_PAGO_ACCESS_TOKEN", "")
 CARD_PAYMENT_ENABLED = env_bool("CARD_PAYMENT_ENABLED", default=True)
 PUBLIC_SITE_URL = os.environ.get("PUBLIC_SITE_URL", "")
