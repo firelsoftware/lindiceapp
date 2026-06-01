@@ -1,0 +1,47 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Carrinho</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if items %}
+    {% for item in items %}
+        <section class="purchase">
+            <h2>{{ item.product.name }}</h2>
+            <p>Tamanho: {{ item.selected_size }}</p>
+            <p>Quantidade: {{ item.quantity }}</p>
+            <p class="store-price">R$ {{ item.total|floatformat:2 }}</p>
+            <form method="post" action="{% url 'cart_remove' item.key %}">
+                {% csrf_token %}
+                <button class="button-secondary" type="submit">Remover</button>
+            </form>
+        </section>
+    {% endfor %}
+
+    <h2>Total: R$ {{ subtotal|floatformat:2 }}</h2>
+    {% if welcome_discount_available %}
+        <p><span class="badge badge-success">Voucher de {{ welcome_discount_percent|floatformat:0 }}% disponivel</span></p>
+        <p>Voce decide se deseja usar o voucher na proxima etapa. Valido ate {{ welcome_discount_expires_at|date:"d/m/Y" }}.</p>
+    {% endif %}
+    <div class="action-row">
+        {% if boticario_store_url %}
+            <a class="button" href="{% url 'cart_boticario_redirect' %}">Finalizar no Boticario</a>
+        {% endif %}
+        <a class="button button-secondary" href="{% url 'cart_checkout' %}">Finalizar pelo Lindice</a>
+    </div>
+    {% if boticario_store_url %}
+        <p>Voce sera direcionado para a loja oficial Boticario do Fabricio para concluir o pedido.</p>
+    {% endif %}
+{% else %}
+    <p>Seu carrinho esta vazio.</p>
+{% endif %}
+
+<p><a href="{% url 'store_front' %}">Continuar comprando</a></p>
+{% endblock %}

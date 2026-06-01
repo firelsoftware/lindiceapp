@@ -37,6 +37,7 @@ def create_registration_approved_notification(profile):
             "message": (
                 "Seu cadastro foi aprovado. "
                 f"Seu limite liberado e de R$ {format_brl(profile.pre_approved_credit_limit)}. "
+                f"Voce tambem recebeu um voucher de 5% valido ate {profile.welcome_discount_expires_at:%d/%m/%Y}. "
                 "Voce ja pode acessar a loja e usar os recursos liberados para sua conta."
             ),
         },

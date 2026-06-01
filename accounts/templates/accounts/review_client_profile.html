@@ -44,7 +44,15 @@
         </div>
         <div>
             <dt>Desconto de primeira compra</dt>
-            <dd>{% if profile.first_purchase_discount_used %}Ja utilizado{% else %}Disponivel{% endif %}</dd>
+            <dd>
+                {% if profile.first_purchase_discount_used %}
+                    Ja utilizado
+                {% elif profile.welcome_discount_expires_at %}
+                    Disponivel ate {{ profile.welcome_discount_expires_at|date:"d/m/Y" }}
+                {% else %}
+                    Indisponivel
+                {% endif %}
+            </dd>
         </div>
         <div>
             <dt>Telefone verificado</dt>

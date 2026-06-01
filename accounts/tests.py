@@ -179,6 +179,7 @@ class CreditSalePaymentChoiceTests(TestCase):
             address="Endereco",
             residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
             registration_status=ClientProfile.APPROVED,
+            welcome_discount_expires_at=timezone.localdate() + timedelta(days=90),
         )
 
         return user
@@ -206,6 +207,7 @@ class CreditSalePaymentChoiceTests(TestCase):
             {
                 "payment_method": CreditSale.PIX,
                 "installments": "",
+                "use_welcome_discount": "on",
                 "accept_terms": "on",
             },
         )
@@ -224,7 +226,7 @@ class CreditSalePaymentChoiceTests(TestCase):
     def test_pix_page_shows_discounted_total_and_key(self):
         user = self.create_client()
         sale = self.create_sale(user)
-        sale.choose_payment(CreditSale.PIX)
+        sale.choose_payment(CreditSale.PIX, use_welcome_discount=True)
         self.client.force_login(user)
 
         response = self.client.get(f"/pagamento/pix/{sale.id}/")
@@ -403,7 +405,7 @@ class CreditSalePaymentChoiceTests(TestCase):
         first_sale = self.create_sale(user, first_due_date=datetime(2026, 6, 10).date())
         second_sale = self.create_sale(user, description="Segunda compra", first_due_date=datetime(2026, 7, 10).date())
 
-        first_sale.choose_payment(CreditSale.CREDIT, 1)
+        first_sale.choose_payment(CreditSale.CREDIT, 1, use_welcome_discount=True)
         second_sale.choose_payment(CreditSale.CREDIT, 1)
         previous_debt.refresh_from_db()
         first_sale.refresh_from_db()
@@ -487,6 +489,7 @@ class MercadoPagoPayloadTests(TestCase):
             address="Endereco",
             residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
             registration_status=ClientProfile.APPROVED,
+            welcome_discount_expires_at=timezone.localdate() + timedelta(days=90),
         )
         sale = CreditSale.objects.create(
             client=user,
@@ -591,6 +594,7 @@ class StoreFlowTests(TestCase):
             address="Endereco",
             residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
             registration_status=ClientProfile.APPROVED,
+            welcome_discount_expires_at=timezone.localdate() + timedelta(days=90),
         )
         self.client.force_login(user)
         payload = {
@@ -600,6 +604,7 @@ class StoreFlowTests(TestCase):
             "customer_phone": "61999999999",
             "shipping_address": "Rua Teste, 1",
             "notes": "",
+            "use_welcome_discount": "on",
             "accept_terms": "on",
         }
 
@@ -611,6 +616,108 @@ class StoreFlowTests(TestCase):
         self.assertEqual(first_order.total_amount, Decimal("94.90"))
         self.assertEqual(second_order.welcome_discount_amount, Decimal("0.00"))
         self.assertEqual(second_order.total_amount, Decimal("99.90"))
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
+    def test_cart_keeps_voucher_for_later_when_customer_does_not_select_it(self):
+        product = self.create_supplier_product()
+        user = User.objects.create_user(
+            email="cliente-carrinho@example.com",
+            password="Teste12345!",
+            full_name="Cliente Carrinho",
+            preferred_name="Cliente",
+        )
+        profile = ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-hash-cliente-carrinho",
+            cpf_last_digits="4444",
+            phone="61999999999",
+            phone_verified=True,
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            welcome_discount_expires_at=timezone.localdate() + timedelta(days=90),
+        )
+        self.client.force_login(user)
+        self.client.post(f"/loja/carrinho/adicionar/{product.id}/", {"selected_size": "35"})
+
+        response = self.client.post(
+            "/loja/carrinho/finalizar/",
+            {
+                "customer_name": "Cliente Carrinho",
+                "customer_email": "cliente-carrinho@example.com",
+                "customer_phone": "61999999999",
+                "shipping_address": "Rua Teste, 1",
+                "notes": "",
+                "accept_terms": "on",
+            },
+        )
+        order = StoreOrder.objects.get()
+        profile.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(order.total_amount, Decimal("99.90"))
+        self.assertEqual(order.welcome_discount_amount, Decimal("0.00"))
+        self.assertFalse(profile.first_purchase_discount_used)
+
+    @override_settings(BOTICARIO_STORE_URL="https://minhaloja.grupoboticario.com.br/loja-teste")
+    def test_cart_can_redirect_to_boticario_store(self):
+        product = self.create_supplier_product()
+        self.client.post(f"/loja/carrinho/adicionar/{product.id}/", {"selected_size": "35"})
+
+        cart_response = self.client.get("/loja/carrinho/")
+        redirect_response = self.client.get("/loja/carrinho/boticario/")
+
+        self.assertContains(cart_response, "Finalizar no Boticario")
+        self.assertRedirects(
+            redirect_response,
+            "https://minhaloja.grupoboticario.com.br/loja-teste",
+            fetch_redirect_response=False,
+        )
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
+    def test_cart_applies_selected_voucher_to_grouped_orders(self):
+        first_product = self.create_supplier_product()
+        second_product = self.create_supplier_product(supplier_code="RC002", name="Outro Produto", suggested_sale_price=Decimal("200.00"))
+        user = User.objects.create_user(
+            email="cliente-voucher@example.com",
+            password="Teste12345!",
+            full_name="Cliente Voucher",
+            preferred_name="Cliente",
+        )
+        profile = ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-hash-cliente-voucher",
+            cpf_last_digits="5555",
+            phone="61999999999",
+            phone_verified=True,
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            welcome_discount_expires_at=timezone.localdate() + timedelta(days=90),
+        )
+        self.client.force_login(user)
+        self.client.post(f"/loja/carrinho/adicionar/{first_product.id}/", {"selected_size": "35"})
+        self.client.post(f"/loja/carrinho/adicionar/{second_product.id}/", {"selected_size": "36"})
+
+        self.client.post(
+            "/loja/carrinho/finalizar/",
+            {
+                "customer_name": "Cliente Voucher",
+                "customer_email": "cliente-voucher@example.com",
+                "customer_phone": "61999999999",
+                "shipping_address": "Rua Teste, 1",
+                "notes": "",
+                "use_welcome_discount": "on",
+                "accept_terms": "on",
+            },
+        )
+        orders = list(StoreOrder.objects.order_by("id"))
+        profile.refresh_from_db()
+
+        self.assertEqual(len(orders), 2)
+        self.assertEqual(orders[0].checkout_reference, orders[1].checkout_reference)
+        self.assertEqual(sum(order.total_amount for order in orders), Decimal("284.91"))
+        self.assertTrue(profile.first_purchase_discount_used)
 
     def test_public_order_page_does_not_use_sequential_order_code(self):
         product = self.create_supplier_product()
@@ -707,6 +814,47 @@ class StoreFlowTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(order.status, StoreOrder.PAID)
         self.assertEqual(order.mercado_pago_payment_id, "123")
+
+    @patch("accounts.views.get_payment")
+    def test_mercado_pago_webhook_marks_all_cart_orders_as_paid(self, mocked_get_payment):
+        product = self.create_supplier_product()
+        checkout_reference = "f77cbe39-14d8-4954-8f4c-da82908267e6"
+        orders = [
+            StoreOrder.objects.create(
+                product=product,
+                product_name=f"{product.name} {number}",
+                supplier_code=product.supplier_code,
+                selected_size="35",
+                customer_name="Cliente Teste",
+                customer_email="cliente@example.com",
+                customer_phone="61999999999",
+                shipping_address="Rua Teste, 1",
+                unit_price=Decimal("99.90"),
+                supplier_cost=Decimal("55.00"),
+                total_amount=Decimal("99.90"),
+                estimated_profit=Decimal("44.90"),
+                checkout_reference=checkout_reference,
+            )
+            for number in range(2)
+        ]
+        mocked_get_payment.return_value = {
+            "id": "cart-payment",
+            "status": "approved",
+            "external_reference": f"cart:{checkout_reference}",
+        }
+
+        response = self.client.post(
+            "/loja/mercado-pago/webhook/",
+            data={"data": {"id": "cart-payment"}},
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        for order in orders:
+            order.refresh_from_db()
+            self.assertEqual(order.status, StoreOrder.PAID)
+            self.assertEqual(order.mercado_pago_payment_id, "cart-payment")
 
     @patch("accounts.views.get_payment")
     def test_mercado_pago_webhook_records_rejected_store_order(self, mocked_get_payment):

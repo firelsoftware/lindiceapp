@@ -250,6 +250,7 @@ class InstallmentChoiceForm(forms.Form):
         label="Li e aceito os termos de uso e a politica de privacidade",
         required=True,
     )
+    use_welcome_discount = forms.BooleanField(label="Usar voucher de 5% nesta compra", required=False)
 
     def __init__(self, *args, sale, **kwargs):
         super().__init__(*args, **kwargs)
@@ -346,6 +347,7 @@ class ProductCostForm(forms.ModelForm):
 
 class StoreOrderForm(forms.ModelForm):
     selected_size = forms.ChoiceField(label="Tamanho")
+    use_welcome_discount = forms.BooleanField(label="Usar voucher de 5% nesta compra", required=False)
     accept_terms = forms.BooleanField(
         label="Li e aceito os termos de uso e a politica de privacidade",
         required=True,
@@ -386,3 +388,16 @@ class StoreOrderForm(forms.ModelForm):
             raise ValidationError("Este produto ainda nao tem preco definido para venda.")
 
         return cleaned_data
+
+
+class CartCheckoutForm(forms.Form):
+    customer_name = forms.CharField(label="Nome completo", max_length=150)
+    customer_email = forms.EmailField(label="Email")
+    customer_phone = forms.CharField(label="Telefone/WhatsApp", max_length=30)
+    shipping_address = forms.CharField(label="Endereco completo de entrega", widget=forms.Textarea(attrs={"rows": 4}))
+    notes = forms.CharField(label="Observacoes", required=False, widget=forms.Textarea(attrs={"rows": 3}))
+    use_welcome_discount = forms.BooleanField(label="Usar voucher de 5% nesta compra", required=False)
+    accept_terms = forms.BooleanField(
+        label="Li e aceito os termos de uso e a politica de privacidade",
+        required=True,
+    )

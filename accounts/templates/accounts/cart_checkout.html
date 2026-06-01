@@ -1,0 +1,27 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Finalizar carrinho</h1>
+
+{% for item in items %}
+    <p>{{ item.quantity }}x {{ item.product.name }} - tamanho {{ item.selected_size }}: <strong>R$ {{ item.total|floatformat:2 }}</strong></p>
+{% endfor %}
+
+<h2>Subtotal: R$ {{ subtotal|floatformat:2 }}</h2>
+
+{% if welcome_discount_available %}
+    <section class="info-panel">
+        <h2>Voucher de boas-vindas</h2>
+        <p>Voce possui um voucher de {{ welcome_discount_percent|floatformat:0 }}%: <strong>- R$ {{ voucher_discount|floatformat:2 }}</strong>.</p>
+        <p>Ele e valido ate {{ welcome_discount_expires_at|date:"d/m/Y" }}. Marque a opcao abaixo para usar agora ou deixe desmarcada para guardar para outra compra.</p>
+    </section>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Ir para pagamento</button>
+</form>
+
+<p><a href="{% url 'cart_detail' %}">Voltar ao carrinho</a></p>
+{% endblock %}

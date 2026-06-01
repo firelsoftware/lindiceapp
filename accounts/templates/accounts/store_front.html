@@ -3,12 +3,13 @@
 {% block content %}
 <h1>Loja Líndice</h1>
 <p>Confira os itens separados para voce e veja as novidades da loja.</p>
+<p><a class="button button-secondary" href="{% url 'cart_detail' %}">Ver carrinho</a></p>
 
 {% if welcome_discount_available %}
     <section class="info-panel">
         <h2>Presente de boas-vindas</h2>
-        <p><span class="badge badge-success">{{ welcome_discount_percent|floatformat:0 }}% OFF</span> na sua primeira compra pelo aplicativo.</p>
-        <p>O beneficio vale para uma compra nova e nao altera debitos anteriores.</p>
+        <p><span class="badge badge-success">Voucher de {{ welcome_discount_percent|floatformat:0 }}% OFF</span> disponivel para uma compra.</p>
+        <p>Voce escolhe quando usar o voucher na finalizacao da compra.</p>
     </section>
 {% endif %}
 
@@ -67,6 +68,8 @@
             <a class="store-product-media" href="{% url 'store_product_detail' product.id %}">
                 {% if product.image_url %}
                     <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                {% else %}
+                    <span class="store-product-placeholder">Foto em breve</span>
                 {% endif %}
             </a>
             <div class="store-product-body">
@@ -87,4 +90,16 @@
         </section>
     {% endfor %}
 </div>
+
+{% if boticario_store_url %}
+    <section class="partner-link-panel" aria-label="Parceria Boticario">
+        <a class="boticario-partner-link" href="{{ boticario_store_url }}" target="_blank" rel="noopener" aria-label="Clique para produtos Boticario">
+            <span class="boticario-partner-button" aria-hidden="true">
+                <span class="boticario-partner-l"></span>
+                <span class="boticario-partner-bottle"></span>
+            </span>
+            <span class="boticario-partner-text">clique para produtos Boticario</span>
+        </a>
+    </section>
+{% endif %}
 {% endblock %}

@@ -5,6 +5,8 @@
     <div class="store-detail-media">
         {% if product.image_url %}
             <img src="{{ product.image_url }}" alt="{{ product.name }}">
+        {% else %}
+            <span class="store-product-placeholder">Foto em breve</span>
         {% endif %}
     </div>
     <div>
@@ -22,7 +24,17 @@
             <h2>Como funciona</h2>
             <p>Voce paga pelo Mercado Pago. Depois da confirmacao, fazemos o pedido no fornecedor e acompanhamos o envio.</p>
         </section>
-        <a class="button" href="{% url 'store_checkout' product.id %}">Comprar</a>
+        <form method="post" action="{% url 'cart_add' product.id %}">
+            {% csrf_token %}
+            <label for="selected-size">Tamanho</label>
+            <select id="selected-size" name="selected_size" required>
+                <option value="">Selecione</option>
+                {% for size in size_options %}
+                    <option value="{{ size }}">{{ size }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Adicionar ao carrinho</button>
+        </form>
         <p><a href="{% url 'store_front' %}">Voltar para loja</a></p>
     </div>
 </section>

@@ -69,6 +69,7 @@ class ClientProfile(models.Model):
     extra_data = models.JSONField(default=dict, blank=True)
     pre_approved_credit_limit = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     first_purchase_discount_used = models.BooleanField(default=False)
+    welcome_discount_expires_at = models.DateField(null=True, blank=True)
     default_max_installments = models.PositiveSmallIntegerField(default=5)
     registration_status = models.CharField(
         max_length=20,
@@ -281,6 +282,7 @@ class StoreOrder(models.Model):
     mercado_pago_preference_id = models.CharField(max_length=120, blank=True)
     mercado_pago_payment_id = models.CharField(max_length=120, blank=True)
     mercado_pago_init_point = models.URLField(blank=True)
+    checkout_reference = models.UUIDField(null=True, blank=True, db_index=True)
     paid_at = models.DateTimeField(null=True, blank=True)
     supplier_ordered_at = models.DateTimeField(null=True, blank=True)
     supplier_order_reference = models.CharField(max_length=120, blank=True)
@@ -399,7 +401,11 @@ class CreditSale(models.Model):
 
         if (
             self.status == self.PENDING
-            and ClientProfile.objects.filter(user=self.client, first_purchase_discount_used=False).exists()
+            and ClientProfile.objects.filter(
+                user=self.client,
+                first_purchase_discount_used=False,
+                welcome_discount_expires_at__gte=timezone.localdate(),
+            ).exists()
         ):
             return money(self.total_amount * (WELCOME_DISCOUNT_PERCENT / Decimal("100")))
 
@@ -408,13 +414,16 @@ class CreditSale(models.Model):
     def discounted_total_amount(self):
         return money(self.total_amount - self.available_welcome_discount_amount())
 
-    def apply_welcome_discount(self):
+    def apply_welcome_discount(self, use_welcome_discount=False):
+        if not use_welcome_discount:
+            return
+
         if self.welcome_discount_amount > 0 or self.status != self.PENDING:
             return
 
         profile = ClientProfile.objects.select_for_update().get(user=self.client)
 
-        if profile.first_purchase_discount_used:
+        if profile.first_purchase_discount_used or not profile.welcome_discount_expires_at or profile.welcome_discount_expires_at < timezone.localdate():
             return
 
         self.welcome_discount_amount = money(self.total_amount * (WELCOME_DISCOUNT_PERCENT / Decimal("100")))
@@ -479,12 +488,12 @@ class CreditSale(models.Model):
             "total": total,
         }
 
-    def choose_payment(self, payment_method, installments=None):
+    def choose_payment(self, payment_method, installments=None, use_welcome_discount=False):
         if self.payment_status == self.PAYMENT_PAID:
             raise ValueError("Pagamento ja confirmado.")
 
         with transaction.atomic():
-            self.apply_welcome_discount()
+            self.apply_welcome_discount(use_welcome_discount)
 
         self.debts.all().delete()
         self.payment_status = self.PAYMENT_PENDING

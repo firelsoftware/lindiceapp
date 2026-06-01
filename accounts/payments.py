@@ -93,6 +93,44 @@ def create_checkout_preference(order, request):
     }
 
 
+def create_cart_checkout_preference(orders, request):
+    first_order = orders[0]
+    base_url = site_url(request)
+    payload = {
+        "items": [
+            {
+                "title": order.product_name,
+                "quantity": order.quantity,
+                "currency_id": "BRL",
+                "unit_price": float(order.unit_price),
+            }
+            for order in orders
+        ],
+        "external_reference": f"cart:{first_order.checkout_reference}",
+        "back_urls": {
+            "success": f"{base_url}/loja/pagamento/sucesso/",
+            "failure": f"{base_url}/loja/pagamento/falha/",
+            "pending": f"{base_url}/loja/pagamento/pendente/",
+        },
+        "notification_url": f"{base_url}/loja/mercado-pago/webhook/",
+        "auto_return": "approved",
+    }
+
+    if not is_test_environment():
+        payload["payer"] = {
+            "name": first_order.customer_name,
+            "email": first_order.customer_email,
+            "phone": {"number": first_order.customer_phone},
+        }
+
+    response = mercado_pago_request("/checkout/preferences", payload)
+
+    return {
+        "id": response.get("id", ""),
+        "init_point": response.get("init_point") or response.get("sandbox_init_point", ""),
+    }
+
+
 def create_credit_sale_card_preference(sale, request):
     base_url = site_url(request)
     payload = {

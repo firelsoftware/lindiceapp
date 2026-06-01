@@ -871,9 +871,14 @@
         }
 
         .store-product-media {
-            display: block;
+            display: grid;
+            place-items: center;
             aspect-ratio: 1 / 1;
             background: #eef2ff;
+            color: var(--muted);
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
         }
 
         .store-product-media img,
@@ -882,6 +887,15 @@
             height: 100%;
             object-fit: cover;
             display: block;
+        }
+
+        .store-product-placeholder {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 18px;
         }
 
         .store-product-body {
@@ -954,6 +968,120 @@
 
         .info-panel h2 {
             margin-top: 0;
+        }
+
+        .partner-link-panel {
+            margin-top: 46px;
+            padding-top: 22px;
+            border-top: 1px solid var(--line);
+            text-align: center;
+        }
+
+        .partner-link-panel a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 44px;
+            padding: 0;
+            border: 0;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .partner-link-panel a:hover {
+            color: var(--brand-purple);
+        }
+
+        .boticario-partner-button {
+            display: inline-flex;
+            overflow: hidden;
+            width: 88px;
+            height: 44px;
+            min-height: 0;
+            padding: 0;
+            border: 1px solid #d8dde6;
+            border-radius: 6px;
+            background: #ffffff;
+            text-decoration: none;
+        }
+
+        .partner-link-panel a:hover .boticario-partner-button {
+            border-color: var(--brand-mist);
+            box-shadow: 0 8px 20px rgba(24, 34, 48, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .boticario-partner-text {
+            display: inline-block;
+        }
+
+        .boticario-partner-l,
+        .boticario-partner-bottle {
+            display: grid;
+            place-items: center;
+            width: 50%;
+            height: 100%;
+        }
+
+        .boticario-partner-l {
+            position: relative;
+            background: var(--brand-purple);
+            color: var(--brand-blue);
+        }
+
+        .boticario-partner-l::before,
+        .boticario-partner-l::after {
+            content: "";
+            position: absolute;
+            background: var(--brand-blue);
+            box-shadow: 0 3px 8px rgba(24, 34, 48, 0.16);
+        }
+
+        .boticario-partner-l::before {
+            left: 12px;
+            top: 7px;
+            width: 10px;
+            height: 30px;
+            border-radius: 4px;
+        }
+
+        .boticario-partner-l::after {
+            left: 12px;
+            top: 28px;
+            width: 25px;
+            height: 9px;
+            border-radius: 4px;
+        }
+
+        .boticario-partner-bottle {
+            position: relative;
+            background: #7c9f87;
+        }
+
+        .boticario-partner-bottle::before,
+        .boticario-partner-bottle::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffffff;
+        }
+
+        .boticario-partner-bottle::before {
+            top: 7px;
+            width: 15px;
+            height: 5px;
+            border-radius: 6px;
+        }
+
+        .boticario-partner-bottle::after {
+            top: 12px;
+            width: 20px;
+            height: 26px;
+            border-radius: 11px 11px 7px 7px;
+            clip-path: polygon(31% 0, 69% 0, 69% 12%, 91% 26%, 78% 100%, 22% 100%, 9% 26%, 31% 12%);
         }
 
         details.info-panel {
@@ -1309,6 +1437,7 @@
                         <a class="menu-link" href="{% url 'profit_report' %}">Relatorio de lucro</a>
                     {% else %}
                         <a class="menu-link" href="{% url 'store_front' %}">Loja</a>
+                        <a class="menu-link" href="{% url 'cart_detail' %}">Carrinho</a>
                         <a class="menu-link" href="{% url 'dashboard' %}">Minhas compras</a>
                         <a class="menu-link" href="{% url 'measurements' %}">Minhas medidas</a>
                     {% endif %}

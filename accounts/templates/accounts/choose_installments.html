@@ -90,6 +90,13 @@
         <div class="errorlist">{{ form.installments.errors }}</div>
     {% endif %}
 
+    {% if welcome_discount_available %}
+        <p class="terms-accept">
+            {{ form.use_welcome_discount }}
+            <label for="{{ form.use_welcome_discount.id_for_label }}">Usar voucher de {{ welcome_discount_percent|floatformat:0 }}% nesta compra</label>
+        </p>
+    {% endif %}
+
     <p class="terms-accept">
         {{ form.accept_terms }}
         <label for="{{ form.accept_terms.id_for_label }}">

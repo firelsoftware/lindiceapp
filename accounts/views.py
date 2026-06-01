@@ -2,6 +2,7 @@ from django.conf import settings
 import json
 import logging
 from decimal import Decimal, InvalidOperation
+import uuid
 
 from django.contrib import messages
 from django.contrib.auth import login, update_session_auth_hash
@@ -17,10 +18,10 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
-from .models import CreditSale, ClientProfile, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct, WELCOME_DISCOUNT_PERCENT, money
+from .forms import CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
+from .models import CreditSale, ClientProfile, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
-from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_checkout_preference, create_credit_sale_card_preference, get_payment
+from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment
 from .supplier_import import import_supplier_catalog
 from .utils import generate_phone_code
 
@@ -164,7 +165,12 @@ def get_welcome_discount_profile(request):
 
     profile = request.user.profile
 
-    if profile.registration_status != ClientProfile.APPROVED or profile.first_purchase_discount_used:
+    if (
+        profile.registration_status != ClientProfile.APPROVED
+        or profile.first_purchase_discount_used
+        or not profile.welcome_discount_expires_at
+        or profile.welcome_discount_expires_at < timezone.localdate()
+    ):
         return None
 
     return profile
@@ -172,6 +178,44 @@ def get_welcome_discount_profile(request):
 
 def welcome_discount_amount(amount):
     return money(amount * (WELCOME_DISCOUNT_PERCENT / Decimal("100")))
+
+
+def get_cart(request):
+    return request.session.setdefault("store_cart", {})
+
+
+def build_cart_items(request):
+    cart = get_cart(request)
+    product_ids = {item["product_id"] for item in cart.values()}
+    products = {
+        product.id: product
+        for product in SupplierProduct.objects.filter(
+            id__in=product_ids,
+            is_active=True,
+            is_visible=True,
+            stock_quantity__gt=0,
+        )
+    }
+    items = []
+
+    for key, item in cart.items():
+        product = products.get(item["product_id"])
+
+        if not product:
+            continue
+
+        quantity = max(1, min(int(item.get("quantity", 1)), product.stock_quantity))
+        items.append(
+            {
+                "key": key,
+                "product": product,
+                "selected_size": item["selected_size"],
+                "quantity": quantity,
+                "total": money(product.suggested_sale_price * quantity),
+            }
+        )
+
+    return items
 
 
 def home(request):
@@ -259,6 +303,7 @@ def store_front(request):
             "reserved_sales": reserved_sales,
             "welcome_discount_available": bool(get_welcome_discount_profile(request)),
             "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
+            "boticario_store_url": settings.BOTICARIO_STORE_URL,
         },
     )
 
@@ -272,7 +317,190 @@ def store_product_detail(request, product_id):
         stock_quantity__gt=0,
     )
 
-    return render(request, "accounts/store_product_detail.html", {"product": product})
+    size_options = [
+        size.strip()
+        for size in (product.sizes or "").replace("/", ",").replace(";", ",").split(",")
+        if size.strip()
+    ] or ["Confirmar tamanho"]
+
+    return render(request, "accounts/store_product_detail.html", {"product": product, "size_options": size_options})
+
+
+def cart_add(request, product_id):
+    product = get_object_or_404(SupplierProduct, id=product_id, is_active=True, is_visible=True, stock_quantity__gt=0)
+
+    if request.method == "POST":
+        selected_size = request.POST.get("selected_size", "").strip()
+        sizes = [size.strip() for size in (product.sizes or "").replace("/", ",").replace(";", ",").split(",") if size.strip()]
+
+        if sizes and selected_size not in sizes:
+            messages.error(request, "Escolha um tamanho disponivel.")
+            return redirect("store_product_detail", product_id=product.id)
+
+        selected_size = selected_size or "Confirmar tamanho"
+        key = f"{product.id}:{selected_size}"
+        cart = get_cart(request)
+        cart[key] = {
+            "product_id": product.id,
+            "selected_size": selected_size,
+            "quantity": min(cart.get(key, {}).get("quantity", 0) + 1, product.stock_quantity),
+        }
+        request.session.modified = True
+        messages.success(request, "Produto adicionado ao carrinho.")
+
+    return redirect("cart_detail")
+
+
+def cart_remove(request, item_key):
+    if request.method == "POST":
+        cart = get_cart(request)
+        cart.pop(item_key, None)
+        request.session.modified = True
+
+    return redirect("cart_detail")
+
+
+def cart_detail(request):
+    items = build_cart_items(request)
+    subtotal = money(sum((item["total"] for item in items), Decimal("0.00")))
+    welcome_profile = get_welcome_discount_profile(request)
+
+    return render(
+        request,
+        "accounts/cart_detail.html",
+        {
+            "items": items,
+            "subtotal": subtotal,
+            "welcome_discount_available": bool(welcome_profile),
+            "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
+            "welcome_discount_expires_at": welcome_profile.welcome_discount_expires_at if welcome_profile else None,
+            "boticario_store_url": settings.BOTICARIO_STORE_URL,
+        },
+    )
+
+
+def cart_boticario_redirect(request):
+    items = build_cart_items(request)
+
+    if not items:
+        messages.warning(request, "Seu carrinho esta vazio.")
+        return redirect("cart_detail")
+
+    if not settings.BOTICARIO_STORE_URL:
+        messages.warning(request, "A loja Boticario ainda nao foi configurada.")
+        return redirect("cart_detail")
+
+    return redirect(settings.BOTICARIO_STORE_URL)
+
+
+def cart_checkout(request):
+    items = build_cart_items(request)
+
+    if not items:
+        messages.warning(request, "Seu carrinho esta vazio.")
+        return redirect("cart_detail")
+
+    welcome_profile = get_welcome_discount_profile(request)
+    subtotal = money(sum((item["total"] for item in items), Decimal("0.00")))
+    voucher_discount = welcome_discount_amount(subtotal) if welcome_profile else Decimal("0.00")
+
+    if request.method == "POST":
+        form = CartCheckoutForm(request.POST)
+
+        if not welcome_profile:
+            form.fields.pop("use_welcome_discount")
+
+        if form.is_valid():
+            use_voucher = bool(welcome_profile and form.cleaned_data.get("use_welcome_discount"))
+            checkout_reference = uuid.uuid4()
+            orders = []
+
+            with transaction.atomic():
+                if use_voucher:
+                    profile = ClientProfile.objects.select_for_update().get(id=welcome_profile.id)
+
+                    if profile.first_purchase_discount_used or profile.welcome_discount_expires_at < timezone.localdate():
+                        use_voucher = False
+                    else:
+                        profile.first_purchase_discount_used = True
+                        profile.save(update_fields=["first_purchase_discount_used"])
+
+                for item in items:
+                    product = item["product"]
+                    unit_price = product.suggested_sale_price
+                    item_discount = Decimal("0.00")
+
+                    if use_voucher:
+                        item_discount = welcome_discount_amount(product.suggested_sale_price * item["quantity"])
+                        unit_price = money(product.suggested_sale_price * (Decimal("1.00") - WELCOME_DISCOUNT_PERCENT / Decimal("100")))
+
+                    order = StoreOrder.objects.create(
+                        product=product,
+                        customer=request.user if request.user.is_authenticated and not request.user.is_staff else None,
+                        product_name=product.name,
+                        supplier_code=product.supplier_code,
+                        selected_size=item["selected_size"],
+                        quantity=item["quantity"],
+                        customer_name=form.cleaned_data["customer_name"],
+                        customer_email=form.cleaned_data["customer_email"],
+                        customer_phone=form.cleaned_data["customer_phone"],
+                        shipping_address=form.cleaned_data["shipping_address"],
+                        notes=form.cleaned_data["notes"],
+                        unit_price=unit_price,
+                        supplier_cost=product.dropshipping_cost,
+                        total_amount=money(unit_price * item["quantity"]),
+                        welcome_discount_amount=item_discount,
+                        estimated_profit=money((unit_price - product.dropshipping_cost) * item["quantity"]),
+                        checkout_reference=checkout_reference,
+                    )
+                    orders.append(order)
+
+            request.session["store_cart"] = {}
+
+            try:
+                preference = create_cart_checkout_preference(orders, request)
+            except MercadoPagoNotConfigured:
+                messages.warning(request, "Pedido criado. Configure o Mercado Pago para ativar o pagamento online.")
+                return redirect("store_order_detail", public_token=orders[0].public_token)
+            except MercadoPagoRequestError as exc:
+                messages.error(request, f"Pedido criado, mas o pagamento nao foi iniciado: {exc}")
+                return redirect("store_order_detail", public_token=orders[0].public_token)
+
+            for order in orders:
+                order.mercado_pago_preference_id = preference["id"]
+                order.mercado_pago_init_point = preference["init_point"]
+                order.save(update_fields=["mercado_pago_preference_id", "mercado_pago_init_point", "updated_at"])
+
+            return redirect(preference["init_point"])
+    else:
+        initial = {}
+
+        if request.user.is_authenticated and not request.user.is_staff:
+            initial = {
+                "customer_name": request.user.full_name,
+                "customer_email": request.user.email,
+                "customer_phone": request.user.profile.phone,
+                "shipping_address": request.user.profile.address,
+            }
+
+        form = CartCheckoutForm(initial=initial)
+
+        if not welcome_profile:
+            form.fields.pop("use_welcome_discount")
+
+    return render(
+        request,
+        "accounts/cart_checkout.html",
+        {
+            "form": form,
+            "items": items,
+            "subtotal": subtotal,
+            "voucher_discount": voucher_discount,
+            "welcome_discount_available": bool(welcome_profile),
+            "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
+            "welcome_discount_expires_at": welcome_profile.welcome_discount_expires_at if welcome_profile else None,
+        },
+    )
 
 
 def store_checkout(request, product_id):
@@ -291,6 +519,9 @@ def store_checkout(request, product_id):
     if request.method == "POST":
         form = StoreOrderForm(request.POST, product=product)
 
+        if not welcome_profile:
+            form.fields.pop("use_welcome_discount")
+
         if form.is_valid():
             with transaction.atomic():
                 order = form.save(commit=False)
@@ -305,7 +536,7 @@ def store_checkout(request, product_id):
                 if request.user.is_authenticated and not request.user.is_staff:
                     order.customer = request.user
 
-                if welcome_profile:
+                if welcome_profile and form.cleaned_data.get("use_welcome_discount"):
                     profile = ClientProfile.objects.select_for_update().get(id=welcome_profile.id)
 
                     if not profile.first_purchase_discount_used:
@@ -338,6 +569,9 @@ def store_checkout(request, product_id):
     else:
         form = StoreOrderForm(product=product)
 
+        if not welcome_profile:
+            form.fields.pop("use_welcome_discount")
+
     return render(
         request,
         "accounts/store_checkout.html",
@@ -360,6 +594,26 @@ def store_order_detail(request, public_token):
 def payment_success(request):
     order_code = request.GET.get("external_reference", "")
     payment_id = request.GET.get("payment_id", "")
+
+    if order_code.startswith("cart:"):
+        checkout_reference = order_code.split(":", 1)[1]
+        orders = StoreOrder.objects.filter(checkout_reference=checkout_reference)
+        first_order = orders.first()
+
+        if not first_order:
+            return render(request, "accounts/store_payment_return.html", {"title": "Pedido nao encontrado", "message": "Nao foi possivel localizar os itens deste pagamento."}, status=404)
+
+        if payment_id:
+            try:
+                payment = get_payment(payment_id)
+            except (MercadoPagoNotConfigured, MercadoPagoRequestError):
+                payment = {}
+
+            if payment.get("status") == "approved":
+                for order in orders:
+                    order.mark_paid(str(payment.get("id", payment_id)))
+
+        return redirect("store_order_detail", public_token=first_order.public_token)
 
     if order_code:
         order = get_object_or_404(StoreOrder, order_code=order_code)
@@ -410,6 +664,29 @@ def mercado_pago_webhook(request):
 
     payment_status = payment.get("status")
     payment_reference = str(payment.get("id", payment_id))
+
+    if order_code.startswith("cart:"):
+        orders = StoreOrder.objects.filter(checkout_reference=order_code.split(":", 1)[1])
+
+        if not orders.exists():
+            return JsonResponse({"ok": False, "error": "cart not found"}, status=404)
+
+        for order in orders:
+            if payment_status == "approved":
+                order.mark_paid(payment_reference)
+            elif payment_status == "rejected":
+                order.mark_payment_failed(payment_reference)
+
+        if payment_status == "rejected":
+            PaymentAlert.objects.get_or_create(
+                payment_id=payment_reference,
+                defaults={
+                    "store_order": orders.first(),
+                    "status_detail": payment.get("status_detail", ""),
+                },
+            )
+
+        return JsonResponse({"ok": True})
 
     if order_code.startswith("credit-sale:"):
         try:
@@ -662,6 +939,7 @@ def choose_installments(request, sale_id):
                 sale.choose_payment(
                     form.cleaned_data["payment_method"],
                     form.cleaned_data["installments"],
+                    form.cleaned_data["use_welcome_discount"],
                 )
 
             if was_pending:
@@ -901,6 +1179,7 @@ def review_client_profile(request, profile_id):
                 profile.registration_status = ClientProfile.APPROVED
                 profile.approved_at = timezone.now()
                 profile.approved_by = request.user
+                profile.welcome_discount_expires_at = profile.welcome_discount_expires_at or add_months(timezone.localdate(), 3)
                 message = "Cadastro aprovado com sucesso."
             elif action == "reject":
                 profile.registration_status = ClientProfile.REJECTED

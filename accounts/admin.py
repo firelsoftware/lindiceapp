@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils import timezone
 
-from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Notification, Product, ProductCost, StoreOrder, SupplierProduct, User
+from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Notification, Product, ProductCost, StoreOrder, SupplierProduct, User, add_months
 from .notifications import create_credit_limit_increased_notification, create_registration_approved_notification
 
 
@@ -43,7 +43,7 @@ class ClientProfileAdmin(admin.ModelAdmin):
         ("Cliente", {"fields": ("user", "phone", "phone_verified", "phone_verification_code", "phone_verification_sent_at")}),
         ("Documentos", {"fields": ("cpf_hash", "cpf_last_digits", "address", "residence_proof")}),
         ("Medidas", {"fields": ("shoe_size", "finger_sizes")}),
-        ("Credito", {"fields": ("pre_approved_credit_limit", "default_max_installments", "first_purchase_discount_used")}),
+        ("Credito", {"fields": ("pre_approved_credit_limit", "default_max_installments", "first_purchase_discount_used", "welcome_discount_expires_at")}),
         ("Cadastro", {"fields": ("registration_status", "admin_notes", "approved_at", "approved_by")}),
         ("Dados extras", {"fields": ("extra_data",)}),
     )
@@ -60,6 +60,7 @@ class ClientProfileAdmin(admin.ModelAdmin):
         if obj.registration_status == ClientProfile.APPROVED and obj.approved_at is None:
             obj.approved_at = timezone.now()
             obj.approved_by = request.user
+            obj.welcome_discount_expires_at = obj.welcome_discount_expires_at or add_months(timezone.localdate(), 3)
 
         super().save_model(request, obj, form, change)
 
