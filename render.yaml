@@ -32,7 +32,7 @@ services:
       - key: MERCADO_PAGO_ACCESS_TOKEN
         sync: false
       - key: CARD_PAYMENT_ENABLED
-        value: "false"
+        value: "true"
       - key: SHOE_SUPPLIER_CATALOG_URL
         sync: false
       - key: SHOE_SUPPLIER_CATALOG_FORMAT

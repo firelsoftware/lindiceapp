@@ -19,7 +19,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .forms import ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
 from .models import CreditSale, ClientProfile, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct, WELCOME_DISCOUNT_PERCENT, money
-from .notifications import create_manual_debt_notification, create_registration_approved_notification, generate_due_notifications
+from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_checkout_preference, create_credit_sale_card_preference, get_payment
 from .supplier_import import import_supplier_catalog
 from .utils import generate_phone_code
@@ -656,11 +656,16 @@ def choose_installments(request, sale_id):
         form = InstallmentChoiceForm(request.POST, sale=sale)
 
         if form.is_valid():
+            was_pending = sale.status == CreditSale.PENDING
+
             with transaction.atomic():
                 sale.choose_payment(
                     form.cleaned_data["payment_method"],
                     form.cleaned_data["installments"],
                 )
+
+            if was_pending:
+                create_sale_confirmed_notifications(sale)
 
             messages.success(request, "Forma de pagamento escolhida com sucesso.")
 
@@ -883,6 +888,7 @@ def review_client_profile(request, profile_id):
     profile = get_object_or_404(ClientProfile, id=profile_id)
     financial_summary = build_client_financial_summary(profile)
     was_approved = profile.registration_status == ClientProfile.APPROVED
+    previous_credit_limit = profile.pre_approved_credit_limit
 
     if request.method == "POST":
         form = ClientApprovalForm(request.POST, instance=profile)
@@ -909,6 +915,8 @@ def review_client_profile(request, profile_id):
 
             if action == "approve" and not was_approved:
                 create_registration_approved_notification(profile)
+            elif action == "approve" and profile.pre_approved_credit_limit > previous_credit_limit:
+                create_credit_limit_increased_notification(profile, previous_credit_limit)
 
             messages.success(request, message)
 
@@ -967,6 +975,7 @@ def create_credit_sale(request):
             sale.save()
             product_formset.instance = sale
             product_formset.save()
+            create_sale_available_notification(sale)
             messages.success(request, "Venda lancada para o cliente escolher o parcelamento.")
 
             return redirect("management_dashboard")

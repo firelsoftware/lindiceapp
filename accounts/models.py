@@ -679,12 +679,18 @@ class Notification(models.Model):
     OVERDUE = "overdue"
     MANUAL_DEBT = "manual_debt"
     REGISTRATION_APPROVED = "registration_approved"
+    CREDIT_LIMIT_INCREASED = "credit_limit_increased"
+    SALE_AVAILABLE = "sale_available"
+    SALE_CONFIRMED = "sale_confirmed"
     KIND_CHOICES = (
         (DUE_SOON, "Vencimento proximo"),
         (DUE_TODAY, "Vencimento hoje"),
         (OVERDUE, "Pagamento em atraso"),
         (MANUAL_DEBT, "Debito lancado"),
         (REGISTRATION_APPROVED, "Cadastro aprovado"),
+        (CREDIT_LIMIT_INCREASED, "Limite aumentado"),
+        (SALE_AVAILABLE, "Venda disponivel"),
+        (SALE_CONFIRMED, "Venda efetivada"),
     )
 
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications")

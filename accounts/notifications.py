@@ -1,4 +1,5 @@
 from datetime import timedelta
+from uuid import uuid4
 
 from django.contrib.auth import get_user_model
 from django.utils import timezone
@@ -33,9 +34,72 @@ def create_registration_approved_notification(profile):
             "recipient": profile.user,
             "kind": Notification.REGISTRATION_APPROVED,
             "title": "Cadastro aprovado",
-            "message": "Seu cadastro foi aprovado. Voce ja pode acessar a loja e usar os recursos liberados para sua conta.",
+            "message": (
+                "Seu cadastro foi aprovado. "
+                f"Seu limite liberado e de R$ {format_brl(profile.pre_approved_credit_limit)}. "
+                "Voce ja pode acessar a loja e usar os recursos liberados para sua conta."
+            ),
         },
     )
+
+
+def create_credit_limit_increased_notification(profile, previous_limit):
+    return Notification.objects.create(
+        unique_key=f"profile:{profile.id}:credit-limit-increased:{uuid4().hex}:client:{profile.user_id}",
+        recipient=profile.user,
+        kind=Notification.CREDIT_LIMIT_INCREASED,
+        title="Seu limite aumentou",
+        message=(
+            f"Seu limite aumentou de R$ {format_brl(previous_limit)} "
+            f"para R$ {format_brl(profile.pre_approved_credit_limit)}."
+        ),
+    )
+
+
+def create_sale_available_notification(sale):
+    return Notification.objects.get_or_create(
+        unique_key=f"sale:{sale.id}:available:client:{sale.client_id}",
+        defaults={
+            "recipient": sale.client,
+            "kind": Notification.SALE_AVAILABLE,
+            "title": "Produto disponivel para finalizar",
+            "message": (
+                f"{sale.description}: acesse a loja para conferir os produtos separados "
+                "e escolher a forma de pagamento."
+            ),
+        },
+    )
+
+
+def create_sale_confirmed_notifications(sale):
+    Notification.objects.get_or_create(
+        unique_key=f"sale:{sale.id}:confirmed:client:{sale.client_id}",
+        defaults={
+            "recipient": sale.client,
+            "kind": Notification.SALE_CONFIRMED,
+            "title": "Compra efetivada",
+            "message": (
+                f"{sale.description}: sua forma de pagamento foi confirmada. "
+                "Acompanhe os proximos passos em Minhas compras."
+            ),
+        },
+    )
+
+    user_model = get_user_model()
+
+    for staff_user in user_model.objects.filter(is_active=True, is_staff=True):
+        Notification.objects.get_or_create(
+            unique_key=f"sale:{sale.id}:confirmed:staff:{staff_user.id}",
+            defaults={
+                "recipient": staff_user,
+                "kind": Notification.SALE_CONFIRMED,
+                "title": "Cliente efetivou a compra",
+                "message": (
+                    f"{sale.client.full_name}: {sale.description}. "
+                    f"Forma de pagamento: {sale.get_selected_payment_method_display()}."
+                ),
+            },
+        )
 
 
 def _notify_staff(debt, kind, key_suffix, title, message):

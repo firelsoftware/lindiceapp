@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from .forms import RegisterForm
 from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, StoreOrder, SupplierProduct, User
-from .notifications import generate_due_notifications
+from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference
 from .utils import cpf_hash, is_valid_cpf
 
@@ -257,6 +257,7 @@ class CreditSalePaymentChoiceTests(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
+    @override_settings(CARD_PAYMENT_ENABLED=False)
     def test_card_option_is_not_available_to_customer(self):
         user = self.create_client()
         sale = self.create_sale(user)
@@ -273,7 +274,7 @@ class CreditSalePaymentChoiceTests(TestCase):
         sale.refresh_from_db()
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Opcao ainda nao disponivel")
+        self.assertContains(response, "Op&ccedil;&atilde;o ainda n&atilde;o dispon&iacute;vel.")
         self.assertEqual(sale.status, CreditSale.PENDING)
 
     def test_card_choice_has_interest_only_from_six_installments(self):
@@ -855,7 +856,65 @@ class NotificationTests(TestCase):
         )
 
         self.assertRedirects(response, "/gestao/")
-        self.assertTrue(self.client_user.notifications.filter(kind=Notification.REGISTRATION_APPROVED).exists())
+        notification = self.client_user.notifications.get(kind=Notification.REGISTRATION_APPROVED)
+        self.assertIn("Seu limite liberado e de R$ 500,00.", notification.message)
+
+    def test_staff_credit_limit_increase_notifies_client_only_when_value_increases(self):
+        profile = self.client_user.profile
+        profile.pre_approved_credit_limit = Decimal("500.00")
+        profile.save(update_fields=["pre_approved_credit_limit"])
+        self.client.force_login(self.staff)
+
+        payload = {
+            "pre_approved_credit_limit": "750.00",
+            "default_max_installments": "5",
+            "admin_notes": "",
+            "action": "approve",
+        }
+        response = self.client.post(f"/gestao/cadastros/{profile.id}/", payload)
+
+        self.assertRedirects(response, "/gestao/")
+        notification = self.client_user.notifications.get(kind=Notification.CREDIT_LIMIT_INCREASED)
+        self.assertEqual(notification.title, "Seu limite aumentou")
+        self.assertIn("de R$ 500,00 para R$ 750,00", notification.message)
+
+        response = self.client.post(f"/gestao/cadastros/{profile.id}/", payload)
+
+        self.assertRedirects(response, "/gestao/")
+        self.assertEqual(self.client_user.notifications.filter(kind=Notification.CREDIT_LIMIT_INCREASED).count(), 1)
+
+    def test_sale_available_notification_invites_client_to_choose_payment_only_once(self):
+        sale = CreditSale.objects.create(
+            client=self.client_user,
+            description="Sandalia reservada",
+            total_amount=Decimal("180.00"),
+            first_due_date="2026-06-10",
+        )
+
+        create_sale_available_notification(sale)
+        create_sale_available_notification(sale)
+
+        notification = self.client_user.notifications.get(kind=Notification.SALE_AVAILABLE)
+        self.assertIn("escolher a forma de pagamento", notification.message)
+        self.assertEqual(self.client_user.notifications.filter(kind=Notification.SALE_AVAILABLE).count(), 1)
+
+    def test_sale_confirmation_notifies_client_and_staff_only_once(self):
+        sale = CreditSale.objects.create(
+            client=self.client_user,
+            description="Sandalia efetivada",
+            total_amount=Decimal("180.00"),
+            first_due_date="2026-06-10",
+        )
+        sale.choose_payment(CreditSale.PIX)
+
+        create_sale_confirmed_notifications(sale)
+        create_sale_confirmed_notifications(sale)
+
+        client_notification = self.client_user.notifications.get(kind=Notification.SALE_CONFIRMED)
+        staff_notification = self.staff.notifications.get(kind=Notification.SALE_CONFIRMED)
+        self.assertEqual(client_notification.title, "Compra efetivada")
+        self.assertIn("Forma de pagamento: Pix", staff_notification.message)
+        self.assertEqual(Notification.objects.filter(kind=Notification.SALE_CONFIRMED).count(), 2)
 
     def test_generates_overdue_notification_on_first_day_and_every_three_days_after(self):
         debt = Debt.objects.create(
