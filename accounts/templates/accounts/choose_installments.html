@@ -5,6 +5,11 @@
 
 <p>Venda: <strong>{{ sale.description }}</strong></p>
 <p>Valor original: <strong>R$ {{ sale.total_amount|floatformat:2 }}</strong></p>
+{% if welcome_discount_available %}
+    <p><span class="badge badge-success">Primeira compra: {{ welcome_discount_percent|floatformat:0 }}% OFF</span></p>
+    <p>Desconto de boas-vindas: <strong>- R$ {{ welcome_discount_preview|floatformat:2 }}</strong></p>
+    <p>O beneficio ja esta aplicado nas opcoes abaixo e nao altera debitos anteriores.</p>
+{% endif %}
 <p>Maximo liberado: <strong>{{ sale.max_installments_allowed }}x</strong></p>
 
 {% if sale.products.exists %}

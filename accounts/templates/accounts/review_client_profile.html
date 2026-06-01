@@ -43,6 +43,10 @@
             <dd>{{ profile.default_max_installments }}x</dd>
         </div>
         <div>
+            <dt>Desconto de primeira compra</dt>
+            <dd>{% if profile.first_purchase_discount_used %}Ja utilizado{% else %}Disponivel{% endif %}</dd>
+        </div>
+        <div>
             <dt>Telefone verificado</dt>
             <dd>{% if profile.phone_verified %}Sim{% else %}Nao{% endif %}</dd>
         </div>

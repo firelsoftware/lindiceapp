@@ -214,7 +214,10 @@ class CreditSalePaymentChoiceTests(TestCase):
         self.assertRedirects(response, f"/pagamento/pix/{sale.id}/")
         self.assertEqual(sale.status, CreditSale.ACCEPTED)
         self.assertEqual(sale.selected_payment_method, CreditSale.PIX)
-        self.assertEqual(sale.selected_total_with_interest, Decimal("180.00"))
+        self.assertEqual(sale.selected_total_with_interest, Decimal("171.00"))
+        self.assertEqual(sale.welcome_discount_amount, Decimal("10.00"))
+        user.profile.refresh_from_db()
+        self.assertTrue(user.profile.first_purchase_discount_used)
         self.assertEqual(Debt.objects.count(), 0)
 
     @override_settings(STORE_PIX_KEY="d92f4cae-454c-4f33-97b2-6a513b292b24")
@@ -226,8 +229,17 @@ class CreditSalePaymentChoiceTests(TestCase):
 
         response = self.client.get(f"/pagamento/pix/{sale.id}/")
 
-        self.assertContains(response, "R$ 180,00")
+        self.assertContains(response, "R$ 171,00")
         self.assertContains(response, "d92f4cae-454c-4f33-97b2-6a513b292b24")
+
+    def test_store_front_announces_available_welcome_discount(self):
+        user = self.create_client()
+        self.client.force_login(user)
+
+        response = self.client.get("/loja/")
+
+        self.assertContains(response, "Presente de boas-vindas")
+        self.assertContains(response, "5% OFF")
 
     def test_pix_page_is_private_to_sale_owner(self):
         user = self.create_client()
@@ -378,6 +390,29 @@ class CreditSalePaymentChoiceTests(TestCase):
         sale.choose_payment(CreditSale.CREDIT, 1)
 
         self.assertEqual(Debt.objects.filter(credit_sale=sale).count(), 1)
+
+    def test_welcome_discount_is_used_once_and_does_not_change_previous_debt(self):
+        user = self.create_client()
+        previous_debt = Debt.objects.create(
+            client=user,
+            description="Debito anterior",
+            amount=Decimal("80.00"),
+            due_date="2026-06-05",
+        )
+        first_sale = self.create_sale(user, first_due_date=datetime(2026, 6, 10).date())
+        second_sale = self.create_sale(user, description="Segunda compra", first_due_date=datetime(2026, 7, 10).date())
+
+        first_sale.choose_payment(CreditSale.CREDIT, 1)
+        second_sale.choose_payment(CreditSale.CREDIT, 1)
+        previous_debt.refresh_from_db()
+        first_sale.refresh_from_db()
+        second_sale.refresh_from_db()
+
+        self.assertEqual(previous_debt.amount, Decimal("80.00"))
+        self.assertEqual(first_sale.welcome_discount_amount, Decimal("10.00"))
+        self.assertEqual(first_sale.selected_total_with_interest, Decimal("190.00"))
+        self.assertEqual(second_sale.welcome_discount_amount, Decimal("0.00"))
+        self.assertEqual(second_sale.selected_total_with_interest, Decimal("200.00"))
 
     def test_credit_choice_rejects_installment_below_minimum(self):
         user = self.create_client()
@@ -536,6 +571,45 @@ class StoreFlowTests(TestCase):
         self.assertIn(str(order.public_token), response["Location"])
         self.assertEqual(order.status, StoreOrder.PENDING_PAYMENT)
         self.assertEqual(order.total_amount, Decimal("99.90"))
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
+    def test_logged_client_receives_welcome_discount_only_on_first_store_order(self):
+        product = self.create_supplier_product()
+        user = User.objects.create_user(
+            email="cliente-loja@example.com",
+            password="Teste12345!",
+            full_name="Cliente Loja",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-hash-cliente-loja",
+            cpf_last_digits="3333",
+            phone="61999999999",
+            phone_verified=True,
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+        )
+        self.client.force_login(user)
+        payload = {
+            "selected_size": "35",
+            "customer_name": "Cliente Loja",
+            "customer_email": "cliente-loja@example.com",
+            "customer_phone": "61999999999",
+            "shipping_address": "Rua Teste, 1",
+            "notes": "",
+            "accept_terms": "on",
+        }
+
+        self.client.post(f"/loja/produto/{product.id}/comprar/", payload)
+        self.client.post(f"/loja/produto/{product.id}/comprar/", payload)
+        first_order, second_order = StoreOrder.objects.order_by("created_at", "id")
+
+        self.assertEqual(first_order.welcome_discount_amount, Decimal("5.00"))
+        self.assertEqual(first_order.total_amount, Decimal("94.90"))
+        self.assertEqual(second_order.welcome_discount_amount, Decimal("0.00"))
+        self.assertEqual(second_order.total_amount, Decimal("99.90"))
 
     def test_public_order_page_does_not_use_sequential_order_code(self):
         product = self.create_supplier_product()

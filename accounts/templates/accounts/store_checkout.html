@@ -14,6 +14,11 @@
 <section class="info-panel">
     <h2>{{ product.name }}</h2>
     <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
+    {% if welcome_discount %}
+        <p><span class="badge badge-success">Primeira compra: {{ welcome_discount_percent|floatformat:0 }}% OFF</span></p>
+        <p>Desconto de boas-vindas: <strong>- R$ {{ welcome_discount|floatformat:2 }}</strong></p>
+        <p>Total com beneficio: <strong>R$ {{ welcome_total|floatformat:2 }}</strong></p>
+    {% endif %}
     <p>Depois do pagamento aprovado, faremos o pedido ao fornecedor e enviaremos as atualizacoes para voce.</p>
 </section>
 

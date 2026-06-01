@@ -18,7 +18,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
-from .models import CreditSale, ClientProfile, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct
+from .models import CreditSale, ClientProfile, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct, WELCOME_DISCOUNT_PERCENT, money
 from .notifications import create_manual_debt_notification, create_registration_approved_notification, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_checkout_preference, create_credit_sale_card_preference, get_payment
 from .supplier_import import import_supplier_catalog
@@ -158,6 +158,22 @@ def build_client_financial_summary(profile):
     }
 
 
+def get_welcome_discount_profile(request):
+    if not request.user.is_authenticated or request.user.is_staff:
+        return None
+
+    profile = request.user.profile
+
+    if profile.registration_status != ClientProfile.APPROVED or profile.first_purchase_discount_used:
+        return None
+
+    return profile
+
+
+def welcome_discount_amount(amount):
+    return money(amount * (WELCOME_DISCOUNT_PERCENT / Decimal("100")))
+
+
 def home(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
@@ -241,6 +257,8 @@ def store_front(request):
             "size": size,
             "size_options": parsed_sizes,
             "reserved_sales": reserved_sales,
+            "welcome_discount_available": bool(get_welcome_discount_profile(request)),
+            "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
         },
     )
 
@@ -266,19 +284,40 @@ def store_checkout(request, product_id):
         stock_quantity__gt=0,
     )
 
+    welcome_profile = get_welcome_discount_profile(request)
+    welcome_discount = welcome_discount_amount(product.suggested_sale_price) if welcome_profile else Decimal("0.00")
+    welcome_total = money(product.suggested_sale_price - welcome_discount)
+
     if request.method == "POST":
         form = StoreOrderForm(request.POST, product=product)
 
         if form.is_valid():
-            order = form.save(commit=False)
-            order.product = product
-            order.product_name = product.name
-            order.supplier_code = product.supplier_code
-            order.unit_price = product.suggested_sale_price
-            order.supplier_cost = product.dropshipping_cost
-            order.total_amount = product.suggested_sale_price
-            order.estimated_profit = product.suggested_sale_price - product.dropshipping_cost
-            order.save()
+            with transaction.atomic():
+                order = form.save(commit=False)
+                order.product = product
+                order.product_name = product.name
+                order.supplier_code = product.supplier_code
+                order.unit_price = product.suggested_sale_price
+                order.supplier_cost = product.dropshipping_cost
+                order.total_amount = product.suggested_sale_price
+                order.estimated_profit = product.suggested_sale_price - product.dropshipping_cost
+
+                if request.user.is_authenticated and not request.user.is_staff:
+                    order.customer = request.user
+
+                if welcome_profile:
+                    profile = ClientProfile.objects.select_for_update().get(id=welcome_profile.id)
+
+                    if not profile.first_purchase_discount_used:
+                        order.customer = request.user
+                        order.welcome_discount_amount = welcome_discount_amount(product.suggested_sale_price)
+                        order.unit_price = money(product.suggested_sale_price - order.welcome_discount_amount)
+                        order.total_amount = order.unit_price
+                        order.estimated_profit = order.total_amount - product.dropshipping_cost
+                        profile.first_purchase_discount_used = True
+                        profile.save(update_fields=["first_purchase_discount_used"])
+
+                order.save()
 
             try:
                 preference = create_checkout_preference(order, request)
@@ -299,7 +338,17 @@ def store_checkout(request, product_id):
     else:
         form = StoreOrderForm(product=product)
 
-    return render(request, "accounts/store_checkout.html", {"form": form, "product": product})
+    return render(
+        request,
+        "accounts/store_checkout.html",
+        {
+            "form": form,
+            "product": product,
+            "welcome_discount": welcome_discount,
+            "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
+            "welcome_total": welcome_total,
+        },
+    )
 
 
 def store_order_detail(request, public_token):
@@ -653,6 +702,9 @@ def choose_installments(request, sale_id):
             "credit_options": sale.credit_options(),
             "card_installments": [option["installments"] for option in sale.card_options()],
             "credit_installments": [option["installments"] for option in sale.credit_options()],
+            "welcome_discount_available": sale.available_welcome_discount_amount() > 0,
+            "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
+            "welcome_discount_preview": sale.available_welcome_discount_amount(),
         },
     )
 

@@ -26,6 +26,12 @@
             <dt>Total</dt>
             <dd>R$ {{ order.total_amount|floatformat:2 }}</dd>
         </div>
+        {% if order.welcome_discount_amount %}
+            <div>
+                <dt>Desconto de primeira compra</dt>
+                <dd>- R$ {{ order.welcome_discount_amount|floatformat:2 }}</dd>
+            </div>
+        {% endif %}
         <div>
             <dt>Cliente</dt>
             <dd>{{ order.customer_name }}</dd>

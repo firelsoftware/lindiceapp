@@ -4,7 +4,7 @@ import re
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db import models
+from django.db import models, transaction
 from django.utils import timezone
 
 
@@ -68,6 +68,7 @@ class ClientProfile(models.Model):
     finger_sizes = models.JSONField(default=dict, blank=True)
     extra_data = models.JSONField(default=dict, blank=True)
     pre_approved_credit_limit = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    first_purchase_discount_used = models.BooleanField(default=False)
     default_max_installments = models.PositiveSmallIntegerField(default=5)
     registration_status = models.CharField(
         max_length=20,
@@ -115,6 +116,7 @@ CARD_INSTALLMENT_INTEREST_RATES = {
 }
 
 PIX_DISCOUNT_PERCENT = Decimal("10.00")
+WELCOME_DISCOUNT_PERCENT = Decimal("5.00")
 
 
 def money(value):
@@ -260,6 +262,7 @@ class StoreOrder(models.Model):
     order_code = models.CharField(max_length=20, unique=True, blank=True)
     public_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     product = models.ForeignKey(SupplierProduct, on_delete=models.PROTECT, related_name="store_orders")
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="store_orders")
     product_name = models.CharField(max_length=180)
     supplier_code = models.CharField(max_length=120)
     selected_size = models.CharField(max_length=30)
@@ -272,6 +275,7 @@ class StoreOrder(models.Model):
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
     supplier_cost = models.DecimalField(max_digits=10, decimal_places=2)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    welcome_discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     estimated_profit = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default=PENDING_PAYMENT)
     mercado_pago_preference_id = models.CharField(max_length=120, blank=True)
@@ -353,6 +357,7 @@ class CreditSale(models.Model):
     sale_code = models.CharField(max_length=20, unique=True, blank=True)
     description = models.CharField(max_length=200)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    welcome_discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     max_installments_allowed = models.PositiveSmallIntegerField(
         default=5,
         validators=[MinValueValidator(1), MaxValueValidator(10)],
@@ -388,6 +393,35 @@ class CreditSale(models.Model):
     def installment_options(self):
         return self.credit_options()
 
+    def available_welcome_discount_amount(self):
+        if self.welcome_discount_amount > 0:
+            return self.welcome_discount_amount
+
+        if (
+            self.status == self.PENDING
+            and ClientProfile.objects.filter(user=self.client, first_purchase_discount_used=False).exists()
+        ):
+            return money(self.total_amount * (WELCOME_DISCOUNT_PERCENT / Decimal("100")))
+
+        return Decimal("0.00")
+
+    def discounted_total_amount(self):
+        return money(self.total_amount - self.available_welcome_discount_amount())
+
+    def apply_welcome_discount(self):
+        if self.welcome_discount_amount > 0 or self.status != self.PENDING:
+            return
+
+        profile = ClientProfile.objects.select_for_update().get(user=self.client)
+
+        if profile.first_purchase_discount_used:
+            return
+
+        self.welcome_discount_amount = money(self.total_amount * (WELCOME_DISCOUNT_PERCENT / Decimal("100")))
+        self.save(update_fields=["welcome_discount_amount"])
+        profile.first_purchase_discount_used = True
+        profile.save(update_fields=["first_purchase_discount_used"])
+
     def credit_options(self):
         options = []
         max_installments = min(self.max_installments_allowed, 10)
@@ -395,7 +429,8 @@ class CreditSale(models.Model):
         for installments in range(1, max_installments + 1):
             monthly_rate = INSTALLMENT_INTEREST_RATES[installments]
             rate = monthly_rate / Decimal("100")
-            total = self.total_amount if monthly_rate == 0 else self.total_amount * ((Decimal("1.00") + rate) ** installments)
+            discounted_total = self.discounted_total_amount()
+            total = discounted_total if monthly_rate == 0 else discounted_total * ((Decimal("1.00") + rate) ** installments)
             total = money(total)
             installment_amount = money(total / Decimal(installments))
 
@@ -418,7 +453,8 @@ class CreditSale(models.Model):
         for installments in range(1, max_installments + 1):
             monthly_rate = CARD_INSTALLMENT_INTEREST_RATES[installments]
             rate = monthly_rate / Decimal("100")
-            total = self.total_amount if monthly_rate == 0 else self.total_amount * ((Decimal("1.00") + rate) ** installments)
+            discounted_total = self.discounted_total_amount()
+            total = discounted_total if monthly_rate == 0 else discounted_total * ((Decimal("1.00") + rate) ** installments)
             total = money(total)
             installment_amount = money(total / Decimal(installments))
             options.append(
@@ -433,8 +469,9 @@ class CreditSale(models.Model):
         return options
 
     def pix_option(self):
-        discount = money(self.total_amount * (PIX_DISCOUNT_PERCENT / Decimal("100")))
-        total = money(self.total_amount - discount)
+        discounted_total = self.discounted_total_amount()
+        discount = money(discounted_total * (PIX_DISCOUNT_PERCENT / Decimal("100")))
+        total = money(discounted_total - discount)
 
         return {
             "discount": discount,
@@ -445,6 +482,9 @@ class CreditSale(models.Model):
     def choose_payment(self, payment_method, installments=None):
         if self.payment_status == self.PAYMENT_PAID:
             raise ValueError("Pagamento ja confirmado.")
+
+        with transaction.atomic():
+            self.apply_welcome_discount()
 
         self.debts.all().delete()
         self.payment_status = self.PAYMENT_PENDING

@@ -4,6 +4,14 @@
 <h1>Loja Líndice</h1>
 <p>Confira os itens separados para voce e veja as novidades da loja.</p>
 
+{% if welcome_discount_available %}
+    <section class="info-panel">
+        <h2>Presente de boas-vindas</h2>
+        <p><span class="badge badge-success">{{ welcome_discount_percent|floatformat:0 }}% OFF</span> na sua primeira compra pelo aplicativo.</p>
+        <p>O beneficio vale para uma compra nova e nao altera debitos anteriores.</p>
+    </section>
+{% endif %}
+
 {% if reserved_sales %}
     <h2>Separado para voce</h2>
     <div class="store-grid">

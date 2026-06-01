@@ -43,7 +43,7 @@ class ClientProfileAdmin(admin.ModelAdmin):
         ("Cliente", {"fields": ("user", "phone", "phone_verified", "phone_verification_code", "phone_verification_sent_at")}),
         ("Documentos", {"fields": ("cpf_hash", "cpf_last_digits", "address", "residence_proof")}),
         ("Medidas", {"fields": ("shoe_size", "finger_sizes")}),
-        ("Credito", {"fields": ("default_max_installments",)}),
+        ("Credito", {"fields": ("default_max_installments", "first_purchase_discount_used")}),
         ("Cadastro", {"fields": ("registration_status", "admin_notes", "approved_at", "approved_by")}),
         ("Dados extras", {"fields": ("extra_data",)}),
     )
