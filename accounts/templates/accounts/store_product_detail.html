@@ -20,10 +20,6 @@
         {% if product.description %}
             <p>{{ product.description }}</p>
         {% endif %}
-        <section class="info-panel">
-            <h2>Como funciona</h2>
-            <p>Voce paga pelo Mercado Pago. Depois da confirmacao, fazemos o pedido no fornecedor e acompanhamos o envio.</p>
-        </section>
         <form method="post" action="{% url 'cart_add' product.id %}">
             {% csrf_token %}
             <label for="selected-size">Tamanho</label>
