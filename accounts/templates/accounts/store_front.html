@@ -3,17 +3,6 @@
 {% block content %}
 <h1>Loja Líndice</h1>
 <p>Confira os itens separados para voce e veja as novidades da loja.</p>
-<p>
-    <a class="store-cart-button{% if cart_item_count %} store-cart-button-active{% endif %}" href="{% url 'cart_detail' %}">
-        <svg class="store-cart-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H6.1M10 20a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm9 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
-        </svg>
-        <span>Ver carrinho</span>
-        {% if cart_item_count %}
-            <span class="store-cart-count">{{ cart_item_count }}</span>
-        {% endif %}
-    </a>
-</p>
 
 {% if welcome_discount_available %}
     <section class="info-panel">

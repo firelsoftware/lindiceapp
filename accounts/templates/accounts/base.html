@@ -250,34 +250,27 @@
             font-weight: 800;
         }
 
-        .store-cart-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 12px 18px;
+        .topbar-cart {
+            position: relative;
+            display: inline-grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
             border: 1px solid var(--brand-mist);
-            border-radius: 10px;
-            background: #ffffff;
-            color: var(--brand-blue);
-            font-weight: 700;
-            text-decoration: none;
-            transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, color 160ms ease;
-        }
-
-        .store-cart-button:hover {
-            border-color: var(--brand-blue);
-        }
-
-        .store-cart-button-active {
-            border-color: var(--brand-purple);
-            background: #f7eafb;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #eef2ff, #f7eafb);
             color: var(--brand-purple);
-            box-shadow: 0 0 0 3px rgba(122, 45, 132, 0.14);
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(24, 34, 48, 0.08);
         }
 
-        .store-cart-icon {
+        .topbar-cart:hover {
+            border-color: var(--brand-purple);
+            color: var(--brand-purple);
+            transform: none;
+        }
+
+        .topbar-cart-icon {
             width: 24px;
             height: 24px;
             fill: none;
@@ -287,16 +280,20 @@
             stroke-width: 1.8;
         }
 
-        .store-cart-count {
+        .topbar-cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
             display: inline-grid;
             place-items: center;
-            min-width: 24px;
-            height: 24px;
-            padding: 0 7px;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 5px;
+            border: 2px solid #ffffff;
             border-radius: 999px;
             background: var(--brand-purple);
             color: #ffffff;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
         }
 
@@ -1493,8 +1490,17 @@
                 </div>
             {% endif %}
 
-            {% if request.user.is_authenticated %}
+            {% if request.user.is_authenticated or store_cart_item_count %}
                 <div class="topbar-actions">
+                    {% if store_cart_item_count %}
+                        <a class="topbar-cart" href="{% url 'cart_detail' %}" aria-label="Abrir carrinho com {{ store_cart_item_count }} item{% if store_cart_item_count != 1 %}s{% endif %}">
+                            <svg class="topbar-cart-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H6.1M10 20a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm9 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
+                            </svg>
+                            <span class="topbar-cart-count">{{ store_cart_item_count }}</span>
+                        </a>
+                    {% endif %}
+                    {% if request.user.is_authenticated %}
                     <a class="notification-bell" href="{% url 'notifications_list' %}" aria-label="Abrir notificacoes">
                         <span class="notification-bell-symbol" aria-hidden="true">&#128276;&#65038;</span>
                         {% if notification_unread_count %}
@@ -1509,8 +1515,11 @@
                             <span></span>
                         </span>
                     </button>
+                    {% endif %}
                 </div>
+            {% endif %}
 
+            {% if request.user.is_authenticated %}
                 <nav class="app-menu" aria-label="Menu do aplicativo" data-menu-panel>
                     {% if request.user.is_staff %}
                         <a class="menu-link" href="{% url 'management_dashboard' %}">Painel de gestao</a>

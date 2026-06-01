@@ -254,7 +254,6 @@ def terms_of_use(request):
 def store_front(request):
     products = SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0).order_by("name")
     reserved_sales = CreditSale.objects.none()
-    cart_item_count = sum(int(item.get("quantity", 1)) for item in get_cart(request).values())
     query = request.GET.get("q", "").strip()
     size = request.GET.get("tamanho", "").strip()
 
@@ -302,7 +301,6 @@ def store_front(request):
             "size": size,
             "size_options": parsed_sizes,
             "reserved_sales": reserved_sales,
-            "cart_item_count": cart_item_count,
             "welcome_discount_available": bool(get_welcome_discount_profile(request)),
             "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
             "boticario_store_url": settings.BOTICARIO_STORE_URL,
