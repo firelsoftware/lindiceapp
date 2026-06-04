@@ -1533,6 +1533,7 @@
                 <nav class="app-menu" aria-label="Menu do aplicativo" data-menu-panel>
                     {% if request.user.is_staff %}
                         <a class="menu-link" href="{% url 'management_dashboard' %}">Painel de gestao</a>
+                        <a class="menu-link" href="{% url 'store_front' %}">Loja</a>
                         <a class="menu-link" href="{% url 'clients_list' %}">Clientes</a>
                         <a class="menu-link" href="{% url 'create_credit_sale' %}">Lancar venda</a>
                         <a class="menu-link" href="{% url 'create_manual_debt' %}">Lancar debito</a>

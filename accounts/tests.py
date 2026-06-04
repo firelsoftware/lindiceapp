@@ -849,6 +849,19 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, "Dropshipping Revenda de Calcados")
         self.assertContains(response, "https://example.com/dropshipping")
 
+    def test_staff_menu_shows_store_link(self):
+        staff = User.objects.create_superuser(
+            email="admin-menu@example.com",
+            password="Teste12345!",
+            full_name="Admin Menu",
+            preferred_name="Admin",
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get("/gestao/fornecedor/produtos/")
+
+        self.assertContains(response, '>Loja</a>', html=False)
+
     def revenda_csv_content(self, stock="34,5|35,4|36,10"):
         content = (
             "REFERENCIA;NOMEPRODUTO;CATEGORIA;ESTOQUE;PRECOATACADO;PRECODROPSHIPPING;MARCA;DESCRICAO;URLPRODUTO;FOTOS;COR;GRUPO;\n"
