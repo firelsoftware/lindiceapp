@@ -273,6 +273,24 @@ def brand_preview(request):
     return render(request, "accounts/brand_preview.html")
 
 
+def assetlinks(request):
+    payload = []
+
+    if settings.ANDROID_APP_PACKAGE_ID and settings.ANDROID_SHA256_CERT_FINGERPRINTS:
+        payload.append(
+            {
+                "relation": ["delegate_permission/common.handle_all_urls"],
+                "target": {
+                    "namespace": "android_app",
+                    "package_name": settings.ANDROID_APP_PACKAGE_ID,
+                    "sha256_cert_fingerprints": settings.ANDROID_SHA256_CERT_FINGERPRINTS,
+                },
+            }
+        )
+
+    return JsonResponse(payload, safe=False)
+
+
 def offline_page(request):
     return render(request, "accounts/offline.html", status=200)
 

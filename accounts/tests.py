@@ -1612,3 +1612,43 @@ class CustomerEntryRoutingTests(TestCase):
         response = self.client.get("/")
 
         self.assertRedirects(response, "/painel/")
+
+
+class PlayStorePreparationTests(TestCase):
+    def test_assetlinks_returns_android_app_binding_when_configured(self):
+        with self.settings(
+            ANDROID_APP_PACKAGE_ID="com.lindice.app",
+            ANDROID_SHA256_CERT_FINGERPRINTS=[
+                "AA:BB:CC:DD:EE:FF",
+                "11:22:33:44:55:66",
+            ],
+        ):
+            response = self.client.get("/.well-known/assetlinks.json")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(
+            response.content,
+            [
+                {
+                    "relation": ["delegate_permission/common.handle_all_urls"],
+                    "target": {
+                        "namespace": "android_app",
+                        "package_name": "com.lindice.app",
+                        "sha256_cert_fingerprints": [
+                            "AA:BB:CC:DD:EE:FF",
+                            "11:22:33:44:55:66",
+                        ],
+                    },
+                }
+            ],
+        )
+
+    def test_assetlinks_returns_empty_list_when_not_configured(self):
+        with self.settings(
+            ANDROID_APP_PACKAGE_ID="",
+            ANDROID_SHA256_CERT_FINGERPRINTS=[],
+        ):
+            response = self.client.get("/.well-known/assetlinks.json")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, [])
