@@ -578,6 +578,7 @@ class CreditSaleProduct(models.Model):
     )
     product_code = models.CharField(max_length=30, unique=True, blank=True)
     name = models.CharField(max_length=120, blank=True)
+    brand = models.CharField(max_length=120, blank=True)
     image = models.FileField(upload_to="sale_products/", blank=True)
     shoe_size = models.CharField(max_length=20, blank=True)
     notes = models.TextField(blank=True)

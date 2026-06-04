@@ -1,0 +1,9 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<section class="info-panel">
+    <h1>Sem conexao</h1>
+    <p>Voce esta offline no momento. Assim que a internet voltar, abra a loja novamente para continuar.</p>
+    <p><a class="button" href="{% url 'store_front' %}">Tentar abrir a loja</a></p>
+</section>
+{% endblock %}

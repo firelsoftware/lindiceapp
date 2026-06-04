@@ -1,8 +1,11 @@
 {
   "name": "Líndice",
   "short_name": "Líndice",
-  "start_url": "/",
+  "id": "/loja/",
+  "start_url": "/loja/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#ffffff",
   "theme_color": "#4d63b7",
   "icons": [

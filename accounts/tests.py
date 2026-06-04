@@ -164,6 +164,9 @@ class CsrfFailureTests(TestCase):
 
 
 class CreditSalePaymentChoiceTests(TestCase):
+    def credit_due_date_input(self, days=10):
+        return (timezone.localdate() + timedelta(days=days)).isoformat()
+
     def create_client(self):
         user = User.objects.create_user(
             email="cliente-compra@example.com",
@@ -389,6 +392,7 @@ class CreditSalePaymentChoiceTests(TestCase):
             {
                 "payment_method": CreditSale.CREDIT,
                 "installments": "2",
+                "first_due_date": self.credit_due_date_input(),
                 "accept_terms": "on",
             },
         )
@@ -441,6 +445,7 @@ class CreditSalePaymentChoiceTests(TestCase):
             {
                 "payment_method": CreditSale.CREDIT,
                 "installments": "2",
+                "first_due_date": self.credit_due_date_input(),
                 "accept_terms": "on",
             },
         )
@@ -448,6 +453,26 @@ class CreditSalePaymentChoiceTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Escolha uma opcao de parcela disponivel")
+        self.assertEqual(sale.status, CreditSale.PENDING)
+
+    def test_credit_choice_rejects_due_date_beyond_thirty_days(self):
+        user = self.create_client()
+        sale = self.create_sale(user)
+        self.client.force_login(user)
+
+        response = self.client.post(
+            f"/parcelamento/{sale.id}/",
+            {
+                "payment_method": CreditSale.CREDIT,
+                "installments": "1",
+                "first_due_date": self.credit_due_date_input(days=31),
+                "accept_terms": "on",
+            },
+        )
+        sale.refresh_from_db()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "O primeiro vencimento deve ficar entre hoje e os proximos 30 dias.")
         self.assertEqual(sale.status, CreditSale.PENDING)
 
     def test_payment_choice_requires_terms_acceptance(self):
@@ -566,6 +591,17 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, visible_product.name)
         self.assertNotContains(response, "Produto Oculto")
         self.assertNotContains(response, "Produto Sem Estoque")
+
+    def test_offline_page_and_service_worker_are_available(self):
+        offline_response = self.client.get("/offline/")
+        service_worker_response = self.client.get("/service-worker.js")
+
+        self.assertEqual(offline_response.status_code, 200)
+        self.assertContains(offline_response, "Sem conexao")
+        self.assertEqual(service_worker_response.status_code, 200)
+        self.assertEqual(service_worker_response["Service-Worker-Allowed"], "/")
+        self.assertIn("/loja/", service_worker_response.content.decode())
+        self.assertIn("/offline/", service_worker_response.content.decode())
 
     def test_store_front_hides_products_already_in_cart(self):
         product_in_cart = self.create_supplier_product(name="Produto No Carrinho")
@@ -848,6 +884,21 @@ class StoreFlowTests(TestCase):
 
         self.assertContains(response, "Dropshipping Revenda de Calcados")
         self.assertContains(response, "https://example.com/dropshipping")
+
+    def test_create_credit_sale_form_shows_brand_and_size_fields_without_due_date(self):
+        staff = User.objects.create_superuser(
+            email="admin-venda@example.com",
+            password="Teste12345!",
+            full_name="Admin Venda",
+            preferred_name="Admin",
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get("/gestao/vendas/nova/")
+
+        self.assertContains(response, "Marca")
+        self.assertContains(response, "Tamanho")
+        self.assertNotContains(response, 'name="first_due_date"', html=False)
 
     def test_staff_menu_shows_store_link(self):
         staff = User.objects.create_superuser(

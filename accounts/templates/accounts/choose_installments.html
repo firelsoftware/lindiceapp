@@ -21,6 +21,9 @@
                 {% if product.image %}
                     <img src="{{ product.image.url }}" alt="{{ product.name }}">
                 {% endif %}
+                {% if product.brand %}
+                    <p>Marca: {{ product.brand }}</p>
+                {% endif %}
                 {% if product.shoe_size %}
                     <p>Tamanho: {{ product.shoe_size }}</p>
                 {% endif %}
@@ -146,6 +149,12 @@
 
         <section data-payment-panel="credit" hidden>
             <h2>Crediario</h2>
+            <label for="{{ form.first_due_date.id_for_label }}">Vencimento da primeira parcela</label>
+            {{ form.first_due_date }}
+            {% if form.first_due_date.errors %}
+                <div class="errorlist">{{ form.first_due_date.errors }}</div>
+            {% endif %}
+            <p>O cliente pode escolher o primeiro vencimento entre hoje e os proximos 30 dias.</p>
             <p>Parcela minima mensal: <strong>R$ 70,00</strong></p>
             <section class="credit-rules-panel">
                 <h3>Regras do crediario</h3>

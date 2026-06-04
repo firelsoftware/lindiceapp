@@ -1,4 +1,5 @@
 from django.conf import settings
+from datetime import timedelta
 import json
 import logging
 from decimal import Decimal, InvalidOperation
@@ -266,6 +267,20 @@ def home(request):
 
 def brand_preview(request):
     return render(request, "accounts/brand_preview.html")
+
+
+def offline_page(request):
+    return render(request, "accounts/offline.html", status=200)
+
+
+def service_worker(request):
+    response = render(request, "accounts/service-worker.js", {
+        "store_front_url": resolve_url("store_front"),
+        "offline_url": resolve_url("offline_page"),
+    }, content_type="application/javascript")
+    response["Service-Worker-Allowed"] = "/"
+    response["Cache-Control"] = "no-cache"
+    return response
 
 
 def privacy_policy(request):
@@ -983,6 +998,8 @@ def choose_installments(request, sale_id):
             was_pending = sale.status == CreditSale.PENDING
 
             with transaction.atomic():
+                if form.cleaned_data["first_due_date"]:
+                    sale.first_due_date = form.cleaned_data["first_due_date"]
                 sale.choose_payment(
                     form.cleaned_data["payment_method"],
                     form.cleaned_data["installments"],
@@ -1332,6 +1349,7 @@ def create_credit_sale(request):
         if form.is_valid() and product_formset.is_valid():
             sale = form.save(commit=False)
             sale.created_by = request.user
+            sale.first_due_date = timezone.localdate() + timedelta(days=30)
             sale.save()
             product_formset.instance = sale
             product_formset.save()

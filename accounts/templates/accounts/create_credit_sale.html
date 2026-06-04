@@ -8,7 +8,7 @@
     {{ form.as_p }}
 
     <h2>Produtos da venda</h2>
-    <p>Adicione somente os produtos desta venda. Cada produto recebe um codigo proprio depois de salvar.</p>
+    <p>Adicione produto, marca e tamanho. O cliente escolhe o vencimento da primeira parcela depois, em ate 30 dias.</p>
     {{ product_formset.management_form }}
     <div id="product-forms">
         {% for product_form in product_formset %}

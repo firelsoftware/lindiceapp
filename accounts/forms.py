@@ -1,12 +1,18 @@
+from datetime import timedelta
+
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
+from django.utils import timezone
 
 from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Product, ProductCost, StoreOrder, User
 from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
+
+
+SHOE_SIZE_CHOICES = [(str(size), str(size)) for size in range(33, 45)]
 
 
 class RegisterForm(UserCreationForm):
@@ -184,19 +190,18 @@ class UserPasswordChangeForm(PasswordChangeForm):
 class CreditSaleForm(forms.ModelForm):
     class Meta:
         model = CreditSale
-        fields = ("client", "description", "total_amount", "max_installments_allowed", "first_due_date")
+        fields = ("client", "description", "total_amount", "max_installments_allowed")
         labels = {
             "client": "Cliente",
             "description": "Descricao da venda",
             "total_amount": "Valor total",
             "max_installments_allowed": "Maximo de parcelas permitido",
-            "first_due_date": "Vencimento da primeira parcela",
         }
         help_texts = {
             "max_installments_allowed": "Clientes novos normalmente ficam ate 5x. Voce pode liberar ate 10x para clientes de confianca.",
+            "description": "Monte a venda e deixe o cliente escolher o vencimento da primeira parcela em ate 30 dias.",
         }
         widgets = {
-            "first_due_date": forms.DateInput(attrs={"type": "date"}),
             "max_installments_allowed": forms.NumberInput(attrs={"min": 1, "max": 10}),
         }
 
@@ -240,6 +245,11 @@ class ManualDebtForm(forms.ModelForm):
 
 
 class InstallmentChoiceForm(forms.Form):
+    first_due_date = forms.DateField(
+        label="Vencimento da primeira parcela",
+        required=False,
+        widget=forms.DateInput(attrs={"type": "date"}),
+    )
     payment_method = forms.ChoiceField(
         label="Forma de pagamento",
         choices=CreditSale.PAYMENT_METHOD_CHOICES,
@@ -255,6 +265,15 @@ class InstallmentChoiceForm(forms.Form):
     def __init__(self, *args, sale, **kwargs):
         super().__init__(*args, **kwargs)
         self.sale = sale
+        today = timezone.localdate()
+        max_due_date = today + timedelta(days=30)
+        self.fields["first_due_date"].initial = sale.first_due_date
+        self.fields["first_due_date"].widget.attrs.update(
+            {
+                "min": today.isoformat(),
+                "max": max_due_date.isoformat(),
+            }
+        )
         if not settings.CARD_PAYMENT_ENABLED:
             self.fields["payment_method"].choices = [
                 choice for choice in CreditSale.PAYMENT_METHOD_CHOICES if choice[0] != CreditSale.CARD
@@ -276,9 +295,19 @@ class InstallmentChoiceForm(forms.Form):
         cleaned_data = super().clean()
         payment_method = cleaned_data.get("payment_method")
         installments = cleaned_data.get("installments")
+        first_due_date = cleaned_data.get("first_due_date")
+        today = timezone.localdate()
+        max_due_date = today + timedelta(days=30)
 
         if payment_method in {CreditSale.CARD, CreditSale.CREDIT} and installments is None:
             raise ValidationError("Escolha a quantidade de parcelas.")
+
+        if payment_method == CreditSale.CREDIT:
+            if first_due_date is None:
+                raise ValidationError("Escolha o vencimento da primeira parcela.")
+
+            if first_due_date < today or first_due_date > max_due_date:
+                raise ValidationError("O primeiro vencimento deve ficar entre hoje e os proximos 30 dias.")
 
         if installments is not None:
             options = self.sale.card_options() if payment_method == CreditSale.CARD else self.sale.credit_options()
@@ -293,10 +322,11 @@ class InstallmentChoiceForm(forms.Form):
 class CreditSaleProductForm(forms.ModelForm):
     class Meta:
         model = CreditSaleProduct
-        fields = ("product", "name", "image", "shoe_size", "notes")
+        fields = ("product", "name", "brand", "image", "shoe_size", "notes")
         labels = {
             "product": "Produto ja cadastrado",
-            "name": "Nome do produto",
+            "name": "Produto",
+            "brand": "Marca",
             "image": "Foto do produto",
             "shoe_size": "Tamanho",
             "notes": "Observacoes",
@@ -307,7 +337,20 @@ class CreditSaleProductForm(forms.ModelForm):
         self.fields["product"].queryset = Product.objects.filter(status=Product.AVAILABLE).order_by("product_code")
         self.fields["product"].required = False
         self.fields["name"].required = False
+        self.fields["brand"].required = True
         self.fields["image"].required = False
+        self.fields["shoe_size"].widget = forms.Select(choices=[("", "Selecione")] + SHOE_SIZE_CHOICES)
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if not cleaned_data.get("product") and not cleaned_data.get("name"):
+            self.add_error("name", "Informe o produto da venda.")
+
+        if not cleaned_data.get("shoe_size"):
+            self.add_error("shoe_size", "Escolha o tamanho do calcado.")
+
+        return cleaned_data
 
 
 CreditSaleProductFormSet = inlineformset_factory(

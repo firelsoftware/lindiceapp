@@ -27,6 +27,9 @@
                         <h2>{{ sale.description }}</h2>
                         {% if first_product %}
                             <p>{{ first_product.name }}</p>
+                            {% if first_product.brand %}
+                                <p>Marca: {{ first_product.brand }}</p>
+                            {% endif %}
                             {% if first_product.shoe_size %}
                                 <p>Tamanho: {{ first_product.shoe_size }}</p>
                             {% endif %}
