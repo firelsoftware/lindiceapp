@@ -225,6 +225,7 @@ class SupplierProduct(models.Model):
     sizes = models.CharField(max_length=180, blank=True)
     is_active = models.BooleanField(default=True)
     is_visible = models.BooleanField(default=False)
+    status_note = models.TextField(blank=True)
     raw_data = models.JSONField(default=dict, blank=True)
     last_seen_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

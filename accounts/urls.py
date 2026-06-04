@@ -47,6 +47,7 @@ urlpatterns = [
     path("gestao/loja/pedidos/<str:order_code>/", views.store_order_admin, name="store_order_admin"),
     path("gestao/produtos/", views.product_list, name="product_list"),
     path("gestao/fornecedor/produtos/", views.supplier_products, name="supplier_products"),
+    path("gestao/fornecedor/produtos/<int:product_id>/status/", views.update_supplier_product_status, name="update_supplier_product_status"),
     path("gestao/fornecedor/importar/", views.import_supplier_products, name="import_supplier_products"),
     path("gestao/produtos/novo/", views.create_product, name="create_product"),
     path("gestao/produtos/<int:product_id>/", views.product_detail, name="product_detail"),

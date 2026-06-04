@@ -1378,13 +1378,11 @@ def supplier_products(request):
         products = products.filter(is_active=False)
 
     if request.method == "POST":
-        visible_ids = set(request.POST.getlist("visible_products"))
         edited_ids = request.POST.getlist("product_ids")
         edited_products = SupplierProduct.objects.filter(id__in=edited_ids)
         updated = 0
 
         for product in edited_products:
-            product.is_visible = str(product.id) in visible_ids
             price_value = request.POST.get(f"price_{product.id}", "").strip().replace(",", ".")
 
             if price_value:
@@ -1405,7 +1403,7 @@ def supplier_products(request):
 
                 return redirect("supplier_products")
 
-            product.save(update_fields=["is_visible", "suggested_sale_price", "updated_at"])
+            product.save(update_fields=["suggested_sale_price", "updated_at"])
             updated += 1
 
         messages.success(request, f"Loja atualizada: {updated} produtos revisados.")
@@ -1429,6 +1427,47 @@ def supplier_products(request):
               "stock_products": SupplierProduct.objects.filter(is_active=True, stock_quantity__gt=0).count(),
           },
       )
+
+
+@staff_member_required(login_url="login")
+def update_supplier_product_status(request, product_id):
+    if request.method != "POST":
+        return redirect("supplier_products")
+
+    product = get_object_or_404(SupplierProduct, id=product_id)
+    action = request.POST.get("action", "").strip()
+    note = request.POST.get("status_note", "").strip()
+
+    if action in {"hide", "deactivate"} and not note:
+        messages.error(request, f"Informe uma observacao para {product.name} antes de ocultar ou inativar.")
+        return redirect("supplier_products")
+
+    if action == "hide":
+        product.is_visible = False
+        product.status_note = note
+        product.save(update_fields=["is_visible", "status_note", "updated_at"])
+        messages.success(request, f"{product.name} foi ocultado da loja.")
+    elif action == "show":
+        if product.suggested_sale_price < product.dropshipping_cost:
+            messages.error(request, f"O preco de {product.name} esta menor que o custo dropshipping.")
+            return redirect("supplier_products")
+        product.is_visible = True
+        product.save(update_fields=["is_visible", "updated_at"])
+        messages.success(request, f"{product.name} voltou a aparecer na loja.")
+    elif action == "deactivate":
+        product.is_active = False
+        product.is_visible = False
+        product.status_note = note
+        product.save(update_fields=["is_active", "is_visible", "status_note", "updated_at"])
+        messages.success(request, f"{product.name} foi inativado.")
+    elif action == "reactivate":
+        product.is_active = True
+        product.save(update_fields=["is_active", "updated_at"])
+        messages.success(request, f"{product.name} foi reativado.")
+    else:
+        messages.error(request, "Acao invalida para o produto do fornecedor.")
+
+    return redirect("supplier_products")
 
 
 @staff_member_required(login_url="login")

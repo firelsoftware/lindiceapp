@@ -794,6 +794,46 @@ class StoreFlowTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertFalse(product.is_visible)
 
+    def test_supplier_panel_requires_note_to_hide_product(self):
+        staff = User.objects.create_superuser(
+            email="admin-hide@example.com",
+            password="Teste12345!",
+            full_name="Admin Hide",
+            preferred_name="Admin",
+        )
+        product = self.create_supplier_product(is_visible=True)
+        self.client.force_login(staff)
+
+        response = self.client.post(
+            f"/gestao/fornecedor/produtos/{product.id}/status/",
+            {"action": "hide", "status_note": ""},
+        )
+        product.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(product.is_visible)
+
+    def test_supplier_panel_inactivates_product_with_required_note(self):
+        staff = User.objects.create_superuser(
+            email="admin-inactive@example.com",
+            password="Teste12345!",
+            full_name="Admin Inactive",
+            preferred_name="Admin",
+        )
+        product = self.create_supplier_product(is_visible=True)
+        self.client.force_login(staff)
+
+        response = self.client.post(
+            f"/gestao/fornecedor/produtos/{product.id}/status/",
+            {"action": "deactivate", "status_note": "Produto de teste removido da operacao."},
+        )
+        product.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(product.is_active)
+        self.assertFalse(product.is_visible)
+        self.assertEqual(product.status_note, "Produto de teste removido da operacao.")
+
     @override_settings(SHOE_SUPPLIER_DROPSHIPPING_URL="https://example.com/dropshipping")
     def test_supplier_panel_links_to_dropshipping_area(self):
         staff = User.objects.create_superuser(

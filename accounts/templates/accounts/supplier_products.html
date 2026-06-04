@@ -76,85 +76,107 @@
     <a class="button button-secondary" href="{% url 'supplier_products' %}">Limpar</a>
 </form>
 
-<form method="post">
+<form id="supplier-price-form" method="post">
     {% csrf_token %}
-    <div class="table-actions">
-        {% if products %}
-            <button type="submit">Salvar vitrine da loja</button>
-        {% endif %}
-        <a class="button button-secondary" href="{% url 'store_front' %}" target="_blank" rel="noopener">Ver loja publica</a>
-    </div>
+</form>
 
-    <table>
-        <thead>
+<div class="table-actions">
+    {% if products %}
+        <button type="submit" form="supplier-price-form">Salvar precos da loja</button>
+    {% endif %}
+    <a class="button button-secondary" href="{% url 'store_front' %}" target="_blank" rel="noopener">Ver loja publica</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Foto</th>
+            <th>Codigo</th>
+            <th>Produto</th>
+            <th>Tamanhos</th>
+            <th>Estoque</th>
+            <th>Custo dropshipping</th>
+            <th>Preco na loja</th>
+            <th>Atualizado</th>
+            <th>Acoes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
             <tr>
-                <th>Loja</th>
-                <th>Foto</th>
-                <th>Codigo</th>
-                <th>Produto</th>
-                <th>Tamanhos</th>
-                <th>Estoque</th>
-                <th>Custo dropshipping</th>
-                <th>Preco na loja</th>
-                <th>Atualizado</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for product in products %}
-                <tr>
-                    <td class="check-cell">
-                        <input type="hidden" name="product_ids" value="{{ product.id }}">
-                        <input type="checkbox" name="visible_products" value="{{ product.id }}" {% if product.is_visible %}checked{% endif %} aria-label="Mostrar {{ product.name }} na loja">
-                    </td>
-                    <td>
-                        <div class="thumb">
-                            {% if product.image_url %}
-                                <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                <td>
+                    <div class="thumb">
+                        {% if product.image_url %}
+                            <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                        {% endif %}
+                    </div>
+                </td>
+                <td>{{ product.supplier_code }}</td>
+                <td>
+                    {% if product.product_url %}
+                        <a href="{{ product.product_url }}" target="_blank" rel="noopener">{{ product.name }}</a>
+                    {% else %}
+                        {{ product.name }}
+                    {% endif %}
+                    <br>
+                    {% if product.is_active %}
+                        <span class="badge badge-success">Ativo</span>
+                    {% else %}
+                        <span class="badge badge-muted">Inativo</span>
+                    {% endif %}
+                    {% if product.is_visible %}
+                        <span class="badge badge-success">Na loja</span>
+                    {% else %}
+                        <span class="badge badge-warning">Oculto</span>
+                    {% endif %}
+                </td>
+                <td>{{ product.sizes }}</td>
+                <td>
+                    {% if product.stock_quantity > 0 %}
+                        <span class="badge badge-success">{{ product.stock_quantity }}</span>
+                    {% else %}
+                        <span class="badge badge-warning">Sem estoque</span>
+                    {% endif %}
+                </td>
+                <td>R$ {{ product.dropshipping_cost|floatformat:2 }}</td>
+                <td>
+                    <input type="hidden" name="product_ids" value="{{ product.id }}" form="supplier-price-form">
+                    <input class="compact-input" type="number" name="price_{{ product.id }}" value="{{ product.suggested_sale_price|unlocalize }}" min="0" step="0.01" aria-label="Preco de {{ product.name }}" form="supplier-price-form">
+                    <br>
+                    <small>Margem: R$ {{ product.store_margin|floatformat:2 }}</small>
+                </td>
+                <td>{% if product.last_seen_at %}{{ product.last_seen_at|date:"d/m/Y H:i" }}{% else %}-{% endif %}</td>
+                <td>
+                    <form method="post" action="{% url 'update_supplier_product_status' product.id %}">
+                        {% csrf_token %}
+                        <label for="status-note-{{ product.id }}">Observacao</label>
+                        <textarea id="status-note-{{ product.id }}" name="status_note" rows="3" placeholder="Motivo para ocultar ou inativar">{{ product.status_note }}</textarea>
+                        <div class="action-row">
+                            {% if product.is_visible %}
+                                <button type="submit" name="action" value="hide">Ocultar</button>
+                            {% else %}
+                                <button type="submit" name="action" value="show">Mostrar</button>
+                            {% endif %}
+                            {% if product.is_active %}
+                                <button type="submit" name="action" value="deactivate" class="button button-secondary">Inativar</button>
+                            {% else %}
+                                <button type="submit" name="action" value="reactivate" class="button button-secondary">Reativar</button>
                             {% endif %}
                         </div>
-                    </td>
-                    <td>{{ product.supplier_code }}</td>
-                    <td>
-                        {% if product.product_url %}
-                            <a href="{{ product.product_url }}" target="_blank" rel="noopener">{{ product.name }}</a>
-                        {% else %}
-                            {{ product.name }}
-                        {% endif %}
-                        <br>
-                        {% if product.is_active %}
-                            <span class="badge badge-success">Ativo</span>
-                        {% else %}
-                            <span class="badge badge-muted">Inativo</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ product.sizes }}</td>
-                    <td>
-                        {% if product.stock_quantity > 0 %}
-                            <span class="badge badge-success">{{ product.stock_quantity }}</span>
-                        {% else %}
-                            <span class="badge badge-warning">Sem estoque</span>
-                        {% endif %}
-                    </td>
-                    <td>R$ {{ product.dropshipping_cost|floatformat:2 }}</td>
-                    <td>
-                        <input class="compact-input" type="number" name="price_{{ product.id }}" value="{{ product.suggested_sale_price|unlocalize }}" min="0" step="0.01" aria-label="Preco de {{ product.name }}">
-                        <br>
-                        <small>Margem: R$ {{ product.store_margin|floatformat:2 }}</small>
-                    </td>
-                    <td>{% if product.last_seen_at %}{{ product.last_seen_at|date:"d/m/Y H:i" }}{% else %}-{% endif %}</td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="9">Nenhum produto encontrado.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="9">Nenhum produto encontrado.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-    {% if products %}
-        <button type="submit">Salvar vitrine da loja</button>
-    {% endif %}
-</form>
+{% if products %}
+    <button type="submit" form="supplier-price-form">Salvar precos da loja</button>
+{% endif %}
 
 {% if products.paginator.num_pages > 1 %}
     <p>
