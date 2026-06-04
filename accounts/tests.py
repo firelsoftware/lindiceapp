@@ -567,6 +567,24 @@ class StoreFlowTests(TestCase):
         self.assertNotContains(response, "Produto Oculto")
         self.assertNotContains(response, "Produto Sem Estoque")
 
+    def test_store_front_hides_products_already_in_cart(self):
+        product_in_cart = self.create_supplier_product(name="Produto No Carrinho")
+        visible_product = self.create_supplier_product(supplier_code="RC002", name="Produto Fora Do Carrinho")
+
+        self.client.post(f"/loja/carrinho/adicionar/{product_in_cart.id}/", {"selected_size": "35"})
+        response = self.client.get("/loja/")
+
+        self.assertNotContains(response, product_in_cart.name)
+        self.assertContains(response, visible_product.name)
+
+    def test_cart_still_lists_product_hidden_from_store_front(self):
+        product_in_cart = self.create_supplier_product(name="Produto Reservado No Carrinho")
+
+        self.client.post(f"/loja/carrinho/adicionar/{product_in_cart.id}/", {"selected_size": "35"})
+        response = self.client.get("/loja/carrinho/")
+
+        self.assertContains(response, product_in_cart.name)
+
     @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
     def test_checkout_creates_pending_order_without_payment_token(self):
         product = self.create_supplier_product()

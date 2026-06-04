@@ -295,6 +295,14 @@ def store_front(request):
     reserved_sales = CreditSale.objects.none()
     query = request.GET.get("q", "").strip()
     size = request.GET.get("tamanho", "").strip()
+    cart_product_ids = {
+        item.get("product_id")
+        for item in get_cart(request).values()
+        if item.get("product_id")
+    }
+
+    if cart_product_ids:
+        products = products.exclude(id__in=cart_product_ids)
 
     if request.user.is_authenticated and not request.user.is_staff:
         profile = request.user.profile
