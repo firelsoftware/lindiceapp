@@ -1255,3 +1255,111 @@ class ClientPortfolioTests(TestCase):
         self.assertContains(response, "Em acompanhamento")
         self.assertContains(response, "Saldo aberto")
         self.assertContains(response, "R$ 150,00")
+
+    def test_staff_can_mark_debt_paid_manually_from_profile(self):
+        debt = Debt.objects.create(
+            client=self.client_user,
+            description="Parcela paga fora do app",
+            amount=Decimal("80.00"),
+            due_date=timezone.localdate() - timedelta(days=2),
+        )
+
+        response = self.client.post(
+            f"/gestao/debitos/{debt.id}/pagamento/",
+            {
+                "action": "mark_paid",
+                "return_profile_id": self.profile.id,
+            },
+            follow=True,
+        )
+        debt.refresh_from_db()
+
+        self.assertRedirects(response, f"/gestao/cadastros/{self.profile.id}/")
+        self.assertTrue(debt.paid)
+        self.assertEqual(debt.paid_at, timezone.localdate())
+        self.assertContains(response, "Debito marcado como pago manualmente.")
+        self.assertContains(response, "Pago em")
+
+    def test_staff_can_reopen_debt_after_manual_payment(self):
+        debt = Debt.objects.create(
+            client=self.client_user,
+            description="Parcela baixada por engano",
+            amount=Decimal("95.00"),
+            due_date=timezone.localdate(),
+            paid=True,
+            paid_at=timezone.localdate(),
+        )
+
+        response = self.client.post(
+            f"/gestao/debitos/{debt.id}/pagamento/",
+            {
+                "action": "mark_unpaid",
+                "return_profile_id": self.profile.id,
+            },
+            follow=True,
+        )
+        debt.refresh_from_db()
+
+        self.assertRedirects(response, f"/gestao/cadastros/{self.profile.id}/")
+        self.assertFalse(debt.paid)
+        self.assertIsNone(debt.paid_at)
+        self.assertContains(response, "Baixa manual removida e debito reaberto.")
+        self.assertContains(response, "Pendente")
+
+
+class CustomerEntryRoutingTests(TestCase):
+    def create_client(self, email="cliente-fluxo@example.com"):
+        user = User.objects.create_user(
+            email=email,
+            password="Teste12345!",
+            full_name="Cliente Fluxo",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash=f"cpf-hash-{email}",
+            cpf_last_digits="3333",
+            phone="61999998888",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+        )
+
+        return user
+
+    def test_home_redirects_client_with_pending_sale_to_store(self):
+        user = self.create_client()
+        CreditSale.objects.create(
+            client=user,
+            description="Compra separada",
+            total_amount=Decimal("180.00"),
+            first_due_date="2026-06-10",
+        )
+        self.client.force_login(user)
+
+        response = self.client.get("/")
+
+        self.assertRedirects(response, "/loja/")
+
+    def test_login_page_redirects_authenticated_client_with_pending_sale_to_store(self):
+        user = self.create_client(email="cliente-login@example.com")
+        CreditSale.objects.create(
+            client=user,
+            description="Compra separada",
+            total_amount=Decimal("180.00"),
+            first_due_date="2026-06-10",
+        )
+        self.client.force_login(user)
+
+        response = self.client.get("/login/")
+
+        self.assertRedirects(response, "/loja/")
+
+    def test_home_keeps_client_without_pending_sale_on_dashboard(self):
+        user = self.create_client(email="cliente-dashboard@example.com")
+        self.client.force_login(user)
+
+        response = self.client.get("/")
+
+        self.assertRedirects(response, "/painel/")

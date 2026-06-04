@@ -678,6 +678,16 @@ class Debt(models.Model):
     def total_amount(self):
         return self.amount + self.late_fee_amount() + self.interest_amount()
 
+    def mark_paid(self, paid_at=None):
+        self.paid = True
+        self.paid_at = paid_at or timezone.localdate()
+        self.save(update_fields=["paid", "paid_at"])
+
+    def mark_unpaid(self):
+        self.paid = False
+        self.paid_at = None
+        self.save(update_fields=["paid", "paid_at"])
+
     def __str__(self):
         return f"{self.client.email} - R$ {self.total_amount():.2f}"
 

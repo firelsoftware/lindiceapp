@@ -128,6 +128,7 @@
                 <th>Valor</th>
                 <th>Total atualizado</th>
                 <th>Status</th>
+                <th>Acao</th>
             </tr>
         </thead>
         <tbody>
@@ -137,11 +138,28 @@
                     <td>{{ debt.due_date|date:"d/m/Y" }}</td>
                     <td>R$ {{ debt.amount|floatformat:2 }}</td>
                     <td>R$ {{ debt.total_amount|floatformat:2 }}</td>
-                    <td>{% if debt.paid %}Pago{% else %}Pendente{% endif %}</td>
+                    <td>
+                        {% if debt.paid %}
+                            <span class="badge badge-success">Pago{% if debt.paid_at %} em {{ debt.paid_at|date:"d/m/Y" }}{% endif %}</span>
+                        {% else %}
+                            <span class="badge badge-warning">Pendente</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form method="post" class="inline-button-form" action="{% url 'update_debt_payment' debt.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="return_profile_id" value="{{ profile.id }}">
+                            {% if debt.paid %}
+                                <button type="submit" class="button-secondary" name="action" value="mark_unpaid">Desfazer baixa</button>
+                            {% else %}
+                                <button type="submit" name="action" value="mark_paid">Marcar como pago</button>
+                            {% endif %}
+                        </form>
+                    </td>
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="5">Nenhum debito lancado para este cliente.</td>
+                    <td colspan="6">Nenhum debito lancado para este cliente.</td>
                 </tr>
             {% endfor %}
         </tbody>

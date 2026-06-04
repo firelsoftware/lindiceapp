@@ -6,6 +6,7 @@ import uuid
 
 from django.contrib import messages
 from django.contrib.auth import login, update_session_auth_hash
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
@@ -13,7 +14,7 @@ from django.db.models import Sum
 from django.db.models import Q
 from django.http import JsonResponse
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect, render, resolve_url
 from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -26,6 +27,44 @@ from .supplier_import import decode_catalog_content, import_supplier_catalog, im
 from .utils import generate_phone_code
 
 logger = logging.getLogger(__name__)
+
+
+def should_redirect_customer_to_store(user):
+    if not user.is_authenticated or user.is_staff:
+        return False
+
+    profile = getattr(user, "profile", None)
+
+    if not profile:
+        return False
+
+    if not profile.phone_verified or profile.registration_status != ClientProfile.APPROVED:
+        return False
+
+    return user.credit_sales.filter(status=CreditSale.PENDING).exists()
+
+
+def authenticated_home_route(user):
+    if user.is_staff:
+        return "management_dashboard"
+
+    if should_redirect_customer_to_store(user):
+        return "store_front"
+
+    return "dashboard"
+
+
+class LoginView(auth_views.LoginView):
+    template_name = "accounts/login.html"
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        redirect_to = self.get_redirect_url()
+
+        if redirect_to:
+            return redirect_to
+
+        return resolve_url(authenticated_home_route(self.request.user))
 
 
 def csrf_failure(request, reason=""):
@@ -220,7 +259,7 @@ def build_cart_items(request):
 
 def home(request):
     if request.user.is_authenticated:
-        return redirect("dashboard")
+        return redirect(authenticated_home_route(request.user))
 
     return redirect("login")
 
@@ -1242,6 +1281,38 @@ def create_manual_debt(request):
         form = ManualDebtForm(initial=initial)
 
     return render(request, "accounts/create_manual_debt.html", {"form": form, "return_profile_id": return_profile_id})
+
+
+@staff_member_required(login_url="login")
+def update_debt_payment(request, debt_id):
+    debt = get_object_or_404(Debt, id=debt_id)
+
+    if request.method != "POST":
+        return redirect("review_client_profile", profile_id=debt.client.profile.id)
+
+    action = request.POST.get("action")
+
+    if action == "mark_paid":
+        if debt.paid:
+            messages.info(request, "Este debito ja estava marcado como pago.")
+        else:
+            debt.mark_paid()
+            messages.success(request, "Debito marcado como pago manualmente.")
+    elif action == "mark_unpaid":
+        if not debt.paid:
+            messages.info(request, "Este debito ja estava em aberto.")
+        else:
+            debt.mark_unpaid()
+            messages.success(request, "Baixa manual removida e debito reaberto.")
+    else:
+        messages.error(request, "Acao invalida para este debito.")
+
+    profile_id = request.POST.get("return_profile_id") or getattr(getattr(debt.client, "profile", None), "id", None)
+
+    if profile_id:
+        return redirect("review_client_profile", profile_id=profile_id)
+
+    return redirect("clients_list")
 
 
 @staff_member_required(login_url="login")
