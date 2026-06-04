@@ -15,6 +15,10 @@
     <h2>{{ profile.user.full_name }}</h2>
     <dl class="info-list">
         <div>
+            <dt>ID do cliente</dt>
+            <dd>{{ profile.id|stringformat:"04d" }}</dd>
+        </div>
+        <div>
             <dt>Email</dt>
             <dd>{{ profile.user.email }}</dd>
         </div>

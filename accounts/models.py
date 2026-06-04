@@ -40,7 +40,7 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return self.email
+        return self.full_name
 
 
 class ClientProfile(models.Model):
@@ -346,6 +346,13 @@ class CreditSale(models.Model):
         (CREDIT, "Crediario"),
     ]
 
+    REMAINDER_PIX = "pix"
+    REMAINDER_CARD = "card"
+    REMAINDER_PAYMENT_CHOICES = [
+        (REMAINDER_PIX, "Pix"),
+        (REMAINDER_CARD, "Cartao"),
+    ]
+
     PAYMENT_PENDING = "pending"
     PAYMENT_PAID = "paid"
     PAYMENT_FAILED = "failed"
@@ -372,6 +379,9 @@ class CreditSale(models.Model):
     selected_monthly_interest_percent = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     selected_installment_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     selected_total_with_interest = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    financed_total_with_interest = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    remainder_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    remainder_payment_method = models.CharField(max_length=20, choices=REMAINDER_PAYMENT_CHOICES, blank=True)
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_PENDING)
     mercado_pago_preference_id = models.CharField(max_length=120, blank=True)
     mercado_pago_payment_id = models.CharField(max_length=120, blank=True)
@@ -435,12 +445,15 @@ class CreditSale(models.Model):
     def credit_options(self):
         options = []
         max_installments = min(self.max_installments_allowed, 10)
+        financed_base = self.credit_financed_amount()
+
+        if financed_base <= Decimal("0.00"):
+            return options
 
         for installments in range(1, max_installments + 1):
             monthly_rate = INSTALLMENT_INTEREST_RATES[installments]
             rate = monthly_rate / Decimal("100")
-            discounted_total = self.discounted_total_amount()
-            total = discounted_total if monthly_rate == 0 else discounted_total * ((Decimal("1.00") + rate) ** installments)
+            total = financed_base if monthly_rate == 0 else financed_base * ((Decimal("1.00") + rate) ** installments)
             total = money(total)
             installment_amount = money(total / Decimal(installments))
 
@@ -489,7 +502,22 @@ class CreditSale(models.Model):
             "total": total,
         }
 
-    def choose_payment(self, payment_method, installments=None, use_welcome_discount=False):
+    def credit_financed_amount(self):
+        credit_limit = self.client.profile.pre_approved_credit_limit
+        discounted_total = self.discounted_total_amount()
+
+        if credit_limit <= Decimal("0.00"):
+            return money(discounted_total)
+
+        return money(min(discounted_total, credit_limit))
+
+    def credit_remainder_amount(self):
+        discounted_total = self.discounted_total_amount()
+        financed_amount = self.credit_financed_amount()
+        remainder = discounted_total - financed_amount
+        return money(remainder) if remainder > Decimal("0.00") else Decimal("0.00")
+
+    def choose_payment(self, payment_method, installments=None, use_welcome_discount=False, remainder_payment_method=""):
         if self.payment_status == self.PAYMENT_PAID:
             raise ValueError("Pagamento ja confirmado.")
 
@@ -501,6 +529,9 @@ class CreditSale(models.Model):
         self.mercado_pago_preference_id = ""
         self.mercado_pago_payment_id = ""
         self.mercado_pago_init_point = ""
+        self.remainder_amount = Decimal("0.00")
+        self.remainder_payment_method = ""
+        self.financed_total_with_interest = Decimal("0.00")
 
         if payment_method == self.PIX:
             option = self.pix_option()
@@ -509,6 +540,7 @@ class CreditSale(models.Model):
             self.selected_monthly_interest_percent = Decimal("0.00")
             self.selected_installment_amount = option["total"]
             self.selected_total_with_interest = option["total"]
+            self.financed_total_with_interest = Decimal("0.00")
             self.status = self.ACCEPTED
             self.accepted_at = timezone.now()
             self.save()
@@ -533,7 +565,10 @@ class CreditSale(models.Model):
         self.selected_installments = installments
         self.selected_monthly_interest_percent = selected_option["monthly_rate"]
         self.selected_installment_amount = selected_option["installment_amount"]
-        self.selected_total_with_interest = selected_option["total"]
+        self.financed_total_with_interest = selected_option["total"]
+        self.remainder_amount = self.credit_remainder_amount() if payment_method == self.CREDIT else Decimal("0.00")
+        self.remainder_payment_method = remainder_payment_method if payment_method == self.CREDIT else ""
+        self.selected_total_with_interest = selected_option["total"] + self.remainder_amount if payment_method == self.CREDIT else selected_option["total"]
         self.status = self.ACCEPTED
         self.accepted_at = timezone.now()
         self.save()

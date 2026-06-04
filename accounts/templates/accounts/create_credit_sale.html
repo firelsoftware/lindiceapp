@@ -8,7 +8,7 @@
     {{ form.as_p }}
 
     <h2>Produtos da venda</h2>
-    <p>Adicione produto, marca e tamanho. O cliente escolhe o vencimento da primeira parcela depois, em ate 30 dias.</p>
+    <p>Adicione produto, marca e tamanho. O limite de parcelas vem do cadastro do cliente, e o vencimento da primeira parcela sera escolhido por ele em ate 30 dias.</p>
     {{ product_formset.management_form }}
     <div id="product-forms">
         {% for product_form in product_formset %}
@@ -31,7 +31,7 @@
     <button type="submit">Enviar para escolha do cliente</button>
 </form>
 
-<p>O cliente escolhe Pix com 10% de desconto, cartao com juros a partir de 6x ou crediario com a tabela de parcelas aprovada.</p>
+<p>O cliente escolhe Pix com 10% de desconto, cartao com juros a partir de 6x ou crediario dentro do limite aprovado.</p>
 <p><a href="{% url 'management_dashboard' %}">Voltar ao painel de gestao</a></p>
 
 <script>
@@ -40,6 +40,8 @@
     const emptyProductTemplate = document.getElementById("empty-product-form");
     const totalFormsInput = document.getElementById("id_products-TOTAL_FORMS");
     const maxFormsInput = document.getElementById("id_products-MAX_NUM_FORMS");
+    const adultSizes = Array.from({ length: 12 }, (_, index) => String(index + 33));
+    const childSizes = Array.from({ length: 19 }, (_, index) => String(index + 14));
 
     const updateAddProductButton = () => {
         const totalForms = Number(totalFormsInput.value);
@@ -48,6 +50,27 @@
         if (maxForms && totalForms >= maxForms) {
             addProductButton.disabled = true;
             addProductButton.textContent = "Limite de produtos atingido";
+        }
+    };
+
+    const updateSizeChoices = (section) => {
+        const sizeGroupSelect = section.querySelector('select[name$="-size_group"]');
+        const shoeSizeSelect = section.querySelector('select[name$="-shoe_size"]');
+
+        if (!sizeGroupSelect || !shoeSizeSelect) {
+            return;
+        }
+
+        const currentValue = shoeSizeSelect.value;
+        const sizes = sizeGroupSelect.value === "child" ? childSizes : adultSizes;
+
+        shoeSizeSelect.replaceChildren(new Option("Selecione", ""));
+        sizes.forEach((size) => {
+            shoeSizeSelect.add(new Option(size, size));
+        });
+
+        if (sizes.includes(currentValue)) {
+            shoeSizeSelect.value = currentValue;
         }
     };
 
@@ -60,7 +83,15 @@
 
         productForms.insertAdjacentHTML("beforeend", html);
         totalFormsInput.value = nextNumber;
+        const section = productForms.lastElementChild;
+        updateSizeChoices(section);
+        section.querySelector('select[name$="-size_group"]')?.addEventListener("change", () => updateSizeChoices(section));
         updateAddProductButton();
+    });
+
+    productForms.querySelectorAll(".product-form").forEach((section) => {
+        updateSizeChoices(section);
+        section.querySelector('select[name$="-size_group"]')?.addEventListener("change", () => updateSizeChoices(section));
     });
 
     updateAddProductButton();

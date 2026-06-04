@@ -32,6 +32,9 @@
         {% if group.sale_id and group.payment_status != "Pago" %}
             <p><a class="button button-secondary" href="{% url 'choose_installments' group.sale_id %}">Escolher outra forma de pagamento</a></p>
         {% endif %}
+        {% if group.remainder_amount %}
+            <p>Restante fora do crediario: <strong>R$ {{ group.remainder_amount|floatformat:2 }}</strong>{% if group.remainder_payment_method %} via {{ group.remainder_payment_method }}{% endif %}.</p>
+        {% endif %}
 
         <table>
             <thead>

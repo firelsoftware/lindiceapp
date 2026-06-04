@@ -167,23 +167,27 @@ class CreditSalePaymentChoiceTests(TestCase):
     def credit_due_date_input(self, days=10):
         return (timezone.localdate() + timedelta(days=days)).isoformat()
 
-    def create_client(self):
+    def create_client(self, **profile_overrides):
         user = User.objects.create_user(
             email="cliente-compra@example.com",
             password="Teste12345!",
             full_name="Cliente Compra",
             preferred_name="Cliente",
         )
+        profile_data = {
+            "user": user,
+            "cpf_hash": cpf_hash("52998224725"),
+            "cpf_last_digits": "4725",
+            "phone": "61999999999",
+            "phone_verified": True,
+            "address": "Endereco",
+            "residence_proof": SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            "registration_status": ClientProfile.APPROVED,
+            "welcome_discount_expires_at": timezone.localdate() + timedelta(days=90),
+        }
+        profile_data.update(profile_overrides)
         ClientProfile.objects.create(
-            user=user,
-            cpf_hash=cpf_hash("52998224725"),
-            cpf_last_digits="4725",
-            phone="61999999999",
-            phone_verified=True,
-            address="Endereco",
-            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
-            registration_status=ClientProfile.APPROVED,
-            welcome_discount_expires_at=timezone.localdate() + timedelta(days=90),
+            **profile_data,
         )
 
         return user
@@ -474,6 +478,48 @@ class CreditSalePaymentChoiceTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "O primeiro vencimento deve ficar entre hoje e os proximos 30 dias.")
         self.assertEqual(sale.status, CreditSale.PENDING)
+
+    def test_credit_choice_requires_remainder_payment_method_above_credit_limit(self):
+        user = self.create_client(pre_approved_credit_limit=Decimal("150.00"))
+        sale = self.create_sale(user)
+        self.client.force_login(user)
+
+        response = self.client.post(
+            f"/parcelamento/{sale.id}/",
+            {
+                "payment_method": CreditSale.CREDIT,
+                "installments": "2",
+                "first_due_date": self.credit_due_date_input(),
+                "accept_terms": "on",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Escolha como pagar o restante fora do crediario.")
+
+    def test_credit_choice_records_remainder_above_credit_limit(self):
+        user = self.create_client(pre_approved_credit_limit=Decimal("150.00"))
+        sale = self.create_sale(user)
+        self.client.force_login(user)
+
+        response = self.client.post(
+            f"/parcelamento/{sale.id}/",
+            {
+                "payment_method": CreditSale.CREDIT,
+                "installments": "2",
+                "first_due_date": self.credit_due_date_input(),
+                "remainder_payment_method": CreditSale.REMAINDER_PIX,
+                "accept_terms": "on",
+            },
+        )
+        sale.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(sale.remainder_amount, Decimal("40.00"))
+        self.assertEqual(sale.remainder_payment_method, CreditSale.REMAINDER_PIX)
+        self.assertEqual(sale.financed_total_with_interest, Decimal("150.00"))
+        self.assertEqual(sale.selected_total_with_interest, Decimal("190.00"))
+        self.assertEqual(Debt.objects.filter(credit_sale=sale).count(), 2)
 
     def test_payment_choice_requires_terms_acceptance(self):
         user = self.create_client()
@@ -899,6 +945,87 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, "Marca")
         self.assertContains(response, "Tamanho")
         self.assertNotContains(response, 'name="first_due_date"', html=False)
+        self.assertNotContains(response, 'name="max_installments_allowed"', html=False)
+
+    def test_create_credit_sale_form_uses_client_id_and_name_labels(self):
+        staff = User.objects.create_superuser(
+            email="admin-venda-id@example.com",
+            password="Teste12345!",
+            full_name="Admin Venda",
+            preferred_name="Admin",
+        )
+        user = User.objects.create_user(
+            email="cliente-id@example.com",
+            password="Teste12345!",
+            full_name="Maria Cliente",
+            preferred_name="Maria",
+        )
+        profile = ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-id-cliente",
+            cpf_last_digits="8888",
+            phone="61999997777",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get("/gestao/vendas/nova/")
+
+        self.assertContains(response, f"ID {profile.id:04d} - Maria Cliente")
+
+    def test_create_credit_sale_uses_client_default_installments_and_optional_description(self):
+        staff = User.objects.create_superuser(
+            email="admin-venda-post@example.com",
+            password="Teste12345!",
+            full_name="Admin Venda",
+            preferred_name="Admin",
+        )
+        user = User.objects.create_user(
+            email="cliente-venda@example.com",
+            password="Teste12345!",
+            full_name="Cliente Venda",
+            preferred_name="Cliente",
+        )
+        profile = ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-venda-cliente",
+            cpf_last_digits="7777",
+            phone="61999996666",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+            default_max_installments=7,
+        )
+        self.client.force_login(staff)
+
+        response = self.client.post(
+            "/gestao/vendas/nova/",
+            {
+                "client": user.id,
+                "description": "",
+                "total_amount": "240.00",
+                "products-TOTAL_FORMS": "1",
+                "products-INITIAL_FORMS": "0",
+                "products-MIN_NUM_FORMS": "0",
+                "products-MAX_NUM_FORMS": "20",
+                "products-0-product": "",
+                "products-0-name": "Sapato Teste",
+                "products-0-brand": "Marca Teste",
+                "products-0-shoe_size": "34",
+                "products-0-size_group": "adult",
+                "products-0-notes": "",
+            },
+        )
+        sale = CreditSale.objects.get(client=user)
+
+        self.assertEqual(profile.default_max_installments, 7)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(sale.max_installments_allowed, 7)
+        self.assertEqual(sale.description, "Sapato Teste")
 
     def test_staff_menu_shows_store_link(self):
         staff = User.objects.create_superuser(

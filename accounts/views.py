@@ -121,6 +121,8 @@ def build_purchase_groups(user):
                     "payment_method": sale.get_selected_payment_method_display() if sale.selected_payment_method else "",
                     "sale_id": sale.id,
                     "payment_status": sale.get_payment_status_display(),
+                    "remainder_amount": sale.remainder_amount,
+                    "remainder_payment_method": sale.get_remainder_payment_method_display() if sale.remainder_payment_method else "",
                     "mercado_pago_init_point": sale.mercado_pago_init_point,
                     "created_at": sale.created_at,
                 }
@@ -136,6 +138,8 @@ def build_purchase_groups(user):
                     "payment_method": sale.get_selected_payment_method_display(),
                     "sale_id": sale.id,
                     "payment_status": sale.get_payment_status_display(),
+                    "remainder_amount": sale.remainder_amount,
+                    "remainder_payment_method": sale.get_remainder_payment_method_display() if sale.remainder_payment_method else "",
                     "mercado_pago_init_point": sale.mercado_pago_init_point,
                     "created_at": sale.created_at,
                 }
@@ -1004,6 +1008,7 @@ def choose_installments(request, sale_id):
                     form.cleaned_data["payment_method"],
                     form.cleaned_data["installments"],
                     form.cleaned_data["use_welcome_discount"],
+                    form.cleaned_data["remainder_payment_method"],
                 )
 
             if was_pending:
@@ -1052,6 +1057,8 @@ def choose_installments(request, sale_id):
             "welcome_discount_available": sale.available_welcome_discount_amount() > 0,
             "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
             "welcome_discount_preview": sale.available_welcome_discount_amount(),
+            "credit_financed_amount": sale.credit_financed_amount(),
+            "credit_remainder_amount": sale.credit_remainder_amount(),
             "credit_late_fee_percent": Debt._meta.get_field("late_fee_percent").default,
             "credit_monthly_interest_percent": Debt._meta.get_field("monthly_interest_percent").default,
         },
@@ -1350,6 +1357,19 @@ def create_credit_sale(request):
             sale = form.save(commit=False)
             sale.created_by = request.user
             sale.first_due_date = timezone.localdate() + timedelta(days=30)
+            sale.max_installments_allowed = sale.client.profile.default_max_installments
+            if not sale.description:
+                first_item = next(
+                    (
+                        item for item in product_formset.cleaned_data
+                        if item and not item.get("DELETE") and (item.get("name") or item.get("product"))
+                    ),
+                    None,
+                )
+                product_name = ""
+                if first_item:
+                    product_name = first_item.get("name") or getattr(first_item.get("product"), "name", "")
+                sale.description = product_name or f"Venda para {sale.client.full_name}"
             sale.save()
             product_formset.instance = sale
             product_formset.save()

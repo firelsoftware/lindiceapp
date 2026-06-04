@@ -10,7 +10,7 @@
     <p>Desconto de boas-vindas: <strong>- R$ {{ welcome_discount_preview|floatformat:2 }}</strong></p>
     <p>O beneficio ja esta aplicado nas opcoes abaixo e nao altera debitos anteriores.</p>
 {% endif %}
-<p>Maximo liberado: <strong>{{ sale.max_installments_allowed }}x</strong></p>
+<p>Maximo liberado no cadastro: <strong>{{ sale.max_installments_allowed }}x</strong></p>
 
 {% if sale.products.exists %}
     <h2>Produtos da venda</h2>
@@ -155,6 +155,18 @@
                 <div class="errorlist">{{ form.first_due_date.errors }}</div>
             {% endif %}
             <p>O cliente pode escolher o primeiro vencimento entre hoje e os proximos 30 dias.</p>
+            {% if credit_remainder_amount > 0 %}
+                <section class="info-panel">
+                    <h3>Complemento fora do crediario</h3>
+                    <p>Limite do crediario usado nesta compra: <strong>R$ {{ credit_financed_amount|floatformat:2 }}</strong></p>
+                    <p>Restante para pagar por fora: <strong>R$ {{ credit_remainder_amount|floatformat:2 }}</strong></p>
+                    <label for="{{ form.remainder_payment_method.id_for_label }}">Como pagar o restante</label>
+                    {{ form.remainder_payment_method }}
+                    {% if form.remainder_payment_method.errors %}
+                        <div class="errorlist">{{ form.remainder_payment_method.errors }}</div>
+                    {% endif %}
+                </section>
+            {% endif %}
             <p>Parcela minima mensal: <strong>R$ 70,00</strong></p>
             <section class="credit-rules-panel">
                 <h3>Regras do crediario</h3>

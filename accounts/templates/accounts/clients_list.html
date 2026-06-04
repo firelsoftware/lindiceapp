@@ -68,7 +68,7 @@
         {% for summary in client_summaries %}
             <tr>
                 <td>
-                    <strong>{{ summary.profile.user.full_name }}</strong><br>
+                    <strong>ID {{ summary.profile.id|stringformat:"04d" }} - {{ summary.profile.user.full_name }}</strong><br>
                     <small>{{ summary.profile.phone }}</small>
                 </td>
                 <td>{{ summary.profile.get_registration_status_display }}</td>

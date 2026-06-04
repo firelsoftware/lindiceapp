@@ -1,4 +1,5 @@
 from datetime import timedelta
+from decimal import Decimal
 
 from django import forms
 from django.conf import settings
@@ -13,6 +14,12 @@ from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
 
 
 SHOE_SIZE_CHOICES = [(str(size), str(size)) for size in range(33, 45)]
+CHILD_SHOE_SIZE_CHOICES = [(str(size), str(size)) for size in range(14, 33)]
+
+
+def client_label(user):
+    profile_id = getattr(getattr(user, "profile", None), "id", user.id)
+    return f"ID {profile_id:04d} - {user.full_name}"
 
 
 class RegisterForm(UserCreationForm):
@@ -190,19 +197,14 @@ class UserPasswordChangeForm(PasswordChangeForm):
 class CreditSaleForm(forms.ModelForm):
     class Meta:
         model = CreditSale
-        fields = ("client", "description", "total_amount", "max_installments_allowed")
+        fields = ("client", "description", "total_amount")
         labels = {
             "client": "Cliente",
             "description": "Descricao da venda",
             "total_amount": "Valor total",
-            "max_installments_allowed": "Maximo de parcelas permitido",
         }
         help_texts = {
-            "max_installments_allowed": "Clientes novos normalmente ficam ate 5x. Voce pode liberar ate 10x para clientes de confianca.",
             "description": "Monte a venda e deixe o cliente escolher o vencimento da primeira parcela em ate 30 dias.",
-        }
-        widgets = {
-            "max_installments_allowed": forms.NumberInput(attrs={"min": 1, "max": 10}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -211,14 +213,8 @@ class CreditSaleForm(forms.ModelForm):
             profile__registration_status=ClientProfile.APPROVED,
             is_staff=False,
         ).order_by("full_name")
-
-    def clean_max_installments_allowed(self):
-        max_installments = self.cleaned_data["max_installments_allowed"]
-
-        if max_installments < 1 or max_installments > 10:
-            raise ValidationError("Informe um valor entre 1 e 10 parcelas.")
-
-        return max_installments
+        self.fields["client"].label_from_instance = client_label
+        self.fields["description"].required = False
 
 
 class ManualDebtForm(forms.ModelForm):
@@ -242,6 +238,7 @@ class ManualDebtForm(forms.ModelForm):
             profile__registration_status__in=[ClientProfile.PENDING, ClientProfile.APPROVED],
             is_staff=False,
         ).order_by("full_name")
+        self.fields["client"].label_from_instance = client_label
 
 
 class InstallmentChoiceForm(forms.Form):
@@ -256,6 +253,11 @@ class InstallmentChoiceForm(forms.Form):
         widget=forms.RadioSelect,
     )
     installments = forms.ChoiceField(label="Parcelas", required=False)
+    remainder_payment_method = forms.ChoiceField(
+        label="Como pagar o restante fora do crediario",
+        required=False,
+        choices=CreditSale.REMAINDER_PAYMENT_CHOICES,
+    )
     accept_terms = forms.BooleanField(
         label="Li e aceito os termos de uso e a politica de privacidade",
         required=True,
@@ -278,6 +280,9 @@ class InstallmentChoiceForm(forms.Form):
             self.fields["payment_method"].choices = [
                 choice for choice in CreditSale.PAYMENT_METHOD_CHOICES if choice[0] != CreditSale.CARD
             ]
+            self.fields["remainder_payment_method"].choices = [
+                choice for choice in CreditSale.REMAINDER_PAYMENT_CHOICES if choice[0] != CreditSale.REMAINDER_CARD
+            ]
         self.fields["installments"].choices = [("", "Selecione")] + [
             (option["installments"], f"{option['installments']}x")
             for option in sale.card_options()
@@ -296,6 +301,7 @@ class InstallmentChoiceForm(forms.Form):
         payment_method = cleaned_data.get("payment_method")
         installments = cleaned_data.get("installments")
         first_due_date = cleaned_data.get("first_due_date")
+        remainder_payment_method = cleaned_data.get("remainder_payment_method")
         today = timezone.localdate()
         max_due_date = today + timedelta(days=30)
 
@@ -309,6 +315,9 @@ class InstallmentChoiceForm(forms.Form):
             if first_due_date < today or first_due_date > max_due_date:
                 raise ValidationError("O primeiro vencimento deve ficar entre hoje e os proximos 30 dias.")
 
+            if self.sale.credit_remainder_amount() > Decimal("0.00") and not remainder_payment_method:
+                raise ValidationError("Escolha como pagar o restante fora do crediario.")
+
         if installments is not None:
             options = self.sale.card_options() if payment_method == CreditSale.CARD else self.sale.credit_options()
             valid_installments = {option["installments"] for option in options}
@@ -320,6 +329,9 @@ class InstallmentChoiceForm(forms.Form):
 
 
 class CreditSaleProductForm(forms.ModelForm):
+    SIZE_GROUP_ADULT = "adult"
+    SIZE_GROUP_CHILD = "child"
+
     class Meta:
         model = CreditSaleProduct
         fields = ("product", "name", "brand", "image", "shoe_size", "notes")
@@ -339,16 +351,35 @@ class CreditSaleProductForm(forms.ModelForm):
         self.fields["name"].required = False
         self.fields["brand"].required = True
         self.fields["image"].required = False
-        self.fields["shoe_size"].widget = forms.Select(choices=[("", "Selecione")] + SHOE_SIZE_CHOICES)
+        self.fields["size_group"] = forms.ChoiceField(
+            label="Tipo de tamanho",
+            choices=[
+                (self.SIZE_GROUP_ADULT, "Adulto"),
+                (self.SIZE_GROUP_CHILD, "Crianca"),
+            ],
+        )
+        initial_size = self.initial.get("shoe_size") or getattr(self.instance, "shoe_size", "")
+        initial_group = self.SIZE_GROUP_CHILD if str(initial_size).isdigit() and int(initial_size) <= 32 else self.SIZE_GROUP_ADULT
+        self.fields["size_group"].initial = initial_group
+        self.fields["shoe_size"].widget = forms.Select(
+            choices=[("", "Selecione")] + (CHILD_SHOE_SIZE_CHOICES if initial_group == self.SIZE_GROUP_CHILD else SHOE_SIZE_CHOICES)
+        )
+        self.order_fields(["product", "name", "brand", "image", "size_group", "shoe_size", "notes"])
 
     def clean(self):
         cleaned_data = super().clean()
+        size_group = cleaned_data.get("size_group")
+        shoe_size = cleaned_data.get("shoe_size")
 
         if not cleaned_data.get("product") and not cleaned_data.get("name"):
             self.add_error("name", "Informe o produto da venda.")
 
-        if not cleaned_data.get("shoe_size"):
+        if not shoe_size:
             self.add_error("shoe_size", "Escolha o tamanho do calcado.")
+        elif size_group == self.SIZE_GROUP_CHILD and shoe_size not in dict(CHILD_SHOE_SIZE_CHOICES):
+            self.add_error("shoe_size", "Escolha um tamanho infantil entre 14 e 32.")
+        elif size_group == self.SIZE_GROUP_ADULT and shoe_size not in dict(SHOE_SIZE_CHOICES):
+            self.add_error("shoe_size", "Escolha um tamanho adulto entre 33 e 44.")
 
         return cleaned_data
 
