@@ -402,6 +402,12 @@
             gap: 4px;
         }
 
+        .guest-actions:hover + .guest-menu,
+        .guest-actions:focus-within + .guest-menu {
+            display: grid;
+            gap: 4px;
+        }
+
         .menu-link,
         .menu-button {
             display: flex;
@@ -450,7 +456,6 @@
 
         .guest-actions {
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
             justify-content: flex-end;
             gap: 8px;
@@ -459,35 +464,81 @@
         .guest-account-toggle {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            min-height: 40px;
-            padding: 10px 14px;
-            border: 0;
-            border-radius: 10px;
-            background: var(--brand-blue);
-            color: #ffffff;
-            font-size: 13px;
-            font-weight: 700;
-            font: inherit;
-            white-space: nowrap;
-            box-shadow: 0 8px 20px rgba(77, 99, 183, 0.22);
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            padding: 0;
+            border: 1px solid var(--brand-mist);
+            border-radius: 12px;
+            background: #ffffff;
+            color: var(--ink);
+            box-shadow: 0 8px 20px rgba(24, 34, 48, 0.08);
         }
 
         .guest-account-toggle:hover {
-            background: #2f3e8f;
-            color: #ffffff;
+            border-color: var(--brand-blue);
+            color: var(--brand-blue);
             transform: none;
         }
 
         .guest-account-icon {
-            width: 18px;
-            height: 18px;
+            width: 22px;
+            height: 22px;
             flex: 0 0 auto;
             fill: none;
             stroke: currentColor;
             stroke-linecap: round;
             stroke-linejoin: round;
             stroke-width: 1.8;
+        }
+
+        .account-status-toggle {
+            position: relative;
+            display: inline-grid;
+            place-items: center;
+            width: 48px;
+            height: 48px;
+            margin: 0;
+            padding: 0;
+            flex: 0 0 auto;
+            border: 1px solid var(--brand-mist);
+            border-radius: 12px;
+            background: #ffffff;
+            color: var(--ink);
+            box-shadow: 0 8px 20px rgba(24, 34, 48, 0.08);
+        }
+
+        .account-status-toggle:hover {
+            border-color: var(--brand-blue);
+            color: var(--brand-blue);
+            transform: none;
+        }
+
+        .account-status-icon {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 1.8;
+        }
+
+        .account-status-check {
+            position: absolute;
+            right: -4px;
+            bottom: -4px;
+            display: inline-grid;
+            place-items: center;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ffffff;
+            border-radius: 999px;
+            background: var(--success);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 800;
+            line-height: 1;
         }
 
         .guest-menu {
@@ -524,40 +575,16 @@
             font-size: 13px;
         }
 
-        .guest-credit-wrap {
-            display: grid;
-            align-items: end;
-            justify-items: center;
-            gap: 3px;
-        }
-
-        .guest-actions .button,
-        .guest-actions .button-secondary {
-            margin-top: 0;
-            min-height: 40px;
-            padding: 10px 14px;
-        }
-
-        .button.guest-credit-button {
-            margin-top: 0;
-            min-height: 26px;
-            padding: 4px 10px;
-            border-radius: 999px;
-            background: var(--brand-mist);
-            color: var(--ink);
-            font-size: 11px;
-        }
-
-        .button.guest-credit-button:hover {
-            background: #8aa4bc;
-            color: var(--ink);
-        }
-
-        .guest-credit-note {
-            color: var(--muted);
-            font-size: 10px;
-            font-weight: 700;
-            line-height: 1.2;
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
         .hero-note {
@@ -1242,14 +1269,14 @@
             place-items: center;
             aspect-ratio: 1 / 1;
             padding: 18px;
-            border: 1px solid rgba(122, 45, 132, 0.16);
+            border: 1px solid rgba(95, 108, 123, 0.16);
             border-radius: 16px;
             background:
-                radial-gradient(circle at top right, rgba(122, 45, 132, 0.08), transparent 42%),
+                radial-gradient(circle at top right, rgba(95, 108, 123, 0.08), transparent 42%),
                 linear-gradient(180deg, #ffffff, #f8fbff);
             box-shadow:
-                0 0 0 1px rgba(122, 45, 132, 0.05),
-                0 14px 28px rgba(122, 45, 132, 0.08);
+                0 0 0 1px rgba(95, 108, 123, 0.05),
+                0 14px 28px rgba(95, 108, 123, 0.08);
             color: var(--muted);
             font-weight: 700;
             text-align: center;
@@ -1356,15 +1383,15 @@
             min-height: 320px;
             padding: 18px;
             overflow: hidden;
-            border: 1px solid rgba(122, 45, 132, 0.16);
+            border: 1px solid rgba(95, 108, 123, 0.16);
             border-radius: 16px;
             aspect-ratio: 1 / 1;
             background:
-                radial-gradient(circle at top right, rgba(122, 45, 132, 0.08), transparent 42%),
+                radial-gradient(circle at top right, rgba(95, 108, 123, 0.08), transparent 42%),
                 #ffffff;
             box-shadow:
-                0 0 0 1px rgba(122, 45, 132, 0.05),
-                0 16px 30px rgba(122, 45, 132, 0.08);
+                0 0 0 1px rgba(95, 108, 123, 0.05),
+                0 16px 30px rgba(95, 108, 123, 0.08);
         }
 
         .detail-content {
@@ -1460,14 +1487,14 @@
             place-items: center;
             aspect-ratio: 1 / 1;
             padding: 10px;
-            border: 1px solid rgba(122, 45, 132, 0.16);
+            border: 1px solid rgba(95, 108, 123, 0.16);
             border-radius: 14px;
             background:
-                radial-gradient(circle at top right, rgba(122, 45, 132, 0.07), transparent 40%),
+                radial-gradient(circle at top right, rgba(95, 108, 123, 0.07), transparent 40%),
                 #ffffff;
             box-shadow:
-                0 0 0 1px rgba(122, 45, 132, 0.04),
-                0 12px 24px rgba(122, 45, 132, 0.08);
+                0 0 0 1px rgba(95, 108, 123, 0.04),
+                0 12px 24px rgba(95, 108, 123, 0.08);
             overflow: hidden;
         }
 
@@ -2278,27 +2305,22 @@
                             <span class="notification-count">{{ notification_unread_count }}</span>
                         {% endif %}
                     </a>
-                    <button class="menu-toggle" type="button" data-menu-toggle aria-label="Abrir menu" aria-expanded="false">
-                        <span class="menu-icon" aria-hidden="true">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </span>
+                    <button class="account-status-toggle" type="button" data-menu-toggle aria-label="Abrir minha conta" aria-expanded="false">
+                        <svg class="account-status-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4.5 19.5a7.5 7.5 0 0 1 15 0"></path>
+                            <circle cx="12" cy="8" r="4"></circle>
+                        </svg>
+                        <span class="account-status-check" aria-hidden="true">✓</span>
                     </button>
-                {% else %}
+                {% elif request.resolver_match.url_name != "login" %}
                     <div class="guest-actions">
                         <button class="guest-account-toggle" type="button" data-menu-toggle aria-label="Abrir minha conta" aria-expanded="false">
                             <svg class="guest-account-icon" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M4.5 19.5a7.5 7.5 0 0 1 15 0"></path>
                                 <circle cx="12" cy="8" r="4"></circle>
                             </svg>
-                            <span>Entre ou cadastre-se</span>
+                            <span class="sr-only">Entre ou cadastre-se</span>
                         </button>
-                        <div class="guest-credit-wrap">
-                            <span class="guest-credit-note">*sob analise</span>
-                            <a class="button guest-credit-button" href="{% url 'register' %}">Crediario</a>
-                        </div>
                     </div>
                     <nav class="app-menu guest-menu" aria-label="Minha conta" data-menu-panel>
                         <h2 class="guest-menu-title">Minha conta</h2>

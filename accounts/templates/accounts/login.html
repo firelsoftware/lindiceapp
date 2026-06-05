@@ -1,10 +1,6 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<section class="hero-note">
-    <strong>A loja e aberta para qualquer pessoa.</strong>
-</section>
-
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

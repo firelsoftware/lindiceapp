@@ -702,14 +702,14 @@ class StoreFlowTests(TestCase):
         response = self.client.get("/loja/")
 
         self.assertContains(response, 'Abrir minha conta')
-        self.assertContains(response, '>Entre ou cadastre-se</span>', html=False)
+        self.assertContains(response, 'class="guest-account-toggle"', html=False)
         self.assertContains(response, '>Minha conta</h2>', html=False)
         self.assertContains(response, '>Cadastro para crediario</a>', html=False)
-        self.assertContains(response, '>Crediario</a>', html=False)
         self.assertContains(response, 'href="/login/"')
-        self.assertContains(response, 'href="/cadastro/"', count=2)
+        self.assertContains(response, 'href="/cadastro/"')
         self.assertNotContains(response, "Painel de gestao")
         self.assertNotContains(response, "Abrir notificacoes")
+        self.assertNotContains(response, '>Crediario</a>', html=False)
 
     def test_offline_page_and_service_worker_are_available(self):
         offline_response = self.client.get("/offline/")
@@ -1756,6 +1756,7 @@ class CustomerEntryRoutingTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Continuar navegando sem login")
+        self.assertNotContains(response, "Abrir minha conta")
 
     def test_login_page_still_opens_when_purchase_redirect_includes_next(self):
         response = self.client.get("/login/?next=/loja/carrinho/finalizar/")
