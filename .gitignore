@@ -6,3 +6,8 @@ staticfiles/
 media/
 venv/
 .env
+android-twa/android.keystore
+android-twa/.gradle/
+android-twa/build/
+android-twa/app/build/
+android-twa/local.properties
