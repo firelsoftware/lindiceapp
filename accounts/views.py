@@ -63,12 +63,6 @@ class LoginView(auth_views.LoginView):
     template_name = "accounts/login.html"
     redirect_authenticated_user = True
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.method == "GET" and not request.user.is_authenticated and not request.GET.get(self.redirect_field_name):
-            return redirect("store_front")
-
-        return super().dispatch(request, *args, **kwargs)
-
     def get_success_url(self):
         redirect_to = self.get_redirect_url()
 

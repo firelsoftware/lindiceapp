@@ -701,7 +701,7 @@ class StoreFlowTests(TestCase):
     def test_guest_header_exposes_login_and_register_paths(self):
         response = self.client.get("/loja/")
 
-        self.assertContains(response, '>Entrar</a>', html=False)
+        self.assertContains(response, '>Entre ou cadastre-se</a>', html=False)
         self.assertContains(response, '>Cadastre-se</a>', html=False)
         self.assertContains(response, '>Crediario</a>', html=False)
         self.assertContains(response, 'href="/login/"')
@@ -1749,10 +1749,11 @@ class CustomerEntryRoutingTests(TestCase):
 
         self.assertRedirects(response, "/painel/")
 
-    def test_login_route_redirects_guest_to_store_without_next(self):
+    def test_login_route_opens_for_guest_without_next(self):
         response = self.client.get("/login/")
 
-        self.assertRedirects(response, "/loja/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "A loja e aberta para qualquer pessoa.")
 
     def test_login_page_still_opens_when_purchase_redirect_includes_next(self):
         response = self.client.get("/login/?next=/loja/carrinho/finalizar/")
