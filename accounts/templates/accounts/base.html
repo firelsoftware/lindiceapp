@@ -2225,7 +2225,7 @@
                 </div>
             {% elif not request.user.is_authenticated %}
                 <div class="guest-actions">
-                    <a class="guest-auth-link" href="{% url 'login' %}">Entre ou cadastre-se</a>
+                    <a class="guest-auth-link" href="{% url 'register' %}">Entre ou cadastre-se</a>
                     <div class="guest-credit-wrap">
                         <span class="guest-credit-note">*sob analise</span>
                         <a class="button guest-credit-button" href="{% url 'register' %}">Crediario</a>

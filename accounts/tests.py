@@ -679,6 +679,29 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, visible_product.name)
         self.assertNotContains(response, "Produto Oculto")
         self.assertNotContains(response, "Produto Sem Estoque")
+        self.assertContains(response, "Compra segura")
+        self.assertNotContains(response, "Loja publica")
+        self.assertNotContains(response, "Produtos prontos para navegar")
+        self.assertNotContains(response, "Pagamento acompanhado")
+        self.assertNotContains(response, "exibidos nesta busca")
+
+    def test_store_front_prioritizes_tenis_products_first(self):
+        self.create_supplier_product(name="Sandalia Azul", category="Sandalia")
+        self.create_supplier_product(
+            supplier_code="RC002",
+            name="Tenis Branco",
+            category="Tenis",
+        )
+
+        response = self.client.get("/loja/")
+        content = response.content.decode()
+
+        self.assertLess(content.index("Tenis Branco"), content.index("Sandalia Azul"))
+
+    def test_guest_header_links_point_to_register(self):
+        response = self.client.get("/loja/")
+
+        self.assertContains(response, 'href="/cadastro/"', count=2)
 
     def test_offline_page_and_service_worker_are_available(self):
         offline_response = self.client.get("/offline/")

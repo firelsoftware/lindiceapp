@@ -11,8 +11,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
-from django.db.models import Sum
-from django.db.models import Q
+from django.db.models import Case, IntegerField, Q, Sum, Value, When
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
@@ -339,7 +338,22 @@ def terms_of_use(request):
 
 
 def store_front(request):
-    products = SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0).order_by("name")
+    tennis_priority = Case(
+        When(
+            Q(category__icontains="tenis")
+            | Q(category__icontains="tênis")
+            | Q(name__icontains="tenis")
+            | Q(name__icontains="tênis"),
+            then=Value(0),
+        ),
+        default=Value(1),
+        output_field=IntegerField(),
+    )
+    products = (
+        SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0)
+        .annotate(tennis_priority=tennis_priority)
+        .order_by("tennis_priority", "name")
+    )
     reserved_sales = CreditSale.objects.none()
     query = request.GET.get("q", "").strip()
     size = request.GET.get("tamanho", "").strip()
