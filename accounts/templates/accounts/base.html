@@ -456,6 +456,12 @@
             gap: 8px;
         }
 
+        .guest-auth-stack {
+            display: grid;
+            justify-items: center;
+            gap: 4px;
+        }
+
         .guest-auth-link {
             display: inline-flex;
             align-items: center;
@@ -474,6 +480,18 @@
         .guest-auth-link:hover {
             background: #2f3e8f;
             color: #ffffff;
+        }
+
+        .guest-register-link {
+            color: var(--brand-blue);
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+            line-height: 1.2;
+        }
+
+        .guest-register-link:hover {
+            color: #2f3e8f;
         }
 
         .guest-credit-wrap {
@@ -2225,7 +2243,10 @@
                 </div>
             {% elif not request.user.is_authenticated %}
                 <div class="guest-actions">
-                    <a class="guest-auth-link" href="{% url 'register' %}">Entre ou cadastre-se</a>
+                    <div class="guest-auth-stack">
+                        <a class="guest-auth-link" href="{% url 'login' %}">Entrar</a>
+                        <a class="guest-register-link" href="{% url 'register' %}">Cadastre-se</a>
+                    </div>
                     <div class="guest-credit-wrap">
                         <span class="guest-credit-note">*sob analise</span>
                         <a class="button guest-credit-button" href="{% url 'register' %}">Crediario</a>

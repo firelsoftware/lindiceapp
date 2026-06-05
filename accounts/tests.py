@@ -698,10 +698,16 @@ class StoreFlowTests(TestCase):
 
         self.assertLess(content.index("Tenis Branco"), content.index("Sandalia Azul"))
 
-    def test_guest_header_links_point_to_register(self):
+    def test_guest_header_exposes_login_and_register_paths(self):
         response = self.client.get("/loja/")
 
+        self.assertContains(response, '>Entrar</a>', html=False)
+        self.assertContains(response, '>Cadastre-se</a>', html=False)
+        self.assertContains(response, '>Crediario</a>', html=False)
+        self.assertContains(response, 'href="/login/"')
         self.assertContains(response, 'href="/cadastro/"', count=2)
+        self.assertNotContains(response, "Painel de gestao")
+        self.assertNotContains(response, "Abrir notificacoes")
 
     def test_offline_page_and_service_worker_are_available(self):
         offline_response = self.client.get("/offline/")
