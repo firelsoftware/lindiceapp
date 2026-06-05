@@ -1755,14 +1755,14 @@ class CustomerEntryRoutingTests(TestCase):
         response = self.client.get("/login/")
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Continuar navegando sem login")
+        self.assertContains(response, "Continuar sem login")
         self.assertNotContains(response, "Abrir minha conta")
 
     def test_login_page_still_opens_when_purchase_redirect_includes_next(self):
         response = self.client.get("/login/?next=/loja/carrinho/finalizar/")
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Continuar navegando sem login")
+        self.assertContains(response, "Continuar sem login")
 
 
 class StoreCheckoutAccessTests(TestCase):

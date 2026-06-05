@@ -4,9 +4,9 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <div class="action-row">
+    <div class="action-row action-row-end">
         <button type="submit">Entrar</button>
-        <a class="button button-secondary" href="{% url 'store_front' %}">Continuar navegando sem login</a>
+        <a class="button button-secondary" href="{% url 'store_front' %}">Continuar sem login</a>
     </div>
 </form>
 
