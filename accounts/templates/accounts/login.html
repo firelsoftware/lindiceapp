@@ -4,8 +4,10 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <div class="action-row action-row-end">
+    <div class="action-row action-row-center">
         <button type="submit">Entrar</button>
+    </div>
+    <div class="action-row action-row-end">
         <a class="button button-secondary" href="{% url 'store_front' %}">Continuar sem login</a>
     </div>
 </form>
