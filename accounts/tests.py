@@ -701,8 +701,10 @@ class StoreFlowTests(TestCase):
     def test_guest_header_exposes_login_and_register_paths(self):
         response = self.client.get("/loja/")
 
-        self.assertContains(response, '>Entre ou cadastre-se</a>', html=False)
-        self.assertContains(response, '>Cadastre-se</a>', html=False)
+        self.assertContains(response, 'Abrir minha conta')
+        self.assertContains(response, '>Entre ou cadastre-se</span>', html=False)
+        self.assertContains(response, '>Minha conta</h2>', html=False)
+        self.assertContains(response, '>Cadastro para crediario</a>', html=False)
         self.assertContains(response, '>Crediario</a>', html=False)
         self.assertContains(response, 'href="/login/"')
         self.assertContains(response, 'href="/cadastro/"', count=2)

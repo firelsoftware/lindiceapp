@@ -451,47 +451,77 @@
         .guest-actions {
             display: flex;
             flex-wrap: wrap;
-            align-items: flex-end;
+            align-items: center;
             justify-content: flex-end;
             gap: 8px;
         }
 
-        .guest-auth-stack {
-            display: grid;
-            justify-items: center;
-            gap: 4px;
-        }
-
-        .guest-auth-link {
+        .guest-account-toggle {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            min-height: 34px;
-            padding: 8px 12px;
-            border-radius: 6px;
+            gap: 10px;
+            min-height: 40px;
+            padding: 10px 14px;
+            border: 0;
+            border-radius: 10px;
             background: var(--brand-blue);
             color: #ffffff;
             font-size: 13px;
             font-weight: 700;
-            text-decoration: none;
+            font: inherit;
             white-space: nowrap;
+            box-shadow: 0 8px 20px rgba(77, 99, 183, 0.22);
         }
 
-        .guest-auth-link:hover {
+        .guest-account-toggle:hover {
             background: #2f3e8f;
             color: #ffffff;
+            transform: none;
         }
 
-        .guest-register-link {
-            color: var(--brand-blue);
-            font-size: 11px;
-            font-weight: 700;
-            text-decoration: none;
-            line-height: 1.2;
+        .guest-account-icon {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 auto;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 1.8;
         }
 
-        .guest-register-link:hover {
-            color: #2f3e8f;
+        .guest-menu {
+            min-width: 250px;
+            padding: 18px 14px 14px;
+            gap: 10px;
+        }
+
+        .guest-menu-title {
+            margin: 0 0 2px;
+            color: var(--ink);
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .guest-menu-subtitle {
+            margin: 0 0 10px;
+            color: var(--muted);
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .guest-menu .menu-link {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .guest-menu .guest-menu-primary {
+            background: #f3f5f8;
+            color: var(--ink);
+        }
+
+        .guest-menu .guest-menu-secondary {
+            font-size: 13px;
         }
 
         .guest-credit-wrap {
@@ -2214,17 +2244,17 @@
                 </span>
             </a>
 
-            {% if request.user.is_authenticated or store_cart_item_count %}
-                <div class="topbar-actions">
-                    {% if store_cart_item_count %}
-                        <a class="topbar-cart" href="{% url 'cart_detail' %}" aria-label="Abrir carrinho com {{ store_cart_item_count }} item{% if store_cart_item_count != 1 %}s{% endif %}">
-                            <svg class="topbar-cart-icon" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H6.1M10 20a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm9 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
-                            </svg>
-                            <span class="topbar-cart-count">{{ store_cart_item_count }}</span>
-                        </a>
-                    {% endif %}
-                    {% if request.user.is_authenticated %}
+            <div class="topbar-actions">
+                {% if store_cart_item_count %}
+                    <a class="topbar-cart" href="{% url 'cart_detail' %}" aria-label="Abrir carrinho com {{ store_cart_item_count }} item{% if store_cart_item_count != 1 %}s{% endif %}">
+                        <svg class="topbar-cart-icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H6.1M10 20a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm9 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"/>
+                        </svg>
+                        <span class="topbar-cart-count">{{ store_cart_item_count }}</span>
+                    </a>
+                {% endif %}
+
+                {% if request.user.is_authenticated %}
                     <a class="notification-bell" href="{% url 'notifications_list' %}" aria-label="Abrir notificacoes">
                         <span class="notification-bell-symbol" aria-hidden="true">&#128276;&#65038;</span>
                         {% if notification_unread_count %}
@@ -2239,20 +2269,28 @@
                             <span></span>
                         </span>
                     </button>
-                    {% endif %}
-                </div>
-            {% elif not request.user.is_authenticated %}
-                <div class="guest-actions">
-                    <div class="guest-auth-stack">
-                        <a class="guest-auth-link" href="{% url 'login' %}">Entre ou cadastre-se</a>
-                        <a class="guest-register-link" href="{% url 'register' %}">Cadastre-se</a>
+                {% else %}
+                    <div class="guest-actions">
+                        <button class="guest-account-toggle" type="button" data-menu-toggle aria-label="Abrir minha conta" aria-expanded="false">
+                            <svg class="guest-account-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M4.5 19.5a7.5 7.5 0 0 1 15 0"></path>
+                                <circle cx="12" cy="8" r="4"></circle>
+                            </svg>
+                            <span>Entre ou cadastre-se</span>
+                        </button>
+                        <div class="guest-credit-wrap">
+                            <span class="guest-credit-note">*sob analise</span>
+                            <a class="button guest-credit-button" href="{% url 'register' %}">Crediario</a>
+                        </div>
                     </div>
-                    <div class="guest-credit-wrap">
-                        <span class="guest-credit-note">*sob analise</span>
-                        <a class="button guest-credit-button" href="{% url 'register' %}">Crediario</a>
-                    </div>
-                </div>
-            {% endif %}
+                    <nav class="app-menu guest-menu" aria-label="Minha conta" data-menu-panel>
+                        <h2 class="guest-menu-title">Minha conta</h2>
+                        <p class="guest-menu-subtitle">Entre para acompanhar pedidos ou concluir compras.</p>
+                        <a class="menu-link guest-menu-primary" href="{% url 'login' %}">Entre ou cadastre-se</a>
+                        <a class="menu-link guest-menu-secondary" href="{% url 'register' %}">Cadastro para crediario</a>
+                    </nav>
+                {% endif %}
+            </div>
 
             {% if request.user.is_authenticated %}
                 <nav class="app-menu" aria-label="Menu do aplicativo" data-menu-panel>
