@@ -1,7 +1,28 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<h1>Finalizar compra</h1>
+<section class="checkout-page">
+<section class="checkout-hero">
+    <div class="checkout-hero-copy">
+        <span class="storefront-kicker">Etapa final</span>
+        <h1>Finalizar compra</h1>
+        <p class="section-lead">Confira o total com frete, preencha seus dados de entrega e siga para o pagamento com mais clareza.</p>
+    </div>
+    <div class="checkout-hero-points">
+        <div class="checkout-hero-point">
+            <strong>Frete transparente</strong>
+            <span>O valor entra no total assim que voce escolhe a UF.</span>
+        </div>
+        <div class="checkout-hero-point">
+            <strong>Pagamento protegido</strong>
+            <span>Checkout seguro para concluir a compra com tranquilidade.</span>
+        </div>
+        <div class="checkout-hero-point">
+            <strong>Acompanhamento do envio</strong>
+            <span>Depois da aprovacao, a Lindice atualiza voce sobre o envio.</span>
+        </div>
+    </div>
+</section>
 
 {% if messages %}
     <ul class="messages">
@@ -11,27 +32,137 @@
     </ul>
 {% endif %}
 
-<section class="info-panel">
-    <h2>{{ product.name }}</h2>
-    <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
-    {% if welcome_discount %}
-        <p><span class="badge badge-success">Voucher disponivel: {{ welcome_discount_percent|floatformat:0 }}% OFF</span></p>
-        <p>Marque a opcao abaixo para usar agora. Caso contrario, o voucher fica guardado para outra compra.</p>
-    {% endif %}
-    <p>Depois do pagamento aprovado, faremos o pedido ao fornecedor e enviaremos as atualizacoes para voce.</p>
+<section class="checkout-layout">
+    <aside class="checkout-summary-card">
+        <p class="checkout-card-eyebrow">Resumo da compra</p>
+        <h2>Resumo do produto</h2>
+        <div class="checkout-product-line">
+            <div>
+                <strong>{{ product.name }}</strong>
+                {% if product.brand %}
+                    <p class="summary-caption">{{ product.brand }}</p>
+                {% endif %}
+                {% if product.category %}
+                    <p class="summary-caption">{{ product.category }}</p>
+                {% endif %}
+            </div>
+            <div class="checkout-mini-media">
+                {% if product.image_url %}
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
+                {% else %}
+                    <span class="store-product-placeholder">Foto</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="summary-list">
+            <div class="summary-row">
+                <span>Valor do item</span>
+                <strong id="store-item-value">R$ {{ product.suggested_sale_price|floatformat:2 }}</strong>
+            </div>
+            {% if welcome_discount %}
+                <div class="summary-row">
+                    <span>Voucher de boas-vindas</span>
+                    <strong id="store-voucher-value">- R$ {{ welcome_discount|floatformat:2 }}</strong>
+                </div>
+            {% endif %}
+            <div class="summary-row">
+                <span>Frete</span>
+                <strong id="store-shipping-value">Escolha a UF</strong>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-row checkout-total-row">
+                <span>Total estimado</span>
+                <strong id="store-total-value">R$ {{ product.suggested_sale_price|floatformat:2 }}</strong>
+            </div>
+        </div>
+        {% if welcome_discount %}
+            <div class="summary-badge-row">
+                <span class="badge badge-success">Voucher disponivel: {{ welcome_discount_percent|floatformat:0 }}% OFF</span>
+            </div>
+            <p class="summary-caption">Marque a opcao no formulario se quiser usar o desconto agora. Caso contrario, ele fica guardado para outra compra.</p>
+        {% endif %}
+        <div class="checkout-note-box">
+            <strong>O que acontece depois?</strong>
+            <span>Assim que o pagamento confirmar, o pedido entra em processamento e seguimos com as atualizacoes de envio.</span>
+        </div>
+        <div class="checkout-trust-grid">
+            <div class="trust-item">
+                <strong>Pagamento aprovado</strong>
+                <span>Assim que o checkout confirmar, o pedido segue para processamento.</span>
+            </div>
+            <div class="trust-item">
+                <strong>Suporte no percurso</strong>
+                <span>Voce recebe atualizacoes da compra ate a etapa de envio.</span>
+            </div>
+        </div>
+    </aside>
+
+    <section class="checkout-form-card">
+        <div class="checkout-form-intro">
+            <p class="checkout-card-eyebrow">Entrega</p>
+            <h2>Seus dados para entrega</h2>
+            <p>Preencha com calma para evitar erro no envio e liberar o frete correto para sua regiao.</p>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p class="checkout-inline-help">Se tiver voucher de boas-vindas, voce pode decidir aqui se quer usar agora ou guardar para outra compra.</p>
+            <div class="checkout-terms">
+                <p class="summary-caption">
+                    Ao continuar, voce concorda com os
+                    <a href="{% url 'terms_of_use' %}" target="_blank" rel="noopener">termos de uso</a>
+                    e com a
+                    <a href="{% url 'privacy_policy' %}" target="_blank" rel="noopener">politica de privacidade</a>.
+                </p>
+            </div>
+            <button type="submit">Ir para pagamento</button>
+        </form>
+    </section>
 </section>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <p>
-        Ao continuar, voce concorda com os
-        <a href="{% url 'terms_of_use' %}" target="_blank" rel="noopener">termos de uso</a>
-        e com a
-        <a href="{% url 'privacy_policy' %}" target="_blank" rel="noopener">politica de privacidade</a>.
-    </p>
-    <button type="submit">Ir para pagamento</button>
-</form>
-
 <p><a href="{% url 'store_product_detail' product.id %}">Voltar ao produto</a></p>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+(function () {
+    var stateField = document.getElementById("id_shipping_state");
+    var voucherField = document.getElementById("id_use_welcome_discount");
+    var shippingNode = document.getElementById("store-shipping-value");
+    var totalNode = document.getElementById("store-total-value");
+    var baseValue = Number("{{ product.suggested_sale_price|floatformat:2 }}".replace(",", "."));
+    var voucher = Number("{{ welcome_discount|default:'0.00'|floatformat:2 }}".replace(",", "."));
+    var rates = { ...JSON.parse('{{ shipping_rates_json|escapejs }}'), DEFAULT: "40.00" };
+
+    function formatMoney(value) {
+        return "R$ " + value.toFixed(2).replace(".", ",");
+    }
+
+    function shippingFor(code) {
+        if (!code) {
+            return null;
+        }
+
+        return Number((rates[code] || rates.DEFAULT).replace(",", "."));
+    }
+
+    function refreshSummary() {
+        var shipping = shippingFor(stateField ? stateField.value : "");
+        var discount = voucherField && voucherField.checked ? voucher : 0;
+        var total = baseValue - discount + (shipping || 0);
+
+        shippingNode.textContent = shipping === null ? "Escolha a UF" : formatMoney(shipping);
+        totalNode.textContent = formatMoney(total);
+    }
+
+    if (stateField) {
+        stateField.addEventListener("change", refreshSummary);
+    }
+
+    if (voucherField) {
+        voucherField.addEventListener("change", refreshSummary);
+    }
+
+    refreshSummary();
+})();
 {% endblock %}

@@ -9,6 +9,7 @@
 
     <h2>Produtos da venda</h2>
     <p>Adicione produto, marca e tamanho. O limite de parcelas vem do cadastro do cliente, e o vencimento da primeira parcela sera escolhido por ele em ate 30 dias.</p>
+    <p>Frete nao entra separado na venda manual. Se precisar cobrar entrega, inclua esse valor no total da venda.</p>
     {{ product_formset.management_form }}
     <div id="product-forms">
         {% for product_form in product_formset %}

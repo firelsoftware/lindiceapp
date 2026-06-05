@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 from datetime import datetime, timedelta
 from decimal import Decimal
 from unittest.mock import patch
@@ -10,6 +12,7 @@ from .forms import RegisterForm
 from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, StoreOrder, SupplierProduct, User
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference
+from .store_shipping import shipping_cost_for
 from .supplier_import import parse_csv, row_to_payload
 from .utils import cpf_hash, is_valid_cpf
 
@@ -49,10 +52,12 @@ class CPFValidationTests(TestCase):
                 "password1": "Teste12345!",
                 "password2": "Teste12345!",
                 "cpf": "529.982.247-25",
+                "rg_number": "1234567",
                 "phone": "61988888888",
                 "address": "Outro endereco",
             },
             files={
+                "identity_document": SimpleUploadedFile("rg.pdf", b"pdf"),
                 "residence_proof": SimpleUploadedFile("comprovante.pdf", b"pdf"),
             },
         )
@@ -69,10 +74,12 @@ class CPFValidationTests(TestCase):
                 "password1": "Teste12345!",
                 "password2": "Teste12345!",
                 "cpf": "529.982.247-24",
+                "rg_number": "1234567",
                 "phone": "61999999999",
                 "address": "Endereco",
             },
             files={
+                "identity_document": SimpleUploadedFile("rg.pdf", b"pdf"),
                 "residence_proof": SimpleUploadedFile("comprovante.pdf", b"pdf"),
             },
         )
@@ -90,6 +97,7 @@ class RegistrationFlowTests(TestCase):
             "password1": "Teste12345!",
             "password2": "Teste12345!",
             "cpf": "529.982.247-25",
+            "rg_number": "1234567",
             "phone": "61999999999",
             "address": "Rua Teste, 1",
         }
@@ -100,6 +108,7 @@ class RegistrationFlowTests(TestCase):
     @override_settings(PHONE_VERIFICATION_REQUIRED=False)
     def test_registration_can_continue_to_manual_review_without_phone_verification(self):
         data = self.registration_payload(
+            identity_document=SimpleUploadedFile("rg.pdf", b"pdf"),
             residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
         )
 
@@ -113,6 +122,19 @@ class RegistrationFlowTests(TestCase):
         self.assertEqual(response["Location"], "/painel/")
         self.assertTrue(user.profile.phone_verified)
         self.assertEqual(user.profile.phone_verification_code, "")
+        self.assertEqual(user.profile.rg_number, "1234567")
+        self.assertTrue(bool(user.profile.identity_document))
+
+    def test_registration_requires_rg_document_for_credit_application(self):
+        data = self.registration_payload(
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+        )
+
+        response = self.client.post("/cadastro/", data=data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Foto ou PDF do RG")
+        self.assertEqual(User.objects.count(), 0)
 
     @override_settings(DEBUG=False, PHONE_VERIFICATION_REQUIRED=True, ALLOWED_HOSTS=["testserver"])
     def test_phone_verification_code_is_hidden_outside_debug(self):
@@ -143,13 +165,14 @@ class RegistrationFlowTests(TestCase):
     def test_registration_storage_error_returns_form_message(self, mocked_save):
         mocked_save.side_effect = RuntimeError("storage unavailable")
         data = self.registration_payload(
+            identity_document=SimpleUploadedFile("rg.pdf", b"pdf"),
             residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
         )
 
         response = self.client.post("/cadastro/", data=data)
 
         self.assertEqual(response.status_code, 500)
-        self.assertContains(response, "Nao foi possivel enviar o comprovante agora", status_code=500)
+        self.assertContains(response, "Nao foi possivel enviar seus documentos agora", status_code=500)
         self.assertEqual(User.objects.count(), 0)
 
 
@@ -261,8 +284,27 @@ class CreditSalePaymentChoiceTests(TestCase):
         self.assertContains(response, "Credi&aacute;rio*")
         self.assertContains(response, "atraso gera multa de 2% e juros de 1%")
         self.assertContains(response, "Regras do crediario")
+        self.assertContains(response, "Se escolher crediario, revise juros e multa por atraso antes de concluir.")
         self.assertContains(response, 'data-payment-panel="credit" hidden')
         self.assertNotContains(response, "calculados proporcionalmente")
+
+    def test_credit_choice_success_message_reminds_about_late_fee_and_interest(self):
+        user = self.create_client()
+        sale = self.create_sale(user)
+        self.client.force_login(user)
+
+        response = self.client.post(
+            f"/parcelamento/{sale.id}/",
+            {
+                "payment_method": CreditSale.CREDIT,
+                "installments": "2",
+                "first_due_date": self.credit_due_date_input(),
+                "accept_terms": "on",
+            },
+            follow=True,
+        )
+
+        self.assertContains(response, "Compra no crediario confirmada. Lembre-se: atraso gera multa de 2% e juros de 1% ao mes.")
 
     def test_pix_page_is_private_to_sale_owner(self):
         user = self.create_client()
@@ -649,6 +691,14 @@ class StoreFlowTests(TestCase):
         self.assertIn("/loja/", service_worker_response.content.decode())
         self.assertIn("/offline/", service_worker_response.content.decode())
 
+    def test_webmanifest_has_standalone_mode_and_shortcuts(self):
+        manifest_path = Path("accounts/static/accounts/site.webmanifest")
+        payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(payload["display"], "standalone")
+        self.assertIn("shortcuts", payload)
+        self.assertEqual(payload["shortcuts"][0]["url"], "/loja/")
+
     def test_store_front_hides_products_already_in_cart(self):
         product_in_cart = self.create_supplier_product(name="Produto No Carrinho")
         visible_product = self.create_supplier_product(supplier_code="RC002", name="Produto Fora Do Carrinho")
@@ -670,6 +720,23 @@ class StoreFlowTests(TestCase):
     @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
     def test_checkout_creates_pending_order_without_payment_token(self):
         product = self.create_supplier_product()
+        user = User.objects.create_user(
+            email="checkout@example.com",
+            password="Teste12345!",
+            full_name="Cliente Checkout",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-hash-checkout",
+            cpf_last_digits="1212",
+            phone="61999999999",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+        )
+        self.client.force_login(user)
 
         response = self.client.post(
             f"/loja/produto/{product.id}/comprar/",
@@ -678,6 +745,7 @@ class StoreFlowTests(TestCase):
                 "customer_name": "Cliente Teste",
                 "customer_email": "cliente@example.com",
                 "customer_phone": "61999999999",
+                "shipping_state": "DF",
                 "shipping_address": "Rua Teste, 1",
                 "notes": "",
                 "accept_terms": "on",
@@ -688,7 +756,9 @@ class StoreFlowTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIn(str(order.public_token), response["Location"])
         self.assertEqual(order.status, StoreOrder.PENDING_PAYMENT)
-        self.assertEqual(order.total_amount, Decimal("99.90"))
+        self.assertEqual(order.shipping_state, "DF")
+        self.assertEqual(order.shipping_cost, Decimal("20.00"))
+        self.assertEqual(order.total_amount, Decimal("119.90"))
 
     @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
     def test_logged_client_receives_welcome_discount_only_on_first_store_order(self):
@@ -716,6 +786,7 @@ class StoreFlowTests(TestCase):
             "customer_name": "Cliente Loja",
             "customer_email": "cliente-loja@example.com",
             "customer_phone": "61999999999",
+            "shipping_state": "DF",
             "shipping_address": "Rua Teste, 1",
             "notes": "",
             "use_welcome_discount": "on",
@@ -727,9 +798,9 @@ class StoreFlowTests(TestCase):
         first_order, second_order = StoreOrder.objects.order_by("created_at", "id")
 
         self.assertEqual(first_order.welcome_discount_amount, Decimal("5.00"))
-        self.assertEqual(first_order.total_amount, Decimal("94.90"))
+        self.assertEqual(first_order.total_amount, Decimal("114.90"))
         self.assertEqual(second_order.welcome_discount_amount, Decimal("0.00"))
-        self.assertEqual(second_order.total_amount, Decimal("99.90"))
+        self.assertEqual(second_order.total_amount, Decimal("119.90"))
 
     @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
     def test_cart_keeps_voucher_for_later_when_customer_does_not_select_it(self):
@@ -760,6 +831,7 @@ class StoreFlowTests(TestCase):
                 "customer_name": "Cliente Carrinho",
                 "customer_email": "cliente-carrinho@example.com",
                 "customer_phone": "61999999999",
+                "shipping_state": "DF",
                 "shipping_address": "Rua Teste, 1",
                 "notes": "",
                 "accept_terms": "on",
@@ -769,7 +841,8 @@ class StoreFlowTests(TestCase):
         profile.refresh_from_db()
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(order.total_amount, Decimal("99.90"))
+        self.assertEqual(order.shipping_cost, Decimal("20.00"))
+        self.assertEqual(order.total_amount, Decimal("119.90"))
         self.assertEqual(order.welcome_discount_amount, Decimal("0.00"))
         self.assertFalse(profile.first_purchase_discount_used)
 
@@ -781,12 +854,20 @@ class StoreFlowTests(TestCase):
         cart_response = self.client.get("/loja/carrinho/")
         redirect_response = self.client.get("/loja/carrinho/boticario/")
 
-        self.assertContains(cart_response, "Finalizar no Boticario")
+        self.assertNotContains(cart_response, "Finalizar no Boticario")
         self.assertRedirects(
             redirect_response,
             "https://minhaloja.grupoboticario.com.br/loja-teste",
             fetch_redirect_response=False,
         )
+
+    def test_shipping_table_covers_df_entorno_default_and_ac(self):
+        self.assertEqual(shipping_cost_for("DF"), Decimal("20.00"))
+        self.assertEqual(shipping_cost_for("ENTORNO_DF"), Decimal("20.00"))
+        self.assertEqual(shipping_cost_for("GO"), Decimal("25.00"))
+        self.assertEqual(shipping_cost_for("SP"), Decimal("25.00"))
+        self.assertEqual(shipping_cost_for("RJ"), Decimal("40.00"))
+        self.assertEqual(shipping_cost_for("AC"), Decimal("45.00"))
 
     @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
     def test_cart_applies_selected_voucher_to_grouped_orders(self):
@@ -819,6 +900,7 @@ class StoreFlowTests(TestCase):
                 "customer_name": "Cliente Voucher",
                 "customer_email": "cliente-voucher@example.com",
                 "customer_phone": "61999999999",
+                "shipping_state": "DF",
                 "shipping_address": "Rua Teste, 1",
                 "notes": "",
                 "use_welcome_discount": "on",
@@ -830,7 +912,9 @@ class StoreFlowTests(TestCase):
 
         self.assertEqual(len(orders), 2)
         self.assertEqual(orders[0].checkout_reference, orders[1].checkout_reference)
-        self.assertEqual(sum(order.total_amount for order in orders), Decimal("284.91"))
+        self.assertEqual(orders[0].shipping_cost, Decimal("20.00"))
+        self.assertEqual(orders[1].shipping_cost, Decimal("0.00"))
+        self.assertEqual(sum(order.total_amount for order in orders), Decimal("304.91"))
         self.assertTrue(profile.first_purchase_discount_used)
 
     def test_public_order_page_does_not_use_sequential_order_code(self):
@@ -1103,6 +1187,23 @@ class StoreFlowTests(TestCase):
     @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
     def test_checkout_requires_terms_acceptance(self):
         product = self.create_supplier_product()
+        user = User.objects.create_user(
+            email="checkout-termos@example.com",
+            password="Teste12345!",
+            full_name="Cliente Termos",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-hash-termos",
+            cpf_last_digits="3434",
+            phone="61999999999",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+        )
+        self.client.force_login(user)
 
         response = self.client.post(
             f"/loja/produto/{product.id}/comprar/",
@@ -1111,6 +1212,7 @@ class StoreFlowTests(TestCase):
                 "customer_name": "Cliente Teste",
                 "customer_email": "cliente@example.com",
                 "customer_phone": "61999999999",
+                "shipping_state": "DF",
                 "shipping_address": "Rua Teste, 1",
                 "notes": "",
             },
@@ -1577,6 +1679,11 @@ class CustomerEntryRoutingTests(TestCase):
 
         return user
 
+    def test_home_redirects_guest_to_public_store(self):
+        response = self.client.get("/")
+
+        self.assertRedirects(response, "/loja/")
+
     def test_home_redirects_client_with_pending_sale_to_store(self):
         user = self.create_client()
         CreditSale.objects.create(
@@ -1612,6 +1719,47 @@ class CustomerEntryRoutingTests(TestCase):
         response = self.client.get("/")
 
         self.assertRedirects(response, "/painel/")
+
+    def test_login_route_redirects_guest_to_store_without_next(self):
+        response = self.client.get("/login/")
+
+        self.assertRedirects(response, "/loja/")
+
+    def test_login_page_still_opens_when_purchase_redirect_includes_next(self):
+        response = self.client.get("/login/?next=/loja/carrinho/finalizar/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "A loja e aberta para qualquer pessoa.")
+
+
+class StoreCheckoutAccessTests(TestCase):
+    def create_supplier_product(self):
+        return SupplierProduct.objects.create(
+            supplier_code="SKU-001",
+            name="Sandalia teste",
+            brand="Marca teste",
+            category="Sandalias",
+            image_url="https://example.com/sandalia.jpg",
+            product_url="https://example.com/sandalia",
+            dropshipping_cost=Decimal("55.00"),
+            suggested_sale_price=Decimal("99.90"),
+            stock_quantity=5,
+            sizes="34,35,36",
+            is_visible=True,
+            is_active=True,
+        )
+
+    def test_guest_is_redirected_to_login_when_trying_cart_checkout(self):
+        response = self.client.get("/loja/carrinho/finalizar/")
+
+        self.assertRedirects(response, "/login/?next=/loja/carrinho/finalizar/")
+
+    def test_guest_is_redirected_to_login_when_trying_direct_product_checkout(self):
+        product = self.create_supplier_product()
+
+        response = self.client.get(f"/loja/produto/{product.id}/comprar/")
+
+        self.assertRedirects(response, f"/login/?next=/loja/produto/{product.id}/comprar/")
 
 
 class PlayStorePreparationTests(TestCase):

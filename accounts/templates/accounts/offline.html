@@ -1,9 +1,10 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<section class="info-panel">
-    <h1>Sem conexao</h1>
-    <p>Voce esta offline no momento. Assim que a internet voltar, abra a loja novamente para continuar.</p>
+<section class="empty-store-state">
+    <span class="storefront-kicker">Modo offline</span>
+    <h1>Sem conexao no momento</h1>
+    <p>Seus dados voltaram a ficar sem internet. Assim que a conexao retornar, toque abaixo para reabrir a loja e continuar de onde parou.</p>
     <p><a class="button" href="{% url 'store_front' %}">Tentar abrir a loja</a></p>
 </section>
 {% endblock %}

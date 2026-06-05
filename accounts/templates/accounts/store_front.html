@@ -1,8 +1,35 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<h1>Loja Líndice</h1>
-<p>Confira os itens separados para voce e veja as novidades da loja.</p>
+<section class="storefront-hero">
+    <div>
+        <span class="storefront-kicker">Loja publica</span>
+        <h1>Loja Líndice</h1>
+        <p class="storefront-lead">Entre para comprar quando quiser. Enquanto isso, explore os produtos, confira tamanhos e descubra as novidades da vitrine.</p>
+        <div class="hero-feature-grid">
+            <div class="hero-feature">
+                <strong>Produtos prontos para navegar</strong>
+                <span>Qualquer pessoa pode entrar, ver detalhes e montar o carrinho.</span>
+            </div>
+            <div class="hero-feature">
+                <strong>Pagamento acompanhado</strong>
+                <span>Finalizacao segura e acompanhamento do pedido depois da aprovacao.</span>
+            </div>
+        </div>
+    </div>
+    <aside class="hero-side-card">
+        <div class="hero-stat-grid">
+            <div class="hero-stat">
+                <strong>{{ products|length }}</strong>
+                <span>produto{{ products|length|pluralize:",s" }} exibido{{ products|length|pluralize:",s" }} nesta busca</span>
+            </div>
+            <div class="hero-stat">
+                <strong>Compra segura</strong>
+                <span>Checkout com Mercado Pago e suporte no andamento do pedido.</span>
+            </div>
+        </div>
+    </aside>
+</section>
 
 {% if welcome_discount_available %}
     <section class="info-panel">
@@ -14,28 +41,28 @@
 
 {% if reserved_sales %}
     <h2>Separado para voce</h2>
-    <div class="store-grid">
+    <div class="reserved-sales-grid">
         {% for sale in reserved_sales %}
-            <article class="store-product">
+            <article class="reserved-sale-card">
                 {% with first_product=sale.products.first %}
                     <div class="store-product-media">
                         {% if first_product.image %}
                             <img src="{{ first_product.image.url }}" alt="{{ first_product.name }}">
                         {% endif %}
                     </div>
-                    <div class="store-product-body">
+                    <div>
                         <h2>{{ sale.description }}</h2>
                         {% if first_product %}
-                            <p>{{ first_product.name }}</p>
+                            <p class="store-product-note">{{ first_product.name }}</p>
                             {% if first_product.brand %}
-                                <p>Marca: {{ first_product.brand }}</p>
+                                <p class="store-product-note">Marca: {{ first_product.brand }}</p>
                             {% endif %}
                             {% if first_product.shoe_size %}
-                                <p>Tamanho: {{ first_product.shoe_size }}</p>
+                                <p class="store-product-note">Tamanho: {{ first_product.shoe_size }}</p>
                             {% endif %}
                         {% endif %}
                         {% if sale.products.count > 1 %}
-                            <p>{{ sale.products.count }} itens separados.</p>
+                            <p class="store-product-note">{{ sale.products.count }} itens separados.</p>
                         {% endif %}
                         <p class="store-price">R$ {{ sale.total_amount|floatformat:2 }}</p>
                         <a class="button" href="{% url 'choose_installments' sale.id %}">Finalizar compra</a>
@@ -46,7 +73,7 @@
     </div>
 {% endif %}
 
-<form class="toolbar" method="get">
+<form class="toolbar store-toolbar" method="get">
     <div class="toolbar-field">
         <label for="q">Buscar produto</label>
         <input id="q" name="q" value="{{ query }}" placeholder="Sandalia, tenis, marca">
@@ -75,18 +102,25 @@
                 {% endif %}
             </a>
             <div class="store-product-body">
+                <div class="store-product-topline">
+                    {% if product.brand %}
+                        <span class="store-product-brand">{{ product.brand }}</span>
+                    {% endif %}
+                    {% if product.category %}
+                        <span class="badge">{{ product.category }}</span>
+                    {% endif %}
+                </div>
                 <h2><a href="{% url 'store_product_detail' product.id %}">{{ product.name }}</a></h2>
-                {% if product.category %}
-                    <p><span class="badge">{{ product.category }}</span></p>
-                {% endif %}
                 <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
-                <p>Tamanhos: {{ product.sizes|default:"consultar" }}</p>
-                <p>Compra segura via Mercado Pago.</p>
-                <a class="button" href="{% url 'store_product_detail' product.id %}">Ver produto</a>
+                <p class="store-product-sizes">Tamanhos: {{ product.sizes|default:"consultar" }}</p>
+                <p class="store-product-note">Compra segura via Mercado Pago.</p>
+                <div class="store-product-actions">
+                    <a class="button" href="{% url 'store_product_detail' product.id %}">Ver produto</a>
+                </div>
             </div>
         </article>
     {% empty %}
-        <section class="info-panel">
+        <section class="empty-store-state">
             <h2>Nenhum produto encontrado</h2>
             <p>Remova os filtros ou volte mais tarde para ver novas opcoes.</p>
         </section>
@@ -95,13 +129,14 @@
 
 {% if boticario_store_url %}
     <section class="partner-link-panel" aria-label="Parceria Boticario">
-        <a class="boticario-partner-link" href="{{ boticario_store_url }}" target="_blank" rel="noopener" aria-label="Clique para produtos Boticario">
+        <a class="boticario-partner-link" href="{{ boticario_store_url }}" target="_blank" rel="noopener" aria-label="Clique para produtos Boticario com atendimento por WhatsApp">
             <span class="boticario-partner-button" aria-hidden="true">
                 <span class="boticario-partner-l"></span>
                 <span class="boticario-partner-bottle"></span>
             </span>
-            <span class="boticario-partner-text">clique para produtos Boticario</span>
+            <span class="boticario-partner-text">produtos Boticario</span>
         </a>
+        <p class="summary-caption">Atendimento desse parceiro por WhatsApp.</p>
     </section>
 {% endif %}
 {% endblock %}

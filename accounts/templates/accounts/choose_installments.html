@@ -155,6 +155,7 @@
                 <div class="errorlist">{{ form.first_due_date.errors }}</div>
             {% endif %}
             <p>O cliente pode escolher o primeiro vencimento entre hoje e os proximos 30 dias.</p>
+            <p><strong>Antes de confirmar, lembre-se: atraso no crediario gera multa de {{ credit_late_fee_percent|floatformat:0 }}% e juros de {{ credit_monthly_interest_percent|floatformat:0 }}% ao mes.</strong></p>
             {% if credit_remainder_amount > 0 %}
                 <section class="info-panel">
                     <h3>Complemento fora do crediario</h3>
@@ -197,6 +198,7 @@
     </div>
 
     <button type="submit">Confirmar forma de pagamento</button>
+    <p class="summary-caption">Se escolher crediario, revise juros e multa por atraso antes de concluir.</p>
 </form>
 
 <p><a href="{% url 'dashboard' %}">Voltar ao painel</a></p>

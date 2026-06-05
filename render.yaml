@@ -23,6 +23,10 @@ services:
         value: "3600"
       - key: PUBLIC_SITE_URL
         sync: false
+      - key: ANDROID_APP_PACKAGE_ID
+        sync: false
+      - key: ANDROID_SHA256_CERT_FINGERPRINTS
+        sync: false
       - key: STORE_CONTACT_EMAIL
         value: "lindicecalcados@gmail.com"
       - key: STORE_RESPONSIBLE_NAME

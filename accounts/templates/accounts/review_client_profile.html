@@ -35,6 +35,10 @@
             <dd>Final {{ profile.cpf_last_digits }}</dd>
         </div>
         <div>
+            <dt>RG</dt>
+            <dd>{{ profile.rg_number|default:"Nao informado" }}</dd>
+        </div>
+        <div>
             <dt>Status</dt>
             <dd>{{ profile.get_registration_status_display }}</dd>
         </div>
@@ -114,6 +118,13 @@
 
 <section class="info-panel">
     <h2>Documentos</h2>
+    {% if profile.identity_document %}
+        <p>
+            <a class="button button-secondary" href="{{ profile.identity_document.url }}" target="_blank" rel="noopener">
+                Abrir RG do cliente
+            </a>
+        </p>
+    {% endif %}
     <p>
         <a class="button" href="{{ profile.residence_proof.url }}" target="_blank" rel="noopener">
             Abrir comprovante de residencia

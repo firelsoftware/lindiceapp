@@ -1,27 +1,159 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<h1>Finalizar carrinho</h1>
+<section class="checkout-page">
+<section class="checkout-hero">
+    <div class="checkout-hero-copy">
+        <span class="storefront-kicker">Etapa final</span>
+        <h1>Finalizar carrinho</h1>
+        <p class="section-lead">Revise os itens, escolha a UF para o frete e veja o total completo antes de seguir para o pagamento.</p>
+    </div>
+    <div class="checkout-hero-points">
+        <div class="checkout-hero-point">
+            <strong>Resumo mais claro</strong>
+            <span>Subtotal, voucher e frete aparecem separados antes do pagamento.</span>
+        </div>
+        <div class="checkout-hero-point">
+            <strong>Entrega mais previsivel</strong>
+            <span>O valor do frete muda conforme a UF escolhida por voce.</span>
+        </div>
+        <div class="checkout-hero-point">
+            <strong>Pagamento protegido</strong>
+            <span>Depois da aprovacao, seguimos com o envio e as atualizacoes.</span>
+        </div>
+    </div>
+</section>
 
-{% for item in items %}
-    <p>{{ item.quantity }}x {{ item.product.name }} - tamanho {{ item.selected_size }}: <strong>R$ {{ item.total|floatformat:2 }}</strong></p>
-{% endfor %}
-
-<h2>Subtotal: R$ {{ subtotal|floatformat:2 }}</h2>
-
-{% if welcome_discount_available %}
-    <section class="info-panel">
-        <h2>Voucher de boas-vindas</h2>
-        <p>Voce possui um voucher de {{ welcome_discount_percent|floatformat:0 }}%: <strong>- R$ {{ voucher_discount|floatformat:2 }}</strong>.</p>
-        <p>Ele e valido ate {{ welcome_discount_expires_at|date:"d/m/Y" }}. Marque a opcao abaixo para usar agora ou deixe desmarcada para guardar para outra compra.</p>
-    </section>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
 {% endif %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Ir para pagamento</button>
-</form>
+<section class="checkout-layout">
+    <aside class="checkout-summary-card">
+        <p class="checkout-card-eyebrow">Resumo da compra</p>
+        <h2>Resumo do pedido</h2>
+        {% for item in items %}
+            <div class="checkout-product-line">
+                <div>
+                    <strong>{{ item.product.name }}</strong>
+                    <p class="summary-caption">Tam. {{ item.selected_size }} · Qtd. {{ item.quantity }}</p>
+                </div>
+                <strong>R$ {{ item.total|floatformat:2 }}</strong>
+            </div>
+        {% endfor %}
+        <div class="summary-list">
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="cart-subtotal-value">R$ {{ subtotal|floatformat:2 }}</strong>
+            </div>
+            {% if welcome_discount_available %}
+                <div class="summary-row">
+                    <span>Voucher de boas-vindas</span>
+                    <strong id="cart-voucher-value">- R$ {{ voucher_discount|floatformat:2 }}</strong>
+                </div>
+            {% endif %}
+            <div class="summary-row">
+                <span>Frete</span>
+                <strong id="cart-shipping-value">Escolha a UF</strong>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-row checkout-total-row">
+                <span>Total estimado</span>
+                <strong id="cart-total-value">R$ {{ subtotal|floatformat:2 }}</strong>
+            </div>
+        </div>
+
+        {% if welcome_discount_available %}
+            <p class="summary-caption">Seu voucher fica valido ate {{ welcome_discount_expires_at|date:"d/m/Y" }} e entra no total quando voce marcar a opcao no formulario.</p>
+        {% endif %}
+
+        <div class="checkout-note-box">
+            <strong>Antes de pagar</strong>
+            <span>Confira a UF, o endereco e o total final. Isso evita ajuste manual depois.</span>
+        </div>
+
+        <div class="checkout-trust-grid">
+            <div class="trust-item">
+                <strong>Frete transparente</strong>
+                <span>O valor segue a UF ou regiao escolhida e ja entra no total desta compra.</span>
+            </div>
+            <div class="trust-item">
+                <strong>Pagamento protegido</strong>
+                <span>Depois da aprovacao, a Lindice acompanha o pedido e o envio.</span>
+            </div>
+        </div>
+    </aside>
+
+    <section class="checkout-form-card">
+        <div class="checkout-form-intro">
+            <p class="checkout-card-eyebrow">Entrega</p>
+            <h2>Seus dados para entrega</h2>
+            <p>Preencha os dados com calma para calcular o frete certo e seguir para o pagamento sem surpresa.</p>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p class="checkout-inline-help">Se tiver voucher ativo, marque a opcao no formulario para recalcular o total com desconto.</p>
+            <div class="checkout-terms">
+                <p class="summary-caption">
+                    Ao continuar, voce concorda com os
+                    <a href="{% url 'terms_of_use' %}" target="_blank" rel="noopener">termos de uso</a>
+                    e com a
+                    <a href="{% url 'privacy_policy' %}" target="_blank" rel="noopener">politica de privacidade</a>.
+                </p>
+            </div>
+            <button type="submit">Ir para pagamento</button>
+        </form>
+    </section>
+</section>
 
 <p><a href="{% url 'cart_detail' %}">Voltar ao carrinho</a></p>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+(function () {
+    var stateField = document.getElementById("id_shipping_state");
+    var voucherField = document.getElementById("id_use_welcome_discount");
+    var shippingNode = document.getElementById("cart-shipping-value");
+    var totalNode = document.getElementById("cart-total-value");
+    var subtotal = Number("{{ subtotal|floatformat:2 }}".replace(",", "."));
+    var voucher = Number("{{ voucher_discount|default:'0.00'|floatformat:2 }}".replace(",", "."));
+    var rates = { ...JSON.parse('{{ shipping_rates_json|escapejs }}'), DEFAULT: "40.00" };
+
+    function formatMoney(value) {
+        return "R$ " + value.toFixed(2).replace(".", ",");
+    }
+
+    function shippingFor(code) {
+        if (!code) {
+            return null;
+        }
+
+        return Number((rates[code] || rates.DEFAULT).replace(",", "."));
+    }
+
+    function refreshSummary() {
+        var shipping = shippingFor(stateField ? stateField.value : "");
+        var discount = voucherField && voucherField.checked ? voucher : 0;
+        var total = subtotal - discount + (shipping || 0);
+
+        shippingNode.textContent = shipping === null ? "Escolha a UF" : formatMoney(shipping);
+        totalNode.textContent = formatMoney(total);
+    }
+
+    if (stateField) {
+        stateField.addEventListener("change", refreshSummary);
+    }
+
+    if (voucherField) {
+        voucherField.addEventListener("change", refreshSummary);
+    }
+
+    refreshSummary();
+})();
 {% endblock %}

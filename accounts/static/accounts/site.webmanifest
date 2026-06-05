@@ -1,13 +1,18 @@
 {
   "name": "Líndice",
   "short_name": "Líndice",
+  "description": "Loja da Líndice para acompanhar produtos, pedidos e compras no celular.",
+  "lang": "pt-BR",
   "id": "/loja/",
   "start_url": "/loja/",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait-primary",
   "background_color": "#ffffff",
   "theme_color": "#4d63b7",
+  "categories": ["shopping", "lifestyle"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/static/accounts/lindice-icon.svg?v=20260531",
@@ -19,13 +24,51 @@
       "src": "/static/accounts/lindice-icon-192.png?v=20260531",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "/static/accounts/lindice-icon-512.png?v=20260531",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Loja",
+      "short_name": "Loja",
+      "url": "/loja/",
+      "icons": [
+        {
+          "src": "/static/accounts/lindice-icon-192.png?v=20260531",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Carrinho",
+      "short_name": "Carrinho",
+      "url": "/loja/carrinho/",
+      "icons": [
+        {
+          "src": "/static/accounts/lindice-icon-192.png?v=20260531",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Cadastro crediário",
+      "short_name": "Crediário",
+      "url": "/cadastro/",
+      "icons": [
+        {
+          "src": "/static/accounts/lindice-icon-192.png?v=20260531",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }

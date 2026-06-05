@@ -24,10 +24,15 @@ from .forms import CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditS
 from .models import CreditSale, ClientProfile, Debt, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment
+from .store_shipping import SHIPPING_COSTS, shipping_cost_for
 from .supplier_import import decode_catalog_content, import_supplier_catalog, import_supplier_catalog_content
 from .utils import generate_phone_code
 
 logger = logging.getLogger(__name__)
+
+
+def shipping_rates_payload():
+    return {key: f"{value:.2f}" for key, value in SHIPPING_COSTS.items()}
 
 
 def should_redirect_customer_to_store(user):
@@ -58,6 +63,12 @@ def authenticated_home_route(user):
 class LoginView(auth_views.LoginView):
     template_name = "accounts/login.html"
     redirect_authenticated_user = True
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.method == "GET" and not request.user.is_authenticated and not request.GET.get(self.redirect_field_name):
+            return redirect("store_front")
+
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         redirect_to = self.get_redirect_url()
@@ -266,7 +277,7 @@ def home(request):
     if request.user.is_authenticated:
         return redirect(authenticated_home_route(request.user))
 
-    return redirect("login")
+    return redirect("store_front")
 
 
 def brand_preview(request):
@@ -458,6 +469,8 @@ def cart_detail(request):
             "welcome_discount_available": bool(welcome_profile),
             "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
             "welcome_discount_expires_at": welcome_profile.welcome_discount_expires_at if welcome_profile else None,
+            "shipping_rates": shipping_rates_payload(),
+            "shipping_rates_json": json.dumps(shipping_rates_payload()),
             "boticario_store_url": settings.BOTICARIO_STORE_URL,
         },
     )
@@ -478,6 +491,10 @@ def cart_boticario_redirect(request):
 
 
 def cart_checkout(request):
+    if not request.user.is_authenticated:
+        messages.info(request, "Entre ou cadastre-se para finalizar a compra.")
+        return redirect(f"{resolve_url('login')}?next={request.path}")
+
     items = build_cart_items(request)
 
     if not items:
@@ -497,6 +514,8 @@ def cart_checkout(request):
         if form.is_valid():
             use_voucher = bool(welcome_profile and form.cleaned_data.get("use_welcome_discount"))
             checkout_reference = uuid.uuid4()
+            shipping_state = form.cleaned_data["shipping_state"]
+            shipping_cost = shipping_cost_for(shipping_state)
             orders = []
 
             with transaction.atomic():
@@ -509,7 +528,7 @@ def cart_checkout(request):
                         profile.first_purchase_discount_used = True
                         profile.save(update_fields=["first_purchase_discount_used"])
 
-                for item in items:
+                for index, item in enumerate(items):
                     product = item["product"]
                     unit_price = product.suggested_sale_price
                     item_discount = Decimal("0.00")
@@ -528,11 +547,13 @@ def cart_checkout(request):
                         customer_name=form.cleaned_data["customer_name"],
                         customer_email=form.cleaned_data["customer_email"],
                         customer_phone=form.cleaned_data["customer_phone"],
+                        shipping_state=shipping_state,
                         shipping_address=form.cleaned_data["shipping_address"],
+                        shipping_cost=shipping_cost if index == 0 else Decimal("0.00"),
                         notes=form.cleaned_data["notes"],
                         unit_price=unit_price,
                         supplier_cost=product.dropshipping_cost,
-                        total_amount=money(unit_price * item["quantity"]),
+                        total_amount=money(unit_price * item["quantity"] + (shipping_cost if index == 0 else Decimal("0.00"))),
                         welcome_discount_amount=item_discount,
                         estimated_profit=money((unit_price - product.dropshipping_cost) * item["quantity"]),
                         checkout_reference=checkout_reference,
@@ -583,11 +604,17 @@ def cart_checkout(request):
             "welcome_discount_available": bool(welcome_profile),
             "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
             "welcome_discount_expires_at": welcome_profile.welcome_discount_expires_at if welcome_profile else None,
+            "shipping_rates": shipping_rates_payload(),
+            "shipping_rates_json": json.dumps(shipping_rates_payload()),
         },
     )
 
 
 def store_checkout(request, product_id):
+    if not request.user.is_authenticated:
+        messages.info(request, "Entre ou cadastre-se para finalizar a compra.")
+        return redirect(f"{resolve_url('login')}?next={request.path}")
+
     product = get_object_or_404(
         SupplierProduct,
         id=product_id,
@@ -607,6 +634,7 @@ def store_checkout(request, product_id):
             form.fields.pop("use_welcome_discount")
 
         if form.is_valid():
+            shipping_cost = shipping_cost_for(form.cleaned_data["shipping_state"])
             with transaction.atomic():
                 order = form.save(commit=False)
                 order.product = product
@@ -614,7 +642,8 @@ def store_checkout(request, product_id):
                 order.supplier_code = product.supplier_code
                 order.unit_price = product.suggested_sale_price
                 order.supplier_cost = product.dropshipping_cost
-                order.total_amount = product.suggested_sale_price
+                order.shipping_cost = shipping_cost
+                order.total_amount = money(product.suggested_sale_price + shipping_cost)
                 order.estimated_profit = product.suggested_sale_price - product.dropshipping_cost
 
                 if request.user.is_authenticated and not request.user.is_staff:
@@ -627,8 +656,8 @@ def store_checkout(request, product_id):
                         order.customer = request.user
                         order.welcome_discount_amount = welcome_discount_amount(product.suggested_sale_price)
                         order.unit_price = money(product.suggested_sale_price - order.welcome_discount_amount)
-                        order.total_amount = order.unit_price
-                        order.estimated_profit = order.total_amount - product.dropshipping_cost
+                        order.total_amount = money(order.unit_price + shipping_cost)
+                        order.estimated_profit = order.unit_price - product.dropshipping_cost
                         profile.first_purchase_discount_used = True
                         profile.save(update_fields=["first_purchase_discount_used"])
 
@@ -665,6 +694,8 @@ def store_checkout(request, product_id):
             "welcome_discount": welcome_discount,
             "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
             "welcome_total": welcome_total,
+            "shipping_rates": shipping_rates_payload(),
+            "shipping_rates_json": json.dumps(shipping_rates_payload()),
         },
     )
 
@@ -825,8 +856,8 @@ def register(request):
             except Exception:
                 logger.exception("Erro ao criar cadastro")
                 form.add_error(
-                    "residence_proof",
-                    "Nao foi possivel enviar o comprovante agora. Tente novamente em instantes.",
+                    "identity_document",
+                    "Nao foi possivel enviar seus documentos agora. Tente novamente em instantes.",
                 )
 
                 return render(request, "accounts/register.html", {"form": form}, status=500)
@@ -1032,7 +1063,13 @@ def choose_installments(request, sale_id):
             if was_pending:
                 create_sale_confirmed_notifications(sale)
 
-            messages.success(request, "Forma de pagamento escolhida com sucesso.")
+            if sale.selected_payment_method == CreditSale.CREDIT:
+                messages.success(
+                    request,
+                    "Compra no crediario confirmada. Lembre-se: atraso gera multa de 2% e juros de 1% ao mes.",
+                )
+            else:
+                messages.success(request, "Forma de pagamento escolhida com sucesso.")
 
             if sale.selected_payment_method == CreditSale.PIX:
                 return redirect("pix_payment_instructions", sale_id=sale.id)

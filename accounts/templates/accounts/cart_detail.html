@@ -1,7 +1,11 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<h1>Carrinho</h1>
+<section class="cart-header">
+    <span class="storefront-kicker">Pronto para finalizar</span>
+    <h1>Carrinho da sua compra</h1>
+    <p class="section-lead">Revise os produtos, confira os tamanhos e escolha o melhor caminho para concluir o pedido com seguranca.</p>
+</section>
 
 {% if messages %}
     <ul class="messages">
@@ -12,35 +16,81 @@
 {% endif %}
 
 {% if items %}
-    {% for item in items %}
-        <section class="purchase">
-            <h2>{{ item.product.name }}</h2>
-            <p>Tamanho: {{ item.selected_size }}</p>
-            <p>Quantidade: {{ item.quantity }}</p>
-            <p class="store-price">R$ {{ item.total|floatformat:2 }}</p>
-            <form method="post" action="{% url 'cart_remove' item.key %}">
-                {% csrf_token %}
-                <button class="button-secondary" type="submit">Remover</button>
-            </form>
-        </section>
-    {% endfor %}
+    <section class="cart-layout">
+        <div class="cart-items">
+            {% for item in items %}
+                <article class="cart-item-card">
+                    <div class="cart-item-media">
+                        {% if item.product.image_url %}
+                            <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">
+                        {% else %}
+                            <span class="store-product-placeholder">Foto em breve</span>
+                        {% endif %}
+                    </div>
+                    <div class="cart-item-body">
+                        <h2>{{ item.product.name }}</h2>
+                        <div class="cart-item-meta">
+                            <span class="mini-chip">Tamanho {{ item.selected_size }}</span>
+                            <span class="mini-chip">Quantidade {{ item.quantity }}</span>
+                            {% if item.product.category %}
+                                <span class="mini-chip">{{ item.product.category }}</span>
+                            {% endif %}
+                        </div>
+                        <p class="store-product-note">Pedido com pagamento seguro e atualizacoes do envio depois da aprovacao.</p>
+                        <div class="cart-item-footer">
+                            <p class="store-price">R$ {{ item.total|floatformat:2 }}</p>
+                            <form method="post" action="{% url 'cart_remove' item.key %}">
+                                {% csrf_token %}
+                                <button class="button-secondary" type="submit">Remover</button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
 
-    <h2>Total: R$ {{ subtotal|floatformat:2 }}</h2>
-    {% if welcome_discount_available %}
-        <p><span class="badge badge-success">Voucher de {{ welcome_discount_percent|floatformat:0 }}% disponivel</span></p>
-        <p>Voce decide se deseja usar o voucher na proxima etapa. Valido ate {{ welcome_discount_expires_at|date:"d/m/Y" }}.</p>
-    {% endif %}
-    <div class="action-row">
-        {% if boticario_store_url %}
-            <a class="button" href="{% url 'cart_boticario_redirect' %}">Finalizar no Boticario</a>
-        {% endif %}
-        <a class="button button-secondary" href="{% url 'cart_checkout' %}">Finalizar pelo Lindice</a>
-    </div>
-    {% if boticario_store_url %}
-        <p>Voce sera direcionado para a loja oficial Boticario do Fabricio para concluir o pedido.</p>
-    {% endif %}
+        <aside class="cart-summary-card">
+            <h2>Resumo do pedido</h2>
+            <div class="summary-list">
+                <div class="summary-row">
+                    <span>{{ items|length }} item{{ items|length|pluralize:",s" }}</span>
+                    <strong>R$ {{ subtotal|floatformat:2 }}</strong>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-row">
+                    <span>Frete</span>
+                    <strong>Calculado no checkout por UF</strong>
+                </div>
+            </div>
+
+            {% if welcome_discount_available %}
+                <div class="summary-badge-row">
+                    <span class="badge badge-success">Voucher de {{ welcome_discount_percent|floatformat:0 }}% disponivel</span>
+                </div>
+                <p class="summary-caption">Voce decide na proxima etapa se quer usar o voucher. Valido ate {{ welcome_discount_expires_at|date:"d/m/Y" }}.</p>
+            {% endif %}
+
+            <div class="cart-trust-grid">
+                <div class="trust-item">
+                    <strong>Pagamento protegido</strong>
+                    <span>Checkout com Mercado Pago e confirmacao automatica.</span>
+                </div>
+                <div class="trust-item">
+                    <strong>Compra acompanhada</strong>
+                    <span>Depois da aprovacao, a Lindice atualiza voce sobre o envio.</span>
+                </div>
+            </div>
+
+            <div class="action-row">
+                <a class="button cart-primary-button" href="{% url 'cart_checkout' %}">Finalizar pedido</a>
+            </div>
+        </aside>
+    </section>
 {% else %}
-    <p>Seu carrinho esta vazio.</p>
+    <section class="empty-store-state">
+        <h2>Seu carrinho esta vazio</h2>
+        <p>Escolha seus produtos favoritos e volte para finalizar a compra com calma.</p>
+    </section>
 {% endif %}
 
 <p><a href="{% url 'store_front' %}">Continuar comprando</a></p>

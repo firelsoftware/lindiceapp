@@ -2,6 +2,12 @@
 
 {% block content %}
 <h1>Entrar</h1>
+<section class="hero-note">
+    <strong>A loja e aberta para qualquer pessoa.</strong>
+    <p>Voce so precisa entrar para acompanhar pedidos, finalizar compras com sua conta ou usar o crediario.</p>
+</section>
+
+<p><a class="button button-secondary" href="{% url 'store_front' %}">Continuar navegando sem login</a></p>
 
 <form method="post">
     {% csrf_token %}
@@ -9,5 +15,13 @@
     <button type="submit">Entrar</button>
 </form>
 
-<p>Novo cliente? <a href="{% url 'register' %}">Criar cadastro</a></p>
+<h2>Cadastro para crediario</h2>
+<p>Se quiser comprar no crediario, faca seu cadastro e envie os dados de analise.</p>
+<ul class="support-points">
+    <li>Nome, telefone e endereco completo.</li>
+    <li>CPF e RG.</li>
+    <li>Comprovante de residencia no nome do cliente.</li>
+</ul>
+
+<p>Novo cliente? <a href="{% url 'register' %}">Criar cadastro para crediario</a></p>
 {% endblock %}

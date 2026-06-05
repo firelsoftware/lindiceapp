@@ -1,7 +1,8 @@
-const CACHE_NAME = "lindice-store-v1";
+const CACHE_NAME = "lindice-store-v2";
 const APP_SHELL = [
   "{{ store_front_url }}",
   "{{ offline_url }}",
+  "/static/accounts/lindice-icon.svg?v=20260531",
   "/static/accounts/lindice-icon-192.png?v=20260531",
   "/static/accounts/lindice-icon-512.png?v=20260531",
   "/static/accounts/site.webmanifest?v=20260531"
@@ -63,7 +64,8 @@ self.addEventListener("fetch", (event) => {
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
           return response;
-        });
+        })
+        .catch(() => caches.match(request));
     })
   );
 });

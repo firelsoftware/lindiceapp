@@ -59,15 +59,26 @@ def mercado_pago_request(path, payload=None, method="POST"):
 
 def create_checkout_preference(order, request):
     base_url = site_url(request)
-    payload = {
-        "items": [
+    items = [
+        {
+            "title": order.product_name,
+            "quantity": order.quantity,
+            "currency_id": "BRL",
+            "unit_price": float(order.items_total_amount / order.quantity),
+        }
+    ]
+    if order.shipping_cost > 0:
+        items.append(
             {
-                "title": order.product_name,
-                "quantity": order.quantity,
+                "title": f"Frete - {order.get_shipping_state_display() or order.shipping_state}",
+                "quantity": 1,
                 "currency_id": "BRL",
-                "unit_price": float(order.unit_price),
+                "unit_price": float(order.shipping_cost),
             }
-        ],
+        )
+
+    payload = {
+        "items": items,
         "external_reference": order.order_code,
         "back_urls": {
             "success": f"{base_url}/loja/pagamento/sucesso/",
@@ -96,16 +107,27 @@ def create_checkout_preference(order, request):
 def create_cart_checkout_preference(orders, request):
     first_order = orders[0]
     base_url = site_url(request)
-    payload = {
-        "items": [
+    items = [
+        {
+            "title": order.product_name,
+            "quantity": order.quantity,
+            "currency_id": "BRL",
+            "unit_price": float(order.items_total_amount / order.quantity),
+        }
+        for order in orders
+    ]
+    if first_order.shipping_cost > 0:
+        items.append(
             {
-                "title": order.product_name,
-                "quantity": order.quantity,
+                "title": f"Frete - {first_order.get_shipping_state_display() or first_order.shipping_state}",
+                "quantity": 1,
                 "currency_id": "BRL",
-                "unit_price": float(order.unit_price),
+                "unit_price": float(first_order.shipping_cost),
             }
-            for order in orders
-        ],
+        )
+
+    payload = {
+        "items": items,
         "external_reference": f"cart:{first_order.checkout_reference}",
         "back_urls": {
             "success": f"{base_url}/loja/pagamento/sucesso/",

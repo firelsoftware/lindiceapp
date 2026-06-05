@@ -1,15 +1,25 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<h1>Cadastro</h1>
+<h1>Cadastro para crediario</h1>
+<section class="hero-note">
+    <strong>A loja continua aberta sem login.</strong>
+    <p>Ao clicar em Crediario, o cliente entra nesta etapa para se cadastrar e enviar os dados e documentos da analise.</p>
+</section>
 <p>Campos com * sao obrigatorios.</p>
+<ul class="support-points">
+    <li>Informe CPF e RG do cliente.</li>
+    <li>Anexe foto ou PDF do RG.</li>
+    <li>Anexe comprovante de residencia no nome do cliente.</li>
+</ul>
 <p>Ao enviar seus dados, consulte nossa <a href="{% url 'privacy_policy' %}" target="_blank" rel="noopener">politica de privacidade</a> e os <a href="{% url 'terms_of_use' %}" target="_blank" rel="noopener">termos de uso</a>.</p>
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Enviar cadastro</button>
+    <button type="submit">Enviar cadastro para analise</button>
 </form>
 
+<p><a class="button button-secondary" href="{% url 'store_front' %}">Voltar para a loja publica</a></p>
 <p>Ja tem cadastro? <a href="{% url 'login' %}">Entrar</a></p>
 {% endblock %}

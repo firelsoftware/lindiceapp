@@ -7,6 +7,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models, transaction
 from django.utils import timezone
 
+from .store_shipping import SHIPPING_DESTINATION_CHOICES
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -57,11 +59,13 @@ class ClientProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     cpf_hash = models.CharField(max_length=64, unique=True)
     cpf_last_digits = models.CharField(max_length=4)
+    rg_number = models.CharField(max_length=20, blank=True)
     phone = models.CharField(max_length=20)
     phone_verified = models.BooleanField(default=False)
     phone_verification_code = models.CharField(max_length=6, blank=True)
     phone_verification_sent_at = models.DateTimeField(null=True, blank=True)
     address = models.TextField()
+    identity_document = models.FileField(upload_to="identity_documents/", blank=True)
     residence_proof = models.FileField(upload_to="residence_proofs/")
     profile_photo = models.FileField(upload_to="profile_photos/", blank=True)
     shoe_size = models.DecimalField(max_digits=4, decimal_places=1, null=True, blank=True)
@@ -272,7 +276,9 @@ class StoreOrder(models.Model):
     customer_name = models.CharField(max_length=150)
     customer_email = models.EmailField()
     customer_phone = models.CharField(max_length=30)
+    shipping_state = models.CharField(max_length=20, choices=SHIPPING_DESTINATION_CHOICES, blank=True)
     shipping_address = models.TextField()
+    shipping_cost = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     notes = models.TextField(blank=True)
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
     supplier_cost = models.DecimalField(max_digits=10, decimal_places=2)
@@ -323,6 +329,10 @@ class StoreOrder(models.Model):
 
     def __str__(self):
         return f"{self.order_code} - {self.customer_name} - {self.product_name}"
+
+    @property
+    def items_total_amount(self):
+        return money(self.total_amount - self.shipping_cost)
 
 
 class CreditSale(models.Model):

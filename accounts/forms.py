@@ -10,6 +10,7 @@ from django.forms import inlineformset_factory
 from django.utils import timezone
 
 from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Product, ProductCost, StoreOrder, User
+from .store_shipping import shipping_choices_with_prices
 from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
 
 
@@ -27,8 +28,12 @@ class RegisterForm(UserCreationForm):
     preferred_name = forms.CharField(label="Como prefere ser chamado(a) *", max_length=80)
     email = forms.EmailField(label="Email *")
     cpf = forms.CharField(label="CPF *", max_length=14)
+    rg_number = forms.CharField(label="RG *", max_length=20)
     phone = forms.CharField(label="Telefone *", max_length=20)
     address = forms.CharField(label="Endereco *", widget=forms.Textarea)
+    identity_document = forms.FileField(
+        label="Foto ou PDF do RG *"
+    )
     residence_proof = forms.FileField(
         label="Comprovante de residencia no nome do cliente *"
     )
@@ -42,8 +47,10 @@ class RegisterForm(UserCreationForm):
             "password1",
             "password2",
             "cpf",
+            "rg_number",
             "phone",
             "address",
+            "identity_document",
             "residence_proof",
         )
 
@@ -75,6 +82,14 @@ class RegisterForm(UserCreationForm):
 
         return cpf_digits
 
+    def clean_rg_number(self):
+        rg_number = self.cleaned_data["rg_number"].strip()
+
+        if len(rg_number) < 5:
+            raise ValidationError("Informe um RG valido.")
+
+        return rg_number
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
@@ -86,8 +101,10 @@ class RegisterForm(UserCreationForm):
                 user=user,
                 cpf_hash=cpf_hash(self.cleaned_data["cpf"]),
                 cpf_last_digits=cpf_last_digits(self.cleaned_data["cpf"]),
+                rg_number=self.cleaned_data["rg_number"],
                 phone=self.cleaned_data["phone"],
                 address=self.cleaned_data["address"],
+                identity_document=self.cleaned_data["identity_document"],
                 residence_proof=self.cleaned_data["residence_proof"],
             )
 
@@ -421,6 +438,7 @@ class ProductCostForm(forms.ModelForm):
 
 class StoreOrderForm(forms.ModelForm):
     selected_size = forms.ChoiceField(label="Tamanho")
+    shipping_state = forms.ChoiceField(label="Estado / regiao de entrega")
     use_welcome_discount = forms.BooleanField(label="Usar voucher de 5% nesta compra", required=False)
     accept_terms = forms.BooleanField(
         label="Li e aceito os termos de uso e a politica de privacidade",
@@ -429,11 +447,12 @@ class StoreOrderForm(forms.ModelForm):
 
     class Meta:
         model = StoreOrder
-        fields = ("selected_size", "customer_name", "customer_email", "customer_phone", "shipping_address", "notes")
+        fields = ("selected_size", "customer_name", "customer_email", "customer_phone", "shipping_state", "shipping_address", "notes")
         labels = {
             "customer_name": "Nome completo",
             "customer_email": "Email",
             "customer_phone": "Telefone/WhatsApp",
+            "shipping_state": "Estado / regiao para calcular o frete",
             "shipping_address": "Endereco completo de entrega",
             "notes": "Observacoes",
         }
@@ -451,6 +470,7 @@ class StoreOrderForm(forms.ModelForm):
             sizes = ["Confirmar tamanho"]
 
         self.fields["selected_size"].choices = [(size, size) for size in sizes]
+        self.fields["shipping_state"].choices = [("", "Selecione")] + shipping_choices_with_prices()
 
     def clean(self):
         cleaned_data = super().clean()
@@ -468,6 +488,7 @@ class CartCheckoutForm(forms.Form):
     customer_name = forms.CharField(label="Nome completo", max_length=150)
     customer_email = forms.EmailField(label="Email")
     customer_phone = forms.CharField(label="Telefone/WhatsApp", max_length=30)
+    shipping_state = forms.ChoiceField(label="Estado / regiao para calcular o frete")
     shipping_address = forms.CharField(label="Endereco completo de entrega", widget=forms.Textarea(attrs={"rows": 4}))
     notes = forms.CharField(label="Observacoes", required=False, widget=forms.Textarea(attrs={"rows": 3}))
     use_welcome_discount = forms.BooleanField(label="Usar voucher de 5% nesta compra", required=False)
@@ -475,3 +496,7 @@ class CartCheckoutForm(forms.Form):
         label="Li e aceito os termos de uso e a politica de privacidade",
         required=True,
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["shipping_state"].choices = [("", "Selecione")] + shipping_choices_with_prices()
