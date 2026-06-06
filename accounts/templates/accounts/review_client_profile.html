@@ -125,11 +125,15 @@
             </a>
         </p>
     {% endif %}
-    <p>
-        <a class="button" href="{{ profile.residence_proof.url }}" target="_blank" rel="noopener">
-            Abrir comprovante de residencia
-        </a>
-    </p>
+    {% if profile.residence_proof %}
+        <p>
+            <a class="button" href="{{ profile.residence_proof.url }}" target="_blank" rel="noopener">
+                Abrir comprovante de residencia
+            </a>
+        </p>
+    {% else %}
+        <p>Cliente ainda sem comprovante de residencia anexado.</p>
+    {% endif %}
 </section>
 
 <section class="info-panel">

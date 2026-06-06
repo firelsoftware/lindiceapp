@@ -15,6 +15,7 @@ from django.db.models import Case, IntegerField, Q, Sum, Value, When
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -32,6 +33,25 @@ logger = logging.getLogger(__name__)
 
 def shipping_rates_payload():
     return {key: f"{value:.2f}" for key, value in SHIPPING_COSTS.items()}
+
+
+def redirect_to_supplier_products():
+    try:
+        return redirect("supplier_products")
+    except Exception:
+        logger.exception("Falha ao resolver rota supplier_products")
+        return redirect("/gestao/fornecedor/produtos/")
+
+
+def safe_next_url(request, value):
+    if value and url_has_allowed_host_and_scheme(
+        value,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        return value
+
+    return ""
 
 
 def should_redirect_customer_to_store(user):
@@ -854,8 +874,11 @@ def mercado_pago_webhook(request):
 
 
 def register(request):
+    credit_mode = (request.POST.get("intent") or request.GET.get("intent") or "").strip() == "credit"
+    next_url = safe_next_url(request, request.POST.get("next") or request.GET.get("next"))
+
     if request.method == "POST":
-        form = RegisterForm(request.POST, request.FILES)
+        form = RegisterForm(request.POST, request.FILES, credit_mode=credit_mode)
 
         if form.is_valid():
             try:
@@ -864,14 +887,19 @@ def register(request):
             except Exception:
                 logger.exception("Erro ao criar cadastro")
                 form.add_error(
-                    "identity_document",
-                    "Nao foi possivel enviar seus documentos agora. Tente novamente em instantes.",
+                    None,
+                    "Nao foi possivel concluir seu cadastro agora. Tente novamente em instantes.",
                 )
 
-                return render(request, "accounts/register.html", {"form": form}, status=500)
+                return render(
+                    request,
+                    "accounts/register.html",
+                    {"form": form, "credit_mode": credit_mode, "next_url": next_url},
+                    status=500,
+                )
 
             profile = user.profile
-            if settings.PHONE_VERIFICATION_REQUIRED:
+            if credit_mode and settings.PHONE_VERIFICATION_REQUIRED and profile.phone:
                 profile.phone_verification_code = generate_phone_code()
                 profile.phone_verification_sent_at = timezone.now()
                 profile.save(update_fields=["phone_verification_code", "phone_verification_sent_at"])
@@ -880,14 +908,21 @@ def register(request):
                 profile.save(update_fields=["phone_verified"])
             login(request, user)
 
-            if settings.PHONE_VERIFICATION_REQUIRED:
+            if credit_mode and settings.PHONE_VERIFICATION_REQUIRED and profile.phone:
                 return redirect("verify_phone")
+
+            if next_url:
+                return redirect(next_url)
 
             return redirect("dashboard")
     else:
-        form = RegisterForm()
+        form = RegisterForm(credit_mode=credit_mode)
 
-    return render(request, "accounts/register.html", {"form": form})
+    return render(
+        request,
+        "accounts/register.html",
+        {"form": form, "credit_mode": credit_mode, "next_url": next_url},
+    )
 
 
 @login_required
@@ -1574,14 +1609,14 @@ def update_supplier_product_status(request, product_id):
 @staff_member_required(login_url="login")
 def import_supplier_products(request):
     if request.method != "POST":
-        return redirect("supplier_products")
+        return redirect_to_supplier_products()
 
     uploaded_catalog = request.FILES.get("catalog_file")
 
     if not uploaded_catalog and not settings.SHOE_SUPPLIER_CATALOG_URL:
         messages.error(request, "Envie um CSV/XML ou configure SHOE_SUPPLIER_CATALOG_URL antes de importar o catalogo.")
 
-        return redirect("supplier_products")
+        return redirect_to_supplier_products()
 
     try:
         if uploaded_catalog:
@@ -1596,16 +1631,17 @@ def import_supplier_products(request):
                 settings.SHOE_SUPPLIER_CATALOG_FORMAT,
             )
     except Exception as exc:
+        logger.exception("Erro ao importar catalogo do fornecedor")
         messages.error(request, f"Nao foi possivel importar o catalogo: {exc}")
 
-        return redirect("supplier_products")
+        return redirect_to_supplier_products()
 
     messages.success(
         request,
         f"Catalogo atualizado: {result['created']} novos, {result['updated']} atualizados, {result['total']} lidos.",
     )
 
-    return redirect("supplier_products")
+    return redirect_to_supplier_products()
 
 
 @staff_member_required(login_url="login")

@@ -97,20 +97,15 @@ class RegistrationFlowTests(TestCase):
             "password1": "Teste12345!",
             "password2": "Teste12345!",
             "cpf": "529.982.247-25",
-            "rg_number": "1234567",
-            "phone": "61999999999",
-            "address": "Rua Teste, 1",
+            "intent": "shop",
         }
         data.update(overrides)
 
         return data
 
     @override_settings(PHONE_VERIFICATION_REQUIRED=False)
-    def test_registration_can_continue_to_manual_review_without_phone_verification(self):
-        data = self.registration_payload(
-            identity_document=SimpleUploadedFile("rg.pdf", b"pdf"),
-            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
-        )
+    def test_basic_registration_creates_account_without_credit_documents(self):
+        data = self.registration_payload()
 
         response = self.client.post(
             "/cadastro/",
@@ -122,11 +117,17 @@ class RegistrationFlowTests(TestCase):
         self.assertEqual(response["Location"], "/painel/")
         self.assertTrue(user.profile.phone_verified)
         self.assertEqual(user.profile.phone_verification_code, "")
-        self.assertEqual(user.profile.rg_number, "1234567")
-        self.assertTrue(bool(user.profile.identity_document))
+        self.assertEqual(user.profile.registration_status, ClientProfile.APPROVED)
+        self.assertEqual(user.profile.rg_number, "")
+        self.assertFalse(bool(user.profile.identity_document))
+        self.assertFalse(bool(user.profile.residence_proof))
 
-    def test_registration_requires_rg_document_for_credit_application(self):
+    def test_credit_registration_requires_rg_document_for_credit_application(self):
         data = self.registration_payload(
+            intent="credit",
+            rg_number="1234567",
+            phone="61999999999",
+            address="Rua Teste, 1",
             residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
         )
 
@@ -135,6 +136,35 @@ class RegistrationFlowTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Foto ou PDF do RG")
         self.assertEqual(User.objects.count(), 0)
+
+    @override_settings(PHONE_VERIFICATION_REQUIRED=False)
+    def test_credit_registration_stays_pending_for_manual_review(self):
+        data = self.registration_payload(
+            intent="credit",
+            rg_number="1234567",
+            phone="61999999999",
+            address="Rua Teste, 1",
+            identity_document=SimpleUploadedFile("rg.pdf", b"pdf"),
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+        )
+
+        response = self.client.post("/cadastro/?intent=credit", data=data)
+        user = User.objects.get(email="cliente-teste@example.com")
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/painel/")
+        self.assertEqual(user.profile.registration_status, ClientProfile.PENDING)
+        self.assertEqual(user.profile.rg_number, "1234567")
+        self.assertTrue(bool(user.profile.identity_document))
+
+    @override_settings(PHONE_VERIFICATION_REQUIRED=False)
+    def test_basic_registration_with_next_returns_user_to_checkout(self):
+        data = self.registration_payload(next="/loja/carrinho/finalizar/")
+
+        response = self.client.post("/cadastro/?next=/loja/carrinho/finalizar/", data=data)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/loja/carrinho/finalizar/")
 
     @override_settings(DEBUG=False, PHONE_VERIFICATION_REQUIRED=True, ALLOWED_HOSTS=["testserver"])
     def test_phone_verification_code_is_hidden_outside_debug(self):
@@ -164,15 +194,12 @@ class RegistrationFlowTests(TestCase):
     @patch("accounts.views.RegisterForm.save")
     def test_registration_storage_error_returns_form_message(self, mocked_save):
         mocked_save.side_effect = RuntimeError("storage unavailable")
-        data = self.registration_payload(
-            identity_document=SimpleUploadedFile("rg.pdf", b"pdf"),
-            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
-        )
+        data = self.registration_payload()
 
         response = self.client.post("/cadastro/", data=data)
 
         self.assertEqual(response.status_code, 500)
-        self.assertContains(response, "Nao foi possivel enviar seus documentos agora", status_code=500)
+        self.assertContains(response, "Nao foi possivel concluir seu cadastro agora", status_code=500)
         self.assertEqual(User.objects.count(), 0)
 
 
@@ -706,7 +733,7 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, '>Minha conta</h2>', html=False)
         self.assertContains(response, '>Cadastro para crediario</a>', html=False)
         self.assertContains(response, 'href="/login/"')
-        self.assertContains(response, 'href="/cadastro/"')
+        self.assertContains(response, 'href="/cadastro/?intent=credit"')
         self.assertNotContains(response, "Painel de gestao")
         self.assertNotContains(response, "Abrir notificacoes")
         self.assertNotContains(response, '>Crediario</a>', html=False)
@@ -1214,6 +1241,19 @@ class StoreFlowTests(TestCase):
         self.assertEqual(product.stock_quantity, 8)
         self.assertEqual(product.sizes, "35,36")
         self.assertEqual(product.image_url, "https://www.revendadecalcados.com.br/foto1.jpg")
+
+    def test_supplier_import_route_redirects_get_to_supplier_products(self):
+        staff = User.objects.create_superuser(
+            email="admin-import-get@example.com",
+            password="Teste12345!",
+            full_name="Admin Import GET",
+            preferred_name="Admin",
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get("/gestao/fornecedor/importar/")
+
+        self.assertRedirects(response, "/gestao/fornecedor/produtos/")
 
     @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
     def test_checkout_requires_terms_acceptance(self):
@@ -1756,6 +1796,7 @@ class CustomerEntryRoutingTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Continuar sem login")
+        self.assertContains(response, "Crie sua conta com CPF, email e nome")
         self.assertNotContains(response, "Abrir minha conta")
 
     def test_login_page_still_opens_when_purchase_redirect_includes_next(self):
@@ -1763,6 +1804,9 @@ class CustomerEntryRoutingTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Continuar sem login")
+        self.assertContains(response, "Finalizar seu carrinho")
+        self.assertContains(response, "Faca seu cadastro")
+        self.assertContains(response, 'href="/cadastro/?next=/loja/carrinho/finalizar/"')
 
 
 class StoreCheckoutAccessTests(TestCase):

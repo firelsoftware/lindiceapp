@@ -1,25 +1,41 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<h1>Cadastro para crediario</h1>
-<section class="hero-note">
-    <strong>A loja continua aberta sem login.</strong>
-    <p>Ao clicar em Crediario, o cliente entra nesta etapa para se cadastrar e enviar os dados e documentos da analise.</p>
-</section>
-<p>Campos com * sao obrigatorios.</p>
-<ul class="support-points">
-    <li>Informe CPF e RG do cliente.</li>
-    <li>Anexe foto ou PDF do RG.</li>
-    <li>Anexe comprovante de residencia no nome do cliente.</li>
-</ul>
+{% if credit_mode %}
+    <h1>Cadastro para crediario</h1>
+    <section class="hero-note">
+        <strong>A loja continua aberta sem login.</strong>
+        <p>Use esta etapa quando quiser solicitar crediario e enviar os dados de analise.</p>
+    </section>
+    <p>Campos com * sao obrigatorios.</p>
+    <ul class="support-points">
+        <li>Informe CPF, RG, telefone e endereco.</li>
+        <li>Anexe foto ou PDF do RG.</li>
+        <li>Anexe comprovante de residencia no nome do cliente.</li>
+    </ul>
+{% else %}
+    <h1>Criar conta para comprar</h1>
+    <section class="hero-note">
+        <strong>Compra comum nao precisa de comprovante.</strong>
+        <p>Crie sua conta com nome, como prefere ser chamado, email, senha e CPF. Os demais dados ficam para quem quiser solicitar crediario depois.</p>
+    </section>
+    <p>Campos com * sao obrigatorios.</p>
+{% endif %}
 <p>Ao enviar seus dados, consulte nossa <a href="{% url 'privacy_policy' %}" target="_blank" rel="noopener">politica de privacidade</a> e os <a href="{% url 'terms_of_use' %}" target="_blank" rel="noopener">termos de uso</a>.</p>
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+    <input type="hidden" name="intent" value="{% if credit_mode %}credit{% else %}shop{% endif %}">
+    {% if next_url %}
+        <input type="hidden" name="next" value="{{ next_url }}">
+    {% endif %}
     {{ form.as_p }}
-    <button type="submit">Enviar cadastro para analise</button>
+    <button type="submit">{% if credit_mode %}Enviar cadastro para analise{% else %}Criar conta e continuar{% endif %}</button>
 </form>
 
 <p><a class="button button-secondary" href="{% url 'store_front' %}">Voltar para a loja publica</a></p>
-<p>Ja tem cadastro? <a href="{% url 'login' %}">Entrar</a></p>
+{% if not credit_mode %}
+    <p>Vai pedir crediario? <a href="{% url 'register' %}?intent=credit{% if next_url %}&amp;next={{ next_url|urlencode }}{% endif %}">Termine seu cadastro completo</a></p>
+{% endif %}
+<p>Ja tem cadastro? <a href="{% url 'login' %}{% if next_url %}?next={{ next_url|urlencode }}{% endif %}">Entrar</a></p>
 {% endblock %}

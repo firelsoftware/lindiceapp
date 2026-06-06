@@ -28,14 +28,16 @@ class RegisterForm(UserCreationForm):
     preferred_name = forms.CharField(label="Como prefere ser chamado(a) *", max_length=80)
     email = forms.EmailField(label="Email *")
     cpf = forms.CharField(label="CPF *", max_length=14)
-    rg_number = forms.CharField(label="RG *", max_length=20)
-    phone = forms.CharField(label="Telefone *", max_length=20)
-    address = forms.CharField(label="Endereco *", widget=forms.Textarea)
+    rg_number = forms.CharField(label="RG", max_length=20, required=False)
+    phone = forms.CharField(label="Telefone", max_length=20, required=False)
+    address = forms.CharField(label="Endereco", widget=forms.Textarea, required=False)
     identity_document = forms.FileField(
-        label="Foto ou PDF do RG *"
+        label="Foto ou PDF do RG",
+        required=False,
     )
     residence_proof = forms.FileField(
-        label="Comprovante de residencia no nome do cliente *"
+        label="Comprovante de residencia no nome do cliente",
+        required=False,
     )
 
     class Meta:
@@ -55,9 +57,18 @@ class RegisterForm(UserCreationForm):
         )
 
     def __init__(self, *args, **kwargs):
+        self.credit_mode = kwargs.pop("credit_mode", False)
         super().__init__(*args, **kwargs)
         self.fields["password1"].label = "Senha *"
         self.fields["password2"].label = "Confirmacao de senha *"
+        if self.credit_mode:
+            self.fields["rg_number"].label = "RG *"
+            self.fields["phone"].label = "Telefone *"
+            self.fields["address"].label = "Endereco *"
+            self.fields["identity_document"].label = "Foto ou PDF do RG *"
+            self.fields["residence_proof"].label = "Comprovante de residencia no nome do cliente *"
+            for field_name in ("rg_number", "phone", "address", "identity_document", "residence_proof"):
+                self.fields[field_name].required = True
 
     def clean_email(self):
         email = self.cleaned_data["email"].lower()
@@ -83,7 +94,10 @@ class RegisterForm(UserCreationForm):
         return cpf_digits
 
     def clean_rg_number(self):
-        rg_number = self.cleaned_data["rg_number"].strip()
+        rg_number = self.cleaned_data.get("rg_number", "").strip()
+
+        if not rg_number:
+            return ""
 
         if len(rg_number) < 5:
             raise ValidationError("Informe um RG valido.")
@@ -101,11 +115,12 @@ class RegisterForm(UserCreationForm):
                 user=user,
                 cpf_hash=cpf_hash(self.cleaned_data["cpf"]),
                 cpf_last_digits=cpf_last_digits(self.cleaned_data["cpf"]),
-                rg_number=self.cleaned_data["rg_number"],
-                phone=self.cleaned_data["phone"],
-                address=self.cleaned_data["address"],
-                identity_document=self.cleaned_data["identity_document"],
-                residence_proof=self.cleaned_data["residence_proof"],
+                rg_number=self.cleaned_data.get("rg_number", ""),
+                phone=self.cleaned_data.get("phone", ""),
+                address=self.cleaned_data.get("address", ""),
+                identity_document=self.cleaned_data.get("identity_document") or "",
+                residence_proof=self.cleaned_data.get("residence_proof") or "",
+                registration_status=ClientProfile.PENDING if self.credit_mode else ClientProfile.APPROVED,
             )
 
         return user

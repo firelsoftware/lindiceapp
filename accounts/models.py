@@ -66,7 +66,7 @@ class ClientProfile(models.Model):
     phone_verification_sent_at = models.DateTimeField(null=True, blank=True)
     address = models.TextField()
     identity_document = models.FileField(upload_to="identity_documents/", blank=True)
-    residence_proof = models.FileField(upload_to="residence_proofs/")
+    residence_proof = models.FileField(upload_to="residence_proofs/", blank=True)
     profile_photo = models.FileField(upload_to="profile_photos/", blank=True)
     shoe_size = models.DecimalField(max_digits=4, decimal_places=1, null=True, blank=True)
     finger_sizes = models.JSONField(default=dict, blank=True)

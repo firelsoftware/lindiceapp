@@ -3,6 +3,9 @@
 {% block content %}
 <form method="post">
     {% csrf_token %}
+    {% if request.GET.next %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+    {% endif %}
     {{ form.as_p }}
     <div class="login-action-row">
         <button type="submit">Entrar</button>
@@ -10,13 +13,20 @@
     </div>
 </form>
 
+{% if request.GET.next %}
+    <h2>Finalizar seu carrinho</h2>
+    <p>Se ainda nao tiver conta, termine seu cadastro para voltar direto ao checkout e concluir a compra.</p>
+    <p><a href="{% url 'register' %}?next={{ request.GET.next|urlencode }}">Faca seu cadastro</a></p>
+{% endif %}
+
 <h2>Cadastro para crediario</h2>
-<p>Se quiser comprar no crediario, faca seu cadastro e envie os dados de analise.</p>
+<p>Se quiser pedir crediario, use o cadastro completo com documentos para analise.</p>
 <ul class="support-points">
     <li>Nome, telefone e endereco completo.</li>
     <li>CPF e RG.</li>
     <li>Comprovante de residencia no nome do cliente.</li>
 </ul>
 
-<p>Novo cliente? <a href="{% url 'register' %}">Criar cadastro para crediario</a></p>
+<p>Vai comprar sem crediario? <a href="{% url 'register' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}">Crie sua conta com CPF, email e nome</a></p>
+<p>Quer solicitar crediario? <a href="{% url 'register' %}?intent=credit{% if request.GET.next %}&amp;next={{ request.GET.next|urlencode }}{% endif %}">Termine seu cadastro completo</a></p>
 {% endblock %}
