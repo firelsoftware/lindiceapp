@@ -759,10 +759,10 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, "Sandalia Plataforma de Cunha Anabela")
         self.assertContains(response, "R$ 92,25")
         self.assertContains(response, "NikeZoom Invicible Flyknit")
-        self.assertContains(response, "Bolsa Romosê")
+        self.assertContains(response, "Bolsa Ramosê Melina")
         self.assertContains(response, "R$ 179,90")
-        self.assertContains(response, "R$ 129,90")
-        self.assertContains(response, "Lenço não incluso")
+        self.assertContains(response, "R$ 109,90")
+        self.assertContains(response, "Crochê")
         self.assertLess(content.index("Sandalia Azul"), content.index("Sandalia Plataforma de Cunha Anabela"))
         self.assertLess(content.index("NikeZoom Invicible Flyknit"), content.index("Buscar produto"))
 
