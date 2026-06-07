@@ -579,6 +579,8 @@ def store_front(request):
     for product in ramose_products:
         gallery = product.gallery_images()
         product.primary_image = gallery[0] if gallery else ""
+    ramose_showcase_url = f"{resolve_url('store_front')}?q=Ramos"
+
     showcase_sections = [
         {
             "title": "Calçados",
@@ -638,7 +640,7 @@ def store_front(request):
                     "sizes_label": "Modelo",
                     "sizes": "Único",
                     "image_url": "/static/accounts/showcase-bolsa-tamose-preta.jpeg",
-                    "link_url": "",
+                    "link_url": ramose_showcase_url,
                 },
                 {
                     "title": "Bolsa Romosê",
@@ -647,7 +649,7 @@ def store_front(request):
                     "sizes_label": "Modelo",
                     "sizes": "Único",
                     "image_url": "/static/accounts/showcase-bolsa-tamose-bege.jpeg",
-                    "link_url": "",
+                    "link_url": ramose_showcase_url,
                 },
                 {
                     "title": "Bolsa Romosê",
@@ -656,7 +658,7 @@ def store_front(request):
                     "sizes_label": "Modelo",
                     "sizes": "Único",
                     "image_url": "/static/accounts/showcase-bolsa-tamose-caramelo.jpeg",
-                    "link_url": "",
+                    "link_url": ramose_showcase_url,
                 },
             ],
         },
