@@ -1381,6 +1381,13 @@
             gap: 12px;
         }
 
+        .store-toolbar-inline {
+            display: grid;
+            grid-template-columns: minmax(220px, 1.2fr) minmax(160px, 0.8fr) auto;
+            gap: 12px;
+            align-items: end;
+        }
+
         .store-toolbar {
             display: grid;
             grid-template-columns: 1fr;
@@ -1401,6 +1408,16 @@
         .store-toolbar-actions button {
             width: 100%;
             min-width: 0;
+        }
+
+        .store-toolbar-inline .store-toolbar-actions {
+            margin-top: 0;
+        }
+
+        .store-toolbar-inline .store-toolbar-actions .button,
+        .store-toolbar-inline .store-toolbar-actions button {
+            width: auto;
+            min-width: 132px;
         }
 
         .store-product {
@@ -1451,16 +1468,17 @@
         }
 
         .store-product-body {
-            display: flex;
+            display: grid;
             flex: 1;
-            flex-direction: column;
-            gap: 10px;
-            padding: 18px;
+            gap: 8px;
+            padding: 14px 16px 16px;
+            align-content: start;
         }
 
         .store-product-body h2 {
             margin: 0;
             font-size: 18px;
+            line-height: 1.18;
         }
 
         .store-product-body h2 a {
@@ -1470,6 +1488,28 @@
 
         .store-product-body h2 a:hover {
             color: var(--brand-purple);
+        }
+
+        .store-product-summary {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .store-product-copy {
+            display: grid;
+            min-width: 0;
+            gap: 5px;
+        }
+
+        .store-product-category {
+            margin: 0;
+            color: var(--brand-blue);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
         }
 
         .store-product-topline,
@@ -2404,6 +2444,7 @@
 
             .storefront-showcase-grid,
             .store-toolbar-grid,
+            .store-toolbar-inline,
             .store-toolbar-actions {
                 grid-template-columns: 1fr;
             }
@@ -2425,11 +2466,24 @@
                 gap: 4px;
             }
 
+            .store-product-summary {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
             .storefront-featured-price {
                 justify-self: start;
             }
 
+            .store-price {
+                justify-self: start;
+            }
+
             .store-toolbar-grid {
+                gap: 10px;
+            }
+
+            .store-toolbar-inline {
                 gap: 10px;
             }
 

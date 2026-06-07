@@ -106,23 +106,25 @@
             <label for="q">Buscar produto</label>
             <input id="q" name="q" value="{{ query }}" placeholder="Sandalia, tenis, marca">
         </div>
-        <div class="toolbar-field store-toolbar-size">
-            <label for="grupo-tamanho">Numeracao</label>
-            <select id="grupo-tamanho" name="grupo_tamanho">
-                <option value="" {% if not size_group %}selected{% endif %}>Adulto ou infantil</option>
-                <option value="adult" {% if size_group == "adult" %}selected{% endif %}>Adulto</option>
-                <option value="child" {% if size_group == "child" %}selected{% endif %}>Infantil</option>
-            </select>
+        <div class="store-toolbar-inline">
+            <div class="toolbar-field store-toolbar-size">
+                <label for="grupo-tamanho">Numeracao</label>
+                <select id="grupo-tamanho" name="grupo_tamanho">
+                    <option value="" {% if not size_group %}selected{% endif %}>Adulto ou infantil</option>
+                    <option value="adult" {% if size_group == "adult" %}selected{% endif %}>Adulto</option>
+                    <option value="child" {% if size_group == "child" %}selected{% endif %}>Infantil</option>
+                </select>
+            </div>
+            <div class="toolbar-field store-toolbar-size">
+                <label for="tamanho">Tamanho</label>
+                <select id="tamanho" name="tamanho">
+                    <option value="" {% if not size %}selected{% endif %}>Selecione</option>
+                </select>
+            </div>
+            <div class="store-toolbar-actions">
+                <a class="button button-secondary" href="{% url 'store_front' %}">Limpar</a>
+            </div>
         </div>
-        <div class="toolbar-field store-toolbar-size">
-            <label for="tamanho">Tamanho</label>
-            <select id="tamanho" name="tamanho">
-                <option value="" {% if not size %}selected{% endif %}>Selecione</option>
-            </select>
-        </div>
-    </div>
-    <div class="store-toolbar-actions">
-        <a class="button button-secondary" href="{% url 'store_front' %}">Limpar</a>
     </div>
 </form>
 
@@ -137,20 +139,18 @@
                 {% endif %}
             </a>
             <div class="store-product-body">
-                <div class="store-product-topline">
-                    {% if product.brand %}
-                        <span class="store-product-brand">{{ product.brand }}</span>
-                    {% endif %}
-                    {% if product.category %}
-                        <span class="badge">{{ product.category }}</span>
-                    {% endif %}
-                </div>
-                <h2><a href="{% url 'store_product_detail' product.id %}">{{ product.name }}</a></h2>
-                <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
-                <p class="store-product-sizes">Tamanhos: {{ product.sizes|default:"consultar" }}</p>
-                <p class="store-product-note">Compra segura via Mercado Pago.</p>
-                <div class="store-product-actions">
-                    <a class="button" href="{% url 'store_product_detail' product.id %}">Ver produto</a>
+                {% if product.category %}
+                    <p class="store-product-category">{{ product.category }}</p>
+                {% endif %}
+                <div class="store-product-summary">
+                    <div class="store-product-copy">
+                        <h2><a href="{% url 'store_product_detail' product.id %}">{{ product.name }}</a></h2>
+                        {% if product.brand %}
+                            <p class="store-product-note">{{ product.brand }}</p>
+                        {% endif %}
+                        <p class="store-product-sizes">Tamanhos: {{ product.sizes|default:"consultar" }}</p>
+                    </div>
+                    <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
                 </div>
             </div>
         </article>
