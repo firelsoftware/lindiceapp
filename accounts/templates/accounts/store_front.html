@@ -131,13 +131,29 @@
 <div class="store-grid">
     {% for product in products %}
         <article class="store-product">
-            <a class="store-product-media" href="{% url 'store_product_detail' product.id %}">
-                {% if product.image_url %}
-                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
-                {% else %}
-                    <span class="store-product-placeholder">Foto em breve</span>
-                {% endif %}
-            </a>
+            {% if product.gallery|length > 1 %}
+                <div class="product-gallery product-gallery-card" data-carousel>
+                    <div class="product-gallery-track" data-carousel-track>
+                        {% for image_url in product.gallery %}
+                            <a class="product-gallery-slide{% if forloop.first %} active{% endif %}" href="{% url 'store_product_detail' product.id %}" data-carousel-slide>
+                                <span class="store-product-media">
+                                    <img src="{{ image_url }}" alt="{{ product.name }}">
+                                </span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                    <button class="product-gallery-nav product-gallery-prev" type="button" aria-label="Foto anterior" data-carousel-prev>&lsaquo;</button>
+                    <button class="product-gallery-nav product-gallery-next" type="button" aria-label="Proxima foto" data-carousel-next>&rsaquo;</button>
+                </div>
+            {% else %}
+                <a class="store-product-media" href="{% url 'store_product_detail' product.id %}">
+                    {% if product.primary_image %}
+                        <img src="{{ product.primary_image }}" alt="{{ product.name }}">
+                    {% else %}
+                        <span class="store-product-placeholder">Foto em breve</span>
+                    {% endif %}
+                </a>
+            {% endif %}
             <div class="store-product-body">
                 {% if product.category %}
                     <p class="store-product-category">{{ product.category }}</p>

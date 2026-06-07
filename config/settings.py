@@ -107,6 +107,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "accounts.context_processors.notifications",
                 "accounts.context_processors.store_cart",
+                "accounts.context_processors.user_extras",
             ],
         },
     },
@@ -244,6 +245,7 @@ SHOE_SUPPLIER_DROPSHIPPING_URL = os.environ.get(
     "https://www.revendadecalcados.com.br/areadorevendedor/dropshipping-shopintegra",
 )
 MERCADO_PAGO_ACCESS_TOKEN = os.environ.get("MERCADO_PAGO_ACCESS_TOKEN", "")
+MERCADO_PAGO_ACCOUNT_URL = os.environ.get("MERCADO_PAGO_ACCOUNT_URL", "")
 CARD_PAYMENT_ENABLED = env_bool("CARD_PAYMENT_ENABLED", default=True)
 PUBLIC_SITE_URL = os.environ.get("PUBLIC_SITE_URL", "")
 STORE_CONTACT_EMAIL = os.environ.get("STORE_CONTACT_EMAIL", "lindicecalcados@gmail.com")

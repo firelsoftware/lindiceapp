@@ -76,6 +76,14 @@
     <a class="button" href="{% url 'measurements' %}">Ver ou atualizar medidas</a>
 </section>
 
+{% if user_sales_report_enabled %}
+    <section class="info-panel">
+        <h2>{{ user_sales_report_label }}</h2>
+        <p>Acompanhe faturamento, produtos mais vendidos e crescimento das vendas da Ramosê.</p>
+        <a class="button" href="{% url 'partner_sales_report' %}">Abrir relatorio de vendas</a>
+    </section>
+{% endif %}
+
 <details class="info-panel">
     <summary class="limit-summary">Meu limite</summary>
     <p>Limite pre-aprovado: <strong>R$ {{ request.user.profile.pre_approved_credit_limit|floatformat:2 }}</strong></p>

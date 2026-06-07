@@ -3,6 +3,7 @@ from datetime import timedelta
 import json
 import logging
 from decimal import Decimal, InvalidOperation
+import unicodedata
 import uuid
 
 from django.contrib import messages
@@ -12,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
 from django.db.models import Case, IntegerField, Q, Sum, Value, When
-from django.http import JsonResponse
+from django.http import HttpResponseForbidden, JsonResponse
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -31,10 +32,116 @@ from .utils import generate_phone_code
 logger = logging.getLogger(__name__)
 STORE_CHILD_SIZES = [str(size) for size in range(14, 33)]
 STORE_ADULT_SIZES = [str(size) for size in range(33, 45)]
+PARTNER_SALES_STATUSES = (
+    StoreOrder.PAID,
+    StoreOrder.SUPPLIER_ORDERED,
+    StoreOrder.SHIPPED,
+)
 
 
 def shipping_rates_payload():
     return {key: f"{value:.2f}" for key, value in SHIPPING_COSTS.items()}
+
+
+def normalize_text(value):
+    normalized = unicodedata.normalize("NFKD", str(value or ""))
+    ascii_value = normalized.encode("ascii", "ignore").decode("ascii")
+
+    return ascii_value.lower()
+
+
+def partner_sales_config(user):
+    profile = getattr(user, "profile", None)
+
+    if not profile:
+        return {}
+
+    extra_data = profile.extra_data or {}
+    keyword = (extra_data.get("sales_report_brand_keyword") or "").strip()
+    aliases = [alias.strip() for alias in extra_data.get("sales_report_brand_aliases", []) if str(alias).strip()]
+    aliases = [keyword, *aliases] if keyword else aliases
+
+    return {
+        "keyword": keyword,
+        "aliases": aliases,
+        "title": (extra_data.get("sales_report_title") or "Relatorio de vendas").strip(),
+    }
+
+
+def user_can_view_partner_sales(user):
+    return bool(partner_sales_config(user).get("keyword"))
+
+
+def build_partner_sales_brand_query(aliases):
+    query = Q()
+
+    for alias in aliases:
+        query |= Q(product_name__icontains=alias)
+
+    return query
+
+
+def percentage_growth(current_value, previous_value):
+    current_decimal = Decimal(current_value or 0)
+    previous_decimal = Decimal(previous_value or 0)
+
+    if previous_decimal <= 0:
+        return None if current_decimal <= 0 else Decimal("100.0")
+
+    return ((current_decimal - previous_decimal) / previous_decimal * Decimal("100")).quantize(Decimal("0.1"))
+
+
+def summarize_partner_sales_orders(orders):
+    total_orders = len(orders)
+    total_units = sum(order.quantity for order in orders)
+    total_revenue = sum((order.total_amount for order in orders), Decimal("0.00"))
+    total_profit = sum((order.estimated_profit for order in orders), Decimal("0.00"))
+    average_ticket = (total_revenue / total_orders).quantize(Decimal("0.01")) if total_orders else Decimal("0.00")
+    product_map = {}
+
+    for order in orders:
+        entry = product_map.setdefault(
+            order.product_name,
+            {
+                "name": order.product_name,
+                "units": 0,
+                "orders": 0,
+                "revenue": Decimal("0.00"),
+                "profit": Decimal("0.00"),
+                "last_sale_at": order.paid_at or order.created_at,
+            },
+        )
+        entry["units"] += order.quantity
+        entry["orders"] += 1
+        entry["revenue"] += order.total_amount
+        entry["profit"] += order.estimated_profit
+        entry["last_sale_at"] = max(entry["last_sale_at"], order.paid_at or order.created_at)
+
+    top_products = list(product_map.values())
+
+    return {
+        "total_orders": total_orders,
+        "total_units": total_units,
+        "total_revenue": total_revenue,
+        "total_profit": total_profit,
+        "average_ticket": average_ticket,
+        "top_products": top_products,
+    }
+
+
+def sort_partner_sales_products(products, ranking):
+    ranking = ranking or "units"
+
+    if ranking == "revenue":
+        return sorted(products, key=lambda item: (item["revenue"], item["units"]), reverse=True)
+
+    if ranking == "profit":
+        return sorted(products, key=lambda item: (item["profit"], item["units"]), reverse=True)
+
+    if ranking == "recent":
+        return sorted(products, key=lambda item: item["last_sale_at"], reverse=True)
+
+    return sorted(products, key=lambda item: (item["units"], item["revenue"]), reverse=True)
 
 
 def redirect_to_supplier_products():
@@ -460,6 +567,18 @@ def store_front(request):
         .order_by("name")
         .first()
     )
+    ramose_products = list(
+        SupplierProduct.objects.filter(
+            is_active=True,
+            is_visible=True,
+            stock_quantity__gt=0,
+        )
+        .filter(Q(brand__icontains="Ramos") | Q(name__icontains="Ramos"))
+        .order_by("raw_data__featured_order", "name")[:5]
+    )
+    for product in ramose_products:
+        gallery = product.gallery_images()
+        product.primary_image = gallery[0] if gallery else ""
     showcase_sections = [
         {
             "title": "Calçados",
@@ -502,7 +621,18 @@ def store_front(request):
             "title": "Bolsas",
             "items": [
                 {
-                    "title": "Bolsa Tamosê",
+                    "title": product.name,
+                    "subtitle": (product.raw_data or {}).get("material", product.description or "Bolsa artesanal"),
+                    "price": f"R$ {product.suggested_sale_price:.2f}".replace(".", ","),
+                    "sizes_label": "Modelo",
+                    "sizes": product.sizes or "Único",
+                    "image_url": product.primary_image,
+                    "link_url": resolve_url("store_product_detail", product.id),
+                }
+                for product in ramose_products
+            ] or [
+                {
+                    "title": "Bolsa Romosê",
                     "subtitle": "Crochê. Lenço não incluso.",
                     "price": "R$ 179,90",
                     "sizes_label": "Modelo",
@@ -511,7 +641,7 @@ def store_front(request):
                     "link_url": "",
                 },
                 {
-                    "title": "Bolsa Tamosê",
+                    "title": "Bolsa Romosê",
                     "subtitle": "Crochê",
                     "price": "R$ 129,90",
                     "sizes_label": "Modelo",
@@ -520,7 +650,7 @@ def store_front(request):
                     "link_url": "",
                 },
                 {
-                    "title": "Bolsa Tamosê",
+                    "title": "Bolsa Romosê",
                     "subtitle": "Crochê",
                     "price": "R$ 129,90",
                     "sizes_label": "Modelo",
@@ -531,6 +661,10 @@ def store_front(request):
             ],
         },
     ]
+
+    for product in products:
+        product.gallery = product.gallery_images()
+        product.primary_image = product.gallery[0] if product.gallery else ""
 
     return render(
         request,
@@ -568,7 +702,17 @@ def store_product_detail(request, product_id):
         if size.strip()
     ] or ["Confirmar tamanho"]
 
-    return render(request, "accounts/store_product_detail.html", {"product": product, "size_options": size_options})
+    gallery = product.gallery_images()
+
+    return render(
+        request,
+        "accounts/store_product_detail.html",
+        {
+            "product": product,
+            "size_options": size_options,
+            "gallery_images": gallery,
+        },
+    )
 
 
 def cart_add(request, product_id):
@@ -1097,6 +1241,97 @@ def dashboard(request):
 
     purchase_groups = build_purchase_groups(request.user)
     return render(request, "accounts/dashboard.html", {"purchase_groups": purchase_groups})
+
+
+@login_required
+def partner_sales_report(request):
+    if not user_can_view_partner_sales(request.user):
+        return HttpResponseForbidden("Voce nao tem acesso a este relatorio.")
+
+    config = partner_sales_config(request.user)
+    scope = request.GET.get("scope", "combined").strip()
+    ranking = request.GET.get("ranking", "units").strip()
+    start_date = parse_date(request.GET.get("inicio", ""))
+    end_date = parse_date(request.GET.get("fim", ""))
+    today = timezone.localdate()
+
+    if not end_date:
+        end_date = today
+
+    if not start_date:
+        start_date = end_date - timedelta(days=29)
+
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+
+    base_queryset = (
+        StoreOrder.objects.select_related("customer", "product")
+        .filter(status__in=PARTNER_SALES_STATUSES)
+        .filter(created_at__date__gte=start_date, created_at__date__lte=end_date)
+    )
+    brand_query = build_partner_sales_brand_query(config["aliases"])
+
+    if scope == "my_purchases":
+        filtered_queryset = base_queryset.filter(customer=request.user)
+    elif scope == "brand_only":
+        filtered_queryset = base_queryset.filter(brand_query)
+    else:
+        scope = "combined"
+        filtered_queryset = base_queryset.filter(brand_query | Q(customer=request.user))
+
+    orders = list(filtered_queryset.order_by("-paid_at", "-created_at"))
+    summary = summarize_partner_sales_orders(orders)
+
+    period_days = max((end_date - start_date).days + 1, 1)
+    previous_end = start_date - timedelta(days=1)
+    previous_start = previous_end - timedelta(days=period_days - 1)
+    previous_queryset = (
+        StoreOrder.objects.filter(status__in=PARTNER_SALES_STATUSES)
+        .filter(created_at__date__gte=previous_start, created_at__date__lte=previous_end)
+    )
+
+    if scope == "my_purchases":
+        previous_queryset = previous_queryset.filter(customer=request.user)
+    elif scope == "brand_only":
+        previous_queryset = previous_queryset.filter(brand_query)
+    else:
+        previous_queryset = previous_queryset.filter(brand_query | Q(customer=request.user))
+
+    previous_summary = summarize_partner_sales_orders(list(previous_queryset))
+    ranking_products = sort_partner_sales_products(summary["top_products"], ranking)
+
+    return render(
+        request,
+        "accounts/partner_sales_report.html",
+        {
+            "report_title": config["title"],
+            "brand_keyword": config["keyword"],
+            "orders": orders,
+            "summary": summary,
+            "ranking_products": ranking_products[:10],
+            "scope": scope,
+            "ranking": ranking,
+            "start_date": start_date,
+            "end_date": end_date,
+            "previous_start": previous_start,
+            "previous_end": previous_end,
+            "revenue_growth": percentage_growth(summary["total_revenue"], previous_summary["total_revenue"]),
+            "order_growth": percentage_growth(summary["total_orders"], previous_summary["total_orders"]),
+            "units_growth": percentage_growth(summary["total_units"], previous_summary["total_units"]),
+            "profit_growth": percentage_growth(summary["total_profit"], previous_summary["total_profit"]),
+            "scope_options": [
+                {"value": "combined", "label": "Ramosê + minhas compras"},
+                {"value": "brand_only", "label": "Somente Ramosê"},
+                {"value": "my_purchases", "label": "Somente minhas compras"},
+            ],
+            "ranking_options": [
+                {"value": "units", "label": "Mais vendidos"},
+                {"value": "revenue", "label": "Maior faturamento"},
+                {"value": "profit", "label": "Maior lucro"},
+                {"value": "recent", "label": "Venda mais recente"},
+            ],
+        },
+    )
 
 
 @login_required

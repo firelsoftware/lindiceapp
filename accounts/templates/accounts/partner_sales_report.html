@@ -1,0 +1,163 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>{{ report_title }}</h1>
+<p class="summary-caption">Vendas identificadas por produtos com "{{ brand_keyword }}" no nome e, quando quiser, suas compras pessoais.</p>
+
+<form class="toolbar report-toolbar" method="get">
+    <div class="toolbar-field">
+        <label for="inicio">Inicio</label>
+        <input id="inicio" type="date" name="inicio" value="{{ start_date|date:'Y-m-d' }}">
+    </div>
+    <div class="toolbar-field">
+        <label for="fim">Fim</label>
+        <input id="fim" type="date" name="fim" value="{{ end_date|date:'Y-m-d' }}">
+    </div>
+    <div class="toolbar-field">
+        <label for="scope">Escopo</label>
+        <select id="scope" name="scope">
+            {% for option in scope_options %}
+                <option value="{{ option.value }}" {% if scope == option.value %}selected{% endif %}>{{ option.label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="toolbar-field">
+        <label for="ranking">Ordenar top produtos</label>
+        <select id="ranking" name="ranking">
+            {% for option in ranking_options %}
+                <option value="{{ option.value }}" {% if ranking == option.value %}selected{% endif %}>{{ option.label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit">Atualizar relatorio</button>
+    <a class="button button-secondary" href="{% url 'partner_sales_report' %}">Limpar</a>
+</form>
+
+<div class="summary-grid">
+    <article class="summary-item">
+        <span>Total de vendas</span>
+        <strong>{{ summary.total_orders }}</strong>
+        <small>
+            {% if order_growth is None %}
+                Sem base anterior para comparar
+            {% elif order_growth >= 0 %}
+                <span class="report-growth-up">+{{ order_growth }}%</span> vs. periodo anterior
+            {% else %}
+                <span class="report-growth-down">{{ order_growth }}%</span> vs. periodo anterior
+            {% endif %}
+        </small>
+    </article>
+    <article class="summary-item">
+        <span>Produtos vendidos</span>
+        <strong>{{ summary.total_units }}</strong>
+        <small>
+            {% if units_growth is None %}
+                Sem base anterior para comparar
+            {% elif units_growth >= 0 %}
+                <span class="report-growth-up">+{{ units_growth }}%</span> vs. periodo anterior
+            {% else %}
+                <span class="report-growth-down">{{ units_growth }}%</span> vs. periodo anterior
+            {% endif %}
+        </small>
+    </article>
+    <article class="summary-item">
+        <span>Faturamento</span>
+        <strong>R$ {{ summary.total_revenue|floatformat:2 }}</strong>
+        <small>
+            {% if revenue_growth is None %}
+                Sem base anterior para comparar
+            {% elif revenue_growth >= 0 %}
+                <span class="report-growth-up">+{{ revenue_growth }}%</span> vs. periodo anterior
+            {% else %}
+                <span class="report-growth-down">{{ revenue_growth }}%</span> vs. periodo anterior
+            {% endif %}
+        </small>
+    </article>
+    <article class="summary-item">
+        <span>Lucro estimado</span>
+        <strong>R$ {{ summary.total_profit|floatformat:2 }}</strong>
+        <small>
+            {% if profit_growth is None %}
+                Sem base anterior para comparar
+            {% elif profit_growth >= 0 %}
+                <span class="report-growth-up">+{{ profit_growth }}%</span> vs. periodo anterior
+            {% else %}
+                <span class="report-growth-down">{{ profit_growth }}%</span> vs. periodo anterior
+            {% endif %}
+        </small>
+    </article>
+    <article class="summary-item">
+        <span>Ticket medio</span>
+        <strong>R$ {{ summary.average_ticket|floatformat:2 }}</strong>
+        <small>Comparativo anterior: {{ previous_start|date:"d/m/Y" }} a {{ previous_end|date:"d/m/Y" }}</small>
+    </article>
+</div>
+
+<section class="info-panel">
+    <h2>Top produtos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th class="report-table-number">Unidades</th>
+                <th class="report-table-number">Vendas</th>
+                <th class="report-table-number">Faturamento</th>
+                <th class="report-table-number">Lucro estimado</th>
+                <th>Ultima venda</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in ranking_products %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td class="report-table-number">{{ item.units }}</td>
+                    <td class="report-table-number">{{ item.orders }}</td>
+                    <td class="report-table-number">R$ {{ item.revenue|floatformat:2 }}</td>
+                    <td class="report-table-number">R$ {{ item.profit|floatformat:2 }}</td>
+                    <td>{{ item.last_sale_at|date:"d/m/Y H:i" }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">Nenhuma venda encontrada para esse filtro.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section class="info-panel">
+    <h2>Vendas detalhadas</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Pedido</th>
+                <th>Produto</th>
+                <th>Cliente</th>
+                <th class="report-table-number">Qtd.</th>
+                <th class="report-table-number">Faturamento</th>
+                <th class="report-table-number">Lucro</th>
+                <th>Status</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.order_code }}</td>
+                    <td>{{ order.product_name }}</td>
+                    <td>{% if order.customer_id == request.user.id %}Voce{% else %}{{ order.customer_name }}{% endif %}</td>
+                    <td class="report-table-number">{{ order.quantity }}</td>
+                    <td class="report-table-number">R$ {{ order.total_amount|floatformat:2 }}</td>
+                    <td class="report-table-number">R$ {{ order.estimated_profit|floatformat:2 }}</td>
+                    <td>{{ order.get_status_display }}</td>
+                    <td>{% if order.paid_at %}{{ order.paid_at|date:"d/m/Y H:i" }}{% else %}{{ order.created_at|date:"d/m/Y H:i" }}{% endif %}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="8">Nenhuma venda encontrada para esse periodo.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

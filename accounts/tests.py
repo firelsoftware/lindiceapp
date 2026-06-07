@@ -759,7 +759,7 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, "Sandalia Plataforma de Cunha Anabela")
         self.assertContains(response, "R$ 92,25")
         self.assertContains(response, "NikeZoom Invicible Flyknit")
-        self.assertContains(response, "Bolsa Tamosê")
+        self.assertContains(response, "Bolsa Romosê")
         self.assertContains(response, "R$ 179,90")
         self.assertContains(response, "R$ 129,90")
         self.assertContains(response, "Lenço não incluso")
@@ -775,6 +775,18 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, ">Adulto<", html=False)
         self.assertContains(response, ">Infantil<", html=False)
         self.assertNotContains(response, ">Filtrar<", html=False)
+
+    def test_store_product_detail_shows_gallery_carousel_when_product_has_two_images(self):
+        product = self.create_supplier_product(
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+            raw_data={"gallery_images": ["/static/accounts/catalog-test/botas/1.958-4b.jpg"]},
+        )
+
+        response = self.client.get(f"/loja/produto/{product.id}/")
+
+        self.assertContains(response, 'class="product-gallery product-gallery-detail"', html=False)
+        self.assertContains(response, "/static/accounts/catalog-test/botas/1.958-4a.jpg")
+        self.assertContains(response, "/static/accounts/catalog-test/botas/1.958-4b.jpg")
 
     def test_guest_header_exposes_login_and_register_paths(self):
         response = self.client.get("/loja/")
@@ -1778,6 +1790,151 @@ class ClientPortfolioTests(TestCase):
         self.assertIsNone(debt.paid_at)
         self.assertContains(response, "Baixa manual removida e debito reaberto.")
         self.assertContains(response, "Pendente")
+
+
+class PartnerSalesReportTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            email="sellmaramos.3012@gmail.com",
+            password="123456",
+            full_name="Ramose Parceira",
+            preferred_name="Ramose",
+        )
+        self.profile = ClientProfile.objects.create(
+            user=self.user,
+            cpf_hash="cpf-hash-ramose",
+            cpf_last_digits="3012",
+            phone="61988887766",
+            phone_verified=True,
+            address="Endereco Ramose",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            extra_data={
+                "sales_report_brand_keyword": "Ramose",
+                "sales_report_brand_aliases": ["Ramosê"],
+                "sales_report_title": "Relatorio Ramose",
+                "brand_theme": {
+                    "accent": "#6f5139",
+                    "ink": "#4e3b2d",
+                    "soft": "#8a9065",
+                    "surface": "#fffaf4",
+                    "page": "#f6efe7",
+                    "line": "#ddd1c5",
+                },
+            },
+        )
+        self.other_user = User.objects.create_user(
+            email="outra-cliente@example.com",
+            password="Teste12345!",
+            full_name="Outra Cliente",
+            preferred_name="Outra",
+        )
+        ClientProfile.objects.create(
+            user=self.other_user,
+            cpf_hash="cpf-hash-outra",
+            cpf_last_digits="2020",
+            phone="61988887700",
+            phone_verified=True,
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+        )
+        self.client.force_login(self.user)
+
+    def create_supplier_product(self, code, name):
+        return SupplierProduct.objects.create(
+            source=SupplierProduct.SOURCE_REVENDA_CALCADOS,
+            supplier_code=code,
+            name=name,
+            wholesale_price=Decimal("80.00"),
+            dropshipping_cost=Decimal("90.00"),
+            suggested_sale_price=Decimal("150.00"),
+            stock_quantity=10,
+            is_active=True,
+            is_visible=True,
+        )
+
+    def create_store_order(self, product, customer, product_name, total_amount, estimated_profit, quantity=1, days_ago=0):
+        order = StoreOrder.objects.create(
+            product=product,
+            customer=customer,
+            product_name=product_name,
+            supplier_code=product.supplier_code,
+            selected_size="U",
+            quantity=quantity,
+            customer_name=customer.full_name,
+            customer_email=customer.email,
+            customer_phone="61999999999",
+            shipping_address="Rua Teste, 1",
+            unit_price=Decimal("150.00"),
+            supplier_cost=Decimal("90.00"),
+            total_amount=Decimal(total_amount),
+            estimated_profit=Decimal(estimated_profit),
+            status=StoreOrder.PAID,
+        )
+        sale_time = timezone.now() - timedelta(days=days_ago)
+        StoreOrder.objects.filter(id=order.id).update(created_at=sale_time, paid_at=sale_time)
+
+        return StoreOrder.objects.get(id=order.id)
+
+    def test_partner_sales_report_forbidden_without_brand_access(self):
+        no_access_user = User.objects.create_user(
+            email="sem-relatorio@example.com",
+            password="Teste12345!",
+            full_name="Sem Relatorio",
+            preferred_name="Sem",
+        )
+        ClientProfile.objects.create(
+            user=no_access_user,
+            cpf_hash="cpf-hash-sem-relatorio",
+            cpf_last_digits="9090",
+            phone="61988889999",
+            phone_verified=True,
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+        )
+        self.client.force_login(no_access_user)
+
+        response = self.client.get("/painel/relatorio-vendas/")
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_partner_sales_report_combines_brand_sales_with_own_purchases(self):
+        brand_product = self.create_supplier_product("RAM001", "Bolsa Ramosê Premium")
+        own_product = self.create_supplier_product("OWN001", "Sandalia Nude")
+        other_product = self.create_supplier_product("OUT001", "Produto Generico")
+
+        self.create_store_order(brand_product, self.other_user, "Bolsa Ramosê Premium", "300.00", "120.00", quantity=2, days_ago=3)
+        self.create_store_order(own_product, self.user, "Sandalia Nude", "150.00", "60.00", quantity=1, days_ago=2)
+        self.create_store_order(other_product, self.other_user, "Produto Generico", "199.00", "40.00", quantity=1, days_ago=1)
+        self.create_store_order(brand_product, self.other_user, "Bolsa Ramosê Premium", "100.00", "35.00", quantity=1, days_ago=40)
+
+        response = self.client.get("/painel/relatorio-vendas/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["summary"]["total_orders"], 2)
+        self.assertEqual(response.context["summary"]["total_units"], 3)
+        self.assertEqual(response.context["summary"]["total_revenue"], Decimal("450.00"))
+        self.assertEqual(response.context["summary"]["total_profit"], Decimal("180.00"))
+        self.assertContains(response, "Relatorio Ramose")
+        self.assertContains(response, "R$ 450,00")
+        self.assertNotContains(response, "Produto Generico")
+
+    def test_partner_sales_report_brand_only_scope_and_ranking(self):
+        first_brand_product = self.create_supplier_product("RAM010", "Bolsa Ramosê Mini")
+        second_brand_product = self.create_supplier_product("RAM020", "Bolsa Ramose Maxi")
+
+        self.create_store_order(first_brand_product, self.other_user, "Bolsa Ramosê Mini", "180.00", "70.00", quantity=1, days_ago=5)
+        self.create_store_order(second_brand_product, self.other_user, "Bolsa Ramose Maxi", "400.00", "160.00", quantity=3, days_ago=4)
+
+        response = self.client.get("/painel/relatorio-vendas/?scope=brand_only&ranking=revenue")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["scope"], "brand_only")
+        self.assertEqual(response.context["ranking_products"][0]["name"], "Bolsa Ramose Maxi")
+        self.assertEqual(response.context["summary"]["total_orders"], 2)
+        self.assertContains(response, "Somente Ramosê")
 
 
 class CustomerEntryRoutingTests(TestCase):

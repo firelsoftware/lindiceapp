@@ -3,7 +3,19 @@
 {% block content %}
 <section class="store-detail">
     <div class="store-detail-media">
-        {% if product.image_url %}
+        {% if gallery_images|length > 1 %}
+            <div class="product-gallery product-gallery-detail" data-carousel>
+                <div class="product-gallery-track" data-carousel-track>
+                    {% for image_url in gallery_images %}
+                        <div class="product-gallery-slide{% if forloop.first %} active{% endif %}" data-carousel-slide>
+                            <img src="{{ image_url }}" alt="{{ product.name }}">
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="product-gallery-nav product-gallery-prev" type="button" aria-label="Foto anterior" data-carousel-prev>&lsaquo;</button>
+                <button class="product-gallery-nav product-gallery-next" type="button" aria-label="Proxima foto" data-carousel-next>&rsaquo;</button>
+            </div>
+        {% elif product.image_url %}
             <img src="{{ product.image_url }}" alt="{{ product.name }}">
         {% else %}
             <span class="store-product-placeholder">Foto em breve</span>
@@ -57,4 +69,78 @@
         <p><a href="{% url 'store_front' %}">Voltar para loja</a></p>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_scripts %}
+(function () {
+    document.querySelectorAll("[data-carousel]").forEach(function (carousel) {
+        var prev = carousel.querySelector("[data-carousel-prev]");
+        var next = carousel.querySelector("[data-carousel-next]");
+        var slides = Array.prototype.slice.call(carousel.querySelectorAll("[data-carousel-slide]"));
+        var index = 0;
+        var timer = null;
+
+        if (!slides.length || !prev || !next) {
+            return;
+        }
+
+        function positionSlides(activeIndex) {
+            slides.forEach(function (slide, slideIndex) {
+                slide.style.transition = "none";
+                slide.style.transform = slideIndex === activeIndex ? "translateX(0)" : "translateX(100%)";
+                slide.classList.toggle("active", slideIndex === activeIndex);
+            });
+        }
+
+        function show(nextIndex, direction) {
+            var targetIndex = (nextIndex + slides.length) % slides.length;
+
+            if (targetIndex === index) {
+                return;
+            }
+
+            var outgoing = slides[index];
+            var incoming = slides[targetIndex];
+            var slideDirection = direction || 1;
+
+            incoming.style.transition = "none";
+            incoming.style.transform = "translateX(" + (slideDirection * 100) + "%)";
+            incoming.classList.add("active");
+            incoming.offsetWidth;
+
+            outgoing.style.transition = "";
+            incoming.style.transition = "";
+            outgoing.style.transform = "translateX(" + (slideDirection * -100) + "%)";
+            incoming.style.transform = "translateX(0)";
+
+            window.setTimeout(function () {
+                outgoing.classList.remove("active");
+            }, 220);
+
+            index = targetIndex;
+        }
+
+        function startAutoPlay() {
+            window.clearInterval(timer);
+            if (slides.length > 1) {
+                timer = window.setInterval(function () {
+                    show(index + 1, 1);
+                }, 3500);
+            }
+        }
+
+        prev.addEventListener("click", function () {
+            show(index - 1, -1);
+            startAutoPlay();
+        });
+
+        next.addEventListener("click", function () {
+            show(index + 1, 1);
+            startAutoPlay();
+        });
+
+        positionSlides(0);
+        startAutoPlay();
+    });
+})();
 {% endblock %}

@@ -19,3 +19,24 @@ def store_cart(request):
     return {
         "store_cart_item_count": item_count,
     }
+
+
+def user_extras(request):
+    if not request.user.is_authenticated:
+        return {}
+
+    profile = getattr(request.user, "profile", None)
+
+    if not profile:
+        return {}
+
+    extra_data = profile.extra_data or {}
+    sales_keyword = (extra_data.get("sales_report_brand_keyword") or "").strip()
+    sales_title = (extra_data.get("sales_report_title") or "Relatorio de vendas").strip()
+    theme = extra_data.get("brand_theme") or {}
+
+    return {
+        "user_sales_report_enabled": bool(sales_keyword),
+        "user_sales_report_label": sales_title,
+        "user_brand_theme": theme if isinstance(theme, dict) else {},
+    }

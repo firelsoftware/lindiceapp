@@ -24,7 +24,15 @@
         </div>
         <div>
             <dt>Tipo de acesso</dt>
-            <dd>{% if request.user.is_staff %}Gestao{% else %}Cliente{% endif %}</dd>
+            <dd>
+                {% if request.user.is_staff %}
+                    Gestao
+                {% elif user_sales_report_enabled %}
+                    Cliente revendedor
+                {% else %}
+                    Cliente
+                {% endif %}
+            </dd>
         </div>
     </dl>
 </section>
@@ -35,6 +43,9 @@
         {% if not request.user.is_staff %}
             <a class="button" href="{% url 'profile' %}">Meu perfil</a>
             <a class="button" href="{% url 'measurements' %}">Minhas medidas</a>
+            {% if user_sales_report_enabled %}
+                <a class="button" href="{% url 'partner_sales_report' %}">Relatorio de vendas</a>
+            {% endif %}
         {% endif %}
         <a class="button" href="{% url 'change_password' %}">Alterar senha</a>
     </p>

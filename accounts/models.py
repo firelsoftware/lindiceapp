@@ -247,6 +247,20 @@ class SupplierProduct(models.Model):
     def store_margin(self):
         return self.suggested_sale_price - self.dropshipping_cost
 
+    def gallery_images(self):
+        raw_data = self.raw_data or {}
+        gallery = raw_data.get("gallery_images") or []
+        images = []
+
+        if self.image_url:
+            images.append(self.image_url)
+
+        for image_url in gallery:
+            if image_url and image_url not in images:
+                images.append(image_url)
+
+        return images
+
 
 class StoreOrder(models.Model):
     PENDING_PAYMENT = "pending_payment"
