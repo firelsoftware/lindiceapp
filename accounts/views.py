@@ -29,6 +29,8 @@ from .supplier_import import decode_catalog_content, import_supplier_catalog, im
 from .utils import generate_phone_code
 
 logger = logging.getLogger(__name__)
+STORE_CHILD_SIZES = [str(size) for size in range(14, 33)]
+STORE_ADULT_SIZES = [str(size) for size in range(33, 45)]
 
 
 def shipping_rates_payload():
@@ -370,6 +372,7 @@ def store_front(request):
     )
     reserved_sales = CreditSale.objects.none()
     query = request.GET.get("q", "").strip()
+    size_group = request.GET.get("grupo_tamanho", "").strip()
     size = request.GET.get("tamanho", "").strip()
     cart_product_ids = {
         item.get("product_id")
@@ -414,15 +417,134 @@ def store_front(request):
             if item.strip()
         }
     )
+    child_size_options = [option for option in STORE_CHILD_SIZES if option in parsed_sizes]
+    adult_size_options = [option for option in STORE_ADULT_SIZES if option in parsed_sizes]
+
+    if size and size not in parsed_sizes:
+        size = ""
+
+    if size_group == "child" and size and size not in child_size_options:
+        size = ""
+    elif size_group == "adult" and size and size not in adult_size_options:
+        size = ""
+
+    anabela_product = (
+        SupplierProduct.objects.filter(
+            is_active=True,
+            is_visible=True,
+            stock_quantity__gt=0,
+            name__icontains="Sandalia Plataforma de Cunha Anabela",
+            image_url__icontains="4066b",
+        )
+        .order_by("name")
+        .first()
+    )
+    sandalia_product = (
+        SupplierProduct.objects.filter(
+            is_active=True,
+            is_visible=True,
+            stock_quantity__gt=0,
+            category__icontains="Sand",
+        )
+        .order_by("name")
+        .first()
+    )
+    ankle_boot_product = (
+        SupplierProduct.objects.filter(
+            is_active=True,
+            is_visible=True,
+            stock_quantity__gt=0,
+            name__icontains="Bota Ankle Boot Capa Cano Curto",
+            image_url__icontains="1.958-4a",
+        )
+        .order_by("name")
+        .first()
+    )
+    showcase_sections = [
+        {
+            "title": "Calçados",
+            "items": [
+                {
+                    "title": ankle_boot_product.name if ankle_boot_product else "Bota Ankle Boot Capa Cano Curto",
+                    "subtitle": ankle_boot_product.category if ankle_boot_product else "Botas",
+                    "price": f"R$ {ankle_boot_product.suggested_sale_price:.2f}".replace(".", ",") if ankle_boot_product else "R$ 230,85",
+                    "sizes": ankle_boot_product.sizes if ankle_boot_product else "34,35,36,37,38,39",
+                    "image_url": ankle_boot_product.image_url if ankle_boot_product else "/static/accounts/catalog-test/botas/1.958-4a.jpg",
+                    "link_url": resolve_url("store_product_detail", ankle_boot_product.id) if ankle_boot_product else "",
+                },
+                {
+                    "title": "NikeZoom Invicible Flyknit",
+                    "subtitle": "Linha Premium",
+                    "price": "R$ 239,90",
+                    "sizes": "34,35,36,37,38,39,40,41,42,43",
+                    "image_url": "/static/accounts/showcase-nikezoom.jpeg",
+                    "link_url": "",
+                },
+                {
+                    "title": sandalia_product.name if sandalia_product else "Sandalia feminina",
+                    "subtitle": "Do nosso catalogo",
+                    "price": f"R$ {sandalia_product.suggested_sale_price:.2f}".replace(".", ",") if sandalia_product else "R$ 107,65",
+                    "sizes": sandalia_product.sizes if sandalia_product else "34,35,36,37,38,39",
+                    "image_url": sandalia_product.image_url if sandalia_product else "",
+                    "link_url": resolve_url("store_product_detail", sandalia_product.id) if sandalia_product else "",
+                },
+                {
+                    "title": anabela_product.name if anabela_product else "Sandalia Plataforma de Cunha Anabela",
+                    "subtitle": anabela_product.category if anabela_product else "Anabela",
+                    "price": f"R$ {anabela_product.suggested_sale_price:.2f}".replace(".", ",") if anabela_product else "R$ 92,25",
+                    "sizes": anabela_product.sizes if anabela_product else "34,35,36,37,38,39",
+                    "image_url": anabela_product.image_url if anabela_product else "/static/accounts/catalog-test/anabela/4066b.jpg",
+                    "link_url": resolve_url("store_product_detail", anabela_product.id) if anabela_product else "",
+                },
+            ],
+        },
+        {
+            "title": "Bolsas",
+            "items": [
+                {
+                    "title": "Bolsa Tamosê",
+                    "subtitle": "Crochê. Lenço não incluso.",
+                    "price": "R$ 179,90",
+                    "sizes_label": "Modelo",
+                    "sizes": "Único",
+                    "image_url": "/static/accounts/showcase-bolsa-tamose-preta.jpeg",
+                    "link_url": "",
+                },
+                {
+                    "title": "Bolsa Tamosê",
+                    "subtitle": "Crochê",
+                    "price": "R$ 129,90",
+                    "sizes_label": "Modelo",
+                    "sizes": "Único",
+                    "image_url": "/static/accounts/showcase-bolsa-tamose-bege.jpeg",
+                    "link_url": "",
+                },
+                {
+                    "title": "Bolsa Tamosê",
+                    "subtitle": "Crochê",
+                    "price": "R$ 129,90",
+                    "sizes_label": "Modelo",
+                    "sizes": "Único",
+                    "image_url": "/static/accounts/showcase-bolsa-tamose-caramelo.jpeg",
+                    "link_url": "",
+                },
+            ],
+        },
+    ]
 
     return render(
         request,
         "accounts/store_front.html",
         {
             "products": products,
+            "showcase_sections": showcase_sections,
             "query": query,
+            "size_group": size_group,
             "size": size,
-            "size_options": parsed_sizes,
+            "child_size_options": child_size_options,
+            "adult_size_options": adult_size_options,
+            "child_size_options_json": json.dumps(child_size_options),
+            "adult_size_options_json": json.dumps(adult_size_options),
             "reserved_sales": reserved_sales,
             "welcome_discount_available": bool(get_welcome_discount_profile(request)),
             "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,

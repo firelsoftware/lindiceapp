@@ -706,7 +706,6 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, visible_product.name)
         self.assertNotContains(response, "Produto Oculto")
         self.assertNotContains(response, "Produto Sem Estoque")
-        self.assertContains(response, "Compra segura")
         self.assertNotContains(response, "Loja publica")
         self.assertNotContains(response, "Produtos prontos para navegar")
         self.assertNotContains(response, "Pagamento acompanhado")
@@ -722,8 +721,60 @@ class StoreFlowTests(TestCase):
 
         response = self.client.get("/loja/")
         content = response.content.decode()
+        grid_content = content[content.index("Buscar produto"):]
 
-        self.assertLess(content.index("Tenis Branco"), content.index("Sandalia Azul"))
+        self.assertLess(grid_content.index("Tenis Branco"), grid_content.index("Sandalia Azul"))
+
+    def test_store_front_shows_showcase_carousels_before_filters(self):
+        self.create_supplier_product(name="Sandalia Azul", category="Sandalia")
+        self.create_supplier_product(
+            supplier_code="RC002",
+            name="Tenis Branco",
+            category="Tenis",
+        )
+        self.create_supplier_product(
+            supplier_code="RC003",
+            name="Bota Ankle Boot Capa Cano Curto",
+            category="Botas",
+            suggested_sale_price=Decimal("230.85"),
+            sizes="34,35,36,37,38,39",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+        self.create_supplier_product(
+            supplier_code="RC004",
+            name="Sandalia Plataforma de Cunha Anabela",
+            category="Anabela",
+            suggested_sale_price=Decimal("92.25"),
+            sizes="34,35,36,37,38,39",
+            image_url="/static/accounts/catalog-test/anabela/4066b.jpg",
+        )
+
+        response = self.client.get("/loja/")
+        content = response.content.decode()
+
+        self.assertContains(response, "Calçados")
+        self.assertContains(response, "Bolsas")
+        self.assertContains(response, "Bota Ankle Boot Capa Cano Curto")
+        self.assertContains(response, "R$ 230,85")
+        self.assertContains(response, "Sandalia Plataforma de Cunha Anabela")
+        self.assertContains(response, "R$ 92,25")
+        self.assertContains(response, "NikeZoom Invicible Flyknit")
+        self.assertContains(response, "Bolsa Tamosê")
+        self.assertContains(response, "R$ 179,90")
+        self.assertContains(response, "R$ 129,90")
+        self.assertContains(response, "Lenço não incluso")
+        self.assertLess(content.index("Sandalia Azul"), content.index("Sandalia Plataforma de Cunha Anabela"))
+        self.assertLess(content.index("NikeZoom Invicible Flyknit"), content.index("Buscar produto"))
+
+    def test_store_front_uses_live_search_with_size_group_selector(self):
+        self.create_supplier_product()
+
+        response = self.client.get("/loja/")
+
+        self.assertContains(response, "Numeracao")
+        self.assertContains(response, ">Adulto<", html=False)
+        self.assertContains(response, ">Infantil<", html=False)
+        self.assertNotContains(response, ">Filtrar<", html=False)
 
     def test_guest_header_exposes_login_and_register_paths(self):
         response = self.client.get("/loja/")

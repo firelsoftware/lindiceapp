@@ -1,16 +1,62 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<section class="storefront-hero">
-    <aside class="hero-side-card">
-        <div class="hero-stat-grid">
-            <div class="hero-stat">
-                <strong>Compra segura</strong>
-                <span>Checkout com Mercado Pago e suporte no andamento do pedido.</span>
-            </div>
-        </div>
-    </aside>
-</section>
+<div class="storefront-showcase-grid">
+    {% for section in showcase_sections %}
+        <section class="storefront-showcase-panel">
+            {% if section.items %}
+                <div class="storefront-carousel" data-carousel>
+                    <div class="storefront-carousel-track" data-carousel-track>
+                        {% for item in section.items %}
+                            <article class="storefront-carousel-card{% if forloop.first %} active{% endif %}" data-carousel-slide>
+                                {% if item.link_url %}
+                                    <a class="storefront-carousel-media" href="{{ item.link_url }}">
+                                        {% if item.image_url %}
+                                            <img src="{{ item.image_url }}" alt="{{ item.title }}">
+                                        {% else %}
+                                            <span class="store-product-placeholder">Foto em breve</span>
+                                        {% endif %}
+                                    </a>
+                                {% else %}
+                                    <div class="storefront-carousel-media">
+                                        {% if item.image_url %}
+                                            <img src="{{ item.image_url }}" alt="{{ item.title }}">
+                                        {% else %}
+                                            <span class="store-product-placeholder">Foto em breve</span>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                                <div class="storefront-carousel-body">
+                                    <p class="storefront-featured-label">{{ section.title }}</p>
+                                    <div class="storefront-featured-summary">
+                                        <div class="storefront-featured-copy">
+                                            <h2>
+                                                {% if item.link_url %}
+                                                    <a href="{{ item.link_url }}">{{ item.title }}</a>
+                                                {% else %}
+                                                    {{ item.title }}
+                                                {% endif %}
+                                            </h2>
+                                            <p class="store-product-note">{{ item.subtitle }}</p>
+                                            <p class="store-product-sizes">{{ item.sizes_label|default:"Tamanhos" }}: {{ item.sizes }}</p>
+                                        </div>
+                                        <p class="store-price storefront-featured-price">{{ item.price }}</p>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                    <button class="storefront-carousel-nav storefront-carousel-prev" type="button" aria-label="Anterior" data-carousel-prev>&lsaquo;</button>
+                    <button class="storefront-carousel-nav storefront-carousel-next" type="button" aria-label="Proximo" data-carousel-next>&rsaquo;</button>
+                </div>
+            {% else %}
+                <div class="storefront-showcase-empty">
+                    <p>{{ section.empty_message }}</p>
+                </div>
+            {% endif %}
+        </section>
+    {% endfor %}
+</div>
 
 {% if welcome_discount_available %}
     <section class="info-panel">
@@ -55,21 +101,29 @@
 {% endif %}
 
 <form class="toolbar store-toolbar" method="get">
-    <div class="toolbar-field">
-        <label for="q">Buscar produto</label>
-        <input id="q" name="q" value="{{ query }}" placeholder="Sandalia, tenis, marca">
+    <div class="store-toolbar-grid">
+        <div class="toolbar-field store-toolbar-search">
+            <label for="q">Buscar produto</label>
+            <input id="q" name="q" value="{{ query }}" placeholder="Sandalia, tenis, marca">
+        </div>
+        <div class="toolbar-field store-toolbar-size">
+            <label for="grupo-tamanho">Numeracao</label>
+            <select id="grupo-tamanho" name="grupo_tamanho">
+                <option value="" {% if not size_group %}selected{% endif %}>Adulto ou infantil</option>
+                <option value="adult" {% if size_group == "adult" %}selected{% endif %}>Adulto</option>
+                <option value="child" {% if size_group == "child" %}selected{% endif %}>Infantil</option>
+            </select>
+        </div>
+        <div class="toolbar-field store-toolbar-size">
+            <label for="tamanho">Tamanho</label>
+            <select id="tamanho" name="tamanho">
+                <option value="" {% if not size %}selected{% endif %}>Selecione</option>
+            </select>
+        </div>
     </div>
-    <div class="toolbar-field">
-        <label for="tamanho">Tamanho</label>
-        <select id="tamanho" name="tamanho">
-            <option value="" {% if not size %}selected{% endif %}>Todos</option>
-            {% for option in size_options %}
-                <option value="{{ option }}" {% if size == option %}selected{% endif %}>{{ option }}</option>
-            {% endfor %}
-        </select>
+    <div class="store-toolbar-actions">
+        <a class="button button-secondary" href="{% url 'store_front' %}">Limpar</a>
     </div>
-    <button type="submit">Filtrar</button>
-    <a class="button button-secondary" href="{% url 'store_front' %}">Limpar</a>
 </form>
 
 <div class="store-grid">
@@ -120,4 +174,151 @@
         <p class="summary-caption">Atendimento desse parceiro por WhatsApp.</p>
     </section>
 {% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+(function () {
+    document.querySelectorAll("[data-carousel]").forEach(function (carousel) {
+        var prev = carousel.querySelector("[data-carousel-prev]");
+        var next = carousel.querySelector("[data-carousel-next]");
+        var slides = Array.prototype.slice.call(carousel.querySelectorAll("[data-carousel-slide]"));
+        var index = 0;
+        var timer = null;
+
+        if (!slides.length || !prev || !next) {
+            return;
+        }
+
+        function positionSlides(activeIndex) {
+            slides.forEach(function (slide, slideIndex) {
+                slide.style.transition = "none";
+                slide.style.transform = slideIndex === activeIndex ? "translateX(0)" : "translateX(100%)";
+                slide.classList.toggle("active", slideIndex === activeIndex);
+            });
+        }
+
+        function show(nextIndex, direction) {
+            var targetIndex = (nextIndex + slides.length) % slides.length;
+
+            if (targetIndex === index) {
+                return;
+            }
+
+            var outgoing = slides[index];
+            var incoming = slides[targetIndex];
+            var slideDirection = direction || 1;
+
+            incoming.style.transition = "none";
+            incoming.style.transform = "translateX(" + (slideDirection * 100) + "%)";
+            incoming.classList.add("active");
+            incoming.offsetWidth;
+
+            outgoing.style.transition = "";
+            incoming.style.transition = "";
+            outgoing.style.transform = "translateX(" + (slideDirection * -100) + "%)";
+            incoming.style.transform = "translateX(0)";
+
+            window.setTimeout(function () {
+                outgoing.classList.remove("active");
+            }, 220);
+
+            index = targetIndex;
+        }
+
+        function startAutoPlay() {
+            window.clearInterval(timer);
+            if (slides.length > 1) {
+                timer = window.setInterval(function () {
+                    show(index + 1, 1);
+                }, 3500);
+            }
+        }
+
+        prev.addEventListener("click", function () {
+            show(index - 1, -1);
+            startAutoPlay();
+        });
+
+        next.addEventListener("click", function () {
+            show(index + 1, 1);
+            startAutoPlay();
+        });
+
+        positionSlides(0);
+        startAutoPlay();
+    });
+})();
+
+(function () {
+    var form = document.querySelector(".store-toolbar");
+    if (!form) {
+        return;
+    }
+
+    var queryField = document.getElementById("q");
+    var sizeGroupField = document.getElementById("grupo-tamanho");
+    var sizeField = document.getElementById("tamanho");
+    var childSizes = JSON.parse('{{ child_size_options_json|escapejs }}');
+    var adultSizes = JSON.parse('{{ adult_size_options_json|escapejs }}');
+    var selectedSize = "{{ size }}";
+    var submitTimer = null;
+
+    function submitSoon(delay) {
+        window.clearTimeout(submitTimer);
+        submitTimer = window.setTimeout(function () {
+            form.requestSubmit ? form.requestSubmit() : form.submit();
+        }, delay);
+    }
+
+    function rebuildSizes() {
+        var currentGroup = sizeGroupField ? sizeGroupField.value : "";
+        var options = [];
+
+        if (currentGroup === "adult") {
+            options = adultSizes;
+        } else if (currentGroup === "child") {
+            options = childSizes;
+        }
+
+        sizeField.innerHTML = "";
+
+        var placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = currentGroup ? "Selecione" : "Escolha adulto ou infantil";
+        sizeField.appendChild(placeholder);
+
+        options.forEach(function (optionValue) {
+            var option = document.createElement("option");
+            option.value = optionValue;
+            option.textContent = optionValue;
+            if (optionValue === selectedSize) {
+                option.selected = true;
+            }
+            sizeField.appendChild(option);
+        });
+
+        sizeField.disabled = !currentGroup;
+    }
+
+    rebuildSizes();
+
+    if (queryField) {
+        queryField.addEventListener("input", function () {
+            submitSoon(250);
+        });
+    }
+
+    if (sizeGroupField) {
+        sizeGroupField.addEventListener("change", function () {
+            selectedSize = "";
+            rebuildSizes();
+        });
+    }
+
+    if (sizeField) {
+        sizeField.addEventListener("change", function () {
+            submitSoon(0);
+        });
+    }
+})();
 {% endblock %}
