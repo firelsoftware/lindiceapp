@@ -325,6 +325,8 @@ def build_client_financial_summary(profile):
     return {
         "profile": profile,
         "debts": debts,
+        "next_unpaid_debt": unpaid_debts[0] if unpaid_debts else None,
+        "open_debts_count": len(unpaid_debts),
         "open_total": open_total,
         "overdue_total": overdue_total,
         "overdue_days": overdue_days,
@@ -1795,6 +1797,11 @@ def update_debt_payment(request, debt_id):
             messages.success(request, "Baixa manual removida e debito reaberto.")
     else:
         messages.error(request, "Acao invalida para este debito.")
+
+    next_url = safe_next_url(request, request.POST.get("next"))
+
+    if next_url:
+        return redirect(next_url)
 
     profile_id = request.POST.get("return_profile_id") or getattr(getattr(debt.client, "profile", None), "id", None)
 

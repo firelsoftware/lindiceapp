@@ -1765,6 +1765,35 @@ class ClientPortfolioTests(TestCase):
         self.assertContains(response, "Debito marcado como pago manualmente.")
         self.assertContains(response, "Pago em")
 
+    def test_staff_can_quick_mark_debt_paid_from_clients_list(self):
+        debt = Debt.objects.create(
+            client=self.client_user,
+            description="Parcela para baixa rapida",
+            amount=Decimal("80.00"),
+            due_date=timezone.localdate() - timedelta(days=2),
+        )
+
+        list_response = self.client.get("/gestao/clientes/?financeiro=open")
+
+        self.assertContains(list_response, "Dar baixa")
+        self.assertContains(list_response, "Parcela para baixa rapida")
+
+        response = self.client.post(
+            f"/gestao/debitos/{debt.id}/pagamento/",
+            {
+                "action": "mark_paid",
+                "next": "/gestao/clientes/?financeiro=open",
+            },
+            follow=True,
+        )
+        debt.refresh_from_db()
+
+        self.assertRedirects(response, "/gestao/clientes/?financeiro=open")
+        self.assertTrue(debt.paid)
+        self.assertEqual(debt.paid_at, timezone.localdate())
+        self.assertContains(response, "Debito marcado como pago manualmente.")
+        self.assertNotContains(response, "Parcela para baixa rapida")
+
     def test_staff_can_reopen_debt_after_manual_payment(self):
         debt = Debt.objects.create(
             client=self.client_user,
