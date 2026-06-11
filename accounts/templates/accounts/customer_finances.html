@@ -1,0 +1,355 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<style>
+    .finance-hero {
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background:
+            linear-gradient(135deg, rgba(77, 99, 183, 0.14), rgba(122, 45, 132, 0.08)),
+            #ffffff;
+        box-shadow: var(--shadow);
+    }
+
+    .finance-hero p:last-child {
+        margin-bottom: 0;
+    }
+
+    .finance-summary-grid,
+    .finance-section-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        margin-top: 22px;
+    }
+
+    .finance-stat {
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #ffffff;
+    }
+
+    .finance-stat strong {
+        display: block;
+        margin-top: 6px;
+        color: var(--brand-blue);
+        font-size: 28px;
+        line-height: 1.1;
+    }
+
+    .finance-calendar {
+        margin-top: 22px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #ffffff;
+    }
+
+    .finance-calendar-header,
+    .finance-calendar-weekdays,
+    .finance-calendar-week {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .finance-calendar-header h2 {
+        margin: 0 0 14px;
+        grid-column: 1 / -1;
+    }
+
+    .finance-calendar-weekdays span {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .finance-day {
+        min-height: 96px;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fbfcfe;
+    }
+
+    .finance-day-muted {
+        opacity: 0.45;
+    }
+
+    .finance-day-today {
+        border-color: var(--brand-blue);
+        box-shadow: inset 0 0 0 1px rgba(77, 99, 183, 0.2);
+    }
+
+    .finance-day-overdue {
+        background: rgba(180, 35, 24, 0.08);
+        border-color: rgba(180, 35, 24, 0.22);
+    }
+
+    .finance-day-scheduled {
+        background: rgba(77, 99, 183, 0.08);
+        border-color: rgba(77, 99, 183, 0.22);
+    }
+
+    .finance-day-number {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        font-weight: 700;
+    }
+
+    .finance-day-note {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.35;
+    }
+
+    .finance-list {
+        display: grid;
+        gap: 12px;
+    }
+
+    .finance-form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 14px;
+    }
+
+    .finance-form-grid .finance-field-wide {
+        grid-column: 1 / -1;
+    }
+
+    .finance-form-grid label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .finance-form-grid input,
+    .finance-form-grid select,
+    .finance-form-grid textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #ffffff;
+        color: var(--ink);
+        font: inherit;
+    }
+
+    .finance-form-grid input[type="color"] {
+        height: 54px;
+        padding: 6px;
+        cursor: pointer;
+    }
+
+    .finance-form-help {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+    }
+
+    .finance-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .finance-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 0 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .finance-item {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #ffffff;
+    }
+
+    .finance-item h3 {
+        margin: 0 0 6px;
+        font-size: 18px;
+    }
+
+    .finance-item p {
+        margin: 4px 0;
+    }
+
+    .finance-empty {
+        margin: 0;
+        color: var(--muted);
+    }
+
+    @media (max-width: 760px) {
+        .finance-calendar-weekdays span {
+            font-size: 11px;
+        }
+
+        .finance-day {
+            min-height: 82px;
+            padding: 8px;
+        }
+
+        .finance-day-note {
+            font-size: 11px;
+        }
+    }
+</style>
+
+<h1>Minhas financas</h1>
+
+<section class="finance-hero">
+    <h2>Organizacao financeira pessoal</h2>
+    <p><strong>Somente voce ve esta area no aplicativo.</strong> Ela foi pensada para voce acompanhar suas contas pessoais com clareza, para melhor organizacao financeira.</p>
+    <p>Ative a notificacao no seu celular, porque voce recebe avisos das suas dividas pessoais e tambem nossos lembretes de vencimento.</p>
+{% if next_debt %}
+        <p>Proximo vencimento: <strong>{{ next_debt.due_date|date:"d/m/Y" }}</strong> no valor de <strong>R$ {{ next_debt.amount|floatformat:2 }}</strong>.</p>
+    {% else %}
+        <p>Voce esta sem debitos abertos no momento.</p>
+    {% endif %}
+</section>
+
+<section class="info-panel">
+    <h2>Criar conta pessoal</h2>
+    <p>Cadastre compromissos como aluguel, mercado, escola ou qualquer outra conta sua. A etiqueta colorida aparece em formato oval para facilitar a leitura.</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="finance-form-grid">
+            {% for field in personal_debt_form %}
+                <div{% if field.name == "notes" %} class="finance-field-wide"{% endif %}>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.name == "color" %}
+                        <div class="finance-form-help">Passe o mouse no seletor de cor do seu celular ou navegador e escolha o tom exato da divida.</div>
+                    {% endif %}
+                    {% if field.errors %}
+                        <small>{{ field.errors|join:", " }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <p><button class="button" type="submit">Salvar conta pessoal</button></p>
+    </form>
+</section>
+
+<section class="finance-summary-grid" aria-label="Resumo financeiro">
+    <article class="finance-stat">
+        <span>Total em aberto</span>
+        <strong>R$ {{ open_total|floatformat:2 }}</strong>
+        <small>{{ open_count }} pendencia{{ open_count|pluralize }}</small>
+    </article>
+    <article class="finance-stat">
+        <span>Dividas deste mes</span>
+        <strong>R$ {{ due_this_month_total|floatformat:2 }}</strong>
+        <small>{{ due_this_month|length }} vencimento{{ due_this_month|length|pluralize:"s" }} ate o fim do mes</small>
+    </article>
+    <article class="finance-stat">
+        <span>Dividas futuras</span>
+        <strong>R$ {{ future_total|floatformat:2 }}</strong>
+        <small>{{ future_debts|length }} parcela{{ future_debts|length|pluralize:"s" }} depois deste mes</small>
+    </article>
+    <article class="finance-stat">
+        <span>Em atraso</span>
+        <strong>R$ {{ overdue_total|floatformat:2 }}</strong>
+        <small>{{ overdue_debts|length }} conta{{ overdue_debts|length|pluralize:"s" }} vencida{{ overdue_debts|length|pluralize:"s" }}</small>
+    </article>
+</section>
+
+<section class="finance-calendar">
+    <div class="finance-calendar-header">
+        <h2>Calendario de vencimentos - {{ calendar.label }}</h2>
+    </div>
+    <div class="finance-calendar-weekdays" aria-hidden="true">
+        <span>Seg</span>
+        <span>Ter</span>
+        <span>Qua</span>
+        <span>Qui</span>
+        <span>Sex</span>
+        <span>Sab</span>
+        <span>Dom</span>
+    </div>
+    {% for week in calendar.weeks %}
+        <div class="finance-calendar-week">
+            {% for cell in week %}
+                <article class="finance-day {% if not cell.in_month %}finance-day-muted{% endif %} {% if cell.is_today %}finance-day-today{% endif %} {% if cell.tone == 'overdue' %}finance-day-overdue{% elif cell.tone == 'scheduled' or cell.tone == 'today' %}finance-day-scheduled{% endif %}">
+                    <div class="finance-day-number">
+                        <span>{{ cell.date|date:"j" }}</span>
+                        {% if cell.count %}
+                            <span class="badge {% if cell.tone == 'overdue' %}badge-warning{% else %}badge-info{% endif %}">{{ cell.count }}</span>
+                        {% endif %}
+                    </div>
+                    {% if cell.debts %}
+                        <div class="finance-day-note">
+                            R$ {{ cell.total|floatformat:2 }}<br>
+                            {{ cell.debts.0.title|truncatechars:32 }}
+                        </div>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</section>
+
+<section class="finance-section-grid">
+    <section class="info-panel">
+        <h2>Contas pessoais do mes</h2>
+        <div class="finance-list">
+            {% for debt in personal_due_this_month %}
+                <article class="finance-item">
+                    <div class="finance-chip-row">
+                        <span class="finance-chip" style="background: {{ debt.chip_style.background }}; color: {{ debt.chip_style.text }};">{{ debt.category_label }}</span>
+                        <span class="finance-chip" style="background: #eef2ff; color: #364152;">{{ debt.kind_label }}</span>
+                    </div>
+                    <h3>{{ debt.title }}</h3>
+                    <p>Vencimento: <strong>{{ debt.due_date|date:"d/m/Y" }}</strong></p>
+                    <p>Valor atualizado: <strong>R$ {{ debt.amount|floatformat:2 }}</strong></p>
+                    {% if debt.notes %}
+                        <p>{{ debt.notes }}</p>
+                    {% endif %}
+                    {% if debt.days_late %}
+                        <p><span class="badge badge-warning">{{ debt.days_late }} dia{{ debt.days_late|pluralize }} de atraso</span></p>
+                    {% endif %}
+                </article>
+            {% empty %}
+                <p class="finance-empty">Nenhuma conta pessoal com vencimento neste mes.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="info-panel">
+        <h2>Contas pessoais futuras</h2>
+        <div class="finance-list">
+            {% for debt in personal_future_debts %}
+                <article class="finance-item">
+                    <div class="finance-chip-row">
+                        <span class="finance-chip" style="background: {{ debt.chip_style.background }}; color: {{ debt.chip_style.text }};">{{ debt.category_label }}</span>
+                        <span class="finance-chip" style="background: #eef2ff; color: #364152;">{{ debt.kind_label }}</span>
+                    </div>
+                    <h3>{{ debt.title }}</h3>
+                    <p>Vencimento: <strong>{{ debt.due_date|date:"d/m/Y" }}</strong></p>
+                    <p>Valor previsto: <strong>R$ {{ debt.amount|floatformat:2 }}</strong></p>
+                    {% if debt.notes %}
+                        <p>{{ debt.notes }}</p>
+                    {% endif %}
+                </article>
+            {% empty %}
+                <p class="finance-empty">Voce nao tem contas pessoais futuras registradas.</p>
+            {% endfor %}
+        </div>
+    </section>
+</section>
+{% endblock %}

@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 from django.utils import timezone
 
-from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Product, ProductCost, StoreOrder, User
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, User
 from .store_shipping import shipping_choices_with_prices
 from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
 
@@ -307,6 +307,49 @@ class ManualDebtForm(forms.ModelForm):
                 self.add_error("due_date", "Para gerar link, o primeiro vencimento deve ficar entre hoje e os proximos 30 dias.")
 
         return cleaned_data
+
+
+class PersonalDebtForm(forms.ModelForm):
+    class Meta:
+        model = PersonalDebt
+        fields = ("title", "category", "color", "amount", "due_date", "notes")
+        labels = {
+            "title": "Conta ou compromisso",
+            "category": "Categoria",
+            "color": "Cor da etiqueta",
+            "amount": "Valor",
+            "due_date": "Vencimento",
+            "notes": "Observacao",
+        }
+        widgets = {
+            "title": forms.TextInput(attrs={"placeholder": "Ex.: Aluguel, internet, escola"}),
+            "color": forms.TextInput(attrs={"type": "color"}),
+            "due_date": forms.DateInput(attrs={"type": "date"}),
+            "amount": forms.NumberInput(attrs={"min": "0.01", "step": "0.01"}),
+            "notes": forms.Textarea(attrs={"rows": 3, "placeholder": "Opcional: detalhes para lembrar depois"}),
+        }
+
+    def clean_amount(self):
+        amount = self.cleaned_data["amount"]
+
+        if amount <= 0:
+            raise ValidationError("Informe um valor maior que zero.")
+
+        return amount
+
+    def clean_color(self):
+        color = (self.cleaned_data["color"] or "").strip()
+
+        if len(color) != 7 or not color.startswith("#"):
+            raise ValidationError("Escolha uma cor valida.")
+
+        hex_digits = color[1:]
+        try:
+            int(hex_digits, 16)
+        except ValueError as exc:
+            raise ValidationError("Escolha uma cor valida.") from exc
+
+        return color.lower()
 
 
 class InstallmentChoiceForm(forms.Form):

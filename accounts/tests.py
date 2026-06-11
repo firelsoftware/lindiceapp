@@ -9,7 +9,7 @@ from django.test import Client, RequestFactory, TestCase, override_settings
 from django.utils import timezone
 
 from .forms import RegisterForm
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, Product, StoreOrder, SupplierProduct, User
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, StoreOrder, SupplierProduct, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference
 from .store_shipping import shipping_cost_for
@@ -1448,6 +1448,118 @@ class StoreFlowTests(TestCase):
         response = self.client.get("/gestao/fornecedor/produtos/")
 
         self.assertContains(response, '>Loja</a>', html=False)
+        self.assertNotContains(response, '>Minhas financas</a>', html=False)
+
+    def test_client_menu_shows_customer_finances_link(self):
+        user = User.objects.create_user(
+            email="cliente-financas-menu@example.com",
+            password="Teste12345!",
+            full_name="Cliente Financas",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-financas-menu",
+            cpf_last_digits="6611",
+            phone="61999995555",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+        )
+        self.client.force_login(user)
+
+        response = self.client.get("/painel/")
+
+        self.assertContains(response, '>Minhas financas</a>', html=False)
+
+    def test_customer_finances_page_is_visible_only_for_client(self):
+        user = User.objects.create_user(
+            email="cliente-financas@example.com",
+            password="Teste12345!",
+            full_name="Cliente Financas",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-financas",
+            cpf_last_digits="6622",
+            phone="61999994444",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+        )
+        Debt.objects.create(
+            client=user,
+            description="Parcela junho",
+            amount=Decimal("120.00"),
+            due_date=timezone.localdate() + timedelta(days=3),
+        )
+        Debt.objects.create(
+            client=user,
+            description="Parcela julho",
+            amount=Decimal("140.00"),
+            due_date=add_months(timezone.localdate().replace(day=1), 1) + timedelta(days=4),
+        )
+        self.client.force_login(user)
+
+        response = self.client.get("/painel/financas/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Somente voce ve esta area no aplicativo.")
+        self.assertContains(response, "Criar conta pessoal")
+        self.assertContains(response, "Contas pessoais do mes")
+        self.assertContains(response, "Contas pessoais futuras")
+
+    def test_customer_can_create_personal_debt_with_category_and_color(self):
+        user = User.objects.create_user(
+            email="cliente-financas-form@example.com",
+            password="Teste12345!",
+            full_name="Cliente Formulario",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-financas-form",
+            cpf_last_digits="6633",
+            phone="61999993333",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+        )
+        self.client.force_login(user)
+
+        response = self.client.post(
+            "/painel/financas/",
+            {
+                "title": "Aluguel apartamento",
+                "category": PersonalDebt.CATEGORY_RENT,
+                "color": "#ff6b57",
+                "amount": "1200.00",
+                "due_date": (timezone.localdate() + timedelta(days=5)).isoformat(),
+                "notes": "Pagar antes do quinto dia util",
+            },
+        )
+
+        debt = PersonalDebt.objects.get(client=user, title="Aluguel apartamento")
+        self.assertRedirects(response, "/painel/financas/")
+        self.assertEqual(debt.category, PersonalDebt.CATEGORY_RENT)
+        self.assertEqual(debt.color, "#ff6b57")
+
+    def test_customer_finances_page_forbids_staff_access(self):
+        staff = User.objects.create_superuser(
+            email="admin-financas@example.com",
+            password="Teste12345!",
+            full_name="Admin Financas",
+            preferred_name="Admin",
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get("/painel/financas/")
+
+        self.assertEqual(response.status_code, 403)
 
     def revenda_csv_content(self, stock="34,5|35,4|36,10"):
         content = (

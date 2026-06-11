@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils import timezone
 
-from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Notification, Product, ProductCost, StoreOrder, SupplierProduct, User, add_months
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PersonalDebt, Product, ProductCost, StoreOrder, SupplierProduct, User, add_months
 from .notifications import create_credit_limit_increased_notification, create_registration_approved_notification
 
 
@@ -82,6 +82,13 @@ class NotificationAdmin(admin.ModelAdmin):
     list_display = ("recipient", "title", "kind", "read_at", "created_at")
     list_filter = ("kind", "read_at", "created_at")
     search_fields = ("recipient__email", "recipient__full_name", "title", "message")
+
+
+@admin.register(PersonalDebt)
+class PersonalDebtAdmin(admin.ModelAdmin):
+    list_display = ("client", "title", "category", "amount", "due_date", "paid")
+    list_filter = ("category", "paid", "due_date")
+    search_fields = ("client__email", "client__full_name", "title", "notes")
 
 
 @admin.register(CreditSale)

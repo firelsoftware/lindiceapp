@@ -753,6 +753,70 @@ class Debt(models.Model):
         return f"{self.client.email} - R$ {self.total_amount():.2f}"
 
 
+class PersonalDebt(models.Model):
+    CATEGORY_RENT = "rent"
+    CATEGORY_UTILITIES = "utilities"
+    CATEGORY_CARD = "card"
+    CATEGORY_MARKET = "market"
+    CATEGORY_TRANSPORT = "transport"
+    CATEGORY_HEALTH = "health"
+    CATEGORY_EDUCATION = "education"
+    CATEGORY_OTHER = "other"
+    CATEGORY_CHOICES = (
+        (CATEGORY_RENT, "Aluguel"),
+        (CATEGORY_UTILITIES, "Contas da casa"),
+        (CATEGORY_CARD, "Cartao"),
+        (CATEGORY_MARKET, "Mercado"),
+        (CATEGORY_TRANSPORT, "Transporte"),
+        (CATEGORY_HEALTH, "Saude"),
+        (CATEGORY_EDUCATION, "Educacao"),
+        (CATEGORY_OTHER, "Outro"),
+    )
+
+    DEFAULT_COLOR = "#7a2d84"
+
+    client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="personal_debts")
+    title = models.CharField(max_length=120)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default=CATEGORY_OTHER)
+    color = models.CharField(max_length=7, default=DEFAULT_COLOR)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    due_date = models.DateField()
+    notes = models.TextField(blank=True)
+    paid = models.BooleanField(default=False)
+    paid_at = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ("due_date", "id")
+
+    def days_late(self):
+        if self.paid:
+            return 0
+
+        today = timezone.localdate()
+
+        if today <= self.due_date:
+            return 0
+
+        return (today - self.due_date).days
+
+    def total_amount(self):
+        return self.amount
+
+    def mark_paid(self, paid_at=None):
+        self.paid = True
+        self.paid_at = paid_at or timezone.localdate()
+        self.save(update_fields=["paid", "paid_at"])
+
+    def mark_unpaid(self):
+        self.paid = False
+        self.paid_at = None
+        self.save(update_fields=["paid", "paid_at"])
+
+    def __str__(self):
+        return f"{self.client.email} - {self.title}"
+
+
 class Notification(models.Model):
     DUE_SOON = "due_soon"
     DUE_TODAY = "due_today"

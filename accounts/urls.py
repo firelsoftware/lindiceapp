@@ -28,6 +28,7 @@ urlpatterns = [
     path("sair/", auth_views.LogoutView.as_view(), name="logout"),
     path("verificar-telefone/", views.verify_phone, name="verify_phone"),
     path("painel/", views.dashboard, name="dashboard"),
+    path("painel/financas/", views.customer_finances, name="customer_finances"),
     path("painel/relatorio-vendas/", views.partner_sales_report, name="partner_sales_report"),
     path("minha-conta/", views.account, name="account"),
     path("perfil/", views.profile, name="profile"),

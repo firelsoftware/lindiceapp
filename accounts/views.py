@@ -1,3 +1,4 @@
+import calendar
 from django.conf import settings
 from datetime import timedelta
 import json
@@ -23,8 +24,8 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
-from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, StoreOrder, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
@@ -341,6 +342,145 @@ def build_client_financial_summary(profile):
         "accepted_sales_count": accepted_sales_count,
         "relationship_label": relationship_label,
         "relationship_badge": relationship_badge,
+    }
+
+
+def build_finance_calendar(debts, reference_date):
+    month_names = [
+        "",
+        "janeiro",
+        "fevereiro",
+        "marco",
+        "abril",
+        "maio",
+        "junho",
+        "julho",
+        "agosto",
+        "setembro",
+        "outubro",
+        "novembro",
+        "dezembro",
+    ]
+    month_start = reference_date.replace(day=1)
+    month_dates = calendar.Calendar(firstweekday=0).monthdatescalendar(month_start.year, month_start.month)
+    debts_by_day = {}
+
+    for debt in debts:
+        debts_by_day.setdefault(debt["due_date"], []).append(debt)
+
+    weeks = []
+    for week in month_dates:
+        cells = []
+        for day in week:
+            day_debts = debts_by_day.get(day, [])
+            has_overdue = any(debt["days_late"] > 0 for debt in day_debts)
+            is_today = day == reference_date
+            if has_overdue:
+                tone = "overdue"
+            elif day_debts and is_today:
+                tone = "today"
+            elif day_debts:
+                tone = "scheduled"
+            else:
+                tone = "empty"
+
+            cells.append(
+                {
+                    "date": day,
+                    "in_month": day.month == month_start.month,
+                    "debts": day_debts,
+                    "count": len(day_debts),
+                    "total": sum((debt["amount"] for debt in day_debts), Decimal("0.00")),
+                    "is_today": is_today,
+                    "tone": tone,
+                }
+            )
+        weeks.append(cells)
+
+    return {
+        "label": f"{month_names[month_start.month]} de {month_start.year}",
+        "weeks": weeks,
+    }
+
+
+def hex_to_rgb(hex_value):
+    normalized = (hex_value or PersonalDebt.DEFAULT_COLOR).lstrip("#")
+
+    if len(normalized) != 6:
+        normalized = PersonalDebt.DEFAULT_COLOR.lstrip("#")
+
+    return tuple(int(normalized[index:index + 2], 16) for index in (0, 2, 4))
+
+
+def personal_debt_color_style(hex_value):
+    red, green, blue = hex_to_rgb(hex_value)
+    brightness = ((red * 299) + (green * 587) + (blue * 114)) / 1000
+    text_color = "#182230" if brightness >= 168 else "#ffffff"
+
+    return {"background": hex_value or PersonalDebt.DEFAULT_COLOR, "text": text_color}
+
+
+def build_store_commitment_entry(debt):
+    return {
+        "title": debt.description,
+        "due_date": debt.due_date,
+        "amount": debt.total_amount(),
+        "days_late": debt.days_late(),
+        "kind": "store",
+        "kind_label": "Lindice",
+        "category_label": "Compra no app",
+        "chip_style": {"background": "#e7ecf2", "text": "#475467"},
+        "notes": "",
+    }
+
+
+def build_personal_commitment_entry(debt):
+    return {
+        "title": debt.title,
+        "due_date": debt.due_date,
+        "amount": debt.total_amount(),
+        "days_late": debt.days_late(),
+        "kind": "personal",
+        "kind_label": "Pessoal",
+        "category_label": debt.get_category_display(),
+        "chip_style": personal_debt_color_style(debt.color),
+        "notes": debt.notes,
+    }
+
+
+def build_customer_finance_context(user):
+    today = timezone.localdate()
+    month_start = today.replace(day=1)
+    next_month = add_months(month_start, 1)
+    month_end = next_month - timedelta(days=1)
+    store_debts = list(user.debts.filter(paid=False).order_by("due_date", "id"))
+    personal_debts = list(user.personal_debts.filter(paid=False).order_by("due_date", "id"))
+    commitments = [build_store_commitment_entry(debt) for debt in store_debts] + [
+        build_personal_commitment_entry(debt) for debt in personal_debts
+    ]
+    commitments.sort(key=lambda item: (item["due_date"], item["title"]))
+    overdue_debts = [debt for debt in commitments if debt["days_late"] > 0]
+    due_this_month = [debt for debt in commitments if month_start <= debt["due_date"] <= month_end]
+    future_debts = [debt for debt in commitments if debt["due_date"] > month_end]
+    next_debt = commitments[0] if commitments else None
+    personal_due_this_month = [debt for debt in due_this_month if debt["kind"] == "personal"]
+    personal_future_debts = [debt for debt in future_debts if debt["kind"] == "personal"]
+
+    return {
+        "today": today,
+        "calendar": build_finance_calendar(commitments, today),
+        "due_this_month": due_this_month,
+        "future_debts": future_debts,
+        "personal_due_this_month": personal_due_this_month,
+        "personal_future_debts": personal_future_debts,
+        "overdue_debts": overdue_debts,
+        "next_debt": next_debt,
+        "open_total": sum((debt["amount"] for debt in commitments), Decimal("0.00")),
+        "due_this_month_total": sum((debt["amount"] for debt in due_this_month), Decimal("0.00")),
+        "future_total": sum((debt["amount"] for debt in future_debts), Decimal("0.00")),
+        "overdue_total": sum((debt["amount"] for debt in overdue_debts), Decimal("0.00")),
+        "open_count": len(commitments),
+        "personal_debt_form": PersonalDebtForm(),
     }
 
 
@@ -1504,6 +1644,36 @@ def partner_sales_report(request):
 @login_required
 def account(request):
     return render(request, "accounts/account.html")
+
+
+@login_required
+def customer_finances(request):
+    if request.user.is_staff:
+        return HttpResponseForbidden("Area exclusiva do cliente.")
+
+    profile = request.user.profile
+
+    if not profile.phone_verified:
+        return redirect("verify_phone")
+
+    if profile.registration_status != ClientProfile.APPROVED:
+        return render(request, "accounts/registration_pending.html", {"profile": profile})
+
+    if request.method == "POST":
+        form = PersonalDebtForm(request.POST)
+
+        if form.is_valid():
+            personal_debt = form.save(commit=False)
+            personal_debt.client = request.user
+            personal_debt.save()
+            messages.success(request, "Conta pessoal criada com sucesso.")
+            return redirect("customer_finances")
+    else:
+        form = PersonalDebtForm()
+
+    context = build_customer_finance_context(request.user)
+    context["personal_debt_form"] = form
+    return render(request, "accounts/customer_finances.html", context)
 
 
 @login_required
