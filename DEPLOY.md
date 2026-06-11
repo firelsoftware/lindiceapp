@@ -10,6 +10,15 @@ Este projeto esta preparado para subir no Render usando:
 - Gunicorn como servidor WSGI
 - HTTPS automatico do Render
 
+## Modelo recomendado de repositorio
+
+Este repositorio pode servir duas publicacoes diferentes:
+
+- app Django em `app.lindice.com.br`
+- site institucional estatico na pasta `site/`
+
+Isso nao afeta a Play Store se o app Android/TWA continuar apontando para `app.lindice.com.br`.
+
 ## Passos
 
 1. Crie um repositorio no GitHub para este projeto.
@@ -44,6 +53,23 @@ PHONE_VERIFICATION_REQUIRED=false
 ```
 
 Use `PHONE_VERIFICATION_REQUIRED=false` apenas enquanto nao houver envio real de codigo por SMS ou WhatsApp. Nesse modo, o cadastro segue direto para analise manual do administrador.
+
+## Site institucional no mesmo repositorio
+
+Se quiser publicar tambem o site institucional no mesmo Git:
+
+1. Crie um novo servico `Static Site` no Render.
+2. Aponte o `Root directory` para `site`.
+3. Deixe `Build command` vazio.
+4. Use `Publish directory` como `.`.
+5. Configure o dominio principal, por exemplo `lindice.com.br`.
+6. Mantenha o app Django em `app.lindice.com.br`.
+
+Assim:
+
+- `lindice.com.br` -> site institucional
+- `app.lindice.com.br` -> app Django
+- Play Store/TWA -> continua usando `app.lindice.com.br`
 
 ## Observacoes importantes
 

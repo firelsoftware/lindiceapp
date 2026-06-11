@@ -1,0 +1,69 @@
+{
+  "packageId": "com.lindice.app",
+  "host": "app.lindice.com.br",
+  "name": "Líndice",
+  "launcherName": "Líndice",
+  "display": "standalone",
+  "themeColor": "#4D63B7",
+  "themeColorDark": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#FFFFFF",
+  "enableNotifications": false,
+  "startUrl": "/loja/",
+  "iconUrl": "https://app.lindice.com.br/static/accounts/lindice-icon.svg?v=20260531",
+  "maskableIconUrl": "https://app.lindice.com.br/static/accounts/lindice-icon-512.png?v=20260531",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "C:\\Users\\Programador\\Documents\\Meus projetos\\lindice_app\\android-twa\\android.keystore",
+    "alias": "lindice"
+  },
+  "appVersionName": "1",
+  "appVersionCode": 1,
+  "shortcuts": [
+    {
+      "name": "Loja",
+      "shortName": "Loja",
+      "url": "https://app.lindice.com.br/loja/",
+      "chosenIconUrl": "https://app.lindice.com.br/static/accounts/lindice-icon-192.png?v=20260531"
+    },
+    {
+      "name": "Carrinho",
+      "shortName": "Carrinho",
+      "url": "https://app.lindice.com.br/loja/carrinho/",
+      "chosenIconUrl": "https://app.lindice.com.br/static/accounts/lindice-icon-192.png?v=20260531"
+    },
+    {
+      "name": "Cadastro crediário",
+      "shortName": "Crediário",
+      "url": "https://app.lindice.com.br/cadastro/",
+      "chosenIconUrl": "https://app.lindice.com.br/static/accounts/lindice-icon-192.png?v=20260531"
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://app.lindice.com.br/static/accounts/site.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://app.lindice.com.br/",
+  "minSdkVersion": 21,
+  "orientation": "portrait-primary",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "protocolHandlers": [],
+  "fileHandlers": [],
+  "launchHandlerClientMode": "",
+  "displayOverride": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "appVersion": "1"
+}

@@ -1,0 +1,40 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Link de pagamento gerado</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <h2>{{ sale.client.full_name }}</h2>
+    <p>{{ sale.description }} - <strong>R$ {{ sale.total_amount|floatformat:2 }}</strong></p>
+    <p>Envie este link para o cliente escolher Pix, cartao ou crediario com parcelas.</p>
+    <label for="payment-link">Link para enviar</label>
+    <input id="payment-link" type="text" value="{{ payment_link }}" readonly>
+    <button type="button" class="button-secondary" data-copy-payment-link>Copiar link</button>
+</section>
+
+{% if return_profile_id %}
+    <p><a href="{% url 'review_client_profile' return_profile_id %}">Voltar para ficha do cliente</a></p>
+{% else %}
+    <p><a href="{% url 'management_dashboard' %}">Voltar ao painel de gestao</a></p>
+{% endif %}
+
+<script>
+    const copyButton = document.querySelector("[data-copy-payment-link]");
+    const paymentLink = document.getElementById("payment-link");
+
+    if (copyButton && paymentLink && navigator.clipboard) {
+        copyButton.addEventListener("click", async () => {
+            await navigator.clipboard.writeText(paymentLink.value);
+            copyButton.textContent = "Link copiado";
+        });
+    }
+</script>
+{% endblock %}

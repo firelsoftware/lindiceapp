@@ -26,7 +26,13 @@
     <p>Observacoes: {{ product.notes }}</p>
 {% endif %}
 
-<p><a class="button" href="{% url 'add_product_cost' product.id %}">Lancar custo extra</a></p>
+<div class="action-row">
+    <a class="button" href="{% url 'add_product_cost' product.id %}">Lancar custo extra</a>
+    <form method="post" action="{% url 'delete_product' product.id %}">
+        {% csrf_token %}
+        <button type="submit" class="button button-secondary" onclick="return confirm('Excluir este produto?');">Excluir produto</button>
+    </form>
+</div>
 
 <h2>Custos extras</h2>
 <table>

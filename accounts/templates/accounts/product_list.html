@@ -3,6 +3,14 @@
 {% block content %}
 <h1>Produtos</h1>
 
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <p><a class="button" href="{% url 'create_product' %}">Cadastrar produto</a></p>
 
 <table>
@@ -15,6 +23,7 @@
             <th>Venda</th>
             <th>Lucro previsto</th>
             <th>Status</th>
+            <th>Acoes</th>
         </tr>
     </thead>
     <tbody>
@@ -27,10 +36,16 @@
                 <td>R$ {{ product.sale_price|floatformat:2 }}</td>
                 <td>R$ {{ product.profit|floatformat:2 }}</td>
                 <td>{{ product.get_status_display }}</td>
+                <td>
+                    <form method="post" action="{% url 'delete_product' product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="button button-secondary" onclick="return confirm('Excluir este produto?');">Excluir</button>
+                    </form>
+                </td>
             </tr>
         {% empty %}
             <tr>
-                <td colspan="7">Nenhum produto cadastrado.</td>
+                <td colspan="8">Nenhum produto cadastrado.</td>
             </tr>
         {% endfor %}
     </tbody>

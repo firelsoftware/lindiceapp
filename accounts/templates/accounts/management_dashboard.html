@@ -26,6 +26,27 @@
 
 <div class="summary-grid">
     <div class="summary-item">
+        <strong>R$ {{ monthly_sales_summary.revenue|floatformat:2 }}</strong>
+        <span>Faturamento do mes ({{ monthly_sales_summary.month_label }})</span>
+    </div>
+    <div class="summary-item">
+        <strong>{{ monthly_sales_summary.sales_count }}</strong>
+        <span>Vendas no mes</span>
+    </div>
+    <div class="summary-item">
+        <strong>{{ monthly_sales_summary.items_sold }}/{{ monthly_sales_summary.goal_target }}</strong>
+        <span>Itens vendidos</span>
+    </div>
+    <div class="summary-item">
+        {% if monthly_sales_summary.goal_hit %}
+            <strong>Meta batida</strong>
+            <span>10 itens vendidos no mes</span>
+        {% else %}
+            <strong>Faltam {{ monthly_sales_summary.goal_remaining }}</strong>
+            <span>Para bater 10 itens</span>
+        {% endif %}
+    </div>
+    <div class="summary-item">
         <strong>{{ store_paid_count }}</strong>
         <span>Pagos para comprar</span>
     </div>
@@ -140,6 +161,7 @@
             <th>Venda</th>
             <th>Valor</th>
             <th>Maximo</th>
+            <th>Link</th>
         </tr>
     </thead>
     <tbody>
@@ -150,10 +172,11 @@
                 <td>{{ sale.description }}</td>
                 <td>R$ {{ sale.total_amount|floatformat:2 }}</td>
                 <td>{{ sale.max_installments_allowed }}x</td>
+                <td><small class="muted-text">{{ sale.payment_link }}</small></td>
             </tr>
         {% empty %}
             <tr>
-                <td colspan="5">Nenhuma venda aguardando escolha.</td>
+                <td colspan="6">Nenhuma venda aguardando escolha.</td>
             </tr>
         {% endfor %}
     </tbody>

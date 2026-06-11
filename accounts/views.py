@@ -13,16 +13,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
 from django.db.models import Case, IntegerField, Q, Sum, Value, When
+from django.db.models.deletion import ProtectedError
 from django.http import HttpResponseForbidden, JsonResponse
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
+from django.urls import reverse
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
-from .models import CreditSale, ClientProfile, Debt, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
+from .models import CreditSale, CreditSaleProduct, ClientProfile, Debt, Notification, PaymentAlert, Product, ProductCost, StoreOrder, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
@@ -186,6 +188,10 @@ def authenticated_home_route(user):
         return "store_front"
 
     return "dashboard"
+
+
+def build_sale_payment_link(request, sale):
+    return request.build_absolute_uri(reverse("choose_installments", args=[sale.id]))
 
 
 class LoginView(auth_views.LoginView):
@@ -357,6 +363,121 @@ def get_welcome_discount_profile(request):
 
 def welcome_discount_amount(amount):
     return money(amount * (WELCOME_DISCOUNT_PERCENT / Decimal("100")))
+
+
+def profile_has_credit_documents(profile):
+    return bool(
+        profile.rg_number
+        and profile.phone
+        and profile.address
+        and profile.identity_document
+        and profile.residence_proof
+    )
+
+
+def send_profile_to_credit_analysis(profile):
+    needs_analysis = (
+        profile.registration_status != ClientProfile.APPROVED
+        or not profile_has_credit_documents(profile)
+    )
+
+    if not needs_analysis:
+        return False
+
+    review_note = f"Solicitou crediario pelo checkout em {timezone.localtime():%d/%m/%Y %H:%M}."
+    existing_notes = profile.admin_notes.strip()
+    profile.admin_notes = f"{existing_notes}\n{review_note}".strip() if existing_notes else review_note
+    profile.registration_status = ClientProfile.PENDING
+    profile.approved_at = None
+    profile.approved_by = None
+    profile.save(update_fields=["registration_status", "approved_at", "approved_by", "admin_notes"])
+
+    return True
+
+
+def create_credit_sale_from_checkout(request, items, form, shipping_cost):
+    profile = getattr(request.user, "profile", None)
+
+    if not profile:
+        raise ValueError("Somente clientes podem solicitar crediario pelo checkout.")
+
+    cleaned_data = form.cleaned_data
+    products_total = money(sum((item["total"] for item in items), Decimal("0.00")))
+    total_amount = money(products_total + shipping_cost)
+    first_product = items[0]["product"]
+    description = first_product.name if len(items) == 1 else f"Pedido loja ({len(items)} itens)"
+    needs_analysis = send_profile_to_credit_analysis(profile)
+
+    sale = CreditSale.objects.create(
+        client=request.user,
+        description=description,
+        total_amount=total_amount,
+        first_due_date=timezone.localdate() + timedelta(days=30),
+        max_installments_allowed=profile.default_max_installments,
+    )
+
+    for index, item in enumerate(items):
+        product = item["product"]
+        item_shipping = shipping_cost if index == 0 else Decimal("0.00")
+        notes = [
+            f"Solicitado pelo checkout da loja.",
+            f"Codigo fornecedor: {product.supplier_code}",
+            f"Quantidade: {item['quantity']}",
+            f"Frete neste item: R$ {item_shipping:.2f}",
+            f"UF/regiao: {cleaned_data['shipping_state']}",
+            f"Endereco: {cleaned_data['shipping_address']}",
+        ]
+
+        if cleaned_data.get("notes"):
+            notes.append(f"Observacoes do cliente: {cleaned_data['notes']}")
+
+        CreditSaleProduct.objects.create(
+            sale=sale,
+            name=product.name,
+            brand=product.brand,
+            shoe_size=item["selected_size"],
+            notes="\n".join(notes),
+        )
+
+    create_sale_available_notification(sale)
+
+    return sale, needs_analysis
+
+
+def current_month_sales_summary():
+    today = timezone.localdate()
+    month_start = today.replace(day=1)
+
+    if month_start.month == 12:
+        next_month_start = month_start.replace(year=month_start.year + 1, month=1)
+    else:
+        next_month_start = month_start.replace(month=month_start.month + 1)
+
+    store_orders = StoreOrder.objects.filter(status__in=PARTNER_SALES_STATUSES).filter(
+        Q(paid_at__date__gte=month_start, paid_at__date__lt=next_month_start)
+        | Q(paid_at__isnull=True, created_at__date__gte=month_start, created_at__date__lt=next_month_start)
+    )
+    credit_sales = CreditSale.objects.filter(
+        status=CreditSale.ACCEPTED,
+        accepted_at__date__gte=month_start,
+        accepted_at__date__lt=next_month_start,
+    )
+    store_revenue = store_orders.aggregate(total=Sum("total_amount"))["total"] or Decimal("0.00")
+    credit_revenue = credit_sales.aggregate(total=Sum("selected_total_with_interest"))["total"] or Decimal("0.00")
+    store_items = store_orders.aggregate(total=Sum("quantity"))["total"] or 0
+    credit_items = CreditSaleProduct.objects.filter(sale__in=credit_sales).count()
+    target_items = 10
+    sold_items = store_items + credit_items
+
+    return {
+        "month_label": f"{month_start:%m/%Y}",
+        "revenue": money(store_revenue + credit_revenue),
+        "sales_count": store_orders.count() + credit_sales.count(),
+        "items_sold": sold_items,
+        "goal_target": target_items,
+        "goal_hit": sold_items >= target_items,
+        "goal_remaining": max(target_items - sold_items, 0),
+    }
 
 
 def get_cart(request):
@@ -816,6 +937,23 @@ def cart_checkout(request):
             shipping_cost = shipping_cost_for(shipping_state)
             orders = []
 
+            if form.cleaned_data["payment_method"] == CHECKOUT_PAYMENT_CREDIT:
+                try:
+                    with transaction.atomic():
+                        sale, needs_analysis = create_credit_sale_from_checkout(request, items, form, shipping_cost)
+                except ValueError as exc:
+                    messages.error(request, str(exc))
+                    return redirect("cart_detail")
+
+                request.session["store_cart"] = {}
+
+                if needs_analysis:
+                    messages.success(request, "Compra enviada para analise de crediario. Assim que aprovarmos, voce podera finalizar as parcelas.")
+                    return redirect("dashboard")
+
+                messages.success(request, "Compra separada para crediario. Escolha as parcelas para concluir.")
+                return redirect("choose_installments", sale_id=sale.id)
+
             with transaction.atomic():
                 if use_voucher:
                     profile = ClientProfile.objects.select_for_update().get(id=welcome_profile.id)
@@ -933,6 +1071,31 @@ def store_checkout(request, product_id):
 
         if form.is_valid():
             shipping_cost = shipping_cost_for(form.cleaned_data["shipping_state"])
+
+            if form.cleaned_data["payment_method"] == CHECKOUT_PAYMENT_CREDIT:
+                credit_items = [
+                    {
+                        "product": product,
+                        "selected_size": form.cleaned_data["selected_size"],
+                        "quantity": 1,
+                        "total": product.suggested_sale_price,
+                    }
+                ]
+
+                try:
+                    with transaction.atomic():
+                        sale, needs_analysis = create_credit_sale_from_checkout(request, credit_items, form, shipping_cost)
+                except ValueError as exc:
+                    messages.error(request, str(exc))
+                    return redirect("store_product_detail", product_id=product.id)
+
+                if needs_analysis:
+                    messages.success(request, "Compra enviada para analise de crediario. Assim que aprovarmos, voce podera finalizar as parcelas.")
+                    return redirect("dashboard")
+
+                messages.success(request, "Compra separada para crediario. Escolha as parcelas para concluir.")
+                return redirect("choose_installments", sale_id=sale.id)
+
             with transaction.atomic():
                 order = form.save(commit=False)
                 order.product = product
@@ -1590,12 +1753,16 @@ def credit_sale_payment_pending(request):
 def management_dashboard(request):
     generate_due_notifications()
     pending_profiles = ClientProfile.objects.filter(registration_status=ClientProfile.PENDING).order_by("user__full_name")
-    pending_sales = CreditSale.objects.filter(status=CreditSale.PENDING).order_by("-created_at")
+    pending_sales = list(CreditSale.objects.filter(status=CreditSale.PENDING).order_by("-created_at"))
     accepted_sales = CreditSale.objects.filter(status=CreditSale.ACCEPTED).order_by("-accepted_at")[:10]
     available_products = Product.objects.filter(status=Product.AVAILABLE).order_by("-created_at")[:10]
     store_paid_count = StoreOrder.objects.filter(status=StoreOrder.PAID).count()
     store_pending_payment_count = StoreOrder.objects.filter(status=StoreOrder.PENDING_PAYMENT).count()
     payment_alerts = PaymentAlert.objects.select_related("credit_sale__client", "store_order")[:10]
+    monthly_sales_summary = current_month_sales_summary()
+
+    for sale in pending_sales:
+        sale.payment_link = build_sale_payment_link(request, sale)
 
     return render(
         request,
@@ -1607,6 +1774,7 @@ def management_dashboard(request):
             "available_products": available_products,
             "store_paid_count": store_paid_count,
             "store_pending_payment_count": store_pending_payment_count,
+            "monthly_sales_summary": monthly_sales_summary,
             "payment_alerts": payment_alerts,
             "supplier_catalog_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
             "mercado_pago_configured": bool(settings.MERCADO_PAGO_ACCESS_TOKEN),
@@ -1760,6 +1928,29 @@ def create_manual_debt(request):
         form = ManualDebtForm(request.POST)
 
         if form.is_valid():
+            if form.cleaned_data["create_payment_link"]:
+                sale = CreditSale.objects.create(
+                    client=form.cleaned_data["client"],
+                    description=form.cleaned_data["description"],
+                    total_amount=form.cleaned_data["amount"],
+                    first_due_date=form.cleaned_data["due_date"],
+                    max_installments_allowed=form.cleaned_data["client"].profile.default_max_installments,
+                    created_by=request.user,
+                )
+                create_sale_available_notification(sale)
+                payment_link = build_sale_payment_link(request, sale)
+                messages.success(request, "Link de pagamento gerado e cliente notificado com sucesso.")
+
+                return render(
+                    request,
+                    "accounts/payment_link_created.html",
+                    {
+                        "payment_link": payment_link,
+                        "return_profile_id": return_profile_id,
+                        "sale": sale,
+                    },
+                )
+
             debt = form.save()
             create_manual_debt_notification(debt)
             messages.success(request, "Debito lancado e cliente notificado com sucesso.")
@@ -1853,6 +2044,25 @@ def product_list(request):
     products = Product.objects.order_by("-created_at")
 
     return render(request, "accounts/product_list.html", {"products": products})
+
+
+@staff_member_required(login_url="login")
+def delete_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    if request.method != "POST":
+        return redirect("product_detail", product_id=product.id)
+
+    product_label = str(product)
+
+    if product.sale_items.exists():
+        messages.error(request, f"{product_label} ja esta vinculado a uma venda. Marque como com problema em vez de excluir.")
+        return redirect("product_detail", product_id=product.id)
+
+    product.delete()
+    messages.success(request, f"{product_label} foi excluido.")
+
+    return redirect("product_list")
 
 
 @staff_member_required(login_url="login")
@@ -1968,6 +2178,25 @@ def update_supplier_product_status(request, product_id):
         messages.success(request, f"{product.name} foi reativado.")
     else:
         messages.error(request, "Acao invalida para o produto do fornecedor.")
+
+    return redirect("supplier_products")
+
+
+@staff_member_required(login_url="login")
+def delete_supplier_product(request, product_id):
+    if request.method != "POST":
+        return redirect("supplier_products")
+
+    product = get_object_or_404(SupplierProduct, id=product_id)
+    product_label = f"{product.supplier_code} - {product.name}"
+
+    try:
+        product.delete()
+    except ProtectedError:
+        messages.error(request, f"{product_label} ja tem pedido vinculado. Inative ou oculte para manter o historico.")
+        return redirect("supplier_products")
+
+    messages.success(request, f"{product_label} foi excluido do catalogo.")
 
     return redirect("supplier_products")
 

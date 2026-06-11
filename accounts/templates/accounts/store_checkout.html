@@ -106,7 +106,7 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <p class="checkout-inline-help">Se tiver voucher de boas-vindas, voce pode decidir aqui se quer usar agora ou guardar para outra compra.</p>
+            <p class="checkout-inline-help">Para pagar agora, seguimos pelo checkout online. Se escolher crediario, sua compra vai para analise antes das parcelas.</p>
             <div class="checkout-terms">
                 <p class="summary-caption">
                     Ao continuar, voce concorda com os
@@ -115,7 +115,7 @@
                     <a href="{% url 'privacy_policy' %}" target="_blank" rel="noopener">politica de privacidade</a>.
                 </p>
             </div>
-            <button type="submit">Ir para pagamento</button>
+            <button type="submit">Continuar</button>
         </form>
     </section>
 </section>

@@ -164,6 +164,10 @@
                             {% endif %}
                         </div>
                     </form>
+                    <form method="post" action="{% url 'delete_supplier_product' product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="button button-secondary" onclick="return confirm('Excluir este produto do catalogo?');">Excluir</button>
+                    </form>
                 </td>
             </tr>
         {% empty %}

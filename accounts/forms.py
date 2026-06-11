@@ -16,6 +16,12 @@ from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
 
 SHOE_SIZE_CHOICES = [(str(size), str(size)) for size in range(33, 45)]
 CHILD_SHOE_SIZE_CHOICES = [(str(size), str(size)) for size in range(14, 33)]
+CHECKOUT_PAYMENT_ONLINE = "online"
+CHECKOUT_PAYMENT_CREDIT = "credit"
+CHECKOUT_PAYMENT_METHOD_CHOICES = (
+    (CHECKOUT_PAYMENT_ONLINE, "Pagar agora"),
+    (CHECKOUT_PAYMENT_CREDIT, "Solicitar crediario para analise"),
+)
 
 
 def client_label(user):
@@ -250,6 +256,12 @@ class CreditSaleForm(forms.ModelForm):
 
 
 class ManualDebtForm(forms.ModelForm):
+    create_payment_link = forms.BooleanField(
+        label="Gerar link para o cliente escolher pagamento e parcelas",
+        required=False,
+        help_text="Use para clientes aprovados. O vencimento sera a sugestao da primeira parcela.",
+    )
+
     class Meta:
         model = Debt
         fields = ("client", "description", "amount", "due_date")
@@ -263,6 +275,9 @@ class ManualDebtForm(forms.ModelForm):
             "due_date": forms.DateInput(attrs={"type": "date"}),
             "amount": forms.NumberInput(attrs={"min": "0.01", "step": "0.01"}),
         }
+        help_texts = {
+            "due_date": "Para link de pagamento, use uma data entre hoje e os proximos 30 dias.",
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -271,6 +286,27 @@ class ManualDebtForm(forms.ModelForm):
             is_staff=False,
         ).order_by("full_name")
         self.fields["client"].label_from_instance = client_label
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if not cleaned_data.get("create_payment_link"):
+            return cleaned_data
+
+        client = cleaned_data.get("client")
+        due_date = cleaned_data.get("due_date")
+
+        if client and client.profile.registration_status != ClientProfile.APPROVED:
+            self.add_error("client", "Apenas clientes aprovados podem receber link de pagamento.")
+
+        if due_date:
+            today = timezone.localdate()
+            max_due_date = today + timedelta(days=30)
+
+            if due_date < today or due_date > max_due_date:
+                self.add_error("due_date", "Para gerar link, o primeiro vencimento deve ficar entre hoje e os proximos 30 dias.")
+
+        return cleaned_data
 
 
 class InstallmentChoiceForm(forms.Form):
@@ -454,6 +490,13 @@ class ProductCostForm(forms.ModelForm):
 class StoreOrderForm(forms.ModelForm):
     selected_size = forms.ChoiceField(label="Tamanho")
     shipping_state = forms.ChoiceField(label="Estado / regiao de entrega")
+    payment_method = forms.ChoiceField(
+        label="Forma de pagamento",
+        choices=CHECKOUT_PAYMENT_METHOD_CHOICES,
+        initial=CHECKOUT_PAYMENT_ONLINE,
+        required=False,
+        widget=forms.RadioSelect,
+    )
     use_welcome_discount = forms.BooleanField(label="Usar voucher de 5% nesta compra", required=False)
     accept_terms = forms.BooleanField(
         label="Li e aceito os termos de uso e a politica de privacidade",
@@ -498,6 +541,9 @@ class StoreOrderForm(forms.ModelForm):
 
         return cleaned_data
 
+    def clean_payment_method(self):
+        return self.cleaned_data.get("payment_method") or CHECKOUT_PAYMENT_ONLINE
+
 
 class CartCheckoutForm(forms.Form):
     customer_name = forms.CharField(label="Nome completo", max_length=150)
@@ -506,6 +552,13 @@ class CartCheckoutForm(forms.Form):
     shipping_state = forms.ChoiceField(label="Estado / regiao para calcular o frete")
     shipping_address = forms.CharField(label="Endereco completo de entrega", widget=forms.Textarea(attrs={"rows": 4}))
     notes = forms.CharField(label="Observacoes", required=False, widget=forms.Textarea(attrs={"rows": 3}))
+    payment_method = forms.ChoiceField(
+        label="Forma de pagamento",
+        choices=CHECKOUT_PAYMENT_METHOD_CHOICES,
+        initial=CHECKOUT_PAYMENT_ONLINE,
+        required=False,
+        widget=forms.RadioSelect,
+    )
     use_welcome_discount = forms.BooleanField(label="Usar voucher de 5% nesta compra", required=False)
     accept_terms = forms.BooleanField(
         label="Li e aceito os termos de uso e a politica de privacidade",
@@ -515,3 +568,6 @@ class CartCheckoutForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["shipping_state"].choices = [("", "Selecione")] + shipping_choices_with_prices()
+
+    def clean_payment_method(self):
+        return self.cleaned_data.get("payment_method") or CHECKOUT_PAYMENT_ONLINE

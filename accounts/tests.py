@@ -9,7 +9,7 @@ from django.test import Client, RequestFactory, TestCase, override_settings
 from django.utils import timezone
 
 from .forms import RegisterForm
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, StoreOrder, SupplierProduct, User
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, Product, StoreOrder, SupplierProduct, User
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference
 from .store_shipping import shipping_cost_for
@@ -881,6 +881,99 @@ class StoreFlowTests(TestCase):
         self.assertEqual(order.shipping_cost, Decimal("20.00"))
         self.assertEqual(order.total_amount, Decimal("119.90"))
 
+    def test_checkout_credit_request_sends_basic_profile_to_analysis(self):
+        product = self.create_supplier_product()
+        user = User.objects.create_user(
+            email="checkout-credit@example.com",
+            password="Teste12345!",
+            full_name="Cliente Credito",
+            preferred_name="Cliente",
+        )
+        profile = ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-hash-checkout-credit",
+            cpf_last_digits="5656",
+            phone="61999999999",
+            address="Endereco",
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+        )
+        self.client.force_login(user)
+
+        response = self.client.post(
+            f"/loja/produto/{product.id}/comprar/",
+            {
+                "selected_size": "35",
+                "customer_name": "Cliente Credito",
+                "customer_email": "cliente-credito@example.com",
+                "customer_phone": "61999999999",
+                "shipping_state": "DF",
+                "shipping_address": "Rua Teste, 1",
+                "notes": "Pode entregar a tarde.",
+                "payment_method": "credit",
+                "accept_terms": "on",
+            },
+            follow=True,
+        )
+        sale = CreditSale.objects.get()
+        sale_product = sale.products.get()
+        profile.refresh_from_db()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(profile.registration_status, ClientProfile.PENDING)
+        self.assertContains(response, "Cadastro em analise")
+        self.assertContains(response, "Solicitou crediario pelo checkout")
+        self.assertEqual(StoreOrder.objects.count(), 0)
+        self.assertEqual(sale.client, user)
+        self.assertEqual(sale.status, CreditSale.PENDING)
+        self.assertEqual(sale.total_amount, Decimal("119.90"))
+        self.assertEqual(sale_product.name, product.name)
+        self.assertIn("Codigo fornecedor: RC001", sale_product.notes)
+        self.assertIn("Rua Teste, 1", sale_product.notes)
+
+    def test_checkout_credit_request_for_approved_credit_profile_goes_to_installments(self):
+        product = self.create_supplier_product()
+        user = User.objects.create_user(
+            email="checkout-credit-approved@example.com",
+            password="Teste12345!",
+            full_name="Cliente Credito Aprovado",
+            preferred_name="Cliente",
+        )
+        profile = ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-hash-checkout-credit-approved",
+            cpf_last_digits="7878",
+            rg_number="1234567",
+            phone="61999999999",
+            address="Endereco",
+            identity_document=SimpleUploadedFile("rg.pdf", b"pdf"),
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+        )
+        self.client.force_login(user)
+
+        response = self.client.post(
+            f"/loja/produto/{product.id}/comprar/",
+            {
+                "selected_size": "35",
+                "customer_name": "Cliente Credito Aprovado",
+                "customer_email": "cliente-credito-aprovado@example.com",
+                "customer_phone": "61999999999",
+                "shipping_state": "DF",
+                "shipping_address": "Rua Teste, 1",
+                "notes": "",
+                "payment_method": "credit",
+                "accept_terms": "on",
+            },
+        )
+        sale = CreditSale.objects.get()
+        profile.refresh_from_db()
+
+        self.assertRedirects(response, f"/parcelamento/{sale.id}/")
+        self.assertEqual(profile.registration_status, ClientProfile.APPROVED)
+        self.assertEqual(sale.total_amount, Decimal("119.90"))
+
     @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
     def test_logged_client_receives_welcome_discount_only_on_first_store_order(self):
         product = self.create_supplier_product()
@@ -1120,6 +1213,117 @@ class StoreFlowTests(TestCase):
         self.assertFalse(product.is_active)
         self.assertFalse(product.is_visible)
         self.assertEqual(product.status_note, "Produto de teste removido da operacao.")
+
+    def test_staff_can_delete_local_test_product_without_sales(self):
+        staff = User.objects.create_superuser(
+            email="admin-delete-product@example.com",
+            password="Teste12345!",
+            full_name="Admin Delete Product",
+            preferred_name="Admin",
+        )
+        product = Product.objects.create(
+            name="Produto Teste",
+            purchase_price=Decimal("30.00"),
+            sale_price=Decimal("80.00"),
+        )
+        self.client.force_login(staff)
+
+        response = self.client.post(f"/gestao/produtos/{product.id}/excluir/", follow=True)
+
+        self.assertRedirects(response, "/gestao/produtos/")
+        self.assertFalse(Product.objects.filter(id=product.id).exists())
+        self.assertContains(response, "foi excluido")
+
+    def test_supplier_product_delete_is_blocked_when_order_exists(self):
+        staff = User.objects.create_superuser(
+            email="admin-delete-supplier@example.com",
+            password="Teste12345!",
+            full_name="Admin Delete Supplier",
+            preferred_name="Admin",
+        )
+        product = self.create_supplier_product()
+        StoreOrder.objects.create(
+            product=product,
+            product_name=product.name,
+            supplier_code=product.supplier_code,
+            selected_size="35",
+            customer_name="Cliente Teste",
+            customer_email="cliente@example.com",
+            customer_phone="61999999999",
+            shipping_address="Rua Teste, 1",
+            unit_price=Decimal("99.90"),
+            supplier_cost=Decimal("55.00"),
+            total_amount=Decimal("99.90"),
+            estimated_profit=Decimal("44.90"),
+        )
+        self.client.force_login(staff)
+
+        response = self.client.post(f"/gestao/fornecedor/produtos/{product.id}/excluir/", follow=True)
+
+        self.assertRedirects(response, "/gestao/fornecedor/produtos/")
+        self.assertTrue(SupplierProduct.objects.filter(id=product.id).exists())
+        self.assertContains(response, "ja tem pedido vinculado")
+
+    def test_management_dashboard_shows_monthly_revenue_sales_and_goal(self):
+        staff = User.objects.create_superuser(
+            email="admin-monthly@example.com",
+            password="Teste12345!",
+            full_name="Admin Monthly",
+            preferred_name="Admin",
+        )
+        user = User.objects.create_user(
+            email="cliente-monthly@example.com",
+            password="Teste12345!",
+            full_name="Cliente Monthly",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-monthly",
+            cpf_last_digits="9090",
+            phone="61999999999",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+        )
+        supplier_product = self.create_supplier_product()
+        StoreOrder.objects.create(
+            product=supplier_product,
+            product_name=supplier_product.name,
+            supplier_code=supplier_product.supplier_code,
+            selected_size="35",
+            quantity=2,
+            customer_name="Cliente Monthly",
+            customer_email="cliente-monthly@example.com",
+            customer_phone="61999999999",
+            shipping_address="Rua Teste, 1",
+            unit_price=Decimal("75.00"),
+            supplier_cost=Decimal("40.00"),
+            total_amount=Decimal("150.00"),
+            estimated_profit=Decimal("70.00"),
+            status=StoreOrder.PAID,
+            paid_at=timezone.now(),
+        )
+        sale = CreditSale.objects.create(
+            client=user,
+            description="Venda mensal",
+            total_amount=Decimal("200.00"),
+            first_due_date=timezone.localdate() + timedelta(days=30),
+            status=CreditSale.ACCEPTED,
+            selected_total_with_interest=Decimal("200.00"),
+            accepted_at=timezone.now(),
+        )
+        CreditSaleProduct.objects.create(sale=sale, name="Sapato Mensal", brand="Marca", shoe_size="35")
+        self.client.force_login(staff)
+
+        response = self.client.get("/gestao/")
+
+        self.assertContains(response, "Faturamento do mes")
+        self.assertContains(response, "R$ 350,00")
+        self.assertContains(response, "Vendas no mes")
+        self.assertContains(response, "3/10")
+        self.assertContains(response, "Faltam 7")
 
     @override_settings(SHOE_SUPPLIER_DROPSHIPPING_URL="https://example.com/dropshipping")
     def test_supplier_panel_links_to_dropshipping_area(self):
@@ -1538,6 +1742,70 @@ class NotificationTests(TestCase):
         debt = Debt.objects.get(client=self.client_user, description="Entrada solicitada")
         self.assertRedirects(response, "/gestao/")
         self.assertTrue(self.client_user.notifications.filter(kind=Notification.MANUAL_DEBT, debt=debt).exists())
+
+    def test_staff_can_generate_payment_link_from_manual_debt_form(self):
+        self.client.force_login(self.staff)
+        due_date = timezone.localdate() + timedelta(days=7)
+
+        response = self.client.post(
+            "/gestao/debitos/novo/",
+            {
+                "client": self.client_user.id,
+                "description": "Acerto combinado",
+                "amount": "220.00",
+                "due_date": due_date.isoformat(),
+                "create_payment_link": "on",
+            },
+        )
+
+        sale = CreditSale.objects.get(client=self.client_user, description="Acerto combinado")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(sale.total_amount, Decimal("220.00"))
+        self.assertEqual(sale.first_due_date, due_date)
+        self.assertEqual(sale.max_installments_allowed, self.client_user.profile.default_max_installments)
+        self.assertFalse(Debt.objects.filter(client=self.client_user, description="Acerto combinado").exists())
+        self.assertContains(response, "Link de pagamento gerado")
+        self.assertContains(response, f"/parcelamento/{sale.id}/")
+        self.assertTrue(
+            self.client_user.notifications.filter(
+                kind=Notification.SALE_AVAILABLE,
+                title="Pagamento disponivel para finalizar",
+            ).exists()
+        )
+
+        dashboard_response = self.client.get("/gestao/")
+
+        self.assertContains(dashboard_response, f"/parcelamento/{sale.id}/")
+
+        self.client_user.profile.phone_verified = True
+        self.client_user.profile.save(update_fields=["phone_verified"])
+        self.client.force_login(self.client_user)
+        client_response = self.client.get(f"/parcelamento/{sale.id}/")
+
+        self.assertContains(client_response, "Acerto combinado")
+        self.assertContains(client_response, "Op&ccedil;&otilde;es de pagamento", html=False)
+
+    def test_payment_link_requires_approved_client(self):
+        self.client_user.profile.registration_status = ClientProfile.PENDING
+        self.client_user.profile.save(update_fields=["registration_status"])
+        self.client.force_login(self.staff)
+
+        response = self.client.post(
+            "/gestao/debitos/novo/",
+            {
+                "client": self.client_user.id,
+                "description": "Link para pendente",
+                "amount": "220.00",
+                "due_date": (timezone.localdate() + timedelta(days=7)).isoformat(),
+                "create_payment_link": "on",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Apenas clientes aprovados podem receber link de pagamento.")
+        self.assertFalse(CreditSale.objects.filter(client=self.client_user, description="Link para pendente").exists())
+        self.assertFalse(Debt.objects.filter(client=self.client_user, description="Link para pendente").exists())
 
     def test_manual_debt_from_profile_returns_to_profile_and_is_visible(self):
         profile = self.client_user.profile

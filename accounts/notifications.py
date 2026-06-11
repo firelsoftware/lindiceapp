@@ -58,16 +58,23 @@ def create_credit_limit_increased_notification(profile, previous_limit):
 
 
 def create_sale_available_notification(sale):
+    has_products = sale.products.exists()
+    title = "Produto disponivel para finalizar" if has_products else "Pagamento disponivel para finalizar"
+    message = (
+        f"{sale.description}: acesse a loja para conferir os produtos separados "
+        "e escolher a forma de pagamento."
+    )
+
+    if not has_products:
+        message = f"{sale.description}: acesse o link enviado pela loja para escolher a forma de pagamento."
+
     return Notification.objects.get_or_create(
         unique_key=f"sale:{sale.id}:available:client:{sale.client_id}",
         defaults={
             "recipient": sale.client,
             "kind": Notification.SALE_AVAILABLE,
-            "title": "Produto disponivel para finalizar",
-            "message": (
-                f"{sale.description}: acesse a loja para conferir os produtos separados "
-                "e escolher a forma de pagamento."
-            ),
+            "title": title,
+            "message": message,
         },
     )
 

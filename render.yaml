@@ -1,5 +1,12 @@
 services:
   - type: web
+    name: lindice-site
+    runtime: static
+    rootDir: site
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: dist
+    pullRequestPreviewsEnabled: false
+  - type: web
     name: lindice-app
     runtime: python
     region: virginia
@@ -34,6 +41,8 @@ services:
       - key: STORE_PIX_KEY
         sync: false
       - key: MERCADO_PAGO_ACCESS_TOKEN
+        sync: false
+      - key: MERCADO_PAGO_ACCOUNT_URL
         sync: false
       - key: CARD_PAYMENT_ENABLED
         value: "true"
