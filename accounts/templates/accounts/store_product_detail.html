@@ -24,7 +24,11 @@
     <div class="detail-content">
         <div>
             <div class="detail-meta-line">
-                <span class="badge badge-success">Disponivel</span>
+                {% if product.requires_availability_confirmation %}
+                    <span class="badge badge-warning">Sob consulta</span>
+                {% else %}
+                    <span class="badge badge-success">Disponivel</span>
+                {% endif %}
                 {% if product.category %}<span class="badge">{{ product.category }}</span>{% endif %}
                 {% if product.brand %}<span class="detail-brand">{{ product.brand }}</span>{% endif %}
             </div>
@@ -41,30 +45,46 @@
         <section class="detail-purchase-card">
             <div class="detail-trust-grid">
                 <div class="trust-item">
-                    <strong>Compra segura</strong>
-                    <span>Pagamento protegido e aprovacao automatica pelo checkout.</span>
+                    {% if product.requires_availability_confirmation %}
+                        <strong>Confirmacao antes do fechamento</strong>
+                        <span>{{ customer_notice }}</span>
+                    {% else %}
+                        <strong>Compra segura</strong>
+                        <span>Pagamento protegido e aprovacao automatica pelo checkout.</span>
+                    {% endif %}
                 </div>
                 <div class="trust-item">
-                    <strong>Atualizacoes do pedido</strong>
-                    <span>Depois da aprovacao, voce recebe o andamento da compra e do envio.</span>
+                    {% if product.requires_availability_confirmation %}
+                        <strong>Atendimento humano</strong>
+                        <span>Depois do seu interesse, alinhamos disponibilidade e proximo passo com voce.</span>
+                    {% else %}
+                        <strong>Atualizacoes do pedido</strong>
+                        <span>Depois da aprovacao, voce recebe o andamento da compra e do envio.</span>
+                    {% endif %}
                 </div>
             </div>
         </section>
 
         <section class="detail-form-card">
-            <h2>Escolha seu tamanho</h2>
-            <form method="post" action="{% url 'cart_add' product.id %}">
-                {% csrf_token %}
-                <label for="selected-size">Tamanho</label>
-                <select id="selected-size" name="selected_size" required>
-                    <option value="">Selecione</option>
-                    {% for size in size_options %}
-                        <option value="{{ size }}">{{ size }}</option>
-                    {% endfor %}
-                </select>
-                <p class="size-help">Se tiver duvida, escolha o numero mais confortavel para seu uso diario.</p>
-                <button type="submit">Adicionar ao carrinho</button>
-            </form>
+            {% if product.requires_availability_confirmation %}
+                <h2>Consulta antes da compra</h2>
+                <p>{{ customer_notice }}</p>
+                <p class="size-help">Voce ainda pode usar os tamanhos exibidos como referencia antes do nosso retorno.</p>
+            {% else %}
+                <h2>Escolha seu tamanho</h2>
+                <form method="post" action="{% url 'cart_add' product.id %}">
+                    {% csrf_token %}
+                    <label for="selected-size">Tamanho</label>
+                    <select id="selected-size" name="selected_size" required>
+                        <option value="">Selecione</option>
+                        {% for size in size_options %}
+                            <option value="{{ size }}">{{ size }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="size-help">Se tiver duvida, escolha o numero mais confortavel para seu uso diario.</p>
+                    <button type="submit">Adicionar ao carrinho</button>
+                </form>
+            {% endif %}
         </section>
         <p><a href="{% url 'store_front' %}">Voltar para loja</a></p>
     </div>

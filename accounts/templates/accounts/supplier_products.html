@@ -22,9 +22,15 @@
 
 <section class="info-panel">
     <h2>Importar catalogo</h2>
-    <p>Voce pode baixar a planilha da Revenda uma vez por dia e enviar aqui. O app so libera tamanhos com pelo menos 3 unidades em estoque.</p>
+    <p>Voce pode baixar a planilha do dia e enviar aqui, ou usar a URL salva da fonte escolhida. O app so libera tamanhos com pelo menos 3 unidades em estoque.</p>
     <form method="post" action="{% url 'import_supplier_products' %}" enctype="multipart/form-data">
         {% csrf_token %}
+        <label for="catalog-source-file">Fonte</label>
+        <select id="catalog-source-file" name="source">
+            {% for source_value, source_label in source_choices %}
+                <option value="{{ source_value }}">{{ source_label }}</option>
+            {% endfor %}
+        </select>
         <label for="catalog-file">CSV ou XML do dia</label>
         <input id="catalog-file" name="catalog_file" type="file" accept=".csv,.xml,text/csv,text/xml,application/xml">
         <button type="submit">Importar arquivo baixado</button>
@@ -34,12 +40,37 @@
         <p>O catalogo esta configurado por variavel de ambiente. Use este botao no maximo quando precisar atualizar o estoque.</p>
         <form method="post" action="{% url 'import_supplier_products' %}">
             {% csrf_token %}
+            <input type="hidden" name="source" value="revenda_calcados">
             <button type="submit">Atualizar catalogo do fornecedor</button>
         </form>
     {% else %}
-        <p>Configure a variavel <strong>SHOE_SUPPLIER_CATALOG_URL</strong> no Render para habilitar a importacao.</p>
-        <p>Dentro da area do revendedor, procure o arquivo de produtos/estoque em CSV ou XML. Essa URL deve ficar em variavel de ambiente, nao no codigo.</p>
+        <p>Se preferir, salve a URL direto nas fontes abaixo e importe manualmente por aqui.</p>
     {% endif %}
+</section>
+
+<section class="info-panel">
+    <h2>Fontes de catalogo</h2>
+    <p>Deixei uma sugestao pronta para o segundo fornecedor: <strong>Parceiro sob consulta</strong>. Ele serve para itens em que a disponibilidade precisa ser confirmada antes de fechar.</p>
+    {% for source in catalog_sources %}
+        <article class="info-panel" style="margin-top: 1rem;">
+            <h3>{{ source.instance.get_source_display }}</h3>
+            <form method="post" action="{% url 'update_supplier_catalog_source' source.instance.source %}">
+                {% csrf_token %}
+                {{ source.form.as_p }}
+                <button type="submit">Salvar fonte</button>
+            </form>
+            {% if source.instance.catalog_url %}
+                <div class="action-row">
+                    <a class="button button-secondary" href="{{ source.instance.catalog_url }}" target="_blank" rel="noopener">Abrir catalogo</a>
+                    <form method="post" action="{% url 'import_supplier_products' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="source" value="{{ source.instance.source }}">
+                        <button type="submit">Importar URL salva</button>
+                    </form>
+                </div>
+            {% endif %}
+        </article>
+    {% endfor %}
 </section>
 
 <div class="summary-grid">
@@ -70,6 +101,15 @@
             <option value="hidden" {% if visibility == "hidden" %}selected{% endif %}>Ocultos</option>
             <option value="stock" {% if visibility == "stock" %}selected{% endif %}>Com estoque</option>
             <option value="inactive" {% if visibility == "inactive" %}selected{% endif %}>Inativos</option>
+        </select>
+    </div>
+    <div class="toolbar-field">
+        <label for="fonte">Fonte</label>
+        <select id="fonte" name="fonte">
+            <option value="" {% if not source_filter %}selected{% endif %}>Todas</option>
+            {% for source_value, source_label in source_choices %}
+                <option value="{{ source_value }}" {% if source_filter == source_value %}selected{% endif %}>{{ source_label }}</option>
+            {% endfor %}
         </select>
     </div>
     <button type="submit">Filtrar</button>
@@ -113,12 +153,16 @@
                 </td>
                 <td>{{ product.supplier_code }}</td>
                 <td>
+                    <span class="badge">{{ product.get_source_display }}</span><br>
                     {% if product.product_url %}
                         <a href="{{ product.product_url }}" target="_blank" rel="noopener">{{ product.name }}</a>
                     {% else %}
                         {{ product.name }}
                     {% endif %}
                     <br>
+                    {% if product.requires_availability_confirmation %}
+                        <span class="badge badge-warning">Sob consulta</span>
+                    {% endif %}
                     {% if product.is_active %}
                         <span class="badge badge-success">Ativo</span>
                     {% else %}
@@ -186,10 +230,10 @@
     <p>
         Pagina {{ products.number }} de {{ products.paginator.num_pages }} |
         {% if products.has_previous %}
-            <a href="?page={{ products.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if visibility %}&visibilidade={{ visibility }}{% endif %}">Anterior</a>
+            <a href="?page={{ products.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if visibility %}&visibilidade={{ visibility }}{% endif %}{% if source_filter %}&fonte={{ source_filter }}{% endif %}">Anterior</a>
         {% endif %}
         {% if products.has_next %}
-            <a href="?page={{ products.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if visibility %}&visibilidade={{ visibility }}{% endif %}">Proxima</a>
+            <a href="?page={{ products.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if visibility %}&visibilidade={{ visibility }}{% endif %}{% if source_filter %}&fonte={{ source_filter }}{% endif %}">Proxima</a>
         {% endif %}
     </p>
 {% endif %}

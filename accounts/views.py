@@ -24,8 +24,8 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, UserPasswordChangeForm
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, StoreOrder, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, UserPasswordChangeForm
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, StoreOrder, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
@@ -41,6 +41,8 @@ PARTNER_SALES_STATUSES = (
     StoreOrder.SHIPPED,
 )
 
+DEFAULT_WHATSAPP_NOTICE = "Em breve vamos entrar em contato para confirmar disponibilidade e finalizar pelo WhatsApp."
+
 
 def shipping_rates_payload():
     return {key: f"{value:.2f}" for key, value in SHIPPING_COSTS.items()}
@@ -51,6 +53,51 @@ def normalize_text(value):
     ascii_value = normalized.encode("ascii", "ignore").decode("ascii")
 
     return ascii_value.lower()
+
+
+def ensure_supplier_catalog_sources():
+    defaults = [
+        {
+            "source": SupplierProduct.SOURCE_REVENDA_CALCADOS,
+            "display_name": "Revenda de Calcados",
+            "catalog_format": getattr(settings, "SHOE_SUPPLIER_CATALOG_FORMAT", SupplierCatalogSource.FORMAT_CSV),
+            "supplier_panel_note": "Cole aqui a URL atual do catalogo da Revenda. Se preferir, voce ainda pode enviar o arquivo baixado do dia.",
+            "customer_notice": "",
+            "purchase_flow": SupplierCatalogSource.FLOW_STORE_CHECKOUT,
+            "is_active": True,
+        },
+        {
+            "source": SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
+            "display_name": "Parceiro sob consulta",
+            "catalog_format": SupplierCatalogSource.FORMAT_CSV,
+            "supplier_panel_note": "Sugestao de nome: Parceiro sob consulta. Use esta fonte para catalogos com disponibilidade mais instavel.",
+            "customer_notice": DEFAULT_WHATSAPP_NOTICE,
+            "purchase_flow": SupplierCatalogSource.FLOW_WHATSAPP_CONFIRMATION,
+            "is_active": True,
+        },
+    ]
+
+    sources = []
+    for payload in defaults:
+        source, _ = SupplierCatalogSource.objects.get_or_create(
+            source=payload["source"],
+            defaults=payload,
+        )
+        sources.append(source)
+
+    return sources
+
+
+def source_notice_for_customer(product):
+    if not product.requires_availability_confirmation():
+        return ""
+
+    source_config = SupplierCatalogSource.objects.filter(source=product.source, is_active=True).first()
+
+    if source_config and source_config.customer_notice:
+        return source_config.customer_notice
+
+    return DEFAULT_WHATSAPP_NOTICE
 
 
 def partner_sales_config(user):
@@ -742,6 +789,7 @@ def terms_of_use(request):
 
 
 def store_front(request):
+    ensure_supplier_catalog_sources()
     tennis_priority = Case(
         When(
             Q(category__icontains="tenis")
@@ -948,6 +996,12 @@ def store_front(request):
     for product in products:
         product.gallery = product.gallery_images()
         product.primary_image = product.gallery[0] if product.gallery else ""
+        product.customer_notice = source_notice_for_customer(product)
+
+    consultation_sources = SupplierCatalogSource.objects.filter(
+        is_active=True,
+        purchase_flow=SupplierCatalogSource.FLOW_WHATSAPP_CONFIRMATION,
+    )
 
     return render(
         request,
@@ -966,11 +1020,13 @@ def store_front(request):
             "welcome_discount_available": bool(get_welcome_discount_profile(request)),
             "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
             "boticario_store_url": settings.BOTICARIO_STORE_URL,
+            "consultation_sources": consultation_sources,
         },
     )
 
 
 def store_product_detail(request, product_id):
+    ensure_supplier_catalog_sources()
     product = get_object_or_404(
         SupplierProduct,
         id=product_id,
@@ -994,12 +1050,17 @@ def store_product_detail(request, product_id):
             "product": product,
             "size_options": size_options,
             "gallery_images": gallery,
+            "customer_notice": source_notice_for_customer(product),
         },
     )
 
 
 def cart_add(request, product_id):
     product = get_object_or_404(SupplierProduct, id=product_id, is_active=True, is_visible=True, stock_quantity__gt=0)
+
+    if product.requires_availability_confirmation():
+        messages.info(request, source_notice_for_customer(product))
+        return redirect("store_product_detail", product_id=product.id)
 
     if request.method == "POST":
         selected_size = request.POST.get("selected_size", "").strip()
@@ -1077,6 +1138,11 @@ def cart_checkout(request):
     if not items:
         messages.warning(request, "Seu carrinho esta vazio.")
         return redirect("cart_detail")
+
+    consultation_item = next((item for item in items if item["product"].requires_availability_confirmation()), None)
+    if consultation_item:
+        messages.info(request, source_notice_for_customer(consultation_item["product"]))
+        return redirect("store_product_detail", product_id=consultation_item["product"].id)
 
     welcome_profile = get_welcome_discount_profile(request)
     subtotal = money(sum((item["total"] for item in items), Decimal("0.00")))
@@ -1216,6 +1282,10 @@ def store_checkout(request, product_id):
         is_visible=True,
         stock_quantity__gt=0,
     )
+
+    if product.requires_availability_confirmation():
+        messages.info(request, source_notice_for_customer(product))
+        return redirect("store_product_detail", product_id=product.id)
 
     welcome_profile = get_welcome_discount_profile(request)
     welcome_discount = welcome_discount_amount(product.suggested_sale_price) if welcome_profile else Decimal("0.00")
@@ -2255,9 +2325,11 @@ def delete_product(request, product_id):
 
 @staff_member_required(login_url="login")
 def supplier_products(request):
+    ensure_supplier_catalog_sources()
     products = SupplierProduct.objects.order_by("-last_seen_at", "name")
     query = request.GET.get("q", "").strip()
     visibility = request.GET.get("visibilidade", "")
+    source_filter = request.GET.get("fonte", "").strip()
 
     if query:
         products = products.filter(
@@ -2276,6 +2348,9 @@ def supplier_products(request):
         products = products.filter(is_active=True, stock_quantity__gt=0)
     elif visibility == "inactive":
         products = products.filter(is_active=False)
+
+    if source_filter:
+        products = products.filter(source=source_filter)
 
     if request.method == "POST":
         edited_ids = request.POST.getlist("product_ids")
@@ -2320,13 +2395,41 @@ def supplier_products(request):
             "products": page_obj,
             "catalog_url_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
             "supplier_dropshipping_url": settings.SHOE_SUPPLIER_DROPSHIPPING_URL,
+            "catalog_sources": [
+                {
+                    "instance": source,
+                    "form": SupplierCatalogSourceForm(instance=source),
+                }
+                for source in SupplierCatalogSource.objects.all()
+            ],
             "query": query,
             "visibility": visibility,
-              "total_products": SupplierProduct.objects.count(),
-              "visible_products": SupplierProduct.objects.filter(is_visible=True).count(),
-              "stock_products": SupplierProduct.objects.filter(is_active=True, stock_quantity__gt=0).count(),
-          },
-      )
+            "source_filter": source_filter,
+            "source_choices": SupplierProduct.SOURCE_CHOICES,
+            "total_products": SupplierProduct.objects.count(),
+            "visible_products": SupplierProduct.objects.filter(is_visible=True).count(),
+            "stock_products": SupplierProduct.objects.filter(is_active=True, stock_quantity__gt=0).count(),
+        },
+    )
+
+
+@staff_member_required(login_url="login")
+def update_supplier_catalog_source(request, source_key):
+    ensure_supplier_catalog_sources()
+
+    if request.method != "POST":
+        return redirect("supplier_products")
+
+    source = get_object_or_404(SupplierCatalogSource, source=source_key)
+    form = SupplierCatalogSourceForm(request.POST, instance=source)
+
+    if not form.is_valid():
+        messages.error(request, f"Revise os dados de {source.display_name}.")
+        return redirect("supplier_products")
+
+    form.save()
+    messages.success(request, f"{source.display_name} foi atualizado.")
+    return redirect("supplier_products")
 
 
 @staff_member_required(login_url="login")
@@ -2394,10 +2497,23 @@ def import_supplier_products(request):
     if request.method != "POST":
         return redirect_to_supplier_products()
 
+    ensure_supplier_catalog_sources()
     uploaded_catalog = request.FILES.get("catalog_file")
+    source_key = request.POST.get("source", SupplierProduct.SOURCE_REVENDA_CALCADOS).strip() or SupplierProduct.SOURCE_REVENDA_CALCADOS
+    source_config = SupplierCatalogSource.objects.filter(source=source_key).first()
+    catalog_url = ""
+    catalog_format = getattr(settings, "SHOE_SUPPLIER_CATALOG_FORMAT", SupplierCatalogSource.FORMAT_CSV)
 
-    if not uploaded_catalog and not settings.SHOE_SUPPLIER_CATALOG_URL:
-        messages.error(request, "Envie um CSV/XML ou configure SHOE_SUPPLIER_CATALOG_URL antes de importar o catalogo.")
+    if source_config:
+        catalog_url = (source_config.catalog_url or "").strip()
+        catalog_format = source_config.catalog_format or catalog_format
+
+    if source_key == SupplierProduct.SOURCE_REVENDA_CALCADOS and not catalog_url:
+        catalog_url = settings.SHOE_SUPPLIER_CATALOG_URL
+        catalog_format = settings.SHOE_SUPPLIER_CATALOG_FORMAT
+
+    if not uploaded_catalog and not catalog_url:
+        messages.error(request, "Envie um CSV/XML ou salve uma URL de catalogo antes de importar.")
 
         return redirect_to_supplier_products()
 
@@ -2407,11 +2523,13 @@ def import_supplier_products(request):
             result = import_supplier_catalog_content(
                 decode_catalog_content(raw_content),
                 "xml" if uploaded_catalog.name.lower().endswith(".xml") else "csv",
+                source=source_key,
             )
         else:
             result = import_supplier_catalog(
-                settings.SHOE_SUPPLIER_CATALOG_URL,
-                settings.SHOE_SUPPLIER_CATALOG_FORMAT,
+                catalog_url,
+                catalog_format,
+                source=source_key,
             )
     except Exception as exc:
         logger.exception("Erro ao importar catalogo do fornecedor")

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils import timezone
 
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PersonalDebt, Product, ProductCost, StoreOrder, SupplierProduct, User, add_months
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PersonalDebt, Product, ProductCost, StoreOrder, SupplierCatalogSource, SupplierProduct, User, add_months
 from .notifications import create_credit_limit_increased_notification, create_registration_approved_notification
 
 
@@ -135,6 +135,13 @@ class SupplierProductAdmin(admin.ModelAdmin):
     list_filter = ("source", "is_active", "is_visible", "last_seen_at")
     search_fields = ("supplier_code", "name", "category", "brand")
     readonly_fields = ("raw_data", "last_seen_at", "created_at", "updated_at")
+
+
+@admin.register(SupplierCatalogSource)
+class SupplierCatalogSourceAdmin(admin.ModelAdmin):
+    list_display = ("display_name", "source", "catalog_format", "purchase_flow", "is_active", "updated_at")
+    list_filter = ("source", "catalog_format", "purchase_flow", "is_active")
+    search_fields = ("display_name", "catalog_url", "supplier_panel_note", "customer_notice")
 
 
 @admin.register(StoreOrder)

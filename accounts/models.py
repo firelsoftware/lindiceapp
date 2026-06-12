@@ -209,9 +209,11 @@ class ProductCost(models.Model):
 
 class SupplierProduct(models.Model):
     SOURCE_REVENDA_CALCADOS = "revenda_calcados"
+    SOURCE_PARCEIRO_SOB_CONSULTA = "parceiro_sob_consulta"
 
     SOURCE_CHOICES = [
         (SOURCE_REVENDA_CALCADOS, "Revenda de Calcados"),
+        (SOURCE_PARCEIRO_SOB_CONSULTA, "Parceiro sob consulta"),
     ]
 
     source = models.CharField(max_length=50, choices=SOURCE_CHOICES, default=SOURCE_REVENDA_CALCADOS)
@@ -244,6 +246,9 @@ class SupplierProduct(models.Model):
     def __str__(self):
         return f"{self.supplier_code} - {self.name}"
 
+    def requires_availability_confirmation(self):
+        return self.source == self.SOURCE_PARCEIRO_SOB_CONSULTA
+
     def store_margin(self):
         return self.suggested_sale_price - self.dropshipping_cost
 
@@ -260,6 +265,38 @@ class SupplierProduct(models.Model):
                 images.append(image_url)
 
         return images
+
+
+class SupplierCatalogSource(models.Model):
+    FORMAT_CSV = "csv"
+    FORMAT_XML = "xml"
+    FLOW_STORE_CHECKOUT = "store_checkout"
+    FLOW_WHATSAPP_CONFIRMATION = "whatsapp_confirmation"
+
+    FORMAT_CHOICES = [
+        (FORMAT_CSV, "CSV"),
+        (FORMAT_XML, "XML"),
+    ]
+    FLOW_CHOICES = [
+        (FLOW_STORE_CHECKOUT, "Checkout normal da loja"),
+        (FLOW_WHATSAPP_CONFIRMATION, "Confirmar disponibilidade e finalizar no WhatsApp"),
+    ]
+
+    source = models.CharField(max_length=50, choices=SupplierProduct.SOURCE_CHOICES, unique=True)
+    display_name = models.CharField(max_length=80)
+    catalog_url = models.URLField(blank=True)
+    catalog_format = models.CharField(max_length=10, choices=FORMAT_CHOICES, default=FORMAT_CSV)
+    supplier_panel_note = models.TextField(blank=True)
+    customer_notice = models.TextField(blank=True)
+    purchase_flow = models.CharField(max_length=30, choices=FLOW_CHOICES, default=FLOW_STORE_CHECKOUT)
+    is_active = models.BooleanField(default=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["display_name"]
+
+    def __str__(self):
+        return self.display_name
 
 
 class StoreOrder(models.Model):

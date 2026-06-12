@@ -205,7 +205,12 @@ def row_to_payload(row, row_number):
     }
 
 
-def import_supplier_catalog_content(content, catalog_format="csv", deactivate_missing=True):
+def import_supplier_catalog_content(
+    content,
+    catalog_format="csv",
+    deactivate_missing=True,
+    source=SupplierProduct.SOURCE_REVENDA_CALCADOS,
+):
     catalog_format = (catalog_format or "csv").lower()
 
     if catalog_format == "xml":
@@ -224,7 +229,7 @@ def import_supplier_catalog_content(content, catalog_format="csv", deactivate_mi
         payload = row_to_payload(row, row_number)
         supplier_code = payload.pop("supplier_code")
         product, was_created = SupplierProduct.objects.update_or_create(
-            source=SupplierProduct.SOURCE_REVENDA_CALCADOS,
+            source=source,
             supplier_code=supplier_code,
             defaults=payload,
         )
@@ -236,7 +241,7 @@ def import_supplier_catalog_content(content, catalog_format="csv", deactivate_mi
             updated += 1
 
     if seen_ids and deactivate_missing:
-        SupplierProduct.objects.filter(source=SupplierProduct.SOURCE_REVENDA_CALCADOS).exclude(id__in=seen_ids).update(is_active=False)
+        SupplierProduct.objects.filter(source=source).exclude(id__in=seen_ids).update(is_active=False)
 
     return {
         "created": created,
@@ -245,5 +250,5 @@ def import_supplier_catalog_content(content, catalog_format="csv", deactivate_mi
     }
 
 
-def import_supplier_catalog(url, catalog_format="csv"):
-    return import_supplier_catalog_content(fetch_catalog(url), catalog_format)
+def import_supplier_catalog(url, catalog_format="csv", source=SupplierProduct.SOURCE_REVENDA_CALCADOS):
+    return import_supplier_catalog_content(fetch_catalog(url), catalog_format, source=source)

@@ -9,7 +9,7 @@ from django.test import Client, RequestFactory, TestCase, override_settings
 from django.utils import timezone
 
 from .forms import RegisterForm
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, StoreOrder, SupplierProduct, User, add_months
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, StoreOrder, SupplierCatalogSource, SupplierProduct, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference
 from .store_shipping import shipping_cost_for
@@ -787,6 +787,47 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, 'class="product-gallery product-gallery-detail"', html=False)
         self.assertContains(response, "/static/accounts/catalog-test/botas/1.958-4a.jpg")
         self.assertContains(response, "/static/accounts/catalog-test/botas/1.958-4b.jpg")
+
+    def test_store_product_detail_for_consultation_source_hides_cart_flow(self):
+        SupplierCatalogSource.objects.update_or_create(
+            source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
+            defaults={
+                "display_name": "Parceiro sob consulta",
+                "customer_notice": "Em breve vamos entrar em contato para confirmar disponibilidade e finalizar pelo WhatsApp.",
+                "purchase_flow": SupplierCatalogSource.FLOW_WHATSAPP_CONFIRMATION,
+            },
+        )
+        product = self.create_supplier_product(
+            source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
+            supplier_code="SC001",
+            name="Bota sob consulta",
+        )
+
+        response = self.client.get(f"/loja/produto/{product.id}/")
+
+        self.assertContains(response, "Sob consulta")
+        self.assertContains(response, "finalizar pelo WhatsApp")
+        self.assertNotContains(response, "Adicionar ao carrinho")
+
+    def test_cart_add_blocks_consultation_source_product(self):
+        SupplierCatalogSource.objects.update_or_create(
+            source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
+            defaults={
+                "display_name": "Parceiro sob consulta",
+                "customer_notice": "Em breve vamos entrar em contato para confirmar disponibilidade e finalizar pelo WhatsApp.",
+                "purchase_flow": SupplierCatalogSource.FLOW_WHATSAPP_CONFIRMATION,
+            },
+        )
+        product = self.create_supplier_product(
+            source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
+            supplier_code="SC002",
+        )
+
+        response = self.client.post(f"/loja/carrinho/adicionar/{product.id}/", {"selected_size": "35"}, follow=True)
+
+        self.assertRedirects(response, f"/loja/produto/{product.id}/")
+        self.assertContains(response, "finalizar pelo WhatsApp")
+        self.assertEqual(self.client.session.get("store_cart", {}), {})
 
     def test_guest_header_exposes_login_and_register_paths(self):
         response = self.client.get("/loja/")
@@ -1668,6 +1709,78 @@ class StoreFlowTests(TestCase):
         self.assertEqual(product.stock_quantity, 8)
         self.assertEqual(product.sizes, "35,36")
         self.assertEqual(product.image_url, "https://www.revendadecalcados.com.br/foto1.jpg")
+
+    @patch("accounts.views.import_supplier_catalog")
+    def test_supplier_panel_imports_from_saved_source_url(self, mocked_import):
+        staff = User.objects.create_superuser(
+            email="admin-import-url@example.com",
+            password="Teste12345!",
+            full_name="Admin Import URL",
+            preferred_name="Admin",
+        )
+        self.client.force_login(staff)
+        SupplierCatalogSource.objects.update_or_create(
+            source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
+            defaults={
+                "display_name": "Parceiro sob consulta",
+                "catalog_url": "https://example.com/catalogo.xml",
+                "catalog_format": SupplierCatalogSource.FORMAT_XML,
+                "purchase_flow": SupplierCatalogSource.FLOW_WHATSAPP_CONFIRMATION,
+            },
+        )
+        mocked_import.return_value = {"created": 2, "updated": 3, "total": 5}
+
+        response = self.client.post(
+            "/gestao/fornecedor/importar/",
+            {
+                "source": SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
+            },
+            follow=True,
+        )
+
+        self.assertRedirects(response, "/gestao/fornecedor/produtos/")
+        mocked_import.assert_called_once_with(
+            "https://example.com/catalogo.xml",
+            SupplierCatalogSource.FORMAT_XML,
+            source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
+        )
+        self.assertContains(response, "Catalogo atualizado: 2 novos, 3 atualizados, 5 lidos.")
+
+    def test_supplier_panel_updates_saved_source_settings(self):
+        staff = User.objects.create_superuser(
+            email="admin-source-settings@example.com",
+            password="Teste12345!",
+            full_name="Admin Source Settings",
+            preferred_name="Admin",
+        )
+        self.client.force_login(staff)
+        source, _ = SupplierCatalogSource.objects.update_or_create(
+            source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
+            defaults={
+                "display_name": "Parceiro sob consulta",
+                "purchase_flow": SupplierCatalogSource.FLOW_WHATSAPP_CONFIRMATION,
+            },
+        )
+
+        response = self.client.post(
+            f"/gestao/fornecedor/fontes/{source.source}/",
+            {
+                "display_name": "Catalogo sob consulta",
+                "catalog_url": "https://example.com/catalogo.csv",
+                "catalog_format": SupplierCatalogSource.FORMAT_CSV,
+                "purchase_flow": SupplierCatalogSource.FLOW_WHATSAPP_CONFIRMATION,
+                "supplier_panel_note": "Atualizo essa URL manualmente.",
+                "customer_notice": "Em breve vamos entrar em contato para confirmar disponibilidade e finalizar pelo WhatsApp.",
+                "is_active": "on",
+            },
+            follow=True,
+        )
+        source.refresh_from_db()
+
+        self.assertRedirects(response, "/gestao/fornecedor/produtos/")
+        self.assertEqual(source.display_name, "Catalogo sob consulta")
+        self.assertEqual(source.catalog_url, "https://example.com/catalogo.csv")
+        self.assertContains(response, "Catalogo sob consulta foi atualizado.")
 
     def test_supplier_import_route_redirects_get_to_supplier_products(self):
         staff = User.objects.create_superuser(

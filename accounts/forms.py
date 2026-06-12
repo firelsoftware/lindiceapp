@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 from django.utils import timezone
 
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, User
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, SupplierCatalogSource, User
 from .store_shipping import shipping_choices_with_prices
 from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
 
@@ -337,6 +337,37 @@ class PersonalDebtForm(forms.ModelForm):
             raise ValidationError("Informe um valor maior que zero.")
 
         return amount
+
+
+class SupplierCatalogSourceForm(forms.ModelForm):
+    class Meta:
+        model = SupplierCatalogSource
+        fields = (
+            "display_name",
+            "catalog_url",
+            "catalog_format",
+            "purchase_flow",
+            "supplier_panel_note",
+            "customer_notice",
+            "is_active",
+        )
+        labels = {
+            "display_name": "Nome da fonte",
+            "catalog_url": "URL do catalogo",
+            "catalog_format": "Formato",
+            "purchase_flow": "Como esse fornecedor fecha a venda",
+            "supplier_panel_note": "Observacao interna",
+            "customer_notice": "Mensagem para o cliente",
+            "is_active": "Fonte ativa",
+        }
+        help_texts = {
+            "catalog_url": "Cole aqui a URL atual do CSV ou XML. Voce pode trocar quando quiser.",
+            "customer_notice": "Esse texto aparece para o cliente quando a compra depender de confirmacao manual.",
+        }
+        widgets = {
+            "supplier_panel_note": forms.Textarea(attrs={"rows": 3}),
+            "customer_notice": forms.Textarea(attrs={"rows": 3}),
+        }
 
     def clean_color(self):
         color = (self.cleaned_data["color"] or "").strip()
