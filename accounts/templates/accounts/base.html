@@ -3015,6 +3015,8 @@
                     <button type="button" data-linde-prompt="me dê um resumo">Resumo</button>
                     <button type="button" data-linde-prompt="quais proximos passos">Proximos passos</button>
                     <button type="button" data-linde-prompt="o que voce ve nesta tela">Tela atual</button>
+                    <button type="button" data-linde-prompt="me ajuda com estilo e moda">Moda</button>
+                    <button type="button" data-linde-prompt="me ajuda com foco e meditacao">Foco</button>
                 </div>
                 <form class="linde-assistant-form" data-linde-form>
                     <input type="text" name="message" placeholder="Pergunte algo para a Línde">
@@ -3183,6 +3185,25 @@
             var quickButtons = assistant.querySelectorAll("[data-linde-prompt]");
             var pageName = (assistant.getAttribute("data-page-name") || "").toLowerCase();
             var pagePath = assistant.getAttribute("data-page-path") || "";
+            var storageKey = "lindeAssistantMemory:v1";
+            var maxStoredMessages = 14;
+            var memory = [];
+
+            function loadMemory() {
+                try {
+                    memory = JSON.parse(window.localStorage.getItem(storageKey) || "[]");
+                } catch (error) {
+                    memory = [];
+                }
+            }
+
+            function saveMemory() {
+                try {
+                    window.localStorage.setItem(storageKey, JSON.stringify(memory.slice(-maxStoredMessages)));
+                } catch (error) {
+                    return null;
+                }
+            }
 
             function addMessage(kind, text) {
                 var bubble = document.createElement("div");
@@ -3190,11 +3211,41 @@
                 bubble.textContent = text;
                 messages.appendChild(bubble);
                 messages.scrollTop = messages.scrollHeight;
+                memory.push({ kind: kind, text: text });
+                memory = memory.slice(-maxStoredMessages);
+                saveMemory();
+            }
+
+            function addInitialMessage(kind, text) {
+                var bubble = document.createElement("div");
+                bubble.className = "linde-assistant-bubble " + (kind === "user" ? "linde-assistant-bubble-user" : "linde-assistant-bubble-linde");
+                bubble.textContent = text;
+                messages.appendChild(bubble);
             }
 
             function currentHeading() {
                 var heading = document.querySelector("main h1");
                 return heading ? heading.textContent.trim() : "";
+            }
+
+            function textIncludes(text, words) {
+                return words.some(function (word) {
+                    return text.indexOf(word) >= 0;
+                });
+            }
+
+            function recentUserIntent() {
+                var recentUsers = memory.filter(function (entry) {
+                    return entry.kind === "user";
+                }).slice(-3);
+
+                return recentUsers.map(function (entry) {
+                    return entry.text.toLowerCase();
+                }).join(" ");
+            }
+
+            function toneIntro() {
+                return "Vou te responder de forma pratica, com o pe no chao e sem enrolacao.";
             }
 
             function summarizeCurrentPage() {
@@ -3231,12 +3282,81 @@
                 return "Estou acompanhando a tela com voce. Posso resumir o contexto, sugerir proximos passos e responder duvidas operacionais do app.";
             }
 
+            function answerFashion() {
+                return toneIntro() + " Em moda, eu pensaria em contraste inteligente: uma base neutra forte, um ponto de cor assinatura e acabamento limpo. Para a Líndice, roxo, preto, jeans escuro e metal frio funcionam muito bem. Se a ideia for vitrine ou avatar, a roupa precisa parecer desejavel sem competir com a funcao do app.";
+            }
+
+            function answerMakeup() {
+                return "Na maquiagem, eu seguiria por equilibrio: pele polida, olhar marcante e boca mais controlada ou o contrario. Para uma persona como a Línde, delineado preciso, sobrancelha bem definida e um toque ameixa ou rosado conversa bem com a identidade dela sem ficar caricata.";
+            }
+
+            function answerNutrition() {
+                return "Em nutricao, meu foco seria consistencia antes de perfeicao: proteina suficiente, boa hidratacao, carboidrato coerente com rotina e vegetais de verdade no dia. Se voce quiser, eu tambem consigo te ajudar a transformar isso em linguagem mais simples para cliente final.";
+            }
+
+            function answerKickboxing() {
+                return "No kickboxing, eu gosto de pensar em base, giro de quadril, guarda responsavel e condicionamento. Quem evolui mais rapido normalmente nao e quem bate mais forte de inicio, e sim quem repete tecnica limpa sem perder equilibrio. Se a vibe da Línde puxar luta, eu faria isso mais como postura e disciplina do que agressividade.";
+            }
+
+            function answerRock() {
+                return "Rock entra bem na personalidade dela como atitude, textura e ritmo. Nao precisa virar fantasia: basta uma energia mais confiante, um visual com contraste e frases mais afiadas. Pensando em interface, isso funciona melhor como detalhe de linguagem do que como excesso visual.";
+            }
+
+            function answerHarryPotter() {
+                return "Se voce puxar Harry Potter, eu usaria a referencia mais para atmosfera: inteligencia, intuicao, casa certa, simbolos discretos, nada muito literal. Fica melhor quando a pessoa percebe a influencia sem parecer fanservice jogado.";
+            }
+
+            function answerGameOfThrones() {
+                return "Game of Thrones pode inspirar presenca, estrategia e leitura de poder. O que eu aproveitaria para a Línde e a sensacao de personagem que observa o tabuleiro inteiro antes de agir, nao necessariamente a estetica medieval.";
+            }
+
+            function answerPsychology() {
+                return "Em psicologia, uma regra boa para personagem e tambem para produto e: comportamento quase sempre e mistura de desejo, medo e contexto. Quando a experiencia do app trava, normalmente a pessoa nao precisa de mais informacao; ela precisa de menos friccao e mais seguranca.";
+            }
+
+            function answerMedication() {
+                return "Com medicacoes, eu consigo ajudar com organizacao, perguntas importantes e sinais de cautela, mas nao vou substituir medico ou farmacêutico. O jeito seguro e confirmar nome, dose, horario, interacoes e objetivo de uso antes de qualquer decisao.";
+            }
+
+            function answerSupplements() {
+                return "Suplemento alimentar pode fazer sentido, mas eu evitaria promessa facil. Normalmente a ordem mais madura e: revisar sono, comida, agua, treino e exames, e so depois ver se creatina, proteina, cafeina ou outro suplemento realmente fecha uma lacuna.";
+            }
+
+            function answerMemory() {
+                return "Para memoria, eu priorizo tres coisas: repeticao com espacamento, associacao visual e reducao de ruido. Tentar lembrar tudo no improviso quase sempre falha; criar poucos gatilhos bons funciona muito melhor.";
+            }
+
+            function answerMeditation() {
+                return "Meditacao, para mim, e menos sobre apagar a mente e mais sobre notar sem ser arrastado. Se o objetivo for foco, dois ou cinco minutos feitos de verdade todos os dias costumam render mais do que uma sessao grande e rara.";
+            }
+
+            function answerPageAware(promptText) {
+                if (pagePath.indexOf("/gestao/") !== 0) {
+                    return null;
+                }
+
+                if (textIncludes(promptText, ["moda", "maquiagem", "rock", "harry", "potter", "game of thrones", "got"])) {
+                    return "Pensando nessa tela do admin, eu usaria esses repertorios mais para posicionamento da marca, tom da assistente e curadoria visual, nao para poluir a operacao. " + summarizeCurrentPage();
+                }
+
+                if (textIncludes(promptText, ["nutri", "suplement", "medita", "memoria", "psicolog", "medic", "remedio"])) {
+                    return "Mesmo nesses temas mais amplos, eu manteria a assistente do admin com foco em orientar decisao, organizacao e clareza. " + summarizeCurrentPage();
+                }
+
+                return null;
+            }
+
             function respond(prompt) {
                 var text = (prompt || "").trim().toLowerCase();
-                var heading = currentHeading();
+                var contextTrail = recentUserIntent();
+                var pageAware = answerPageAware(text);
 
                 if (!text) {
                     return "Manda a duvida do jeito mais natural possivel. Eu consigo te ajudar com resumo da tela, proximos passos e navegacao do admin.";
+                }
+
+                if (pageAware) {
+                    return pageAware;
                 }
 
                 if (text.indexOf("resumo") >= 0 || text.indexOf("o que voce ve") >= 0 || text.indexOf("tela") >= 0) {
@@ -3259,6 +3379,54 @@
                     return "Se voce quiser um caminho rapido, eu faco assim: revisar o objetivo da tela, checar alertas ou gargalos visiveis e depois agir no proximo registro prioritario.";
                 }
 
+                if (textIncludes(text, ["moda", "look", "roupa", "estilo", "fashion"])) {
+                    return answerFashion();
+                }
+
+                if (textIncludes(text, ["maquiagem", "make", "batom", "delineado", "pele"])) {
+                    return answerMakeup();
+                }
+
+                if (textIncludes(text, ["nutri", "alimenta", "dieta", "proteina", "carbo", "refeicao"])) {
+                    return answerNutrition();
+                }
+
+                if (textIncludes(text, ["kickbox", "kikbox", "muay", "guarda", "chute", "luta"])) {
+                    return answerKickboxing();
+                }
+
+                if (textIncludes(text, ["rock", "musica", "banda"])) {
+                    return answerRock();
+                }
+
+                if (textIncludes(text, ["harry", "potter", "hogwarts", "gryffindor", "slytherin"])) {
+                    return answerHarryPotter();
+                }
+
+                if (textIncludes(text, ["game of thrones", "got", "stark", "targaryen", "lannister", "westeros"])) {
+                    return answerGameOfThrones();
+                }
+
+                if (textIncludes(text, ["psicolog", "comportamento", "emocao", "ansiedade", "mente"])) {
+                    return answerPsychology();
+                }
+
+                if (textIncludes(text, ["medic", "remedio", "dose", "farmaco", "tarja"])) {
+                    return answerMedication();
+                }
+
+                if (textIncludes(text, ["suplement", "creatina", "whey", "vitamina", "pre treino"])) {
+                    return answerSupplements();
+                }
+
+                if (textIncludes(text, ["memoria", "lembrar", "estudo", "decorar", "revisao"])) {
+                    return answerMemory();
+                }
+
+                if (textIncludes(text, ["medit", "respira", "mindfulness", "foco"])) {
+                    return answerMeditation();
+                }
+
                 if (text.indexOf("cliente") >= 0) {
                     return "Quando o assunto e cliente, eu costumo pensar em tres eixos: cadastro, limite/financeiro e acao comercial. Se quiser, eu posso te orientar pelo fluxo certo.";
                 }
@@ -3275,7 +3443,15 @@
                     return "No financeiro eu tento reduzir ambiguidade: o que entra, o que sai, o que vence antes e qual saldo final isso cria. Se faltar clareza nisso, eu priorizo esse ajuste.";
                 }
 
-                return "Entendi. Minha leitura inicial e: " + summarizeCurrentPage() + " Se quiser, me pergunte por resumo, proximos passos, clientes, vendas, fornecedor ou financeiro.";
+                if (contextTrail && textIncludes(contextTrail, ["moda", "maquiagem", "rock"])) {
+                    return "Estou acompanhando sua linha criativa. Se o objetivo for personalidade da Línde, eu manteria elegancia, atitude e leitura facil. Posso detalhar roupa, tom de voz ou presenca visual.";
+                }
+
+                if (contextTrail && textIncludes(contextTrail, ["psicolog", "medit", "memoria", "nutri"])) {
+                    return "Estou pegando a linha mais mental e de performance. Se quiser, eu organizo isso em pilares praticos: foco, energia, clareza emocional e consistencia.";
+                }
+
+                return "Entendi. Minha leitura inicial e: " + summarizeCurrentPage() + " Tambem consigo conversar sobre moda, maquiagem, nutricao, kickboxing, rock, Harry Potter, Game of Thrones, psicologia, medicacoes, suplementos, memoria e meditacao.";
             }
 
             function openAssistant() {
@@ -3322,8 +3498,17 @@
                 input.value = "";
             });
 
-            addMessage("linde", "Oi, eu sou a Línde IA. Estou em teste no seu admin e posso te ajudar a ler a tela, pensar no proximo passo e encontrar o melhor fluxo.");
-            addMessage("linde", summarizeCurrentPage());
+            loadMemory();
+
+            if (memory.length) {
+                memory.forEach(function (entry) {
+                    addInitialMessage(entry.kind, entry.text);
+                });
+                messages.scrollTop = messages.scrollHeight;
+            } else {
+                addMessage("linde", "Oi, eu sou a Línde IA. Estou em teste no seu admin e posso te ajudar a ler a tela, pensar no proximo passo, manter contexto e tambem conversar com repertorio mais amplo quando isso fizer sentido.");
+                addMessage("linde", summarizeCurrentPage());
+            }
         })();
         {% endif %}
 
