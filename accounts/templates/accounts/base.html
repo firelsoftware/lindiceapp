@@ -104,6 +104,7 @@
 
         .app-shell {
             position: relative;
+            padding-bottom: 6px;
         }
 
         .app-splash {
@@ -396,7 +397,7 @@
 
         .app-menu {
             position: absolute;
-            top: calc(100% + 10px);
+            top: calc(100% + 4px);
             right: 0;
             display: none;
             min-width: 230px;
@@ -3190,17 +3191,17 @@
                 toggle.setAttribute("aria-expanded", open ? "true" : "false");
             }
 
-            toggle.addEventListener("click", function (event) {
-                event.stopPropagation();
-                setMenu(!shell.classList.contains("menu-open"));
-            });
-
-            toggle.addEventListener("mouseenter", function () {
+            shell.addEventListener("mouseenter", function () {
                 setMenu(true);
             });
 
-            toggle.addEventListener("mouseleave", function () {
+            shell.addEventListener("mouseleave", function () {
                 scheduleClose();
+            });
+
+            toggle.addEventListener("click", function (event) {
+                event.stopPropagation();
+                setMenu(!shell.classList.contains("menu-open"));
             });
 
             panel.addEventListener("mouseenter", function () {
