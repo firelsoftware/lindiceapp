@@ -2344,6 +2344,7 @@
             position: fixed;
             right: 18px;
             bottom: 18px;
+            max-width: calc(100vw - 20px);
             z-index: 30;
             display: grid;
             justify-items: end;
@@ -2351,7 +2352,8 @@
         }
 
         .linde-assistant-panel {
-            width: min(320px, calc(100vw - 28px));
+            width: min(320px, calc(100vw - 24px));
+            max-width: calc(100vw - 24px);
             padding: 16px;
             border: 1px solid rgba(122, 45, 132, 0.18);
             border-radius: 22px;
@@ -2747,6 +2749,36 @@
         @media (max-width: 640px) {
             .topbar {
                 padding: 12px 18px;
+            }
+
+            .linde-assistant {
+                right: 12px;
+                bottom: 12px;
+                left: 12px;
+                max-width: none;
+            }
+
+            .linde-assistant-panel {
+                width: min(100%, 340px);
+                max-width: 100%;
+            }
+
+            .linde-assistant-launcher {
+                width: 82px;
+                height: 82px;
+            }
+
+            .linde-assistant-avatar {
+                width: 76px;
+                height: 76px;
+            }
+
+            .linde-assistant-form {
+                grid-template-columns: 1fr;
+            }
+
+            .linde-assistant-form button {
+                min-width: 0;
             }
 
             .brand {
@@ -3476,6 +3508,14 @@
                 return "Eu guardo um contexto curto da nossa conversa neste navegador para responder melhor sem te fazer repetir tudo. Se quiser limpar e recomecar do zero, usa o botao de limpar memoria.";
             }
 
+            function answerGreeting(promptText) {
+                if (textIncludes(promptText, ["bom dia", "boa tarde", "boa noite", "oi", "ola", "e ai", "olá"])) {
+                    return "Bom te ver por aqui. Estou com voce. Se quiser, posso te ajudar direto com essa tela ou com qualquer decisao do app.";
+                }
+
+                return null;
+            }
+
             function answerPageAware(promptText) {
                 if (pagePath.indexOf("/gestao/") !== 0) {
                     return null;
@@ -3499,6 +3539,12 @@
 
                 if (!text) {
                     return "Manda a duvida do jeito mais natural possivel. Eu consigo te ajudar com resumo da tela, proximos passos e navegacao do admin.";
+                }
+
+                var greeting = answerGreeting(text);
+
+                if (greeting) {
+                    return greeting;
                 }
 
                 if (pageAware) {
@@ -3605,7 +3651,7 @@
                     return "Estou pegando a linha mais mental e de performance. Se quiser, eu organizo isso em pilares praticos: foco, energia, clareza emocional e consistencia.";
                 }
 
-                return personaFlavor() + " " + "Minha leitura inicial e: " + summarizeCurrentPage() + " Tambem consigo conversar sobre moda, maquiagem, nutricao, kickboxing, rock, Harry Potter, Game of Thrones, psicologia, medicacoes, suplementos, memoria e meditacao.";
+                return personaFlavor() + " " + "Minha leitura inicial e: " + summarizeCurrentPage();
             }
 
             function answerWithPresence(prompt) {
@@ -3695,7 +3741,7 @@
                 messages.scrollTop = messages.scrollHeight;
                 setStatus("Memoria recente restaurada.");
             } else {
-                addMessage("linde", "Oi, eu sou a Línde IA. Estou em teste no seu admin e posso te ajudar a ler a tela, pensar no proximo passo, manter contexto e tambem conversar com repertorio mais amplo quando isso fizer sentido.");
+                addMessage("linde", "Oi, eu sou a Línde IA.");
                 addMessage("linde", summarizeCurrentPage());
             }
         })();
