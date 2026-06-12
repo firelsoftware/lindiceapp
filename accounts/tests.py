@@ -1535,6 +1535,7 @@ class StoreFlowTests(TestCase):
             "/painel/financas/",
             {
                 "title": "Aluguel apartamento",
+                "entry_type": PersonalDebt.TYPE_DEBT,
                 "category": PersonalDebt.CATEGORY_RENT,
                 "color": "#ff6b57",
                 "amount": "1200.00",
@@ -1545,8 +1546,53 @@ class StoreFlowTests(TestCase):
 
         debt = PersonalDebt.objects.get(client=user, title="Aluguel apartamento")
         self.assertRedirects(response, "/painel/financas/")
+        self.assertEqual(debt.entry_type, PersonalDebt.TYPE_DEBT)
         self.assertEqual(debt.category, PersonalDebt.CATEGORY_RENT)
         self.assertEqual(debt.color, "#ff6b57")
+
+    def test_customer_finances_shows_receivables_and_balance(self):
+        user = User.objects.create_user(
+            email="cliente-financas-recebiveis@example.com",
+            password="Teste12345!",
+            full_name="Cliente Recebiveis",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-financas-recebiveis",
+            cpf_last_digits="6644",
+            phone="61999992222",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+        )
+        PersonalDebt.objects.create(
+            client=user,
+            title="Aluguel",
+            entry_type=PersonalDebt.TYPE_DEBT,
+            category=PersonalDebt.CATEGORY_RENT,
+            color="#ff6b57",
+            amount=Decimal("1200.00"),
+            due_date=timezone.localdate() + timedelta(days=3),
+        )
+        PersonalDebt.objects.create(
+            client=user,
+            title="Freela",
+            entry_type=PersonalDebt.TYPE_RECEIVABLE,
+            category=PersonalDebt.CATEGORY_OTHER,
+            color="#16a34a",
+            amount=Decimal("1500.00"),
+            due_date=timezone.localdate() + timedelta(days=6),
+        )
+        self.client.force_login(user)
+
+        response = self.client.get("/painel/financas/")
+
+        self.assertContains(response, "Recebiveis")
+        self.assertContains(response, "Recebiveis deste mes")
+        self.assertContains(response, "Diferenca entre recebiveis e dividas")
+        self.assertContains(response, "+R$ 300,00")
 
     def test_customer_finances_page_forbids_staff_access(self):
         staff = User.objects.create_superuser(

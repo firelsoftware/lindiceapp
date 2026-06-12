@@ -425,9 +425,12 @@ def build_store_commitment_entry(debt):
         "title": debt.description,
         "due_date": debt.due_date,
         "amount": debt.total_amount(),
+        "signed_amount": -debt.total_amount(),
         "days_late": debt.days_late(),
         "kind": "store",
         "kind_label": "Lindice",
+        "entry_type": PersonalDebt.TYPE_DEBT,
+        "entry_type_label": "Divida",
         "category_label": "Compra no app",
         "chip_style": {"background": "#e7ecf2", "text": "#475467"},
         "notes": "",
@@ -435,13 +438,18 @@ def build_store_commitment_entry(debt):
 
 
 def build_personal_commitment_entry(debt):
+    signed_amount = debt.total_amount() if debt.entry_type == PersonalDebt.TYPE_RECEIVABLE else -debt.total_amount()
+
     return {
         "title": debt.title,
         "due_date": debt.due_date,
         "amount": debt.total_amount(),
+        "signed_amount": signed_amount,
         "days_late": debt.days_late(),
         "kind": "personal",
         "kind_label": "Pessoal",
+        "entry_type": debt.entry_type,
+        "entry_type_label": debt.get_entry_type_display(),
         "category_label": debt.get_category_display(),
         "chip_style": personal_debt_color_style(debt.color),
         "notes": debt.notes,
@@ -463,8 +471,13 @@ def build_customer_finance_context(user):
     due_this_month = [debt for debt in commitments if month_start <= debt["due_date"] <= month_end]
     future_debts = [debt for debt in commitments if debt["due_date"] > month_end]
     next_debt = commitments[0] if commitments else None
-    personal_due_this_month = [debt for debt in due_this_month if debt["kind"] == "personal"]
-    personal_future_debts = [debt for debt in future_debts if debt["kind"] == "personal"]
+    personal_due_this_month = [debt for debt in due_this_month if debt["kind"] == "personal" and debt["entry_type"] == PersonalDebt.TYPE_DEBT]
+    personal_future_debts = [debt for debt in future_debts if debt["kind"] == "personal" and debt["entry_type"] == PersonalDebt.TYPE_DEBT]
+    receivables_this_month = [debt for debt in due_this_month if debt["kind"] == "personal" and debt["entry_type"] == PersonalDebt.TYPE_RECEIVABLE]
+    future_receivables = [debt for debt in future_debts if debt["kind"] == "personal" and debt["entry_type"] == PersonalDebt.TYPE_RECEIVABLE]
+    debt_total = sum((-debt["signed_amount"] for debt in commitments if debt["signed_amount"] < 0), Decimal("0.00"))
+    receivable_total = sum((debt["signed_amount"] for debt in commitments if debt["signed_amount"] > 0), Decimal("0.00"))
+    net_balance = receivable_total - debt_total
 
     return {
         "today": today,
@@ -473,12 +486,17 @@ def build_customer_finance_context(user):
         "future_debts": future_debts,
         "personal_due_this_month": personal_due_this_month,
         "personal_future_debts": personal_future_debts,
+        "receivables_this_month": receivables_this_month,
+        "future_receivables": future_receivables,
         "overdue_debts": overdue_debts,
         "next_debt": next_debt,
         "open_total": sum((debt["amount"] for debt in commitments), Decimal("0.00")),
         "due_this_month_total": sum((debt["amount"] for debt in due_this_month), Decimal("0.00")),
         "future_total": sum((debt["amount"] for debt in future_debts), Decimal("0.00")),
         "overdue_total": sum((debt["amount"] for debt in overdue_debts), Decimal("0.00")),
+        "debt_total": debt_total,
+        "receivable_total": receivable_total,
+        "net_balance": net_balance,
         "open_count": len(commitments),
         "personal_debt_form": PersonalDebtForm(),
     }

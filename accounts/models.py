@@ -754,6 +754,13 @@ class Debt(models.Model):
 
 
 class PersonalDebt(models.Model):
+    TYPE_DEBT = "debt"
+    TYPE_RECEIVABLE = "receivable"
+    TYPE_CHOICES = (
+        (TYPE_DEBT, "Divida"),
+        (TYPE_RECEIVABLE, "Recebivel"),
+    )
+
     CATEGORY_RENT = "rent"
     CATEGORY_UTILITIES = "utilities"
     CATEGORY_CARD = "card"
@@ -777,6 +784,7 @@ class PersonalDebt(models.Model):
 
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="personal_debts")
     title = models.CharField(max_length=120)
+    entry_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default=TYPE_DEBT)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default=CATEGORY_OTHER)
     color = models.CharField(max_length=7, default=DEFAULT_COLOR)
     amount = models.DecimalField(max_digits=10, decimal_places=2)

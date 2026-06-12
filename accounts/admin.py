@@ -86,8 +86,8 @@ class NotificationAdmin(admin.ModelAdmin):
 
 @admin.register(PersonalDebt)
 class PersonalDebtAdmin(admin.ModelAdmin):
-    list_display = ("client", "title", "category", "amount", "due_date", "paid")
-    list_filter = ("category", "paid", "due_date")
+    list_display = ("client", "title", "entry_type", "category", "amount", "due_date", "paid")
+    list_filter = ("entry_type", "category", "paid", "due_date")
     search_fields = ("client__email", "client__full_name", "title", "notes")
 
 

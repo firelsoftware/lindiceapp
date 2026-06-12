@@ -39,6 +39,14 @@
         line-height: 1.1;
     }
 
+    .finance-stat-balance-positive strong {
+        color: var(--success);
+    }
+
+    .finance-stat-balance-negative strong {
+        color: var(--danger);
+    }
+
     .finance-calendar {
         margin-top: 22px;
         padding: 20px;
@@ -224,23 +232,62 @@
 </section>
 
 <section class="info-panel">
-    <h2>Criar conta pessoal</h2>
-    <p>Cadastre compromissos como aluguel, mercado, escola ou qualquer outra conta sua. A etiqueta colorida aparece em formato oval para facilitar a leitura.</p>
+    <h2>Criar</h2>
+    <p>Cadastre compromissos como aluguel, mercado, escola ou qualquer outra conta sua. Voce tambem pode marcar recebiveis para comparar o que entra com o que sai.</p>
     <form method="post">
         {% csrf_token %}
         <div class="finance-form-grid">
-            {% for field in personal_debt_form %}
-                <div{% if field.name == "notes" %} class="finance-field-wide"{% endif %}>
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.name == "color" %}
-                        <div class="finance-form-help">Passe o mouse no seletor de cor do seu celular ou navegador e escolha o tom exato da divida.</div>
-                    {% endif %}
-                    {% if field.errors %}
-                        <small>{{ field.errors|join:", " }}</small>
-                    {% endif %}
-                </div>
-            {% endfor %}
+            <div>
+                <label for="{{ personal_debt_form.entry_type.id_for_label }}">{{ personal_debt_form.entry_type.label }}</label>
+                {{ personal_debt_form.entry_type }}
+                {% if personal_debt_form.entry_type.errors %}
+                    <small>{{ personal_debt_form.entry_type.errors|join:", " }}</small>
+                {% endif %}
+            </div>
+            <div>
+                <label for="{{ personal_debt_form.category.id_for_label }}">{{ personal_debt_form.category.label }}</label>
+                {{ personal_debt_form.category }}
+                {% if personal_debt_form.category.errors %}
+                    <small>{{ personal_debt_form.category.errors|join:", " }}</small>
+                {% endif %}
+            </div>
+            <div>
+                <label for="{{ personal_debt_form.color.id_for_label }}">{{ personal_debt_form.color.label }}</label>
+                {{ personal_debt_form.color }}
+                <div class="finance-form-help">Passe o mouse no seletor de cor do seu celular ou navegador e escolha o tom exato.</div>
+                {% if personal_debt_form.color.errors %}
+                    <small>{{ personal_debt_form.color.errors|join:", " }}</small>
+                {% endif %}
+            </div>
+            <div class="finance-field-wide">
+                <label for="{{ personal_debt_form.title.id_for_label }}">{{ personal_debt_form.title.label }}</label>
+                {{ personal_debt_form.title }}
+                <div class="finance-form-help">Use esse campo para diferenciar quando a categoria sozinha nao basta.</div>
+                {% if personal_debt_form.title.errors %}
+                    <small>{{ personal_debt_form.title.errors|join:", " }}</small>
+                {% endif %}
+            </div>
+            <div>
+                <label for="{{ personal_debt_form.amount.id_for_label }}">{{ personal_debt_form.amount.label }}</label>
+                {{ personal_debt_form.amount }}
+                {% if personal_debt_form.amount.errors %}
+                    <small>{{ personal_debt_form.amount.errors|join:", " }}</small>
+                {% endif %}
+            </div>
+            <div>
+                <label for="{{ personal_debt_form.due_date.id_for_label }}">{{ personal_debt_form.due_date.label }}</label>
+                {{ personal_debt_form.due_date }}
+                {% if personal_debt_form.due_date.errors %}
+                    <small>{{ personal_debt_form.due_date.errors|join:", " }}</small>
+                {% endif %}
+            </div>
+            <div class="finance-field-wide">
+                <label for="{{ personal_debt_form.notes.id_for_label }}">{{ personal_debt_form.notes.label }}</label>
+                {{ personal_debt_form.notes }}
+                {% if personal_debt_form.notes.errors %}
+                    <small>{{ personal_debt_form.notes.errors|join:", " }}</small>
+                {% endif %}
+            </div>
         </div>
         <p><button class="button" type="submit">Salvar conta pessoal</button></p>
     </form>
@@ -248,24 +295,24 @@
 
 <section class="finance-summary-grid" aria-label="Resumo financeiro">
     <article class="finance-stat">
-        <span>Total em aberto</span>
+        <span>Total em registros</span>
         <strong>R$ {{ open_total|floatformat:2 }}</strong>
         <small>{{ open_count }} pendencia{{ open_count|pluralize }}</small>
     </article>
     <article class="finance-stat">
-        <span>Dividas deste mes</span>
-        <strong>R$ {{ due_this_month_total|floatformat:2 }}</strong>
-        <small>{{ due_this_month|length }} vencimento{{ due_this_month|length|pluralize:"s" }} ate o fim do mes</small>
+        <span>Dividas</span>
+        <strong>R$ {{ debt_total|floatformat:2 }}</strong>
+        <small>Contas a pagar registradas</small>
     </article>
     <article class="finance-stat">
-        <span>Dividas futuras</span>
-        <strong>R$ {{ future_total|floatformat:2 }}</strong>
-        <small>{{ future_debts|length }} parcela{{ future_debts|length|pluralize:"s" }} depois deste mes</small>
+        <span>Recebiveis</span>
+        <strong>R$ {{ receivable_total|floatformat:2 }}</strong>
+        <small>Valores a receber registrados</small>
     </article>
-    <article class="finance-stat">
-        <span>Em atraso</span>
-        <strong>R$ {{ overdue_total|floatformat:2 }}</strong>
-        <small>{{ overdue_debts|length }} conta{{ overdue_debts|length|pluralize:"s" }} vencida{{ overdue_debts|length|pluralize:"s" }}</small>
+    <article class="finance-stat {% if net_balance >= 0 %}finance-stat-balance-positive{% else %}finance-stat-balance-negative{% endif %}">
+        <span>Diferenca entre recebiveis e dividas</span>
+        <strong>{% if net_balance >= 0 %}+{% endif %}R$ {{ net_balance|floatformat:2 }}</strong>
+        <small>{% if net_balance >= 0 %}Recebiveis acima das dividas{% else %}Dividas acima dos recebiveis{% endif %}</small>
     </article>
 </section>
 
@@ -312,7 +359,7 @@
                 <article class="finance-item">
                     <div class="finance-chip-row">
                         <span class="finance-chip" style="background: {{ debt.chip_style.background }}; color: {{ debt.chip_style.text }};">{{ debt.category_label }}</span>
-                        <span class="finance-chip" style="background: #eef2ff; color: #364152;">{{ debt.kind_label }}</span>
+                        <span class="finance-chip" style="background: #eef2ff; color: #364152;">{{ debt.entry_type_label }}</span>
                     </div>
                     <h3>{{ debt.title }}</h3>
                     <p>Vencimento: <strong>{{ debt.due_date|date:"d/m/Y" }}</strong></p>
@@ -337,7 +384,7 @@
                 <article class="finance-item">
                     <div class="finance-chip-row">
                         <span class="finance-chip" style="background: {{ debt.chip_style.background }}; color: {{ debt.chip_style.text }};">{{ debt.category_label }}</span>
-                        <span class="finance-chip" style="background: #eef2ff; color: #364152;">{{ debt.kind_label }}</span>
+                        <span class="finance-chip" style="background: #eef2ff; color: #364152;">{{ debt.entry_type_label }}</span>
                     </div>
                     <h3>{{ debt.title }}</h3>
                     <p>Vencimento: <strong>{{ debt.due_date|date:"d/m/Y" }}</strong></p>
@@ -348,6 +395,52 @@
                 </article>
             {% empty %}
                 <p class="finance-empty">Voce nao tem contas pessoais futuras registradas.</p>
+            {% endfor %}
+        </div>
+    </section>
+</section>
+
+<section class="finance-section-grid">
+    <section class="info-panel">
+        <h2>Recebiveis deste mes</h2>
+        <div class="finance-list">
+            {% for debt in receivables_this_month %}
+                <article class="finance-item">
+                    <div class="finance-chip-row">
+                        <span class="finance-chip" style="background: {{ debt.chip_style.background }}; color: {{ debt.chip_style.text }};">{{ debt.category_label }}</span>
+                        <span class="finance-chip" style="background: #ecfdf3; color: #166534;">{{ debt.entry_type_label }}</span>
+                    </div>
+                    <h3>{{ debt.title }}</h3>
+                    <p>Receber em: <strong>{{ debt.due_date|date:"d/m/Y" }}</strong></p>
+                    <p>Valor previsto: <strong>R$ {{ debt.amount|floatformat:2 }}</strong></p>
+                    {% if debt.notes %}
+                        <p>{{ debt.notes }}</p>
+                    {% endif %}
+                </article>
+            {% empty %}
+                <p class="finance-empty">Nenhum recebivel previsto neste mes.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="info-panel">
+        <h2>Recebiveis futuros</h2>
+        <div class="finance-list">
+            {% for debt in future_receivables %}
+                <article class="finance-item">
+                    <div class="finance-chip-row">
+                        <span class="finance-chip" style="background: {{ debt.chip_style.background }}; color: {{ debt.chip_style.text }};">{{ debt.category_label }}</span>
+                        <span class="finance-chip" style="background: #ecfdf3; color: #166534;">{{ debt.entry_type_label }}</span>
+                    </div>
+                    <h3>{{ debt.title }}</h3>
+                    <p>Receber em: <strong>{{ debt.due_date|date:"d/m/Y" }}</strong></p>
+                    <p>Valor previsto: <strong>R$ {{ debt.amount|floatformat:2 }}</strong></p>
+                    {% if debt.notes %}
+                        <p>{{ debt.notes }}</p>
+                    {% endif %}
+                </article>
+            {% empty %}
+                <p class="finance-empty">Nenhum recebivel futuro registrado.</p>
             {% endfor %}
         </div>
     </section>

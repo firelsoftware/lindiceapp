@@ -312,9 +312,10 @@ class ManualDebtForm(forms.ModelForm):
 class PersonalDebtForm(forms.ModelForm):
     class Meta:
         model = PersonalDebt
-        fields = ("title", "category", "color", "amount", "due_date", "notes")
+        fields = ("title", "entry_type", "category", "color", "amount", "due_date", "notes")
         labels = {
-            "title": "Conta ou compromisso",
+            "title": "Descricao complementar",
+            "entry_type": "Tipo",
             "category": "Categoria",
             "color": "Cor da etiqueta",
             "amount": "Valor",
@@ -322,7 +323,7 @@ class PersonalDebtForm(forms.ModelForm):
             "notes": "Observacao",
         }
         widgets = {
-            "title": forms.TextInput(attrs={"placeholder": "Ex.: Aluguel, internet, escola"}),
+            "title": forms.TextInput(attrs={"placeholder": "Ex.: Apto centro, freela cliente Ana, parcela de julho"}),
             "color": forms.TextInput(attrs={"type": "color"}),
             "due_date": forms.DateInput(attrs={"type": "date"}),
             "amount": forms.NumberInput(attrs={"min": "0.01", "step": "0.01"}),
