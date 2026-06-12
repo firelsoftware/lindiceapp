@@ -3110,25 +3110,24 @@
                 <div class="linde-assistant-head">
                     <div>
                         <h2>Línde IA</h2>
-                        <p>Em teste no admin. Posso te ajudar a entender a tela, pensar no proximo passo e destravar o fluxo.</p>
+                        <p>Em teste no admin. Me chama quando quiser.</p>
                     </div>
                     <button class="linde-assistant-close" type="button" aria-label="Fechar assistente" data-linde-close>&times;</button>
                 </div>
-                <div class="linde-assistant-status" data-linde-status>Modo estrategista ligado.</div>
+                <div class="linde-assistant-status" data-linde-status>Pronta. So perguntar.</div>
                 <div class="linde-assistant-messages" data-linde-messages></div>
                 <div class="linde-assistant-quick">
-                    <button type="button" data-linde-prompt="me dê um resumo">Resumo</button>
-                    <button type="button" data-linde-prompt="quais proximos passos">Proximos passos</button>
-                    <button type="button" data-linde-prompt="o que voce ve nesta tela">Tela atual</button>
-                    <button type="button" data-linde-prompt="me ajuda com estilo e moda">Moda</button>
-                    <button type="button" data-linde-prompt="me ajuda com foco e meditacao">Foco</button>
+                    <button type="button" data-linde-suggestion="me mostra o relatorio">Relatorio</button>
+                    <button type="button" data-linde-suggestion="me mostra os lucros">Lucros</button>
+                    <button type="button" data-linde-suggestion="quais proximos passos">Proximos passos</button>
+                    <button type="button" data-linde-suggestion="o que voce ve nesta tela">Tela atual</button>
                 </div>
                 <div class="linde-assistant-tools">
-                    <button type="button" data-linde-prompt="qual leitura mais inteligente dessa tela">Leitura inteligente</button>
+                    <button type="button" data-linde-suggestion="qual leitura mais inteligente dessa tela">Leitura inteligente</button>
                     <button type="button" data-linde-reset>Limpar memoria</button>
                 </div>
                 <form class="linde-assistant-form" data-linde-form>
-                    <input type="text" name="message" placeholder="Pergunte algo para a Línde">
+                    <input type="text" name="message" placeholder="Ex.: me mostra o relatorio">
                     <button type="submit">Enviar</button>
                 </form>
             </section>
@@ -3291,7 +3290,7 @@
             var form = assistant.querySelector("[data-linde-form]");
             var input = form.querySelector('input[name="message"]');
             var messages = assistant.querySelector("[data-linde-messages]");
-            var quickButtons = assistant.querySelectorAll("[data-linde-prompt]");
+            var suggestionButtons = assistant.querySelectorAll("[data-linde-suggestion]");
             var resetButton = assistant.querySelector("[data-linde-reset]");
             var status = assistant.querySelector("[data-linde-status]");
             var pageName = (assistant.getAttribute("data-page-name") || "").toLowerCase();
@@ -3510,7 +3509,7 @@
 
             function answerGreeting(promptText) {
                 if (textIncludes(promptText, ["bom dia", "boa tarde", "boa noite", "oi", "ola", "e ai", "olá"])) {
-                    return "Bom te ver por aqui. Tamo junto. Se quiser, eu ja te ajudo direto com essa tela ou com qualquer decisao do app.";
+                    return "Oi. Me fala o que voce quer ver que eu respondo direto.";
                 }
 
                 return null;
@@ -3553,6 +3552,14 @@
 
                 if (text.indexOf("resumo") >= 0 || text.indexOf("o que voce ve") >= 0 || text.indexOf("tela") >= 0) {
                     return summarizeCurrentPage();
+                }
+
+                if (text.indexOf("relatorio") >= 0) {
+                    return "Eu nao gero um relatorio pronto daqui so pela conversa, mas posso te mostrar a leitura da tela, destacar os numeros mais importantes e te dizer onde clicar para abrir o fluxo certo.";
+                }
+
+                if (text.indexOf("lucro") >= 0 || text.indexOf("lucros") >= 0) {
+                    return "Se a meta agora e lucro, eu olharia faturamento, custos, debitos em aberto e margem dos pedidos mais recentes. Se voce quiser, eu leio essa tela com esse foco e te digo o que salta primeiro.";
                 }
 
                 if (text.indexOf("leitura") >= 0 || text.indexOf("inteligente") >= 0 || text.indexOf("diagnostico") >= 0) {
@@ -3651,7 +3658,7 @@
                     return "Estou pegando uma linha mais mental e de performance. Se quiser, eu organizo isso em pilares praticos: foco, energia, clareza emocional e consistencia.";
                 }
 
-                return personaFlavor() + " Minha leitura inicial e: " + summarizeCurrentPage();
+                return "Entendi. Se quiser, me pede resumo, relatorio, lucros, proximos passos ou leitura da tela que eu vou direto ao ponto.";
             }
 
             function answerWithPresence(prompt) {
@@ -3694,15 +3701,10 @@
                 closeAssistant();
             });
 
-            quickButtons.forEach(function (button) {
+            suggestionButtons.forEach(function (button) {
                 button.addEventListener("click", function () {
-                    var prompt = button.getAttribute("data-linde-prompt") || "";
-                    addMessage("user", prompt);
-                    showThinking();
-                    window.setTimeout(function () {
-                        hideThinking();
-                        addMessage("linde", answerWithPresence(prompt));
-                    }, 260);
+                    input.value = button.getAttribute("data-linde-suggestion") || "";
+                    input.focus();
                 });
             });
 
@@ -3727,22 +3729,15 @@
                 memory = [];
                 saveMemory();
                 messages.innerHTML = "";
-                setStatus("Memoria limpa. Modo estrategista ligado.");
-                addMessage("linde", "Memoria limpa. Agora a gente recomeca daqui com foco no que importa.");
-                addMessage("linde", summarizeCurrentPage());
+                setStatus("Memoria limpa. Pode perguntar.");
             });
 
             loadMemory();
 
             if (memory.length) {
-                memory.forEach(function (entry) {
-                    addInitialMessage(entry.kind, entry.text);
-                });
-                messages.scrollTop = messages.scrollHeight;
-                setStatus("Memoria recente restaurada.");
+                setStatus("Memoria recente guardada.");
             } else {
-                addMessage("linde", "Oi, eu sou a Línde IA.");
-                addMessage("linde", summarizeCurrentPage());
+                setStatus("Pronta. So perguntar.");
             }
         })();
         {% endif %}
