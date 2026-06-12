@@ -3110,7 +3110,7 @@
                 <div class="linde-assistant-head">
                     <div>
                         <h2>Línde IA</h2>
-                        <p>Em teste no admin. Posso resumir a tela, sugerir proximos passos e responder duvidas do fluxo.</p>
+                        <p>Em teste no admin. Posso te ajudar a entender a tela, pensar no proximo passo e destravar o fluxo.</p>
                     </div>
                     <button class="linde-assistant-close" type="button" aria-label="Fechar assistente" data-linde-close>&times;</button>
                 </div>
@@ -3393,11 +3393,11 @@
             }
 
             function toneIntro() {
-                return "Vou te responder de forma pratica, com o pe no chao e sem enrolacao.";
+                return "Vou falar reto, de um jeito leve e util.";
             }
 
             function personaFlavor() {
-                return "Eu penso como uma assistente que mistura estrategia, presenca e leitura de contexto.";
+                return "Eu penso como uma assistente safa, que junta leitura de contexto com presenca e estrategia.";
             }
 
             function smartReadCurrentPage() {
@@ -3426,34 +3426,34 @@
                 var heading = currentHeading();
 
                 if (pageName === "management_dashboard") {
-                    return "Voce esta no painel de gestao. Aqui eu acompanharia indicadores, alertas e atalhos para clientes, vendas, debitos e pedidos.";
+                    return "Voce esta no painel de gestao. Aqui eu bateria o olho em indicadores, alertas e atalhos para clientes, vendas, debitos e pedidos.";
                 }
 
                 if (pagePath.indexOf("/gestao/clientes/") === 0) {
-                    return "Voce esta na area de clientes. O melhor uso daqui e filtrar cadastro, olhar situacao financeira e abrir a ficha de quem precisa de acao.";
+                    return "Voce esta na area de clientes. O melhor uso daqui e filtrar cadastro, olhar a situacao financeira e abrir a ficha de quem precisa de acao.";
                 }
 
                 if (pagePath.indexOf("/gestao/fornecedor/produtos/") === 0) {
-                    return "Voce esta no fornecedor. Eu olharia importacao, estoque seguro, produtos ocultos e o que ainda precisa virar oferta da loja.";
+                    return "Voce esta no fornecedor. Aqui eu olharia importacao, estoque seguro, produtos ocultos e o que ainda falta virar oferta da loja.";
                 }
 
                 if (pagePath.indexOf("/gestao/vendas/nova/") === 0) {
-                    return "Voce esta lancando uma nova venda. O foco aqui e escolher cliente, montar os itens e disparar o fluxo com vencimento certo.";
+                    return "Voce esta lancando uma nova venda. O foco aqui e escolher o cliente, montar os itens e disparar o fluxo com o vencimento certo.";
                 }
 
                 if (pagePath.indexOf("/gestao/debitos/novo/") === 0) {
-                    return "Voce esta criando um debito manual. Vale revisar descricao clara, vencimento e se faz sentido gerar link para o cliente.";
+                    return "Voce esta criando um debito manual. Vale revisar se a descricao esta clara, o vencimento e se faz sentido gerar link para o cliente.";
                 }
 
                 if (pagePath.indexOf("/painel/financas/") === 0) {
-                    return "Voce esta na tela de financas do cliente. Eu separaria dividas, recebiveis e saldo liquido para decidir se a organizacao ja ficou clara.";
+                    return "Voce esta na tela de financas do cliente. Eu separaria dividas, recebiveis e saldo liquido para ver se a organizacao bate o olho e faz sentido.";
                 }
 
                 if (heading) {
-                    return "Voce esta em " + heading + ". Posso te ajudar a resumir a tela, pensar proximos passos ou lembrar atalhos desse fluxo.";
+                    return "Voce esta em " + heading + ". Posso te ajudar a resumir a tela, pensar no proximo passo ou lembrar atalhos desse fluxo.";
                 }
 
-                return "Estou acompanhando a tela com voce. Posso resumir o contexto, sugerir proximos passos e responder duvidas operacionais do app.";
+                return "Estou acompanhando a tela com voce. Posso resumir o contexto, sugerir proximo passo e responder duvida operacional do app.";
             }
 
             function answerFashion() {
@@ -3510,7 +3510,7 @@
 
             function answerGreeting(promptText) {
                 if (textIncludes(promptText, ["bom dia", "boa tarde", "boa noite", "oi", "ola", "e ai", "olá"])) {
-                    return "Bom te ver por aqui. Estou com voce. Se quiser, posso te ajudar direto com essa tela ou com qualquer decisao do app.";
+                    return "Bom te ver por aqui. Tamo junto. Se quiser, eu ja te ajudo direto com essa tela ou com qualquer decisao do app.";
                 }
 
                 return null;
@@ -3522,11 +3522,11 @@
                 }
 
                 if (textIncludes(promptText, ["moda", "maquiagem", "rock", "harry", "potter", "game of thrones", "got"])) {
-                    return "Pensando nessa tela do admin, eu usaria esses repertorios mais para posicionamento da marca, tom da assistente e curadoria visual, nao para poluir a operacao. " + summarizeCurrentPage();
+                    return "Pensando nessa tela do admin, eu usaria esses repertorios mais para posicionamento de marca, tom da assistente e curadoria visual, sem poluir a operacao. " + summarizeCurrentPage();
                 }
 
                 if (textIncludes(promptText, ["nutri", "suplement", "medita", "memoria", "psicolog", "medic", "remedio"])) {
-                    return "Mesmo nesses temas mais amplos, eu manteria a assistente do admin com foco em orientar decisao, organizacao e clareza. " + summarizeCurrentPage();
+                    return "Mesmo nesses temas mais amplos, eu manteria a assistente do admin focada em orientar decisao, organizacao e clareza. " + summarizeCurrentPage();
                 }
 
                 return null;
@@ -3538,7 +3538,7 @@
                 var pageAware = answerPageAware(text);
 
                 if (!text) {
-                    return "Manda a duvida do jeito mais natural possivel. Eu consigo te ajudar com resumo da tela, proximos passos e navegacao do admin.";
+                    return "Pode mandar do jeito mais natural possivel. Eu consigo te ajudar com resumo da tela, proximo passo e navegacao do admin.";
                 }
 
                 var greeting = answerGreeting(text);
@@ -3561,7 +3561,7 @@
 
                 if (text.indexOf("proxim") >= 0 || text.indexOf("seguir") >= 0 || text.indexOf("fazer agora") >= 0) {
                     if (pagePath.indexOf("/gestao/clientes/") === 0) {
-                        return "Eu seguiria por tres passos: 1. filtrar quem tem pendencia ou atraso, 2. abrir a ficha dos casos prioritarios, 3. decidir entre lancar debito, venda ou ajuste de limite.";
+                        return "Eu iria por tres passos: 1. filtrar quem tem pendencia ou atraso, 2. abrir a ficha dos casos mais urgentes, 3. decidir entre lancar debito, venda ou ajuste de limite.";
                     }
 
                     if (pagePath.indexOf("/gestao/fornecedor/produtos/") === 0) {
@@ -3569,10 +3569,10 @@
                     }
 
                     if (pagePath.indexOf("/painel/financas/") === 0) {
-                        return "Aqui eu compararia recebiveis x dividas, checaria se o formulario esta intuitivo e avaliaria se falta algum destaque visual para saldo e vencimento.";
+                        return "Aqui eu compararia recebiveis x dividas, checaria se o formulario esta facil de usar e veria se falta algum destaque visual para saldo e vencimento.";
                     }
 
-                    return "Se voce quiser um caminho rapido, eu faco assim: revisar o objetivo da tela, checar alertas ou gargalos visiveis e depois agir no proximo registro prioritario.";
+                    return "Se voce quiser um caminho rapido, eu faria assim: revisar o objetivo da tela, checar alertas ou gargalos visiveis e depois agir no proximo registro prioritario.";
                 }
 
                 if (textIncludes(text, ["moda", "look", "roupa", "estilo", "fashion"])) {
@@ -3628,7 +3628,7 @@
                 }
 
                 if (text.indexOf("cliente") >= 0) {
-                    return "Quando o assunto e cliente, eu costumo pensar em tres eixos: cadastro, limite/financeiro e acao comercial. Se quiser, eu posso te orientar pelo fluxo certo.";
+                    return "Quando o assunto e cliente, eu costumo olhar tres eixos: cadastro, limite/financeiro e acao comercial. Se quiser, eu te guio pelo fluxo certo.";
                 }
 
                 if (text.indexOf("venda") >= 0) {
@@ -3640,18 +3640,18 @@
                 }
 
                 if (text.indexOf("financ") >= 0 || text.indexOf("receb") >= 0 || text.indexOf("divid") >= 0) {
-                    return "No financeiro eu tento reduzir ambiguidade: o que entra, o que sai, o que vence antes e qual saldo final isso cria. Se faltar clareza nisso, eu priorizo esse ajuste.";
+                    return "No financeiro eu tento tirar ambiguidade: o que entra, o que sai, o que vence antes e qual saldo final isso cria. Se isso nao estiver claro, eu priorizo esse ajuste.";
                 }
 
                 if (contextTrail && textIncludes(contextTrail, ["moda", "maquiagem", "rock"])) {
-                    return "Estou acompanhando sua linha criativa. Se o objetivo for personalidade da Línde, eu manteria elegancia, atitude e leitura facil. Posso detalhar roupa, tom de voz ou presenca visual.";
+                    return "Estou pegando sua linha criativa. Se o objetivo for personalidade da Línde, eu manteria elegancia, atitude e leitura facil. Posso detalhar roupa, tom de voz ou presenca visual.";
                 }
 
                 if (contextTrail && textIncludes(contextTrail, ["psicolog", "medit", "memoria", "nutri"])) {
-                    return "Estou pegando a linha mais mental e de performance. Se quiser, eu organizo isso em pilares praticos: foco, energia, clareza emocional e consistencia.";
+                    return "Estou pegando uma linha mais mental e de performance. Se quiser, eu organizo isso em pilares praticos: foco, energia, clareza emocional e consistencia.";
                 }
 
-                return personaFlavor() + " " + "Minha leitura inicial e: " + summarizeCurrentPage();
+                return personaFlavor() + " Minha leitura inicial e: " + summarizeCurrentPage();
             }
 
             function answerWithPresence(prompt) {
@@ -3728,7 +3728,7 @@
                 saveMemory();
                 messages.innerHTML = "";
                 setStatus("Memoria limpa. Modo estrategista ligado.");
-                addMessage("linde", "Memoria limpa. Podemos recomecar daqui com foco total no que importa agora.");
+                addMessage("linde", "Memoria limpa. Agora a gente recomeca daqui com foco no que importa.");
                 addMessage("linde", summarizeCurrentPage());
             });
 
