@@ -2470,6 +2470,10 @@
             display: grid;
             gap: 10px;
             margin-top: 14px;
+            max-height: min(46vh, 360px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 4px;
         }
 
         .linde-assistant-bubble {
@@ -2479,6 +2483,8 @@
             font-size: 13px;
             line-height: 1.45;
             white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
         .linde-assistant-bubble-linde {
