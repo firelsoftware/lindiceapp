@@ -2340,6 +2340,220 @@
             margin: 0 8px;
         }
 
+        .linde-assistant {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 30;
+            display: grid;
+            justify-items: end;
+            gap: 10px;
+        }
+
+        .linde-assistant-panel {
+            width: min(320px, calc(100vw - 28px));
+            padding: 16px;
+            border: 1px solid rgba(122, 45, 132, 0.18);
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.96);
+            box-shadow: 0 24px 54px rgba(24, 34, 48, 0.16);
+            backdrop-filter: blur(12px);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px) scale(0.98);
+            transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+        }
+
+        .linde-assistant.is-open .linde-assistant-panel {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .linde-assistant-launcher {
+            position: relative;
+            display: grid;
+            place-items: center;
+            width: 94px;
+            height: 94px;
+            padding: 0;
+            border: 0;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.86), rgba(122, 45, 132, 0.16));
+            box-shadow: 0 18px 38px rgba(24, 34, 48, 0.18);
+            cursor: pointer;
+            animation: linde-float 3.6s ease-in-out infinite;
+        }
+
+        .linde-assistant-launcher::after {
+            content: "";
+            position: absolute;
+            inset: -5px;
+            border: 1px solid rgba(122, 45, 132, 0.2);
+            border-radius: inherit;
+            animation: linde-pulse 2.8s ease-out infinite;
+        }
+
+        .linde-assistant-avatar {
+            width: 88px;
+            height: 88px;
+            border-radius: 999px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #f3e9fb, #efe6f7);
+        }
+
+        .linde-assistant-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+
+        .linde-assistant-badge {
+            position: absolute;
+            left: -6px;
+            bottom: 2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: var(--brand-purple);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 10px 24px rgba(122, 45, 132, 0.22);
+        }
+
+        .linde-assistant-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .linde-assistant-head h2 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--brand-purple);
+        }
+
+        .linde-assistant-head p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .linde-assistant-close {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: #ffffff;
+            color: var(--muted);
+            font: inherit;
+            font-weight: 700;
+        }
+
+        .linde-assistant-messages {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .linde-assistant-bubble {
+            max-width: 100%;
+            padding: 10px 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            line-height: 1.45;
+            white-space: pre-wrap;
+        }
+
+        .linde-assistant-bubble-linde {
+            background: #f6ecfb;
+            color: #512565;
+            border-top-left-radius: 6px;
+        }
+
+        .linde-assistant-bubble-user {
+            justify-self: end;
+            background: #eaf1ff;
+            color: #1f3f77;
+            border-top-right-radius: 6px;
+        }
+
+        .linde-assistant-quick {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .linde-assistant-quick button {
+            min-height: 34px;
+            padding: 0 12px;
+            border: 1px solid rgba(122, 45, 132, 0.18);
+            border-radius: 999px;
+            background: #ffffff;
+            color: var(--brand-purple);
+            font: inherit;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .linde-assistant-form {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .linde-assistant-form input {
+            min-width: 0;
+            padding: 12px 14px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: #ffffff;
+            color: var(--ink);
+            font: inherit;
+        }
+
+        .linde-assistant-form button {
+            min-width: 86px;
+            border: 0;
+            border-radius: 999px;
+            background: var(--brand-purple);
+            color: #ffffff;
+            font: inherit;
+            font-weight: 700;
+        }
+
+        @keyframes linde-float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-7px);
+            }
+        }
+
+        @keyframes linde-pulse {
+            0% {
+                opacity: 0.55;
+                transform: scale(1);
+            }
+
+            70%,
+            100% {
+                opacity: 0;
+                transform: scale(1.12);
+            }
+        }
+
         .info-list {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2786,6 +3000,36 @@
         <a href="{% url 'terms_of_use' %}">Termos</a>
     </footer>
 
+    {% if request.user.is_authenticated and request.user.is_staff %}
+        <aside class="linde-assistant" data-linde-assistant data-page-name="{{ request.resolver_match.url_name|default:'' }}" data-page-path="{{ request.path }}">
+            <section class="linde-assistant-panel" aria-live="polite">
+                <div class="linde-assistant-head">
+                    <div>
+                        <h2>Línde IA</h2>
+                        <p>Em teste no admin. Posso resumir a tela, sugerir proximos passos e responder duvidas do fluxo.</p>
+                    </div>
+                    <button class="linde-assistant-close" type="button" aria-label="Fechar assistente" data-linde-close>&times;</button>
+                </div>
+                <div class="linde-assistant-messages" data-linde-messages></div>
+                <div class="linde-assistant-quick">
+                    <button type="button" data-linde-prompt="me dê um resumo">Resumo</button>
+                    <button type="button" data-linde-prompt="quais proximos passos">Proximos passos</button>
+                    <button type="button" data-linde-prompt="o que voce ve nesta tela">Tela atual</button>
+                </div>
+                <form class="linde-assistant-form" data-linde-form>
+                    <input type="text" name="message" placeholder="Pergunte algo para a Línde">
+                    <button type="submit">Enviar</button>
+                </form>
+            </section>
+            <button class="linde-assistant-launcher" type="button" aria-label="Abrir Línde IA" data-linde-launcher>
+                <span class="linde-assistant-avatar">
+                    <img src="{% static 'accounts/linde-assistant.png' %}" alt="Avatar da Línde">
+                </span>
+                <span class="linde-assistant-badge">Línde IA</span>
+            </button>
+        </aside>
+    {% endif %}
+
     <script>
         (function () {
             var splash = document.querySelector("[data-app-splash]");
@@ -2922,6 +3166,166 @@
                 });
             });
         })();
+
+        {% if request.user.is_authenticated and request.user.is_staff %}
+        (function () {
+            var assistant = document.querySelector("[data-linde-assistant]");
+
+            if (!assistant) {
+                return;
+            }
+
+            var launcher = assistant.querySelector("[data-linde-launcher]");
+            var closeButton = assistant.querySelector("[data-linde-close]");
+            var form = assistant.querySelector("[data-linde-form]");
+            var input = form.querySelector('input[name="message"]');
+            var messages = assistant.querySelector("[data-linde-messages]");
+            var quickButtons = assistant.querySelectorAll("[data-linde-prompt]");
+            var pageName = (assistant.getAttribute("data-page-name") || "").toLowerCase();
+            var pagePath = assistant.getAttribute("data-page-path") || "";
+
+            function addMessage(kind, text) {
+                var bubble = document.createElement("div");
+                bubble.className = "linde-assistant-bubble " + (kind === "user" ? "linde-assistant-bubble-user" : "linde-assistant-bubble-linde");
+                bubble.textContent = text;
+                messages.appendChild(bubble);
+                messages.scrollTop = messages.scrollHeight;
+            }
+
+            function currentHeading() {
+                var heading = document.querySelector("main h1");
+                return heading ? heading.textContent.trim() : "";
+            }
+
+            function summarizeCurrentPage() {
+                var heading = currentHeading();
+
+                if (pageName === "management_dashboard") {
+                    return "Voce esta no painel de gestao. Aqui eu acompanharia indicadores, alertas e atalhos para clientes, vendas, debitos e pedidos.";
+                }
+
+                if (pagePath.indexOf("/gestao/clientes/") === 0) {
+                    return "Voce esta na area de clientes. O melhor uso daqui e filtrar cadastro, olhar situacao financeira e abrir a ficha de quem precisa de acao.";
+                }
+
+                if (pagePath.indexOf("/gestao/fornecedor/produtos/") === 0) {
+                    return "Voce esta no fornecedor. Eu olharia importacao, estoque seguro, produtos ocultos e o que ainda precisa virar oferta da loja.";
+                }
+
+                if (pagePath.indexOf("/gestao/vendas/nova/") === 0) {
+                    return "Voce esta lancando uma nova venda. O foco aqui e escolher cliente, montar os itens e disparar o fluxo com vencimento certo.";
+                }
+
+                if (pagePath.indexOf("/gestao/debitos/novo/") === 0) {
+                    return "Voce esta criando um debito manual. Vale revisar descricao clara, vencimento e se faz sentido gerar link para o cliente.";
+                }
+
+                if (pagePath.indexOf("/painel/financas/") === 0) {
+                    return "Voce esta na tela de financas do cliente. Eu separaria dividas, recebiveis e saldo liquido para decidir se a organizacao ja ficou clara.";
+                }
+
+                if (heading) {
+                    return "Voce esta em " + heading + ". Posso te ajudar a resumir a tela, pensar proximos passos ou lembrar atalhos desse fluxo.";
+                }
+
+                return "Estou acompanhando a tela com voce. Posso resumir o contexto, sugerir proximos passos e responder duvidas operacionais do app.";
+            }
+
+            function respond(prompt) {
+                var text = (prompt || "").trim().toLowerCase();
+                var heading = currentHeading();
+
+                if (!text) {
+                    return "Manda a duvida do jeito mais natural possivel. Eu consigo te ajudar com resumo da tela, proximos passos e navegacao do admin.";
+                }
+
+                if (text.indexOf("resumo") >= 0 || text.indexOf("o que voce ve") >= 0 || text.indexOf("tela") >= 0) {
+                    return summarizeCurrentPage();
+                }
+
+                if (text.indexOf("proxim") >= 0 || text.indexOf("seguir") >= 0 || text.indexOf("fazer agora") >= 0) {
+                    if (pagePath.indexOf("/gestao/clientes/") === 0) {
+                        return "Eu seguiria por tres passos: 1. filtrar quem tem pendencia ou atraso, 2. abrir a ficha dos casos prioritarios, 3. decidir entre lancar debito, venda ou ajuste de limite.";
+                    }
+
+                    if (pagePath.indexOf("/gestao/fornecedor/produtos/") === 0) {
+                        return "Meu proximo passo aqui seria revisar o que chegou do fornecedor, ativar so o que faz sentido para venda e corrigir qualquer preco ou estoque antes de divulgar.";
+                    }
+
+                    if (pagePath.indexOf("/painel/financas/") === 0) {
+                        return "Aqui eu compararia recebiveis x dividas, checaria se o formulario esta intuitivo e avaliaria se falta algum destaque visual para saldo e vencimento.";
+                    }
+
+                    return "Se voce quiser um caminho rapido, eu faco assim: revisar o objetivo da tela, checar alertas ou gargalos visiveis e depois agir no proximo registro prioritario.";
+                }
+
+                if (text.indexOf("cliente") >= 0) {
+                    return "Quando o assunto e cliente, eu costumo pensar em tres eixos: cadastro, limite/financeiro e acao comercial. Se quiser, eu posso te orientar pelo fluxo certo.";
+                }
+
+                if (text.indexOf("venda") >= 0) {
+                    return "No fluxo de venda, eu olho descricao clara, valor coerente, itens certos e se o cliente vai receber uma experiencia simples para confirmar pagamento.";
+                }
+
+                if (text.indexOf("fornecedor") >= 0 || text.indexOf("catalogo") >= 0) {
+                    return "No fornecedor, o mais importante e manter importacao confiavel, estoque seguro, imagem boa e preco de venda coerente antes de expor para cliente.";
+                }
+
+                if (text.indexOf("financ") >= 0 || text.indexOf("receb") >= 0 || text.indexOf("divid") >= 0) {
+                    return "No financeiro eu tento reduzir ambiguidade: o que entra, o que sai, o que vence antes e qual saldo final isso cria. Se faltar clareza nisso, eu priorizo esse ajuste.";
+                }
+
+                return "Entendi. Minha leitura inicial e: " + summarizeCurrentPage() + " Se quiser, me pergunte por resumo, proximos passos, clientes, vendas, fornecedor ou financeiro.";
+            }
+
+            function openAssistant() {
+                assistant.classList.add("is-open");
+                launcher.setAttribute("aria-expanded", "true");
+            }
+
+            function closeAssistant() {
+                assistant.classList.remove("is-open");
+                launcher.setAttribute("aria-expanded", "false");
+            }
+
+            launcher.addEventListener("click", function () {
+                if (assistant.classList.contains("is-open")) {
+                    closeAssistant();
+                    return;
+                }
+
+                openAssistant();
+            });
+
+            closeButton.addEventListener("click", function () {
+                closeAssistant();
+            });
+
+            quickButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    var prompt = button.getAttribute("data-linde-prompt") || "";
+                    addMessage("user", prompt);
+                    addMessage("linde", respond(prompt));
+                });
+            });
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+                var prompt = input.value.trim();
+
+                if (!prompt) {
+                    return;
+                }
+
+                addMessage("user", prompt);
+                addMessage("linde", respond(prompt));
+                input.value = "";
+            });
+
+            addMessage("linde", "Oi, eu sou a Línde IA. Estou em teste no seu admin e posso te ajudar a ler a tela, pensar no proximo passo e encontrar o melhor fluxo.");
+            addMessage("linde", summarizeCurrentPage());
+        })();
+        {% endif %}
 
         {% block extra_scripts %}{% endblock %}
     </script>

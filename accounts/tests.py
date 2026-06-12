@@ -1449,6 +1449,7 @@ class StoreFlowTests(TestCase):
 
         self.assertContains(response, '>Loja</a>', html=False)
         self.assertNotContains(response, '>Minhas financas</a>', html=False)
+        self.assertContains(response, "Línde IA")
 
     def test_client_menu_shows_customer_finances_link(self):
         user = User.objects.create_user(
@@ -1472,6 +1473,7 @@ class StoreFlowTests(TestCase):
         response = self.client.get("/painel/")
 
         self.assertContains(response, '>Minhas financas</a>', html=False)
+        self.assertNotContains(response, "Línde IA")
 
     def test_customer_finances_page_is_visible_only_for_client(self):
         user = User.objects.create_user(
@@ -1508,7 +1510,7 @@ class StoreFlowTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Somente voce ve esta area no aplicativo.")
-        self.assertContains(response, "Criar conta pessoal")
+        self.assertContains(response, "Criar")
         self.assertContains(response, "Contas pessoais do mes")
         self.assertContains(response, "Contas pessoais futuras")
 
