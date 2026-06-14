@@ -20,8 +20,8 @@
     "path": "C:\\Users\\Programador\\Documents\\Meus projetos\\lindice_app\\android-twa\\android.keystore",
     "alias": "lindice"
   },
-  "appVersionName": "1",
-  "appVersionCode": 1,
+  "appVersionName": "1.1",
+  "appVersionCode": 2,
   "shortcuts": [
     {
       "name": "Loja",
@@ -65,5 +65,5 @@
     "standalone",
     "minimal-ui"
   ],
-  "appVersion": "1"
+  "appVersion": "1.1"
 }
