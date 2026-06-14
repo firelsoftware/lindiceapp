@@ -3153,12 +3153,25 @@
                 return;
             }
 
-            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || sessionStorage.getItem("lindiceSplashSeen")) {
+            var alreadySeen = false;
+
+            try {
+                alreadySeen = !!sessionStorage.getItem("lindiceSplashSeen");
+            } catch (error) {
+                alreadySeen = false;
+            }
+
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || alreadySeen) {
                 splash.classList.add("is-hidden");
                 return;
             }
 
-            sessionStorage.setItem("lindiceSplashSeen", "1");
+            try {
+                sessionStorage.setItem("lindiceSplashSeen", "1");
+            } catch (error) {
+                // armazenamento de sessao bloqueado; ignora e segue com a animacao
+            }
+
             window.setTimeout(function () {
                 splash.classList.add("is-hidden");
             }, 900);
