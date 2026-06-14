@@ -7,6 +7,8 @@ media/
 venv/
 .env
 android-twa/android.keystore
+android-twa/android-upload.keystore
+android-twa/keystore.properties
 android-twa/.gradle/
 android-twa/build/
 android-twa/app/build/
