@@ -257,6 +257,13 @@
             box-shadow: 0 8px 20px rgba(24, 34, 48, 0.08);
         }
 
+        .notification-bell *,
+        .topbar-cart *,
+        .guest-account-toggle *,
+        .account-status-toggle * {
+            cursor: pointer;
+        }
+
         .notification-bell:hover {
             border-color: var(--brand-purple);
             transform: none;
@@ -2361,6 +2368,7 @@
             display: grid;
             justify-items: end;
             gap: 10px;
+            pointer-events: none;
         }
 
         .linde-assistant-panel {
@@ -2382,6 +2390,7 @@
             opacity: 1;
             visibility: visible;
             transform: translateY(0) scale(1);
+            pointer-events: auto;
         }
 
         .linde-assistant-launcher {
@@ -2395,6 +2404,7 @@
             border-radius: 999px;
             background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.86), rgba(122, 45, 132, 0.16));
             box-shadow: 0 18px 38px rgba(24, 34, 48, 0.18);
+            pointer-events: auto;
             cursor: pointer;
             animation: linde-float 3.6s ease-in-out infinite;
         }
