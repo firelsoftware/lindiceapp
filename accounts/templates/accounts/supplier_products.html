@@ -12,96 +12,6 @@
     </ul>
 {% endif %}
 
-<section class="info-panel">
-    <h2>Dropshipping Revenda de Calcados</h2>
-    <p>Use a area do fornecedor para ativar o dropshipping e obter o link do catalogo em CSV ou XML.</p>
-    {% if supplier_dropshipping_url %}
-        <p><a class="button button-secondary" href="{{ supplier_dropshipping_url }}" target="_blank" rel="noopener">Abrir Revenda / Shop Integra</a></p>
-    {% endif %}
-</section>
-
-<section class="info-panel">
-    <h2>Importar catalogo</h2>
-    <p>Voce pode baixar a planilha do dia e enviar aqui, ou usar a URL salva da fonte escolhida. O app so libera tamanhos com pelo menos 3 unidades em estoque.</p>
-    <form method="post" action="{% url 'import_supplier_products' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label for="catalog-source-file">Fonte</label>
-        <select id="catalog-source-file" name="source">
-            {% for source_value, source_label in source_choices %}
-                <option value="{{ source_value }}">{{ source_label }}</option>
-            {% endfor %}
-        </select>
-        <label for="catalog-file">CSV ou XML do dia</label>
-        <input id="catalog-file" name="catalog_file" type="file" accept=".csv,.xml,text/csv,text/xml,application/xml">
-        <button type="submit">Importar arquivo baixado</button>
-    </form>
-
-    {% if catalog_url_configured %}
-        <p>O catalogo esta configurado por variavel de ambiente. Use este botao no maximo quando precisar atualizar o estoque.</p>
-        <form method="post" action="{% url 'import_supplier_products' %}">
-            {% csrf_token %}
-            <input type="hidden" name="source" value="revenda_calcados">
-            <button type="submit">Atualizar catalogo do fornecedor</button>
-        </form>
-    {% else %}
-        <p>Se preferir, salve a URL direto nas fontes abaixo e importe manualmente por aqui.</p>
-    {% endif %}
-</section>
-
-<section class="info-panel">
-    <h2>Fontes de catalogo</h2>
-    <p>Deixei uma sugestao pronta para o segundo fornecedor: <strong>Parceiro sob consulta</strong>. Ele serve para itens em que a disponibilidade precisa ser confirmada antes de fechar.</p>
-    {% for source in catalog_sources %}
-        <article class="info-panel" style="margin-top: 1rem;">
-            <h3>{{ source.instance.get_source_display }}</h3>
-            <form method="post" action="{% url 'update_supplier_catalog_source' source.instance.source %}">
-                {% csrf_token %}
-                <div class="toolbar-field">
-                    {{ source.form.display_name.label_tag }}
-                    {{ source.form.display_name }}
-                </div>
-                <div class="toolbar-field">
-                    {{ source.form.catalog_url.label_tag }}
-                    {{ source.form.catalog_url }}
-                    <small>Cole aqui a URL atual do catalogo dessa fonte.</small>
-                </div>
-                <div class="toolbar-field">
-                    {{ source.form.catalog_format.label_tag }}
-                    {{ source.form.catalog_format }}
-                </div>
-                <div class="toolbar-field">
-                    {{ source.form.purchase_flow.label_tag }}
-                    {{ source.form.purchase_flow }}
-                </div>
-                <div class="toolbar-field">
-                    {{ source.form.supplier_panel_note.label_tag }}
-                    {{ source.form.supplier_panel_note }}
-                </div>
-                <div class="toolbar-field">
-                    {{ source.form.customer_notice.label_tag }}
-                    {{ source.form.customer_notice }}
-                    <small>Ex.: em breve vamos entrar em contato para confirmar disponibilidade e finalizar pelo WhatsApp.</small>
-                </div>
-                <div class="toolbar-field">
-                    <label for="{{ source.form.is_active.id_for_label }}">Status</label>
-                    {{ source.form.is_active }} Fonte ativa
-                </div>
-                <button type="submit">Salvar fonte</button>
-            </form>
-            {% if source.instance.catalog_url %}
-                <div class="action-row">
-                    <a class="button button-secondary" href="{{ source.instance.catalog_url }}" target="_blank" rel="noopener">Abrir catalogo</a>
-                    <form method="post" action="{% url 'import_supplier_products' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="source" value="{{ source.instance.source }}">
-                        <button type="submit">Importar URL salva</button>
-                    </form>
-                </div>
-            {% endif %}
-        </article>
-    {% endfor %}
-</section>
-
 <div class="summary-grid">
     <div class="summary-item">
         <strong>{{ total_products }}</strong>
@@ -182,26 +92,31 @@
                 </td>
                 <td>{{ product.supplier_code }}</td>
                 <td>
-                    <span class="badge">{{ product.get_source_display }}</span><br>
-                    {% if product.product_url %}
-                        <a href="{{ product.product_url }}" target="_blank" rel="noopener">{{ product.name }}</a>
-                    {% else %}
-                        {{ product.name }}
-                    {% endif %}
-                    <br>
-                    {% if product.requires_availability_confirmation %}
-                        <span class="badge badge-warning">Sob consulta</span>
-                    {% endif %}
-                    {% if product.is_active %}
-                        <span class="badge badge-success">Ativo</span>
-                    {% else %}
-                        <span class="badge badge-muted">Inativo</span>
-                    {% endif %}
-                    {% if product.is_visible %}
-                        <span class="badge badge-success">Na loja</span>
-                    {% else %}
-                        <span class="badge badge-warning">Oculto</span>
-                    {% endif %}
+                    <div class="action-row">
+                        <span class="badge">{{ product.get_source_display }}</span>
+                    </div>
+                    <div>
+                        {% if product.product_url %}
+                            <a href="{{ product.product_url }}" target="_blank" rel="noopener">{{ product.name }}</a>
+                        {% else %}
+                            {{ product.name }}
+                        {% endif %}
+                    </div>
+                    <div class="action-row">
+                        {% if product.requires_availability_confirmation %}
+                            <span class="badge badge-warning">Sob consulta</span>
+                        {% endif %}
+                        {% if product.is_active %}
+                            <span class="badge badge-success">Ativo</span>
+                        {% else %}
+                            <span class="badge badge-muted">Inativo</span>
+                        {% endif %}
+                        {% if product.is_visible %}
+                            <span class="badge badge-success">Na loja</span>
+                        {% else %}
+                            <span class="badge badge-warning">Oculto</span>
+                        {% endif %}
+                    </div>
                 </td>
                 <td>{{ product.sizes }}</td>
                 <td>
@@ -223,7 +138,7 @@
                     <form method="post" action="{% url 'update_supplier_product_status' product.id %}">
                         {% csrf_token %}
                         <label for="status-note-{{ product.id }}">Observacao</label>
-                        <textarea id="status-note-{{ product.id }}" name="status_note" rows="3" placeholder="Motivo para ocultar ou inativar">{{ product.status_note }}</textarea>
+                        <textarea id="status-note-{{ product.id }}" name="status_note" rows="2" placeholder="Motivo para ocultar ou inativar">{{ product.status_note }}</textarea>
                         <div class="action-row">
                             {% if product.is_visible %}
                                 <button type="submit" name="action" value="hide">Ocultar</button>
@@ -237,9 +152,11 @@
                             {% endif %}
                         </div>
                     </form>
-                    <form method="post" action="{% url 'delete_supplier_product' product.id %}">
+                    <form method="post" action="{% url 'delete_supplier_product' product.id %}" style="margin-top: 10px;">
                         {% csrf_token %}
-                        <button type="submit" class="button button-secondary" onclick="return confirm('Excluir este produto do catalogo?');">Excluir</button>
+                        <div class="action-row action-row-end">
+                            <button type="submit" class="button button-secondary" onclick="return confirm('Excluir este produto do catalogo?');">Excluir</button>
+                        </div>
                     </form>
                 </td>
             </tr>
@@ -266,6 +183,98 @@
         {% endif %}
     </p>
 {% endif %}
+
+<h2>Configuracoes do fornecedor</h2>
+
+<details class="info-panel">
+    <summary class="limit-summary">Dropshipping Revenda de Calcados</summary>
+    <p>Use a area do fornecedor para ativar o dropshipping e obter o link do catalogo em CSV ou XML.</p>
+    {% if supplier_dropshipping_url %}
+        <p><a class="button button-secondary" href="{{ supplier_dropshipping_url }}" target="_blank" rel="noopener">Abrir Revenda / Shop Integra</a></p>
+    {% endif %}
+</details>
+
+<details class="info-panel">
+    <summary class="limit-summary">Importar catalogo</summary>
+    <p>Voce pode baixar a planilha do dia e enviar aqui, ou usar a URL salva da fonte escolhida. O app so libera tamanhos com pelo menos 3 unidades em estoque.</p>
+    <form method="post" action="{% url 'import_supplier_products' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="catalog-source-file">Fonte</label>
+        <select id="catalog-source-file" name="source">
+            {% for source_value, source_label in source_choices %}
+                <option value="{{ source_value }}">{{ source_label }}</option>
+            {% endfor %}
+        </select>
+        <label for="catalog-file">CSV ou XML do dia</label>
+        <input id="catalog-file" name="catalog_file" type="file" accept=".csv,.xml,text/csv,text/xml,application/xml">
+        <button type="submit">Importar arquivo baixado</button>
+    </form>
+
+    {% if catalog_url_configured %}
+        <p>O catalogo esta configurado por variavel de ambiente. Use este botao no maximo quando precisar atualizar o estoque.</p>
+        <form method="post" action="{% url 'import_supplier_products' %}">
+            {% csrf_token %}
+            <input type="hidden" name="source" value="revenda_calcados">
+            <button type="submit">Atualizar catalogo do fornecedor</button>
+        </form>
+    {% else %}
+        <p>Se preferir, salve a URL direto nas fontes abaixo e importe manualmente por aqui.</p>
+    {% endif %}
+</details>
+
+<details class="info-panel">
+    <summary class="limit-summary">Fontes de catalogo</summary>
+    <p>Deixei uma sugestao pronta para o segundo fornecedor: <strong>Parceiro sob consulta</strong>. Ele serve para itens em que a disponibilidade precisa ser confirmada antes de fechar.</p>
+    {% for source in catalog_sources %}
+        <article class="info-panel" style="margin-top: 1rem;">
+            <h3>{{ source.instance.get_source_display }}</h3>
+            <form method="post" action="{% url 'update_supplier_catalog_source' source.instance.source %}">
+                {% csrf_token %}
+                <div class="toolbar-field">
+                    {{ source.form.display_name.label_tag }}
+                    {{ source.form.display_name }}
+                </div>
+                <div class="toolbar-field">
+                    {{ source.form.catalog_url.label_tag }}
+                    {{ source.form.catalog_url }}
+                    <small>Cole aqui a URL atual do catalogo dessa fonte.</small>
+                </div>
+                <div class="toolbar-field">
+                    {{ source.form.catalog_format.label_tag }}
+                    {{ source.form.catalog_format }}
+                </div>
+                <div class="toolbar-field">
+                    {{ source.form.purchase_flow.label_tag }}
+                    {{ source.form.purchase_flow }}
+                </div>
+                <div class="toolbar-field">
+                    {{ source.form.supplier_panel_note.label_tag }}
+                    {{ source.form.supplier_panel_note }}
+                </div>
+                <div class="toolbar-field">
+                    {{ source.form.customer_notice.label_tag }}
+                    {{ source.form.customer_notice }}
+                    <small>Ex.: em breve vamos entrar em contato para confirmar disponibilidade e finalizar pelo WhatsApp.</small>
+                </div>
+                <div class="toolbar-field">
+                    <label for="{{ source.form.is_active.id_for_label }}">Status</label>
+                    {{ source.form.is_active }} Fonte ativa
+                </div>
+                <button type="submit">Salvar fonte</button>
+            </form>
+            {% if source.instance.catalog_url %}
+                <div class="action-row">
+                    <a class="button button-secondary" href="{{ source.instance.catalog_url }}" target="_blank" rel="noopener">Abrir catalogo</a>
+                    <form method="post" action="{% url 'import_supplier_products' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="source" value="{{ source.instance.source }}">
+                        <button type="submit">Importar URL salva</button>
+                    </form>
+                </div>
+            {% endif %}
+        </article>
+    {% endfor %}
+</details>
 
 <p><a href="{% url 'management_dashboard' %}">Voltar para gestao</a></p>
 {% endblock %}
