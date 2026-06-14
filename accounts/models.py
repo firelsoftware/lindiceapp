@@ -1,4 +1,5 @@
 from decimal import Decimal, ROUND_HALF_UP
+import hashlib
 import uuid
 import re
 
@@ -35,6 +36,7 @@ class User(AbstractUser):
     full_name = models.CharField(max_length=150)
     preferred_name = models.CharField(max_length=80)
     email = models.EmailField(unique=True)
+    deletion_requested_at = models.DateTimeField(null=True, blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["full_name", "preferred_name"]
@@ -43,6 +45,54 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.full_name
+
+    def anonymize_personal_data(self):
+        """Remove dados pessoais da conta a pedido do titular, mantendo o
+        historico de pedidos/crediario exigido por obrigacoes legais."""
+        now = timezone.now()
+        placeholder = uuid.uuid4().hex
+
+        self.full_name = "Conta excluida"
+        self.preferred_name = ""
+        self.email = f"conta-excluida-{self.pk}-{placeholder[:8]}@lindice.invalid"
+        self.is_active = False
+        self.deletion_requested_at = now
+        self.set_unusable_password()
+        self.save(
+            update_fields=[
+                "full_name",
+                "preferred_name",
+                "email",
+                "is_active",
+                "deletion_requested_at",
+                "password",
+            ]
+        )
+
+        profile = getattr(self, "profile", None)
+
+        if profile is not None:
+            for file_field in ("identity_document", "residence_proof", "profile_photo"):
+                field_file = getattr(profile, file_field)
+
+                if field_file:
+                    field_file.delete(save=False)
+
+            profile.cpf_hash = hashlib.sha256(placeholder.encode()).hexdigest()
+            profile.cpf_last_digits = ""
+            profile.rg_number = ""
+            profile.phone = ""
+            profile.phone_verified = False
+            profile.phone_verification_code = ""
+            profile.phone_verification_sent_at = None
+            profile.address = ""
+            profile.identity_document = ""
+            profile.residence_proof = ""
+            profile.profile_photo = ""
+            profile.finger_sizes = {}
+            profile.extra_data = {}
+            profile.admin_notes = ""
+            profile.save()
 
 
 class ClientProfile(models.Model):

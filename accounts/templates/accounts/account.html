@@ -55,6 +55,14 @@
     </form>
 </section>
 
+{% if not request.user.is_staff %}
+<section class="info-panel">
+    <h2>Excluir conta</h2>
+    <p>Voce pode solicitar a exclusao da sua conta e dos seus dados pessoais a qualquer momento.</p>
+    <a class="button-secondary" href="{% url 'account_delete' %}">Excluir minha conta</a>
+</section>
+{% endif %}
+
 <p>
     {% if request.user.is_staff %}
         <a href="{% url 'management_dashboard' %}">Voltar ao painel de gestao</a>

@@ -1,0 +1,33 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Exclusao de conta e dados</h1>
+
+<p>Voce pode solicitar a exclusao da sua conta e dos seus dados pessoais do Líndice a qualquer momento.</p>
+
+<section class="info-panel">
+    <h2>Pelo aplicativo ou site</h2>
+    {% if request.user.is_authenticated %}
+        <p>Acesse <a href="{% url 'account' %}">Minha conta</a> e use a opcao <strong>Excluir minha conta</strong>.</p>
+        <p class="action-row">
+            <a class="button-secondary button" href="{% url 'account_delete' %}">Excluir minha conta</a>
+        </p>
+    {% else %}
+        <p>Faca <a href="{% url 'login' %}">login na sua conta</a> e acesse <strong>Minha conta &gt; Excluir minha conta</strong>.</p>
+    {% endif %}
+</section>
+
+<section class="info-panel">
+    <h2>Sem acesso ao login</h2>
+    <p>Se voce nao consegue mais acessar sua conta, envie um email para <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> solicitando a exclusao, a partir do mesmo email cadastrado na conta. Vamos confirmar sua identidade e excluir os dados em ate 15 dias.</p>
+</section>
+
+<section class="info-panel">
+    <h2>O que e excluido</h2>
+    <p>Nome, email, telefone, endereco, CPF, documentos enviados (identidade, comprovante de residencia) e foto de perfil.</p>
+    <h2>O que e mantido</h2>
+    <p>Registros de pedidos, compras e crediario ja realizados sao mantidos de forma anonima, conforme exigido pela legislacao fiscal e contabil, sem ficarem associados aos seus dados pessoais.</p>
+</section>
+
+<p>Veja tambem a <a href="{% url 'privacy_policy' %}">politica de privacidade</a>.</p>
+{% endblock %}

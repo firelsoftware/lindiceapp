@@ -8,7 +8,7 @@ import unicodedata
 import uuid
 
 from django.contrib import messages
-from django.contrib.auth import login, update_session_auth_hash
+from django.contrib.auth import login, logout, update_session_auth_hash
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -1732,6 +1732,42 @@ def partner_sales_report(request):
 @login_required
 def account(request):
     return render(request, "accounts/account.html")
+
+
+@login_required
+def account_delete(request):
+    if request.user.is_staff:
+        return HttpResponseForbidden("Contas de gestao nao podem ser excluidas por aqui.")
+
+    if request.method == "POST":
+        password = request.POST.get("password", "")
+
+        if not request.POST.get("confirm"):
+            messages.error(request, "Confirme que entende o que acontece com sua conta antes de continuar.")
+            return redirect("account_delete")
+
+        if not request.user.check_password(password):
+            messages.error(request, "Senha incorreta. Sua conta nao foi excluida.")
+            return redirect("account_delete")
+
+        user = request.user
+        user.anonymize_personal_data()
+        logout(request)
+        messages.success(request, "Sua conta e seus dados pessoais foram excluidos.")
+
+        return redirect("store_front")
+
+    return render(request, "accounts/account_delete.html")
+
+
+def data_deletion_info(request):
+    return render(
+        request,
+        "accounts/data_deletion_info.html",
+        {
+            "contact_email": settings.STORE_CONTACT_EMAIL,
+        },
+    )
 
 
 @login_required

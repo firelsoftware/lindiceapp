@@ -54,10 +54,21 @@ bubblewrap build
 - login e sessao funcionando no celular
 - loja, carrinho e checkout responsivos
 - politica de privacidade publica
+- pagina de exclusao de conta/dados publica: `/privacidade/exclusao-de-dados/`
 - dominio final configurado
 - `assetlinks.json` validado
 - icones 192 e 512 prontos
 - testes manuais em Android
+
+## Exclusao de conta (Play Console)
+
+No Play Console, em "Politica de programa > Exclusao de dados", informe a URL:
+
+```text
+https://app.lindice.com.br/privacidade/exclusao-de-dados/
+```
+
+Essa pagina explica como excluir a conta pelo app (Minha conta > Excluir minha conta) e como pedir exclusao por email para quem perdeu o acesso ao login.
 
 ## Observacao
 

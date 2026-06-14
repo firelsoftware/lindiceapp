@@ -1,0 +1,38 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Excluir minha conta</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <h2>O que acontece ao excluir</h2>
+    <p>Seus dados pessoais (nome, email, telefone, endereco, CPF, documentos e fotos enviados) sao removidos do Líndice e o acesso a esta conta e desativado imediatamente.</p>
+    <p>Pedidos, vendas a crediario e debitos ja registrados em seu nome sao mantidos de forma anonima, pois sao exigidos para fins fiscais e contabeis pela legislacao brasileira. Eles deixam de ficar associados aos seus dados pessoais.</p>
+    <p>Essa acao nao pode ser desfeita. Se quiser comprar novamente, sera necessario fazer um novo cadastro.</p>
+</section>
+
+<section class="info-panel">
+    <h2>Confirmar exclusao</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_password">Digite sua senha para confirmar</label>
+        <input type="password" name="password" id="id_password" required autocomplete="current-password">
+
+        <div class="terms-accept">
+            <input type="checkbox" name="confirm" id="id_confirm" value="1" required>
+            <label for="id_confirm">Entendo que minha conta e meus dados pessoais serao excluidos e que essa acao nao pode ser desfeita.</label>
+        </div>
+
+        <button type="submit" class="button-secondary">Excluir minha conta definitivamente</button>
+    </form>
+</section>
+
+<p><a href="{% url 'account' %}">Voltar para minha conta</a></p>
+{% endblock %}
