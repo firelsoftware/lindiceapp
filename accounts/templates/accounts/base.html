@@ -116,6 +116,7 @@
             background: #ffffff;
             opacity: 1;
             visibility: visible;
+            pointer-events: none;
             transition: opacity 260ms ease, visibility 260ms ease;
             animation: splash-layer 1150ms ease forwards;
         }
@@ -254,6 +255,11 @@
             line-height: 1;
             text-decoration: none;
             box-shadow: 0 8px 20px rgba(24, 34, 48, 0.08);
+        }
+
+        .notification-bell:hover {
+            border-color: var(--brand-purple);
+            transform: none;
         }
 
         .notification-bell-symbol {
@@ -3157,6 +3163,15 @@
 
             var alreadySeen = false;
 
+            function removeSplash() {
+                splash.classList.add("is-hidden");
+                window.setTimeout(function () {
+                    if (splash.parentNode) {
+                        splash.parentNode.removeChild(splash);
+                    }
+                }, 260);
+            }
+
             try {
                 alreadySeen = !!sessionStorage.getItem("lindiceSplashSeen");
             } catch (error) {
@@ -3164,7 +3179,7 @@
             }
 
             if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || alreadySeen) {
-                splash.classList.add("is-hidden");
+                removeSplash();
                 return;
             }
 
@@ -3174,19 +3189,17 @@
                 // armazenamento de sessao bloqueado; ignora e segue com a animacao
             }
 
-            window.setTimeout(function () {
-                splash.classList.add("is-hidden");
-            }, 900);
+            window.setTimeout(removeSplash, 900);
         })();
 
         (function () {
             var shell = document.querySelector("[data-app-menu]");
-            var toggle = document.querySelector("[data-menu-toggle]");
-            var panel = document.querySelector("[data-menu-panel]");
+            var toggles = document.querySelectorAll("[data-menu-toggle]");
+            var panels = document.querySelectorAll("[data-menu-panel]");
             var closeTimer = null;
             var closeDelayMs = 2000;
 
-            if (!shell || !toggle || !panel) {
+            if (!shell || !toggles.length || !panels.length) {
                 return;
             }
 
@@ -3207,29 +3220,35 @@
             function setMenu(open) {
                 clearCloseTimer();
                 shell.classList.toggle("menu-open", open);
-                toggle.setAttribute("aria-expanded", open ? "true" : "false");
+                toggles.forEach(function (toggle) {
+                    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+                });
             }
 
-            toggle.addEventListener("mouseenter", function () {
-                setMenu(true);
+            toggles.forEach(function (toggle) {
+                toggle.addEventListener("mouseenter", function () {
+                    setMenu(true);
+                });
+
+                toggle.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    setMenu(!shell.classList.contains("menu-open"));
+                });
             });
 
             shell.addEventListener("mouseleave", function () {
                 scheduleClose();
             });
 
-            toggle.addEventListener("click", function (event) {
-                event.stopPropagation();
-                setMenu(!shell.classList.contains("menu-open"));
-            });
+            panels.forEach(function (panel) {
+                panel.addEventListener("mouseenter", function () {
+                    clearCloseTimer();
+                    setMenu(true);
+                });
 
-            panel.addEventListener("mouseenter", function () {
-                clearCloseTimer();
-                setMenu(true);
-            });
-
-            panel.addEventListener("mouseleave", function () {
-                scheduleClose();
+                panel.addEventListener("mouseleave", function () {
+                    scheduleClose();
+                });
             });
 
             shell.addEventListener("focusin", function () {
