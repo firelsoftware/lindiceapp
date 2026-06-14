@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <rect width="1400" height="900" fill="#f4f7fb"/>
+  <rect x="40" y="30" width="1320" height="90" rx="24" fill="#ffffff" stroke="#ccd8ee" stroke-width="2"/>
+  <text x="70" y="72" fill="#1d2738" font-size="42" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Onde fica no sistema</text>
+  <text x="70" y="102" fill="#5f6f86" font-size="20" font-family="Segoe UI, Arial, sans-serif">URL do dropshipping e produtos com disponibilidade instavel</text>
+
+  <rect x="40" y="150" width="460" height="690" rx="28" fill="#ffffff" stroke="#ccd8ee" stroke-width="2"/>
+  <text x="70" y="195" fill="#1d2738" font-size="28" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Caminho</text>
+
+  <rect x="70" y="230" width="390" height="54" rx="18" fill="#e8eefc"/>
+  <text x="88" y="264" fill="#1d2738" font-size="24" font-family="Segoe UI, Arial, sans-serif">1. Fazer login como admin/staff</text>
+  <rect x="70" y="318" width="390" height="54" rx="18" fill="#e8eefc"/>
+  <text x="88" y="352" fill="#1d2738" font-size="24" font-family="Segoe UI, Arial, sans-serif">2. Abrir Gestao</text>
+  <rect x="70" y="406" width="390" height="54" rx="18" fill="#e8eefc"/>
+  <text x="88" y="440" fill="#1d2738" font-size="24" font-family="Segoe UI, Arial, sans-serif">3. Entrar em Fornecedor</text>
+  <rect x="70" y="494" width="390" height="54" rx="18" fill="#e8eefc"/>
+  <text x="88" y="528" fill="#1d2738" font-size="24" font-family="Segoe UI, Arial, sans-serif">4. Abrir Produtos do fornecedor</text>
+  <rect x="70" y="582" width="390" height="54" rx="18" fill="#e8eefc"/>
+  <text x="88" y="616" fill="#1d2738" font-size="24" font-family="Segoe UI, Arial, sans-serif">5. Rolar ate Fontes de catalogo</text>
+
+  <text x="70" y="710" fill="#d97706" font-size="28" font-family="Segoe UI, Arial, sans-serif" font-weight="700">URL principal:</text>
+  <text x="70" y="748" fill="#1d2738" font-size="24" font-family="Segoe UI, Arial, sans-serif">Revenda de Calcados</text>
+  <text x="70" y="804" fill="#0f9d58" font-size="28" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Produtos instaveis:</text>
+  <text x="70" y="842" fill="#1d2738" font-size="24" font-family="Segoe UI, Arial, sans-serif">Parceiro sob consulta</text>
+
+  <rect x="540" y="150" width="820" height="690" rx="28" fill="#ffffff" stroke="#ccd8ee" stroke-width="2"/>
+  <rect x="540" y="150" width="820" height="70" rx="28" fill="#eef2ff"/>
+  <text x="580" y="194" fill="#1d2738" font-size="28" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Produtos do fornecedor</text>
+
+  <rect x="580" y="260" width="735" height="130" rx="22" fill="#f8fafc" stroke="#ccd8ee" stroke-width="2"/>
+  <text x="610" y="300" fill="#1d2738" font-size="28" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Importar catalogo</text>
+  <text x="610" y="338" fill="#5f6f86" font-size="20" font-family="Segoe UI, Arial, sans-serif">Importa CSV/XML do dia ou usa a URL salva da fonte.</text>
+
+  <rect x="580" y="430" width="735" height="170" rx="22" fill="#fff7ed" stroke="#f6c27a" stroke-width="3"/>
+  <text x="610" y="470" fill="#d97706" font-size="28" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Revenda de Calcados</text>
+  <text x="610" y="514" fill="#1d2738" font-size="24" font-family="Segoe UI, Arial, sans-serif">Cole aqui a URL do catalogo/dropshipping.</text>
+  <rect x="1010" y="458" width="260" height="58" rx="16" fill="none" stroke="#d97706" stroke-width="4"/>
+  <text x="1065" y="494" fill="#d97706" font-size="24" font-family="Segoe UI, Arial, sans-serif" font-weight="700">catalog_url</text>
+  <text x="610" y="556" fill="#5f6f86" font-size="20" font-family="Segoe UI, Arial, sans-serif">Use esta fonte para o fornecedor principal.</text>
+
+  <rect x="580" y="630" width="735" height="170" rx="22" fill="#ecfdf3" stroke="#79c79a" stroke-width="3"/>
+  <text x="610" y="670" fill="#0f9d58" font-size="28" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Parceiro sob consulta</text>
+  <text x="610" y="714" fill="#1d2738" font-size="24" font-family="Segoe UI, Arial, sans-serif">Use para produtos com estoque/disponibilidade instavel.</text>
+  <text x="610" y="752" fill="#5f6f86" font-size="20" font-family="Segoe UI, Arial, sans-serif">Configure a URL, o fluxo via WhatsApp e a mensagem ao cliente.</text>
+  <rect x="980" y="654" width="295" height="118" rx="18" fill="none" stroke="#0f9d58" stroke-width="4"/>
+  <text x="1024" y="695" fill="#0f9d58" font-size="24" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Produtos que</text>
+  <text x="1024" y="730" fill="#0f9d58" font-size="24" font-family="Segoe UI, Arial, sans-serif" font-weight="700">nem sempre</text>
+  <text x="1024" y="765" fill="#0f9d58" font-size="24" font-family="Segoe UI, Arial, sans-serif" font-weight="700">tem estoque</text>
+</svg>
