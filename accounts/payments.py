@@ -1,3 +1,5 @@
+import hashlib
+import hmac
 import json
 import urllib.error
 import urllib.request
@@ -25,6 +27,35 @@ def site_url(request):
 
 def is_test_environment():
     return settings.MERCADO_PAGO_ACCESS_TOKEN.startswith("TEST-")
+
+
+def verify_webhook_signature(request, data_id):
+    """Valida o header x-signature do webhook do Mercado Pago.
+
+    Se MERCADO_PAGO_WEBHOOK_SECRET nao estiver configurado, a verificacao e
+    pulada (compatibilidade com integracoes que ainda nao definiram a chave).
+    """
+    secret = settings.MERCADO_PAGO_WEBHOOK_SECRET
+
+    if not secret:
+        return True
+
+    signature_header = request.headers.get("x-signature", "")
+    request_id = request.headers.get("x-request-id", "")
+
+    parts = dict(
+        item.split("=", 1) for item in signature_header.split(",") if "=" in item
+    )
+    timestamp = parts.get("ts", "")
+    received_hash = parts.get("v1", "")
+
+    if not timestamp or not received_hash:
+        return False
+
+    manifest = f"id:{data_id};request-id:{request_id};ts:{timestamp};"
+    expected_hash = hmac.new(secret.encode(), manifest.encode(), hashlib.sha256).hexdigest()
+
+    return hmac.compare_digest(expected_hash, received_hash)
 
 
 def mercado_pago_request(path, payload=None, method="POST"):

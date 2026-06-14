@@ -289,7 +289,7 @@
     var sizeField = document.getElementById("tamanho");
     var childSizes = JSON.parse('{{ child_size_options_json|escapejs }}');
     var adultSizes = JSON.parse('{{ adult_size_options_json|escapejs }}');
-    var selectedSize = "{{ size }}";
+    var selectedSize = "{{ size|escapejs }}";
     var submitTimer = null;
 
     function submitSoon(delay) {

@@ -1,7 +1,7 @@
 import hashlib
 import hmac
-import random
 import re
+import secrets
 
 from django.conf import settings
 
@@ -51,4 +51,4 @@ def is_valid_cpf(cpf):
 
 
 def generate_phone_code():
-    return str(random.randint(100000, 999999))
+    return str(secrets.randbelow(900000) + 100000)

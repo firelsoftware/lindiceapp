@@ -27,7 +27,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, UserPasswordChangeForm
 from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, StoreOrder, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
-from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment
+from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, verify_webhook_signature
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
 from .supplier_import import decode_catalog_content, import_supplier_catalog, import_supplier_catalog_content
 from .utils import generate_phone_code
@@ -1458,6 +1458,9 @@ def mercado_pago_webhook(request):
 
     if not payment_id:
         return JsonResponse({"ok": True, "ignored": "missing payment id"})
+
+    if not verify_webhook_signature(request, payment_id.lower()):
+        return JsonResponse({"ok": False, "error": "invalid signature"}, status=401)
 
     try:
         payment = get_payment(payment_id)

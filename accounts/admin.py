@@ -37,7 +37,7 @@ class ClientProfileAdmin(admin.ModelAdmin):
     list_display = ("user", "phone", "registration_status", "approved_at", "approved_by")
     list_filter = ("registration_status", "phone_verified")
     search_fields = ("user__email", "user__full_name", "user__preferred_name", "phone", "cpf_last_digits")
-    readonly_fields = ("approved_at",)
+    readonly_fields = ("approved_at", "phone_verification_code", "cpf_hash")
 
     fieldsets = (
         ("Cliente", {"fields": ("user", "phone", "phone_verified", "phone_verification_code", "phone_verification_sent_at")}),

@@ -14,6 +14,25 @@ from .store_shipping import shipping_choices_with_prices
 from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
 
 
+MAX_DOCUMENT_UPLOAD_SIZE = 10 * 1024 * 1024
+ALLOWED_DOCUMENT_CONTENT_TYPES = ("image/jpeg", "image/png", "image/webp", "application/pdf")
+
+
+def validate_document_file(uploaded_file):
+    if not uploaded_file:
+        return uploaded_file
+
+    if uploaded_file.size > MAX_DOCUMENT_UPLOAD_SIZE:
+        raise ValidationError("O arquivo deve ter no maximo 10MB.")
+
+    content_type = getattr(uploaded_file, "content_type", "")
+
+    if content_type and content_type not in ALLOWED_DOCUMENT_CONTENT_TYPES:
+        raise ValidationError("Envie uma imagem (JPEG, PNG, WEBP) ou um PDF.")
+
+    return uploaded_file
+
+
 SHOE_SIZE_CHOICES = [(str(size), str(size)) for size in range(33, 45)]
 CHILD_SHOE_SIZE_CHOICES = [(str(size), str(size)) for size in range(14, 33)]
 CHECKOUT_PAYMENT_ONLINE = "online"
@@ -83,6 +102,12 @@ class RegisterForm(UserCreationForm):
             raise ValidationError("Ja existe um cadastro com este email.")
 
         return email
+
+    def clean_identity_document(self):
+        return validate_document_file(self.cleaned_data.get("identity_document"))
+
+    def clean_residence_proof(self):
+        return validate_document_file(self.cleaned_data.get("residence_proof"))
 
     def clean_cpf(self):
         cpf = self.cleaned_data["cpf"]
@@ -191,6 +216,9 @@ class ProfilePhotoForm(forms.ModelForm):
 
         if photo and hasattr(photo, "content_type") and not photo.content_type.startswith("image/"):
             raise ValidationError("Envie um arquivo de imagem.")
+
+        if photo and photo.size > MAX_DOCUMENT_UPLOAD_SIZE:
+            raise ValidationError("O arquivo deve ter no maximo 10MB.")
 
         return photo
 

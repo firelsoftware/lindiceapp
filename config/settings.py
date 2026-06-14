@@ -245,6 +245,7 @@ SHOE_SUPPLIER_DROPSHIPPING_URL = os.environ.get(
     "https://www.revendadecalcados.com.br/areadorevendedor/dropshipping-shopintegra",
 )
 MERCADO_PAGO_ACCESS_TOKEN = os.environ.get("MERCADO_PAGO_ACCESS_TOKEN", "")
+MERCADO_PAGO_WEBHOOK_SECRET = os.environ.get("MERCADO_PAGO_WEBHOOK_SECRET", "")
 MERCADO_PAGO_ACCOUNT_URL = os.environ.get("MERCADO_PAGO_ACCOUNT_URL", "")
 CARD_PAYMENT_ENABLED = env_bool("CARD_PAYMENT_ENABLED", default=True)
 PUBLIC_SITE_URL = os.environ.get("PUBLIC_SITE_URL", "")

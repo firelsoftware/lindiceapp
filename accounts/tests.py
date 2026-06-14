@@ -144,8 +144,8 @@ class RegistrationFlowTests(TestCase):
             rg_number="1234567",
             phone="61999999999",
             address="Rua Teste, 1",
-            identity_document=SimpleUploadedFile("rg.pdf", b"pdf"),
-            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            identity_document=SimpleUploadedFile("rg.pdf", b"pdf", content_type="application/pdf"),
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf", content_type="application/pdf"),
         )
 
         response = self.client.post("/cadastro/?intent=credit", data=data)
