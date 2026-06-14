@@ -11,15 +11,19 @@
     </ul>
 {% endif %}
 
-<p>Digite o codigo enviado para seu telefone.</p>
+{% if locked %}
+    <p>Numero maximo de tentativas excedido. Entre em contato com o suporte para receber um novo codigo.</p>
+{% else %}
+    <p>Digite o codigo enviado para seu telefone.</p>
 
-{% if development_code %}
-    <p>Codigo de desenvolvimento: <strong>{{ development_code }}</strong></p>
+    {% if development_code %}
+        <p>Codigo de desenvolvimento: <strong>{{ development_code }}</strong></p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Verificar</button>
+    </form>
 {% endif %}
-
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Verificar</button>
-</form>
 {% endblock %}

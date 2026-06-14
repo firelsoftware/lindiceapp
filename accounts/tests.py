@@ -191,6 +191,66 @@ class RegistrationFlowTests(TestCase):
         self.assertNotContains(response, "Codigo de desenvolvimento")
         self.assertNotContains(response, "123456")
 
+    @override_settings(PHONE_VERIFICATION_REQUIRED=True)
+    def test_verify_phone_locks_after_max_attempts(self):
+        user = User.objects.create_user(
+            email="cliente-tentativas@example.com",
+            password="Teste12345!",
+            full_name="Cliente Tentativas",
+            preferred_name="Cliente",
+        )
+        profile = ClientProfile.objects.create(
+            user=user,
+            cpf_hash=cpf_hash("52998224725"),
+            cpf_last_digits="4725",
+            phone="61999999999",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            phone_verification_code="123456",
+        )
+        self.client.force_login(user)
+
+        for attempt in range(1, ClientProfile.MAX_PHONE_VERIFICATION_ATTEMPTS + 1):
+            response = self.client.post("/verificar-telefone/", {"code": "000000"})
+            profile.refresh_from_db()
+            self.assertEqual(profile.phone_verification_attempts, attempt)
+
+        self.assertEqual(profile.phone_verification_attempts, ClientProfile.MAX_PHONE_VERIFICATION_ATTEMPTS)
+        self.assertContains(response, "Numero maximo de tentativas excedido")
+
+        # Mesmo o codigo correto nao deve funcionar apos o bloqueio.
+        response = self.client.post("/verificar-telefone/", {"code": "123456"})
+        profile.refresh_from_db()
+        self.assertFalse(profile.phone_verified)
+        self.assertContains(response, "Numero maximo de tentativas excedido")
+
+    @override_settings(PHONE_VERIFICATION_REQUIRED=True)
+    def test_verify_phone_resets_attempts_on_success(self):
+        user = User.objects.create_user(
+            email="cliente-codigo-ok@example.com",
+            password="Teste12345!",
+            full_name="Cliente Codigo Ok",
+            preferred_name="Cliente",
+        )
+        profile = ClientProfile.objects.create(
+            user=user,
+            cpf_hash=cpf_hash("52998224725"),
+            cpf_last_digits="4725",
+            phone="61999999999",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            phone_verification_code="123456",
+            phone_verification_attempts=2,
+        )
+        self.client.force_login(user)
+
+        response = self.client.post("/verificar-telefone/", {"code": "123456"}, follow=True)
+        profile.refresh_from_db()
+
+        self.assertTrue(profile.phone_verified)
+        self.assertEqual(profile.phone_verification_attempts, 0)
+        self.assertEqual(profile.phone_verification_code, "")
+
     @patch("accounts.views.RegisterForm.save")
     def test_registration_storage_error_returns_form_message(self, mocked_save):
         mocked_save.side_effect = RuntimeError("storage unavailable")

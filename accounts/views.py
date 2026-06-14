@@ -1599,18 +1599,38 @@ def verify_phone(request):
     if profile.phone_verified:
         return redirect("dashboard")
 
-    if request.method == "POST":
+    locked = profile.phone_verification_attempts >= ClientProfile.MAX_PHONE_VERIFICATION_ATTEMPTS
+
+    if request.method == "POST" and locked:
+        messages.error(
+            request,
+            f"Numero maximo de tentativas excedido. Entre em contato pelo email {settings.STORE_CONTACT_EMAIL} para receber um novo codigo.",
+        )
+        form = PhoneVerificationForm()
+    elif request.method == "POST":
         form = PhoneVerificationForm(request.POST)
 
         if form.is_valid():
             if form.cleaned_data["code"] == profile.phone_verification_code:
                 profile.phone_verified = True
                 profile.phone_verification_code = ""
-                profile.save(update_fields=["phone_verified", "phone_verification_code"])
+                profile.phone_verification_attempts = 0
+                profile.save(update_fields=["phone_verified", "phone_verification_code", "phone_verification_attempts"])
 
                 return redirect("dashboard")
 
-            messages.error(request, "Codigo invalido.")
+            profile.phone_verification_attempts += 1
+            profile.save(update_fields=["phone_verification_attempts"])
+            locked = profile.phone_verification_attempts >= ClientProfile.MAX_PHONE_VERIFICATION_ATTEMPTS
+
+            if locked:
+                messages.error(
+                    request,
+                    f"Numero maximo de tentativas excedido. Entre em contato pelo email {settings.STORE_CONTACT_EMAIL} para receber um novo codigo.",
+                )
+            else:
+                remaining = ClientProfile.MAX_PHONE_VERIFICATION_ATTEMPTS - profile.phone_verification_attempts
+                messages.error(request, f"Codigo invalido. Tentativas restantes: {remaining}.")
     else:
         form = PhoneVerificationForm()
 
@@ -1619,6 +1639,7 @@ def verify_phone(request):
         "accounts/verify_phone.html",
         {
             "form": form,
+            "locked": locked,
             "development_code": profile.phone_verification_code if settings.DEBUG else "",
         },
     )

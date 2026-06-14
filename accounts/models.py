@@ -85,6 +85,7 @@ class User(AbstractUser):
             profile.phone_verified = False
             profile.phone_verification_code = ""
             profile.phone_verification_sent_at = None
+            profile.phone_verification_attempts = 0
             profile.address = ""
             profile.identity_document = ""
             profile.residence_proof = ""
@@ -100,6 +101,8 @@ class ClientProfile(models.Model):
     APPROVED = "approved"
     REJECTED = "rejected"
 
+    MAX_PHONE_VERIFICATION_ATTEMPTS = 5
+
     REGISTRATION_STATUS_CHOICES = [
         (PENDING, "Pendente"),
         (APPROVED, "Aprovado"),
@@ -114,6 +117,7 @@ class ClientProfile(models.Model):
     phone_verified = models.BooleanField(default=False)
     phone_verification_code = models.CharField(max_length=6, blank=True)
     phone_verification_sent_at = models.DateTimeField(null=True, blank=True)
+    phone_verification_attempts = models.PositiveSmallIntegerField(default=0)
     address = models.TextField()
     identity_document = models.FileField(upload_to="identity_documents/", blank=True)
     residence_proof = models.FileField(upload_to="residence_proofs/", blank=True)
