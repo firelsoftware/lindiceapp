@@ -427,6 +427,7 @@
             color: var(--ink);
             font: inherit;
             font-weight: 700;
+            cursor: pointer;
             text-align: left;
             text-decoration: none;
         }
@@ -477,6 +478,7 @@
             border-radius: 12px;
             background: #ffffff;
             color: var(--ink);
+            cursor: pointer;
             box-shadow: 0 8px 20px rgba(24, 34, 48, 0.08);
         }
 
@@ -510,6 +512,7 @@
             border-radius: 12px;
             background: #ffffff;
             color: var(--ink);
+            cursor: pointer;
             box-shadow: 0 8px 20px rgba(24, 34, 48, 0.08);
         }
 
@@ -3191,7 +3194,7 @@
                 toggle.setAttribute("aria-expanded", open ? "true" : "false");
             }
 
-            shell.addEventListener("mouseenter", function () {
+            toggle.addEventListener("mouseenter", function () {
                 setMenu(true);
             });
 
