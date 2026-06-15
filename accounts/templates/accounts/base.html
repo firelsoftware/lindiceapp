@@ -958,6 +958,30 @@
             text-transform: uppercase;
         }
 
+        .supplier-table {
+            table-layout: fixed;
+        }
+
+        .supplier-table th,
+        .supplier-table td {
+            overflow-wrap: break-word;
+        }
+
+        .supplier-table th:last-child,
+        .supplier-table td:last-child {
+            width: 220px;
+        }
+
+        .supplier-table th:nth-child(3),
+        .supplier-table td:nth-child(3) {
+            width: 22%;
+        }
+
+        .supplier-table textarea {
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+
         .errorlist,
         .messages {
             color: var(--danger);
