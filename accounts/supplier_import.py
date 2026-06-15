@@ -221,31 +221,46 @@ def import_supplier_catalog_content(
     if not rows:
         raise ValueError("O catalogo nao trouxe produtos para importar.")
 
-    created = 0
-    updated = 0
-    seen_ids = []
+    payloads = {}
 
     for row_number, row in enumerate(rows, start=1):
         payload = row_to_payload(row, row_number)
         supplier_code = payload.pop("supplier_code")
-        product, was_created = SupplierProduct.objects.update_or_create(
-            source=source,
-            supplier_code=supplier_code,
-            defaults=payload,
-        )
-        seen_ids.append(product.id)
+        payloads[supplier_code] = payload
 
-        if was_created:
-            created += 1
+    existing = {
+        product.supplier_code: product
+        for product in SupplierProduct.objects.filter(source=source, supplier_code__in=payloads.keys())
+    }
+
+    to_create = []
+    to_update = []
+    update_fields = set()
+
+    for supplier_code, payload in payloads.items():
+        product = existing.get(supplier_code)
+
+        if product:
+            for field, value in payload.items():
+                setattr(product, field, value)
+                update_fields.add(field)
+
+            to_update.append(product)
         else:
-            updated += 1
+            to_create.append(SupplierProduct(source=source, supplier_code=supplier_code, **payload))
 
-    if seen_ids and deactivate_missing:
-        SupplierProduct.objects.filter(source=source).exclude(id__in=seen_ids).update(is_active=False)
+    if to_create:
+        SupplierProduct.objects.bulk_create(to_create, batch_size=500)
+
+    if to_update:
+        SupplierProduct.objects.bulk_update(to_update, list(update_fields), batch_size=500)
+
+    if deactivate_missing:
+        SupplierProduct.objects.filter(source=source).exclude(supplier_code__in=payloads.keys()).update(is_active=False)
 
     return {
-        "created": created,
-        "updated": updated,
+        "created": len(to_create),
+        "updated": len(to_update),
         "total": len(rows),
     }
 
