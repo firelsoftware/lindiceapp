@@ -247,7 +247,14 @@ def import_supplier_catalog_content(
 
             to_update.append(product)
         else:
-            to_create.append(SupplierProduct(source=source, supplier_code=supplier_code, **payload))
+            to_create.append(
+                SupplierProduct(
+                    source=source,
+                    supplier_code=supplier_code,
+                    is_visible=payload["stock_quantity"] > 0,
+                    **payload,
+                )
+            )
 
     if to_create:
         SupplierProduct.objects.bulk_create(to_create, batch_size=500)
