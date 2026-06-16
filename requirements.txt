@@ -1,4 +1,5 @@
 asgiref==3.11.1
+pymupdf==1.25.5
 dj-database-url==3.0.1
 Django==6.0.5
 django-storages[s3]==1.14.6

@@ -277,6 +277,7 @@ class SupplierProduct(models.Model):
     category = models.CharField(max_length=120, blank=True)
     brand = models.CharField(max_length=120, blank=True)
     image_url = models.URLField(blank=True)
+    image_file = models.FileField(upload_to="supplier_products/", blank=True)
     product_url = models.URLField(blank=True)
     wholesale_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     dropshipping_cost = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
@@ -311,7 +312,9 @@ class SupplierProduct(models.Model):
         gallery = raw_data.get("gallery_images") or []
         images = []
 
-        if self.image_url:
+        if self.image_file:
+            images.append(self.image_file.url)
+        elif self.image_url:
             images.append(self.image_url)
 
         for image_url in gallery:
