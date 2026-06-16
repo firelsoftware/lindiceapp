@@ -1,4 +1,4 @@
-const CACHE_NAME = "lindice-store-v2";
+const CACHE_NAME = "lindice-store-v3";
 const APP_SHELL = [
   "{{ store_front_url }}",
   "{{ offline_url }}",
