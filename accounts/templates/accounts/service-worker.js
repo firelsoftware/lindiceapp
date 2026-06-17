@@ -1,4 +1,4 @@
-const CACHE_NAME = "lindice-store-v3";
+const CACHE_NAME = "lindice-store-v4";
 const APP_SHELL = [
   "{{ store_front_url }}",
   "{{ offline_url }}",
@@ -37,14 +37,11 @@ self.addEventListener("fetch", (event) => {
   const acceptsHtml = request.headers.get("accept") && request.headers.get("accept").includes("text/html");
 
   if (request.mode === "navigate" || acceptsHtml) {
+    // Sempre busca a pagina fresca na rede. Nao guardamos HTML no cache para
+    // nunca servir uma versao antiga (ex.: deslogada) que faz o usuario
+    // parecer fora da conta e ter que entrar de novo. Offline cai na pagina padrao.
     event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-          return response;
-        })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match("{{ offline_url }}")))
+      fetch(request).catch(() => caches.match("{{ offline_url }}"))
     );
     return;
   }

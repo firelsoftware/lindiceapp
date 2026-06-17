@@ -24,11 +24,7 @@
     <div class="detail-content">
         <div>
             <div class="detail-meta-line">
-                {% if product.requires_availability_confirmation %}
-                    <span class="badge badge-warning">Sob consulta</span>
-                {% else %}
-                    <span class="badge badge-success">Disponivel</span>
-                {% endif %}
+                <span class="badge badge-success">Disponivel</span>
                 {% if product.category %}<span class="badge">{{ product.category }}</span>{% endif %}
                 {% if product.brand %}<span class="detail-brand">{{ product.brand }}</span>{% endif %}
             </div>
@@ -45,22 +41,12 @@
         <section class="detail-purchase-card">
             <div class="detail-trust-grid">
                 <div class="trust-item">
-                    {% if product.requires_availability_confirmation %}
-                        <strong>Cartao ou Pix: compra na hora</strong>
-                        <span>Pagamento protegido pelo checkout. No crediario, confirmamos a disponibilidade antes de fechar.</span>
-                    {% else %}
-                        <strong>Compra segura</strong>
-                        <span>Pagamento protegido e aprovacao automatica pelo checkout.</span>
-                    {% endif %}
+                    <strong>Compra segura</strong>
+                    <span>Pagamento protegido e aprovacao automatica pelo checkout.</span>
                 </div>
                 <div class="trust-item">
-                    {% if product.requires_availability_confirmation %}
-                        <strong>Atendimento humano</strong>
-                        <span>Depois do seu interesse, alinhamos disponibilidade e proximo passo com voce.</span>
-                    {% else %}
-                        <strong>Atualizacoes do pedido</strong>
-                        <span>Depois da aprovacao, voce recebe o andamento da compra e do envio.</span>
-                    {% endif %}
+                    <strong>Atualizacoes do pedido</strong>
+                    <span>Depois da aprovacao, voce recebe o andamento da compra e do envio.</span>
                 </div>
             </div>
         </section>
@@ -68,7 +54,7 @@
         <section class="detail-form-card">
             <h2>Escolha seu tamanho</h2>
             {% if product.requires_availability_confirmation %}
-                <p class="size-help">Pagando com cartao ou Pix voce finaliza a compra na hora. No crediario, confirmamos a disponibilidade pelo WhatsApp antes de fechar.</p>
+                <p class="size-help">Pagando com cartao ou Pix voce finaliza a compra na hora. No crediario, o fechamento e com nosso atendimento pelo WhatsApp.</p>
             {% endif %}
             <form method="post" action="{% url 'cart_add' product.id %}">
                 {% csrf_token %}

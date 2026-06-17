@@ -865,9 +865,10 @@ class StoreFlowTests(TestCase):
 
         response = self.client.get(f"/loja/produto/{product.id}/")
 
-        self.assertContains(response, "Sob consulta")
+        self.assertContains(response, "Disponivel")
         self.assertContains(response, "Adicionar ao carrinho")
         self.assertContains(response, "No crediario")
+        self.assertNotContains(response, "Sob consulta")
 
     def test_cart_add_allows_consultation_source_product(self):
         SupplierCatalogSource.objects.update_or_create(
@@ -896,9 +897,8 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, 'Abrir minha conta')
         self.assertContains(response, 'class="guest-account-toggle"', html=False)
         self.assertContains(response, '>Minha conta</h2>', html=False)
-        self.assertContains(response, '>Cadastro para crediario</a>', html=False)
+        self.assertContains(response, '>Criar conta</a>', html=False)
         self.assertContains(response, 'href="/login/"')
-        self.assertContains(response, 'href="/cadastro/?intent=credit"')
         self.assertNotContains(response, "Painel de gestao")
         self.assertNotContains(response, "Abrir notificacoes")
         self.assertNotContains(response, '>Crediario</a>', html=False)
@@ -2635,7 +2635,7 @@ class CustomerEntryRoutingTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Continuar sem login")
-        self.assertContains(response, "Crie sua conta com CPF, email e nome")
+        self.assertContains(response, "Criar minha conta")
         self.assertNotContains(response, "Abrir minha conta")
 
     def test_login_page_still_opens_when_purchase_redirect_includes_next(self):

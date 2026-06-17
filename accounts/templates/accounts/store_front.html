@@ -66,15 +66,6 @@
     </section>
 {% endif %}
 
-{% if consultation_sources %}
-    <section class="info-panel">
-        <h2>Modelos sob consulta</h2>
-        <p>Alguns itens entram por curadoria e dependem de confirmacao antes de fechar.</p>
-        {% for source in consultation_sources %}
-            <p><strong>{{ source.display_name }}:</strong> {{ source.customer_notice }}</p>
-        {% endfor %}
-    </section>
-{% endif %}
 
 {% if reserved_sales %}
     <h2>Separado para voce</h2>
@@ -173,9 +164,6 @@
                         <h2><a href="{% url 'store_product_detail' product.id %}">{{ product.name }}</a></h2>
                         {% if product.brand %}
                             <p class="store-product-note">{{ product.brand }}</p>
-                        {% endif %}
-                        {% if product.requires_availability_confirmation %}
-                            <p class="store-product-note">Disponibilidade sob consulta. {{ product.customer_notice }}</p>
                         {% endif %}
                         <p class="store-product-sizes">Tamanhos: {{ product.sizes|default:"consultar" }}</p>
                     </div>

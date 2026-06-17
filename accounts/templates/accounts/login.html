@@ -19,14 +19,6 @@
     <p><a href="{% url 'register' %}?next={{ request.GET.next|urlencode }}">Faca seu cadastro</a></p>
 {% endif %}
 
-<h2>Cadastro para crediario</h2>
-<p>Se quiser pedir crediario, use o cadastro completo com documentos para analise.</p>
-<ul class="support-points">
-    <li>Nome, telefone e endereco completo.</li>
-    <li>CPF e RG.</li>
-    <li>Comprovante de residencia no nome do cliente.</li>
-</ul>
-
-<p>Vai comprar sem crediario? <a href="{% url 'register' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}">Crie sua conta com CPF, email e nome</a></p>
-<p>Quer solicitar crediario? <a href="{% url 'register' %}?intent=credit{% if request.GET.next %}&amp;next={{ request.GET.next|urlencode }}{% endif %}">Termine seu cadastro completo</a></p>
+<h2>Ainda nao tem conta?</h2>
+<p><a href="{% url 'register' %}{% if request.GET.next %}?next={{ request.GET.next|urlencode }}{% endif %}">Criar minha conta</a></p>
 {% endblock %}
