@@ -63,5 +63,6 @@ urlpatterns = [
     path("gestao/produtos/<int:product_id>/excluir/", views.delete_product, name="delete_product"),
     path("gestao/produtos/<int:product_id>/custos/novo/", views.add_product_cost, name="add_product_cost"),
     path("gestao/relatorios/lucro/", views.profit_report, name="profit_report"),
+    path("gestao/linde/stats/", views.linde_stats, name="linde_stats"),
     path("preview/marca/", views.brand_preview, name="brand_preview"),
 ]

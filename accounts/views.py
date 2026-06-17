@@ -2032,6 +2032,89 @@ def management_dashboard(request):
 
 
 @staff_member_required(login_url="login")
+def linde_stats(request):
+    """Numeros ao vivo para a Linde IA responder perguntas do tipo
+    'quantos clientes aguardando' ou 'quantas vendas no mes'."""
+    today = timezone.localdate()
+    month_start = today.replace(day=1)
+
+    pending_clients = ClientProfile.objects.filter(registration_status=ClientProfile.PENDING).count()
+    approved_clients = ClientProfile.objects.filter(registration_status=ClientProfile.APPROVED).count()
+    pending_sales = CreditSale.objects.filter(status=CreditSale.PENDING).count()
+    accepted_sales_month = CreditSale.objects.filter(
+        status=CreditSale.ACCEPTED, accepted_at__date__gte=month_start
+    ).count()
+    store_paid = StoreOrder.objects.filter(status=StoreOrder.PAID).count()
+    store_awaiting_payment = StoreOrder.objects.filter(status=StoreOrder.PENDING_PAYMENT).count()
+    visible_products = SupplierProduct.objects.filter(
+        is_active=True, is_visible=True, stock_quantity__gt=0
+    ).count()
+    overdue_qs = Debt.objects.filter(paid=False, due_date__lt=today)
+    overdue_count = overdue_qs.count()
+    overdue_total = overdue_qs.aggregate(total=Sum("amount"))["total"] or Decimal("0.00")
+    summary = current_month_sales_summary()
+
+    return JsonResponse(
+        {
+            "month_label": summary["month_label"],
+            "metrics": {
+                "clientes_aguardando": {
+                    "value": pending_clients,
+                    "label": "clientes aguardando aprovacao",
+                    "url": resolve_url("clients_list") + "?cadastro=pending",
+                },
+                "clientes_aprovados": {
+                    "value": approved_clients,
+                    "label": "clientes aprovados",
+                    "url": resolve_url("clients_list") + "?cadastro=approved",
+                },
+                "vendas_crediario_pendentes": {
+                    "value": pending_sales,
+                    "label": "vendas no crediario aguardando",
+                    "url": resolve_url("management_dashboard"),
+                },
+                "vendas_aceitas_mes": {
+                    "value": accepted_sales_month,
+                    "label": "vendas no crediario aceitas no mes",
+                    "url": resolve_url("management_dashboard"),
+                },
+                "pedidos_pagar_fornecedor": {
+                    "value": store_paid,
+                    "label": "pedidos pagos para comprar no fornecedor",
+                    "url": resolve_url("store_orders"),
+                },
+                "pedidos_aguardando_pagamento": {
+                    "value": store_awaiting_payment,
+                    "label": "pedidos aguardando pagamento",
+                    "url": resolve_url("store_orders"),
+                },
+                "faturamento_mes": {
+                    "value": f"R$ {summary['revenue']:.2f}".replace(".", ","),
+                    "label": "faturamento do mes",
+                    "url": resolve_url("profit_report"),
+                },
+                "itens_vendidos_mes": {
+                    "value": summary["items_sold"],
+                    "label": "itens vendidos no mes",
+                    "url": resolve_url("profit_report"),
+                },
+                "debitos_vencidos": {
+                    "value": overdue_count,
+                    "label": "debitos vencidos",
+                    "extra": f"R$ {overdue_total:.2f}".replace(".", ","),
+                    "url": resolve_url("clients_list") + "?financeiro=overdue",
+                },
+                "produtos_na_loja": {
+                    "value": visible_products,
+                    "label": "produtos visiveis na loja",
+                    "url": resolve_url("supplier_products"),
+                },
+            },
+        }
+    )
+
+
+@staff_member_required(login_url="login")
 def clients_list(request):
     profiles = ClientProfile.objects.select_related("user").order_by("user__full_name")
     query = request.GET.get("q", "").strip()

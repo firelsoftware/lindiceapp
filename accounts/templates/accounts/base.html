@@ -2570,6 +2570,12 @@
             border-top-left-radius: 6px;
         }
 
+        .linde-assistant-link {
+            color: #7a2d84;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
         .linde-assistant-bubble-user {
             justify-self: end;
             background: #eaf1ff;
@@ -3193,10 +3199,10 @@
                 <div class="linde-assistant-status" data-linde-status>Pronta. So perguntar.</div>
                 <div class="linde-assistant-messages" data-linde-messages></div>
                 <div class="linde-assistant-quick">
-                    <button type="button" data-linde-suggestion="me mostra o relatorio">Relatorio</button>
-                    <button type="button" data-linde-suggestion="me mostra os lucros">Lucros</button>
-                    <button type="button" data-linde-suggestion="quais proximos passos">Proximos passos</button>
-                    <button type="button" data-linde-suggestion="o que voce ve nesta tela">Tela atual</button>
+                    <button type="button" data-linde-suggestion="numeros da loja">Números da loja</button>
+                    <button type="button" data-linde-suggestion="quantos clientes aguardando">Clientes aguardando</button>
+                    <button type="button" data-linde-suggestion="quantas vendas no mes">Vendas do mês</button>
+                    <button type="button" data-linde-suggestion="debitos vencidos">Vencidos</button>
                 </div>
                 <div class="linde-assistant-tools">
                     <button type="button" data-linde-suggestion="qual leitura mais inteligente dessa tela">Leitura inteligente</button>
@@ -3842,6 +3848,98 @@
                 return response;
             }
 
+            var STATS_URL = "{% url 'linde_stats' %}";
+
+            var STATS_INTENTS = [
+                { key: "clientes_aguardando", words: ["cliente aguardando", "clientes aguardando", "aguardando aprovacao", "cadastro pendente", "cadastros pendentes", "clientes pendentes", "aprovar cliente", "quantos clientes aguard"] },
+                { key: "clientes_aprovados", words: ["clientes aprovados", "quantos clientes aprovados", "clientes ativos"] },
+                { key: "vendas_crediario_pendentes", words: ["venda pendente", "vendas pendentes", "crediario pendente", "aguardando analise", "analise de crediario"] },
+                { key: "vendas_aceitas_mes", words: ["quantas vendas", "vendas feitas", "vendas no mes", "vendas aceitas", "vendi", "vendas do mes"] },
+                { key: "pedidos_pagar_fornecedor", words: ["pedido pago", "pedidos pagos", "comprar no fornecedor", "comprar no forn"] },
+                { key: "pedidos_aguardando_pagamento", words: ["aguardando pagamento", "pedido aguardando", "pedidos aguardando", "nao pagaram"] },
+                { key: "faturamento_mes", words: ["faturamento", "quanto faturei", "faturei", "receita do mes", "quanto vendi em reais"] },
+                { key: "itens_vendidos_mes", words: ["itens vendidos", "quantos itens", "pares vendidos", "quantos pares"] },
+                { key: "debitos_vencidos", words: ["vencido", "vencidos", "atraso", "atrasados", "debito vencido", "inadimpl", "quem esta devendo", "devendo"] },
+                { key: "produtos_na_loja", words: ["quantos produtos", "produtos na loja", "produtos visiveis", "itens na loja"] }
+            ];
+
+            var STATS_OVERVIEW_WORDS = ["numeros", "visao geral", "como esta a loja", "como estao as coisas", "status da loja", "resumo do negocio", "resumo da loja", "me atualiza", "panorama", "como vai a loja", "como estamos"];
+
+            function statsIntent(text) {
+                for (var i = 0; i < STATS_INTENTS.length; i++) {
+                    if (textIncludes(text, STATS_INTENTS[i].words)) {
+                        return STATS_INTENTS[i].key;
+                    }
+                }
+                if (textIncludes(text, STATS_OVERVIEW_WORDS)) {
+                    return "all";
+                }
+                return null;
+            }
+
+            function fetchStats(callback) {
+                fetch(STATS_URL, { credentials: "same-origin", headers: { "X-Requested-With": "XMLHttpRequest" } })
+                    .then(function (response) { return response.ok ? response.json() : null; })
+                    .then(function (data) { callback(data); })
+                    .catch(function () { callback(null); });
+            }
+
+            function addLinkedMessage(text, url, linkLabel) {
+                var bubble = document.createElement("div");
+                bubble.className = "linde-assistant-bubble linde-assistant-bubble-linde";
+                bubble.textContent = text + " ";
+                if (url) {
+                    var anchor = document.createElement("a");
+                    anchor.href = url;
+                    anchor.textContent = linkLabel || "abrir";
+                    anchor.className = "linde-assistant-link";
+                    bubble.appendChild(anchor);
+                }
+                messages.appendChild(bubble);
+                messages.scrollTop = messages.scrollHeight;
+                memory.push({ kind: "linde", text: text });
+                memory = memory.slice(-maxStoredMessages);
+                saveMemory();
+            }
+
+            function formatOverview(data) {
+                var m = data.metrics;
+                var parts = ["Panorama de " + data.month_label + ":"];
+                parts.push("• " + m.clientes_aguardando.value + " " + m.clientes_aguardando.label);
+                parts.push("• " + m.vendas_aceitas_mes.value + " " + m.vendas_aceitas_mes.label);
+                parts.push("• " + m.faturamento_mes.value + " de " + m.faturamento_mes.label);
+                parts.push("• " + m.pedidos_pagar_fornecedor.value + " " + m.pedidos_pagar_fornecedor.label);
+                parts.push("• " + m.debitos_vencidos.value + " " + m.debitos_vencidos.label + " (" + m.debitos_vencidos.extra + ")");
+                parts.push("• " + m.produtos_na_loja.value + " " + m.produtos_na_loja.label);
+                return parts.join("\n");
+            }
+
+            function answerStats(intent) {
+                fetchStats(function (data) {
+                    hideThinking();
+                    if (!data) {
+                        addMessage("linde", "Nao consegui buscar os numeros agora. Tenta de novo daqui a pouco.");
+                        return;
+                    }
+                    setStatus("Modo dados ao vivo.");
+                    if (intent === "all") {
+                        addMessage("linde", formatOverview(data));
+                        return;
+                    }
+                    var metric = data.metrics[intent];
+                    if (!metric) {
+                        addMessage("linde", "Nao achei esse numero, mas posso te dar o panorama geral se quiser.");
+                        return;
+                    }
+                    var phrase = "Agora: " + metric.value + " " + metric.label;
+                    if (metric.extra) {
+                        phrase += " (" + metric.extra + ")";
+                    }
+                    phrase += ".";
+                    addLinkedMessage(phrase, metric.url, "abrir a tela");
+                });
+            }
+
             function openAssistant() {
                 assistant.classList.add("is-open");
                 launcher.setAttribute("aria-expanded", "true");
@@ -3882,6 +3980,14 @@
 
                 addMessage("user", prompt);
                 showThinking();
+
+                var intent = statsIntent(prompt.toLowerCase());
+                if (intent) {
+                    answerStats(intent);
+                    input.value = "";
+                    return;
+                }
+
                 window.setTimeout(function () {
                     hideThinking();
                     addMessage("linde", answerWithPresence(prompt));
