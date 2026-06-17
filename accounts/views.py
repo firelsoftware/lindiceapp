@@ -880,32 +880,36 @@ def store_front(request):
     elif size_group == "adult" and size and size not in adult_size_options:
         size = ""
 
-    # Carrossel inicial: imagens aleatorias de qualquer produto visivel do site.
+    # Carrosseis iniciais: imagens aleatorias de qualquer produto visivel do site.
+    # Dois carrosseis lado a lado, com amostras aleatorias diferentes.
     featured_pool = (
         SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0)
         .exclude(image_file="", image_url="")
     )
-    featured_products = list(featured_pool.order_by("?")[:12])
+    featured_products = list(featured_pool.order_by("?")[:24])
 
-    showcase_items = []
-    for featured in featured_products:
+    def build_showcase_item(featured):
         featured_gallery = featured.gallery_images()
         featured_image = featured_gallery[0] if featured_gallery else (featured.image_url or "")
         if not featured_image:
-            continue
-        showcase_items.append(
-            {
-                "title": featured.name,
-                "subtitle": featured.category or featured.brand or "",
-                "price": f"R$ {featured.suggested_sale_price:.2f}".replace(".", ","),
-                "sizes_label": "Tamanhos" if featured.sizes and featured.sizes != "Único" else "Modelo",
-                "sizes": featured.sizes or "Único",
-                "image_url": featured_image,
-                "link_url": resolve_url("store_product_detail", featured.id),
-            }
-        )
+            return None
+        return {
+            "title": featured.name,
+            "subtitle": featured.category or featured.brand or "",
+            "price": f"R$ {featured.suggested_sale_price:.2f}".replace(".", ","),
+            "sizes_label": "Tamanhos" if featured.sizes and featured.sizes != "Único" else "Modelo",
+            "sizes": featured.sizes or "Único",
+            "image_url": featured_image,
+            "link_url": resolve_url("store_product_detail", featured.id),
+        }
 
-    showcase_sections = [{"title": "Destaques", "items": showcase_items}]
+    showcase_items = [item for item in (build_showcase_item(p) for p in featured_products) if item]
+    half = (len(showcase_items) + 1) // 2
+    showcase_sections = [
+        {"title": "Destaques", "items": showcase_items[:half]},
+        {"title": "Você também pode gostar", "items": showcase_items[half:]},
+    ]
+    showcase_sections = [section for section in showcase_sections if section["items"]]
 
     # Paginacao: a loja pode ter milhares de produtos. Sem paginar, a pagina
     # renderizava todos de uma vez (lenta o suficiente para estourar o timeout

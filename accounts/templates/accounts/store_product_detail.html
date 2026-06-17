@@ -15,6 +15,8 @@
                 <button class="product-gallery-nav product-gallery-prev" type="button" aria-label="Foto anterior" data-carousel-prev>&lsaquo;</button>
                 <button class="product-gallery-nav product-gallery-next" type="button" aria-label="Proxima foto" data-carousel-next>&rsaquo;</button>
             </div>
+        {% elif gallery_images %}
+            <img src="{{ gallery_images.0 }}" alt="{{ product.name }}">
         {% elif product.image_url %}
             <img src="{{ product.image_url }}" alt="{{ product.name }}">
         {% else %}
