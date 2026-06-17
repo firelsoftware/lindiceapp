@@ -812,19 +812,11 @@ class StoreFlowTests(TestCase):
         response = self.client.get("/loja/")
         content = response.content.decode()
 
-        self.assertContains(response, "Calçados")
-        self.assertContains(response, "Bolsas")
+        # O carrossel de destaques (imagens aleatorias do site) aparece antes dos filtros.
+        self.assertContains(response, "Destaques")
+        self.assertLess(content.index("Destaques"), content.index("Buscar produto"))
+        # Produtos com imagem entram no carrossel de destaques.
         self.assertContains(response, "Bota Ankle Boot Capa Cano Curto")
-        self.assertContains(response, "R$ 230,85")
-        self.assertContains(response, "Sandalia Plataforma de Cunha Anabela")
-        self.assertContains(response, "R$ 92,25")
-        self.assertContains(response, "NikeZoom Invicible Flyknit")
-        self.assertContains(response, "Bolsa Ramosê Melina")
-        self.assertContains(response, "R$ 179,90")
-        self.assertContains(response, "R$ 109,90")
-        self.assertContains(response, "Crochê")
-        self.assertLess(content.index("Sandalia Azul"), content.index("Sandalia Plataforma de Cunha Anabela"))
-        self.assertLess(content.index("NikeZoom Invicible Flyknit"), content.index("Buscar produto"))
 
     def test_store_front_uses_live_search_with_size_group_selector(self):
         self.create_supplier_product()

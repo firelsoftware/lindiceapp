@@ -68,6 +68,13 @@
                 <p class="size-help">Se tiver duvida, escolha o numero mais confortavel para seu uso diario.</p>
                 <button type="submit">Adicionar ao carrinho</button>
             </form>
+
+            {% if whatsapp_url %}
+                <div class="more-info-block">
+                    <a class="button button-secondary more-info-button" href="{{ whatsapp_url }}" target="_blank" rel="noopener">Mais informações</a>
+                    <p class="size-help">Vamos te encaminhar para um de nossos vendedores.</p>
+                </div>
+            {% endif %}
         </section>
         <p><a href="{% url 'store_front' %}">Voltar para loja</a></p>
     </div>

@@ -6,6 +6,7 @@ import logging
 from decimal import Decimal, InvalidOperation
 import unicodedata
 import uuid
+from urllib.parse import quote
 
 from django.contrib import messages
 from django.contrib.auth import login, logout, update_session_auth_hash
@@ -86,6 +87,21 @@ def ensure_supplier_catalog_sources():
         sources.append(source)
 
     return sources
+
+
+def store_whatsapp_url(request, product):
+    """Link do WhatsApp da loja com mensagem pronta sobre o produto.
+
+    Inclui o link do produto para o vendedor identificar o item exato antes de
+    responder. O codigo interno (faixa) nao aparece para o cliente.
+    """
+    number = getattr(settings, "STORE_WHATSAPP_NUMBER", "")
+    if not number:
+        return ""
+
+    product_url = request.build_absolute_uri(reverse("store_product_detail", args=[product.id]))
+    message = f"Olá, gostaria de saber mais sobre esse produto: {product.name}\n{product_url}"
+    return f"https://wa.me/{number}?text={quote(message)}"
 
 
 def source_notice_for_customer(product):
@@ -864,134 +880,32 @@ def store_front(request):
     elif size_group == "adult" and size and size not in adult_size_options:
         size = ""
 
-    anabela_product = (
-        SupplierProduct.objects.filter(
-            is_active=True,
-            is_visible=True,
-            stock_quantity__gt=0,
-            name__icontains="Sandalia Plataforma de Cunha Anabela",
-            image_url__icontains="4066b",
-        )
-        .order_by("name")
-        .first()
+    # Carrossel inicial: imagens aleatorias de qualquer produto visivel do site.
+    featured_pool = (
+        SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0)
+        .exclude(image_file="", image_url="")
     )
-    sandalia_product = (
-        SupplierProduct.objects.filter(
-            is_active=True,
-            is_visible=True,
-            stock_quantity__gt=0,
-            category__icontains="Sand",
-        )
-        .order_by("name")
-        .first()
-    )
-    ankle_boot_product = (
-        SupplierProduct.objects.filter(
-            is_active=True,
-            is_visible=True,
-            stock_quantity__gt=0,
-            name__icontains="Bota Ankle Boot Capa Cano Curto",
-            image_url__icontains="1.958-4a",
-        )
-        .order_by("name")
-        .first()
-    )
-    ramose_products = list(
-        SupplierProduct.objects.filter(
-            is_active=True,
-            is_visible=True,
-            stock_quantity__gt=0,
-        )
-        .filter(Q(brand__icontains="Ramos") | Q(name__icontains="Ramos"))
-        .order_by("raw_data__featured_order", "name")[:5]
-    )
-    for product in ramose_products:
-        gallery = product.gallery_images()
-        product.primary_image = gallery[0] if gallery else ""
-    ramose_showcase_url = f"{resolve_url('store_front')}?q=Ramos"
+    featured_products = list(featured_pool.order_by("?")[:12])
 
-    showcase_sections = [
-        {
-            "title": "Calçados",
-            "items": [
-                {
-                    "title": ankle_boot_product.name if ankle_boot_product else "Bota Ankle Boot Capa Cano Curto",
-                    "subtitle": ankle_boot_product.category if ankle_boot_product else "Botas",
-                    "price": f"R$ {ankle_boot_product.suggested_sale_price:.2f}".replace(".", ",") if ankle_boot_product else "R$ 230,85",
-                    "sizes": ankle_boot_product.sizes if ankle_boot_product else "34,35,36,37,38,39",
-                    "image_url": ankle_boot_product.image_url if ankle_boot_product else "/static/accounts/catalog-test/botas/1.958-4a.jpg",
-                    "link_url": resolve_url("store_product_detail", ankle_boot_product.id) if ankle_boot_product else "",
-                },
-                {
-                    "title": "NikeZoom Invicible Flyknit",
-                    "subtitle": "Linha Premium",
-                    "price": "R$ 239,90",
-                    "sizes": "34,35,36,37,38,39,40,41,42,43",
-                    "image_url": "/static/accounts/showcase-nikezoom.jpeg",
-                    "link_url": "",
-                },
-                {
-                    "title": sandalia_product.name if sandalia_product else "Sandalia feminina",
-                    "subtitle": "Do nosso catalogo",
-                    "price": f"R$ {sandalia_product.suggested_sale_price:.2f}".replace(".", ",") if sandalia_product else "R$ 107,65",
-                    "sizes": sandalia_product.sizes if sandalia_product else "34,35,36,37,38,39",
-                    "image_url": sandalia_product.image_url if sandalia_product else "",
-                    "link_url": resolve_url("store_product_detail", sandalia_product.id) if sandalia_product else "",
-                },
-                {
-                    "title": anabela_product.name if anabela_product else "Sandalia Plataforma de Cunha Anabela",
-                    "subtitle": anabela_product.category if anabela_product else "Anabela",
-                    "price": f"R$ {anabela_product.suggested_sale_price:.2f}".replace(".", ",") if anabela_product else "R$ 92,25",
-                    "sizes": anabela_product.sizes if anabela_product else "34,35,36,37,38,39",
-                    "image_url": anabela_product.image_url if anabela_product else "/static/accounts/catalog-test/anabela/4066b.jpg",
-                    "link_url": resolve_url("store_product_detail", anabela_product.id) if anabela_product else "",
-                },
-            ],
-        },
-        {
-            "title": "Bolsas",
-            "items": [
-                {
-                    "title": product.name,
-                    "subtitle": (product.raw_data or {}).get("material", product.description or "Bolsa artesanal"),
-                    "price": f"R$ {product.suggested_sale_price:.2f}".replace(".", ","),
-                    "sizes_label": "Modelo",
-                    "sizes": product.sizes or "Único",
-                    "image_url": product.primary_image,
-                    "link_url": resolve_url("store_product_detail", product.id),
-                }
-                for product in ramose_products
-            ] or [
-                {
-                    "title": "Bolsa Romosê",
-                    "subtitle": "Crochê. Lenço não incluso.",
-                    "price": "R$ 179,90",
-                    "sizes_label": "Modelo",
-                    "sizes": "Único",
-                    "image_url": "/static/accounts/showcase-bolsa-tamose-preta.jpeg",
-                    "link_url": ramose_showcase_url,
-                },
-                {
-                    "title": "Bolsa Romosê",
-                    "subtitle": "Crochê",
-                    "price": "R$ 129,90",
-                    "sizes_label": "Modelo",
-                    "sizes": "Único",
-                    "image_url": "/static/accounts/showcase-bolsa-tamose-bege.jpeg",
-                    "link_url": ramose_showcase_url,
-                },
-                {
-                    "title": "Bolsa Romosê",
-                    "subtitle": "Crochê",
-                    "price": "R$ 129,90",
-                    "sizes_label": "Modelo",
-                    "sizes": "Único",
-                    "image_url": "/static/accounts/showcase-bolsa-tamose-caramelo.jpeg",
-                    "link_url": ramose_showcase_url,
-                },
-            ],
-        },
-    ]
+    showcase_items = []
+    for featured in featured_products:
+        featured_gallery = featured.gallery_images()
+        featured_image = featured_gallery[0] if featured_gallery else (featured.image_url or "")
+        if not featured_image:
+            continue
+        showcase_items.append(
+            {
+                "title": featured.name,
+                "subtitle": featured.category or featured.brand or "",
+                "price": f"R$ {featured.suggested_sale_price:.2f}".replace(".", ","),
+                "sizes_label": "Tamanhos" if featured.sizes and featured.sizes != "Único" else "Modelo",
+                "sizes": featured.sizes or "Único",
+                "image_url": featured_image,
+                "link_url": resolve_url("store_product_detail", featured.id),
+            }
+        )
+
+    showcase_sections = [{"title": "Destaques", "items": showcase_items}]
 
     # Paginacao: a loja pode ter milhares de produtos. Sem paginar, a pagina
     # renderizava todos de uma vez (lenta o suficiente para estourar o timeout
@@ -1064,6 +978,7 @@ def store_product_detail(request, product_id):
             "size_options": size_options,
             "gallery_images": gallery,
             "customer_notice": source_notice_for_customer(product),
+            "whatsapp_url": store_whatsapp_url(request, product),
         },
     )
 

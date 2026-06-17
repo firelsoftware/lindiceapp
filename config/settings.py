@@ -256,6 +256,9 @@ BOTICARIO_STORE_URL = os.environ.get(
     "BOTICARIO_STORE_URL",
     "https://minhaloja.grupoboticario.com.br/loja-fabriciopereiradasilvaalves-20983763?utm_source=app_divulgar_marca&utm_medium=divulgar_loja_multimarca",
 )
+# Numero de WhatsApp da loja (formato internacional, so digitos) usado no
+# botao "Mais informacoes" dos produtos.
+STORE_WHATSAPP_NUMBER = os.environ.get("STORE_WHATSAPP_NUMBER", "5561995524748")
 ANDROID_APP_PACKAGE_ID = os.environ.get("ANDROID_APP_PACKAGE_ID", "")
 ANDROID_SHA256_CERT_FINGERPRINTS = env_list("ANDROID_SHA256_CERT_FINGERPRINTS")
 PHONE_VERIFICATION_REQUIRED = env_bool("PHONE_VERIFICATION_REQUIRED", default=True)
