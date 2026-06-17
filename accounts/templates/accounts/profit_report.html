@@ -9,6 +9,7 @@
     <p>Total em valores de compra: <strong>R$ {{ total_purchase|floatformat:2 }}</strong></p>
     <p>Total de custos extras: <strong>R$ {{ total_extra_costs|floatformat:2 }}</strong></p>
     <p>Resultado previsto: <strong>R$ {{ gross_profit|floatformat:2 }}</strong></p>
+    {% if gross_margin is not None %}<p>Margem prevista: <strong>{{ gross_margin|floatformat:1 }}%</strong></p>{% endif %}
     <p>Produtos vendidos: {{ sold_products }}</p>
     <p>Produtos disponiveis: {{ available_products }}</p>
 </section>
@@ -30,6 +31,7 @@
     <p>Total de compra dos produtos vendidos: <strong>R$ {{ real_purchase|floatformat:2 }}</strong></p>
     <p>Custos extras dos produtos vendidos: <strong>R$ {{ real_extra_costs|floatformat:2 }}</strong></p>
     <p>Lucro real do periodo: <strong>R$ {{ real_profit|floatformat:2 }}</strong></p>
+    {% if real_margin is not None %}<p>Margem real do periodo: <strong>{{ real_margin|floatformat:1 }}%</strong></p>{% endif %}
 </section>
 
 <h2>Produtos vendidos no periodo</h2>

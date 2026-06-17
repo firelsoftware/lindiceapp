@@ -3633,6 +3633,62 @@
                 return null;
             }
 
+            var FOOTWEAR_KNOWLEDGE = [
+                { k: ["tipos de calcado", "tipos de calçado", "glossario", "glossário", "quais modelos", "tipos de sapato", "diferenca entre"], a: "Resumo dos modelos: scarpin (fechado com salto, clássico), sapatilha (rasa fechada), mocassim (fechado casual-chique), anabela (salto corrido/plataforma), rasteira (rasa aberta), sandália (aberta com tiras), papete (tiras largas com fivela), flatform (plataforma reta), mule (aberto atrás), tamanco, bota e tênis. Cada um resolve uma ocasião." },
+                { k: ["salto", "saltos", "agulha", "taca", "taça", "salto bloco", "salto fino"], a: "Tipos de salto: bloco/grosso (mais estável e confortável, bom pro dia a dia), fino/agulha (elegante e formal, menos estável), taça (médio, equilibra charme e conforto) e plataforma/meia-pata (alivia a pisada por reduzir a inclinação). Pra quem não tem costume, salto bloco de 4 a 6 cm é o mais seguro." },
+                { k: ["casamento", "festa", "trabalho", "ocasiao", "ocasião", "formatura", "entrevista", "balada", "madrinha"], a: "Por ocasião: trabalho/dia a dia → scarpin de salto bloco, mocassim, sapatilha ou tênis clean; festa/casamento → salto fino ou taça, metalizado ou cetim; balada → anabela ou plataforma (aguenta mais tempo em pé); entrevista → fechado e neutro (preto ou nude). Nude alonga a perna e combina com quase tudo." },
+                { k: ["numeracao", "numeração", "tamanho do pe", "qual tamanho", "medir o pe", "numero do pe", "tamanho certo", "qual numero"], a: "Pra acertar o número: meça do calcanhar à ponta do maior dedo no fim do dia (o pé incha) e deixe ~0,5 a 1 cm de folga. Referência: 22 cm ≈ 34, 23 cm ≈ 36, 24 cm ≈ 37/38, 25 cm ≈ 39. Bico fino pede meio número a mais; bico quadrado/redondo cai no número certo." },
+                { k: ["couro", "sintetico", "sintético", "verniz", "camurca", "camurça", "nobuck", "material", "napa"], a: "Materiais: couro legítimo respira, molda ao pé e dura mais (custa mais); sintético é barato e fácil de limpar, mas esquenta; verniz é brilhante e chique, porém risca fácil; camurça/nobuck é aveludado e sofisticado, mas sensível a água — pede spray impermeabilizante." },
+                { k: ["limpar", "cuidar", "conservar", "higienizar", "manchou", "amarelou", "conservacao", "conservação"], a: "Cuidados: couro → pano úmido e hidratante de couro às vezes; sintético → pano com sabão neutro; camurça → escovinha a seco e impermeabilizante; branco amarelado → pasta de bicarbonato. Guarde longe do sol, com papel dentro pra manter o formato e tirar umidade." },
+                { k: ["conforto", "confortavel", "confortável", "dor no pe", "ortopedico", "ortopédico", "joanete", "esporao", "esporão", "palmilha"], a: "Conforto: prefira salto bloco e baixo, palmilha acolchoada e solado flexível. Linhas de conforto (Usaflex, Piccadilly, Modare) ajudam quem fica muito em pé ou tem joanete/esporão. Palmilha de gel tira a pressão da ponta no salto. Comprar no fim do dia evita apertar." },
+                { k: ["marca", "marcas", "vizzano", "beira rio", "dakota", "arezzo", "schutz", "usaflex", "moleca", "santa lolla", "via marte", "ramarim", "piccadilly", "modare"], a: "Marcas femininas no Brasil: Vizzano e Beira Rio (ótimo custo-benefício, muito giro), Moleca e Ramarim (jovem/casual), Dakota (variado), Usaflex/Piccadilly/Modare (conforto), Via Marte e Bottero (intermediárias), Arezzo, Schutz e Santa Lolla (premium). Pra loja de bairro, Vizzano/Beira Rio/Moleca costumam vender muito." },
+                { k: ["tenis", "tênis", "sneaker", "nike", "adidas", "olympikus", "mizuno", "esportivo", "chunky"], a: "Tênis: casual/lifestyle (chunky, retrô, branco minimalista) combina com vestido, saia e jeans e é tendência forte; esportivo de corrida (Olympikus, Mizuno, Asics) prioriza amortecimento. Tênis branco é curinga e o modelo unissex amplia o público na revenda." },
+                { k: ["tendencia", "tendência", "moda agora", "esta em alta", "está em alta", "bico quadrado", "metalizado", "tendencias", "tendências", "vende mais"], a: "Tendências de bom giro: bico quadrado, sandália de tiras finas, flatform e mule, metalizados (dourado/prata) pra festa, nude pro dia a dia e tênis branco/retrô. Tons terroso e caramelo são versáteis. Boa tendência pra loja é a que gira e combina com várias roupas." },
+                { k: ["combinar", "combina com", "cor do sapato", "com que roupa", "combinacao", "combinação"], a: "Pra combinar: nude e caramelo vão com quase tudo e alongam a perna; preto é seguro e formal; metalizado entra como ponto de brilho com roupa neutra. Regra simples: o sapato ou puxa a cor de uma peça do look, ou entra como neutro. Sandália fina afina a silhueta; flatform e tênis pedem roupa mais solta." },
+                { k: ["infantil", "crianca", "criança", "kids", "tamanho infantil", "sapato de crianca"], a: "Calçado infantil pede solado flexível, leve e fácil de calçar (velcro ajuda). Evite salto e materiais que não respiram. A numeração infantil vai de ~18 a 34; deixe ~1 cm de folga porque o pé cresce rápido, sem sobrar a ponto de escapar." },
+                { k: ["calcado", "calçado", "sapato", "sapatos", "estilo"], a: "Posso te ajudar com modelos, salto, material, numeração, conforto, marcas, tendências e como combinar. Me diz o foco (ex.: 'qual salto pra casamento', 'como limpar camurça', 'que marca é boa de conforto') que eu vou direto ao ponto." }
+            ];
+
+            var MAKEUP_KNOWLEDGE = [
+                { k: ["base", "cobertura", "bb cream", "corretivo", "fundacao", "fundação"], a: "Base: cobertura baixa (BB cream) pro dia, média/alta pra cobrir mais. Teste a cor no maxilar (não na mão) e olhe na luz natural. Pele oleosa → base matte/oil free; pele seca → base hidratante com viço. Corretivo um tom mais claro ilumina embaixo do olho." },
+                { k: ["pele oleosa", "pele seca", "pele mista", "oleosa", "acabamento", "matte", "dewy", "glow", "brilho na pele"], a: "Por tipo de pele: oleosa → primer controlador, base matte e pó pra fixar (foco na zona T); seca → hidratar bem, base luminosa e pouco pó; mista → matte na zona T e glow nas laterais. Matte segura mais; glow dá viço, mas pode brilhar em pele oleosa." },
+                { k: ["subtom", "tom de pele", "quente", "frio", "neutro", "veia"], a: "Subtom: veias esverdeadas e pele que doura no sol = quente (combina dourado e terrosos); veias azuladas e pele que avermelha = frio (combina prateado e rosados); meio-termo = neutro. Acertar o subtom faz base e batom parecerem naturais." },
+                { k: ["passo a passo", "como fazer maquiagem", "ordem", "sequencia", "sequência", "comecar a maquiagem", "começar a maquiagem"], a: "Ordem básica: 1) skincare + primer, 2) base, 3) corretivo, 4) pó, 5) sobrancelha, 6) olhos (sombra/delineado/máscara), 7) blush, 8) iluminador, 9) batom, 10) fixador. Pele primeiro, cor depois. Pouco produto em camadas fica melhor que muito de uma vez." },
+                { k: ["batom", "gloss", "labial", "boca", "vermelho"], a: "Batom: matte dura mais e resseca (hidrate antes); cremoso é confortável e natural; líquido long lasting fixa muito; gloss dá volume e brilho. Nude e rosado são curinga de dia; vermelho e vinho marcam à noite. Lápis no contorno faz durar mais." },
+                { k: ["delineado", "delinear", "gatinho", "sombra", "olho", "esfumado", "mascara", "máscara", "rimel", "rímel", "cilios", "cílios"], a: "Olhos: delineado gatinho alonga e levanta o olhar; esfumado (lápis preto/marrom borrado) dá profundidade sem exigir precisão. Sombra marrom/bronze é a mais versátil. Máscara abre o olhar — curve o cílio antes. Pra durar, use primer de olhos ou sombra de base." },
+                { k: ["pele madura", "ruga", "rugas", "idade", "pele acneica", "acne", "espinha", "oleosidade"], a: "Pele madura: hidrate bem, base fluida e pouco pó (excesso marca linha fina), viço leve. Pele acneica/oleosa: produtos oil free e não comedogênicos, corretivo verde neutraliza vermelhidão, evite camadas demais. E nunca durma maquiada." },
+                { k: ["maquiagem de dia", "maquiagem de noite", "dia ou noite", "social", "leve", "festa make"], a: "Dia: leve e natural — pele clean, sobrancelha alinhada, máscara e batom nude. Noite/festa: pode intensificar — olho esfumado ou delineado marcante, iluminador e batom mais forte. Equilíbrio: se marca muito o olho, suaviza a boca, e vice-versa." },
+                { k: ["sobrancelha", "sobrancelhas", "henna"], a: "Sobrancelha emoldura o rosto: preencha as falhas com lápis/sombra um tom mais claro que o fio, no sentido do pelo, e fixe com gel. Não afine demais — sobrancelha mais cheia rejuvenesce. Henna dura semanas e disfarça falhas." },
+                { k: ["skincare", "cuidados com a pele", "limpeza de pele", "hidratar a pele", "protetor solar", "pele antes da make"], a: "Antes da make, a pele manda: limpe, hidrate e passe protetor solar (base não substitui o protetor). Pele preparada faz a maquiagem durar mais e não craquelar. À noite, remova tudo com demaquilante e sabonete facial." },
+                { k: ["marca de maquiagem", "boticario", "boticário", "eudora", "ruby rose", "vult", "quem disse berenice", "natura", "mac"], a: "Marcas no Brasil: Ruby Rose e Vult (acessíveis, boas pra começar), Quem Disse Berenice, Eudora e Boticário (intermediárias, boa pigmentação), Natura (pele e batom queridos), Mac e similares (alto padrão). A Líndice tem parceria Boticário — dá pra indicar pele e batom como combo com o look." },
+                { k: ["maquiagem", "make", "maquiar", "maquiagem basica", "maquiagem básica"], a: "Posso te ajudar com base, tipo de pele, subtom, passo a passo, batom, delineado, sobrancelha, pele madura/acneica e marcas. Me diz o foco (ex.: 'base pra pele oleosa', 'batom que dura', 'delineado pra iniciante') que eu detalho." }
+            ];
+
+            function answerKnowledge(text) {
+                var best = null;
+                var bestScore = 0;
+                var pools = [FOOTWEAR_KNOWLEDGE, MAKEUP_KNOWLEDGE];
+
+                for (var p = 0; p < pools.length; p++) {
+                    var pool = pools[p];
+                    for (var i = 0; i < pool.length; i++) {
+                        var topic = pool[i];
+                        var score = 0;
+                        for (var j = 0; j < topic.k.length; j++) {
+                            if (text.indexOf(topic.k[j]) >= 0) {
+                                score += 1;
+                            }
+                        }
+                        if (score > bestScore) {
+                            bestScore = score;
+                            best = topic;
+                        }
+                    }
+                }
+
+                return best ? best.a : null;
+            }
+
             function respond(prompt) {
                 var text = (prompt || "").trim().toLowerCase();
                 var contextTrail = recentUserIntent();
@@ -3646,6 +3702,12 @@
 
                 if (greeting) {
                     return greeting;
+                }
+
+                var knowledge = answerKnowledge(text);
+
+                if (knowledge) {
+                    return knowledge;
                 }
 
                 if (pageAware) {

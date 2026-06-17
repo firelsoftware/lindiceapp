@@ -2673,6 +2673,15 @@ def profit_report(request):
     real_extra_costs = sum(product.extra_cost_total() for product in real_products)
     real_profit = real_sale - real_purchase - real_extra_costs
 
+    def margin_percent(profit, sale):
+        sale = Decimal(sale or 0)
+        if sale <= 0:
+            return None
+        return (Decimal(profit or 0) / sale * Decimal("100")).quantize(Decimal("0.1"))
+
+    gross_margin = margin_percent(gross_profit, total_sale)
+    real_margin = margin_percent(real_profit, real_sale)
+
     return render(
         request,
         "accounts/profit_report.html",
@@ -2682,6 +2691,7 @@ def profit_report(request):
             "total_sale": total_sale,
             "total_extra_costs": total_extra_costs,
             "gross_profit": gross_profit,
+            "gross_margin": gross_margin,
             "sold_products": sold_products,
             "available_products": available_products,
             "start_date": start_date,
@@ -2691,5 +2701,6 @@ def profit_report(request):
             "real_sale": real_sale,
             "real_extra_costs": real_extra_costs,
             "real_profit": real_profit,
+            "real_margin": real_margin,
         },
     )
