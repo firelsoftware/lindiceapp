@@ -46,8 +46,8 @@
             <div class="detail-trust-grid">
                 <div class="trust-item">
                     {% if product.requires_availability_confirmation %}
-                        <strong>Confirmacao antes do fechamento</strong>
-                        <span>{{ customer_notice }}</span>
+                        <strong>Cartao ou Pix: compra na hora</strong>
+                        <span>Pagamento protegido pelo checkout. No crediario, confirmamos a disponibilidade antes de fechar.</span>
                     {% else %}
                         <strong>Compra segura</strong>
                         <span>Pagamento protegido e aprovacao automatica pelo checkout.</span>
@@ -66,25 +66,22 @@
         </section>
 
         <section class="detail-form-card">
+            <h2>Escolha seu tamanho</h2>
             {% if product.requires_availability_confirmation %}
-                <h2>Consulta antes da compra</h2>
-                <p>{{ customer_notice }}</p>
-                <p class="size-help">Voce ainda pode usar os tamanhos exibidos como referencia antes do nosso retorno.</p>
-            {% else %}
-                <h2>Escolha seu tamanho</h2>
-                <form method="post" action="{% url 'cart_add' product.id %}">
-                    {% csrf_token %}
-                    <label for="selected-size">Tamanho</label>
-                    <select id="selected-size" name="selected_size" required>
-                        <option value="">Selecione</option>
-                        {% for size in size_options %}
-                            <option value="{{ size }}">{{ size }}</option>
-                        {% endfor %}
-                    </select>
-                    <p class="size-help">Se tiver duvida, escolha o numero mais confortavel para seu uso diario.</p>
-                    <button type="submit">Adicionar ao carrinho</button>
-                </form>
+                <p class="size-help">Pagando com cartao ou Pix voce finaliza a compra na hora. No crediario, confirmamos a disponibilidade pelo WhatsApp antes de fechar.</p>
             {% endif %}
+            <form method="post" action="{% url 'cart_add' product.id %}">
+                {% csrf_token %}
+                <label for="selected-size">Tamanho</label>
+                <select id="selected-size" name="selected_size" required>
+                    <option value="">Selecione</option>
+                    {% for size in size_options %}
+                        <option value="{{ size }}">{{ size }}</option>
+                    {% endfor %}
+                </select>
+                <p class="size-help">Se tiver duvida, escolha o numero mais confortavel para seu uso diario.</p>
+                <button type="submit">Adicionar ao carrinho</button>
+            </form>
         </section>
         <p><a href="{% url 'store_front' %}">Voltar para loja</a></p>
     </div>

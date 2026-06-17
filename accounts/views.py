@@ -1058,10 +1058,6 @@ def store_product_detail(request, product_id):
 def cart_add(request, product_id):
     product = get_object_or_404(SupplierProduct, id=product_id, is_active=True, is_visible=True, stock_quantity__gt=0)
 
-    if product.requires_availability_confirmation():
-        messages.info(request, source_notice_for_customer(product))
-        return redirect("store_product_detail", product_id=product.id)
-
     if request.method == "POST":
         selected_size = request.POST.get("selected_size", "").strip()
         sizes = [size.strip() for size in (product.sizes or "").replace("/", ",").replace(";", ",").split(",") if size.strip()]
@@ -1139,11 +1135,6 @@ def cart_checkout(request):
         messages.warning(request, "Seu carrinho esta vazio.")
         return redirect("cart_detail")
 
-    consultation_item = next((item for item in items if item["product"].requires_availability_confirmation()), None)
-    if consultation_item:
-        messages.info(request, source_notice_for_customer(consultation_item["product"]))
-        return redirect("store_product_detail", product_id=consultation_item["product"].id)
-
     welcome_profile = get_welcome_discount_profile(request)
     subtotal = money(sum((item["total"] for item in items), Decimal("0.00")))
     voucher_discount = welcome_discount_amount(subtotal) if welcome_profile else Decimal("0.00")
@@ -1162,6 +1153,11 @@ def cart_checkout(request):
             orders = []
 
             if form.cleaned_data["payment_method"] == CHECKOUT_PAYMENT_CREDIT:
+                consultation_item = next((item for item in items if item["product"].requires_availability_confirmation()), None)
+                if consultation_item:
+                    messages.info(request, source_notice_for_customer(consultation_item["product"]))
+                    return redirect("store_product_detail", product_id=consultation_item["product"].id)
+
                 try:
                     with transaction.atomic():
                         sale, needs_analysis = create_credit_sale_from_checkout(request, items, form, shipping_cost)
@@ -1283,10 +1279,6 @@ def store_checkout(request, product_id):
         stock_quantity__gt=0,
     )
 
-    if product.requires_availability_confirmation():
-        messages.info(request, source_notice_for_customer(product))
-        return redirect("store_product_detail", product_id=product.id)
-
     welcome_profile = get_welcome_discount_profile(request)
     welcome_discount = welcome_discount_amount(product.suggested_sale_price) if welcome_profile else Decimal("0.00")
     welcome_total = money(product.suggested_sale_price - welcome_discount)
@@ -1301,6 +1293,10 @@ def store_checkout(request, product_id):
             shipping_cost = shipping_cost_for(form.cleaned_data["shipping_state"])
 
             if form.cleaned_data["payment_method"] == CHECKOUT_PAYMENT_CREDIT:
+                if product.requires_availability_confirmation():
+                    messages.info(request, source_notice_for_customer(product))
+                    return redirect("store_product_detail", product_id=product.id)
+
                 credit_items = [
                     {
                         "product": product,

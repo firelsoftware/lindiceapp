@@ -848,7 +848,7 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, "/static/accounts/catalog-test/botas/1.958-4a.jpg")
         self.assertContains(response, "/static/accounts/catalog-test/botas/1.958-4b.jpg")
 
-    def test_store_product_detail_for_consultation_source_hides_cart_flow(self):
+    def test_store_product_detail_for_consultation_source_shows_cart_flow(self):
         SupplierCatalogSource.objects.update_or_create(
             source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
             defaults={
@@ -866,10 +866,10 @@ class StoreFlowTests(TestCase):
         response = self.client.get(f"/loja/produto/{product.id}/")
 
         self.assertContains(response, "Sob consulta")
-        self.assertContains(response, "finalizar pelo WhatsApp")
-        self.assertNotContains(response, "Adicionar ao carrinho")
+        self.assertContains(response, "Adicionar ao carrinho")
+        self.assertContains(response, "No crediario")
 
-    def test_cart_add_blocks_consultation_source_product(self):
+    def test_cart_add_allows_consultation_source_product(self):
         SupplierCatalogSource.objects.update_or_create(
             source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
             defaults={
@@ -885,9 +885,10 @@ class StoreFlowTests(TestCase):
 
         response = self.client.post(f"/loja/carrinho/adicionar/{product.id}/", {"selected_size": "35"}, follow=True)
 
-        self.assertRedirects(response, f"/loja/produto/{product.id}/")
-        self.assertContains(response, "finalizar pelo WhatsApp")
-        self.assertEqual(self.client.session.get("store_cart", {}), {})
+        self.assertRedirects(response, "/loja/carrinho/")
+        cart = self.client.session.get("store_cart", {})
+        self.assertEqual(len(cart), 1)
+        self.assertTrue(any(item.get("product_id") == product.id for item in cart.values()))
 
     def test_guest_header_exposes_login_and_register_paths(self):
         response = self.client.get("/loja/")
