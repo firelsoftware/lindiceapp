@@ -179,6 +179,18 @@
     {% endfor %}
 </div>
 
+{% if page_obj.paginator.num_pages > 1 %}
+    <nav class="store-pagination" aria-label="Paginas de produtos">
+        {% if page_obj.has_previous %}
+            <a class="button button-secondary" href="?{% if base_querystring %}{{ base_querystring }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Anterior</a>
+        {% endif %}
+        <span class="store-pagination-status">Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a class="button" href="?{% if base_querystring %}{{ base_querystring }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Proxima</a>
+        {% endif %}
+    </nav>
+{% endif %}
+
 {% if boticario_store_url %}
     <section class="partner-link-panel" aria-label="Parceria Boticario">
         <a class="boticario-partner-link" href="{{ boticario_store_url }}" target="_blank" rel="noopener" aria-label="Clique para produtos Boticario com atendimento por WhatsApp">

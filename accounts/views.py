@@ -993,7 +993,17 @@ def store_front(request):
         },
     ]
 
-    for product in products:
+    # Paginacao: a loja pode ter milhares de produtos. Sem paginar, a pagina
+    # renderizava todos de uma vez (lenta o suficiente para estourar o timeout
+    # do servidor em producao). Processamos apenas os itens da pagina atual.
+    paginator = Paginator(products, 24)
+    page_obj = paginator.get_page(request.GET.get("page"))
+
+    querystring = request.GET.copy()
+    querystring.pop("page", None)
+    base_querystring = querystring.urlencode()
+
+    for product in page_obj:
         product.gallery = product.gallery_images()
         product.primary_image = product.gallery[0] if product.gallery else ""
         product.customer_notice = source_notice_for_customer(product)
@@ -1007,7 +1017,10 @@ def store_front(request):
         request,
         "accounts/store_front.html",
         {
-            "products": products,
+            "products": page_obj,
+            "page_obj": page_obj,
+            "paginator": paginator,
+            "base_querystring": base_querystring,
             "showcase_sections": showcase_sections,
             "query": query,
             "size_group": size_group,
