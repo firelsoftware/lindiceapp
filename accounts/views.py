@@ -3,6 +3,7 @@ from django.conf import settings
 from datetime import timedelta
 import json
 import logging
+import re
 from decimal import Decimal, InvalidOperation
 import unicodedata
 import uuid
@@ -294,7 +295,7 @@ def legacy_installment_total(description):
 
 
 def build_purchase_groups(user):
-    debts = list(user.debts.order_by("due_date", "id"))
+    debts = list(user.debts.filter(canceled=False).order_by("due_date", "id"))
     used_debt_ids = set()
     groups = []
 
@@ -367,9 +368,10 @@ def build_purchase_groups(user):
 
 def build_client_financial_summary(profile):
     debts = list(profile.user.debts.order_by("due_date", "id"))
-    unpaid_debts = [debt for debt in debts if not debt.paid]
+    active_debts = [debt for debt in debts if not debt.canceled]
+    unpaid_debts = [debt for debt in active_debts if not debt.paid]
     overdue_debts = [debt for debt in unpaid_debts if debt.days_late() > 0]
-    paid_debts = [debt for debt in debts if debt.paid]
+    paid_debts = [debt for debt in active_debts if debt.paid]
     overdue_days = max((debt.days_late() for debt in overdue_debts), default=0)
     open_total = sum((debt.total_amount() for debt in unpaid_debts), Decimal("0.00"))
     overdue_total = sum((debt.total_amount() for debt in overdue_debts), Decimal("0.00"))
@@ -524,7 +526,7 @@ def build_customer_finance_context(user):
     month_start = today.replace(day=1)
     next_month = add_months(month_start, 1)
     month_end = next_month - timedelta(days=1)
-    store_debts = list(user.debts.filter(paid=False).order_by("due_date", "id"))
+    store_debts = list(user.debts.filter(paid=False, canceled=False).order_by("due_date", "id"))
     personal_debts = list(user.personal_debts.filter(paid=False).order_by("due_date", "id"))
     commitments = [build_store_commitment_entry(debt) for debt in store_debts] + [
         build_personal_commitment_entry(debt) for debt in personal_debts
@@ -2049,7 +2051,7 @@ def linde_stats(request):
     visible_products = SupplierProduct.objects.filter(
         is_active=True, is_visible=True, stock_quantity__gt=0
     ).count()
-    overdue_qs = Debt.objects.filter(paid=False, due_date__lt=today)
+    overdue_qs = Debt.objects.filter(paid=False, canceled=False, due_date__lt=today)
     overdue_count = overdue_qs.count()
     overdue_total = overdue_qs.aggregate(total=Sum("amount"))["total"] or Decimal("0.00")
     summary = current_month_sales_summary()
@@ -2232,12 +2234,31 @@ def review_client_profile(request, profile_id):
     else:
         form = ClientApprovalForm(instance=profile)
 
+    # Vendas pendentes do cliente, com link pra ele finalizar (e enviar por WhatsApp)
+    phone_digits = re.sub(r"\D", "", profile.phone or "")
+    if phone_digits and not phone_digits.startswith("55"):
+        phone_digits = f"55{phone_digits}"
+
+    pending_sales = list(
+        profile.user.credit_sales.filter(status=CreditSale.PENDING).order_by("-created_at")
+    )
+    for sale in pending_sales:
+        sale.finalize_link = build_sale_payment_link(request, sale)
+        if phone_digits:
+            msg = (
+                f"Ola! Para finalizar sua compra na Lindice, acesse: {sale.finalize_link}"
+            )
+            sale.whatsapp_link = f"https://wa.me/{phone_digits}?text={quote(msg)}"
+        else:
+            sale.whatsapp_link = ""
+
     return render(
         request,
         "accounts/review_client_profile.html",
         {
             "debts": financial_summary["debts"],
             "financial_summary": financial_summary,
+            "pending_sales": pending_sales,
             "form": form,
             "profile": profile,
         },
@@ -2315,6 +2336,22 @@ def update_debt_payment(request, debt_id):
         else:
             debt.mark_unpaid()
             messages.success(request, "Baixa manual removida e debito reaberto.")
+    elif action == "cancel":
+        reason = request.POST.get("cancel_reason", "").strip()
+        if not reason:
+            messages.error(request, "Escolha uma justificativa para cancelar o debito.")
+        else:
+            debt.cancel(reason)
+            messages.success(request, f"Debito cancelado ({reason}). Nao conta mais para o cliente.")
+    elif action == "uncancel":
+        debt.canceled = False
+        debt.cancel_reason = ""
+        debt.canceled_at = None
+        debt.save(update_fields=["canceled", "cancel_reason", "canceled_at"])
+        messages.success(request, "Cancelamento desfeito. O debito voltou a contar.")
+    elif action == "delete":
+        debt.delete()
+        messages.success(request, "Debito excluido definitivamente.")
     else:
         messages.error(request, "Acao invalida para este debito.")
 

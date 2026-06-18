@@ -800,6 +800,9 @@ class Debt(models.Model):
     due_date = models.DateField()
     paid = models.BooleanField(default=False)
     paid_at = models.DateField(null=True, blank=True)
+    canceled = models.BooleanField(default=False)
+    cancel_reason = models.CharField(max_length=200, blank=True)
+    canceled_at = models.DateTimeField(null=True, blank=True)
     late_fee_percent = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal("2.00"))
     monthly_interest_percent = models.DecimalField(max_digits=5, decimal_places=2, default=Decimal("1.00"))
     created_at = models.DateTimeField(auto_now_add=True)
@@ -842,6 +845,12 @@ class Debt(models.Model):
         self.paid = False
         self.paid_at = None
         self.save(update_fields=["paid", "paid_at"])
+
+    def cancel(self, reason=""):
+        self.canceled = True
+        self.cancel_reason = (reason or "").strip()[:200]
+        self.canceled_at = timezone.now()
+        self.save(update_fields=["canceled", "cancel_reason", "canceled_at"])
 
     def __str__(self):
         return f"{self.client.email} - R$ {self.total_amount():.2f}"

@@ -130,7 +130,7 @@ def generate_due_notifications(now=None):
     local_now = timezone.localtime(now or timezone.now())
     today = local_now.date()
 
-    for debt in Debt.objects.filter(paid=False).select_related("client"):
+    for debt in Debt.objects.filter(paid=False, canceled=False).select_related("client"):
         if debt.due_date == today + timedelta(days=2):
             Notification.objects.get_or_create(
                 unique_key=f"debt:{debt.id}:due-soon:{today}:client:{debt.client_id}",

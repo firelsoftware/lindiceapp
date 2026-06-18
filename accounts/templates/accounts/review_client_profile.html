@@ -136,6 +136,25 @@
     {% endif %}
 </section>
 
+{% if pending_sales %}
+<section class="info-panel">
+    <h2>Aguardando o cliente finalizar</h2>
+    <p>Envie o link abaixo para o cliente concluir a compra (escolher parcelas e pagar).</p>
+    {% for sale in pending_sales %}
+        <div class="finalize-card" style="border:1px solid var(--line); border-radius:10px; padding:12px; margin-bottom:10px;">
+            <p style="margin:0 0 6px;"><strong>{{ sale.description|default:"Compra" }}</strong> — R$ {{ sale.total_amount|floatformat:2 }}</p>
+            <input type="text" readonly value="{{ sale.finalize_link }}" onclick="this.select()" style="width:100%; box-sizing:border-box; margin-bottom:8px;">
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button type="button" class="button-secondary" onclick="navigator.clipboard.writeText('{{ sale.finalize_link }}'); this.textContent='Copiado!';">Copiar link</button>
+                {% if sale.whatsapp_link %}
+                    <a class="button" href="{{ sale.whatsapp_link }}" target="_blank" rel="noopener">Enviar no WhatsApp</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</section>
+{% endif %}
+
 <section class="info-panel">
     <h2>Debitos lancados</h2>
     <p><a class="button" href="{% url 'create_manual_debt' %}?cliente={{ profile.user_id }}&amp;voltar_cadastro={{ profile.id }}">Lancar debito para este cliente</a></p>
@@ -158,21 +177,48 @@
                     <td>R$ {{ debt.amount|floatformat:2 }}</td>
                     <td>R$ {{ debt.total_amount|floatformat:2 }}</td>
                     <td>
-                        {% if debt.paid %}
+                        {% if debt.canceled %}
+                            <span class="badge badge-secondary">Cancelado{% if debt.cancel_reason %}: {{ debt.cancel_reason }}{% endif %}</span>
+                        {% elif debt.paid %}
                             <span class="badge badge-success">Pago{% if debt.paid_at %} em {{ debt.paid_at|date:"d/m/Y" }}{% endif %}</span>
                         {% else %}
                             <span class="badge badge-warning">Pendente</span>
                         {% endif %}
                     </td>
                     <td>
-                        <form method="post" class="inline-button-form" action="{% url 'update_debt_payment' debt.id %}">
+                        {% if debt.canceled %}
+                            <form method="post" class="inline-button-form" action="{% url 'update_debt_payment' debt.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="return_profile_id" value="{{ profile.id }}">
+                                <button type="submit" class="button-secondary" name="action" value="uncancel">Reativar</button>
+                            </form>
+                        {% else %}
+                            <form method="post" class="inline-button-form" action="{% url 'update_debt_payment' debt.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="return_profile_id" value="{{ profile.id }}">
+                                {% if debt.paid %}
+                                    <button type="submit" class="button-secondary" name="action" value="mark_unpaid">Desfazer baixa</button>
+                                {% else %}
+                                    <button type="submit" name="action" value="mark_paid">Marcar como pago</button>
+                                {% endif %}
+                            </form>
+                            <form method="post" class="inline-button-form" action="{% url 'update_debt_payment' debt.id %}" style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+                                {% csrf_token %}
+                                <input type="hidden" name="return_profile_id" value="{{ profile.id }}">
+                                <select name="cancel_reason" aria-label="Justificativa">
+                                    <option value="Teste">Teste</option>
+                                    <option value="Lancado com erro">Lançado com erro</option>
+                                    <option value="Duplicado">Duplicado</option>
+                                    <option value="Acordo/baixa">Acordo/baixa</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                                <button type="submit" class="button-secondary" name="action" value="cancel">Cancelar</button>
+                            </form>
+                        {% endif %}
+                        <form method="post" class="inline-button-form" action="{% url 'update_debt_payment' debt.id %}" style="margin-top:6px;" onsubmit="return confirm('Excluir este debito definitivamente? Nao da pra desfazer.');">
                             {% csrf_token %}
                             <input type="hidden" name="return_profile_id" value="{{ profile.id }}">
-                            {% if debt.paid %}
-                                <button type="submit" class="button-secondary" name="action" value="mark_unpaid">Desfazer baixa</button>
-                            {% else %}
-                                <button type="submit" name="action" value="mark_paid">Marcar como pago</button>
-                            {% endif %}
+                            <button type="submit" class="button-danger" name="action" value="delete">Excluir</button>
                         </form>
                     </td>
                 </tr>
