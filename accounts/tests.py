@@ -1429,7 +1429,7 @@ class StoreFlowTests(TestCase):
         )
         self.client.force_login(staff)
 
-        response = self.client.get("/gestao/fornecedor/produtos/")
+        response = self.client.get("/gestao/fornecedores/")
 
         self.assertContains(response, "Dropshipping Revenda de Calcados")
         self.assertContains(response, "https://example.com/dropshipping")
