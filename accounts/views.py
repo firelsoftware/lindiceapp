@@ -259,6 +259,19 @@ def build_sale_payment_link(request, sale):
     return request.build_absolute_uri(reverse("choose_installments", args=[sale.id]))
 
 
+def build_finalize_whatsapp_link(sale, payment_link):
+    """Monta o link de WhatsApp do cliente com a mensagem e o link de finalizacao."""
+    profile = getattr(sale.client, "profile", None)
+    phone = getattr(profile, "phone", "") if profile else ""
+    digits = re.sub(r"\D", "", phone or "")
+    if digits and not digits.startswith("55"):
+        digits = f"55{digits}"
+    if not digits:
+        return ""
+    message = f"Ola! Para finalizar sua compra na Lindice, acesse: {payment_link}"
+    return f"https://wa.me/{digits}?text={quote(message)}"
+
+
 class LoginView(auth_views.LoginView):
     template_name = "accounts/login.html"
     redirect_authenticated_user = True
@@ -2296,6 +2309,7 @@ def create_manual_debt(request):
                     "accounts/payment_link_created.html",
                     {
                         "payment_link": payment_link,
+                        "whatsapp_link": build_finalize_whatsapp_link(sale, payment_link),
                         "return_profile_id": return_profile_id,
                         "sale": sale,
                     },
@@ -2395,9 +2409,19 @@ def create_credit_sale(request):
             product_formset.instance = sale
             product_formset.save()
             create_sale_available_notification(sale)
-            messages.success(request, "Venda lancada para o cliente escolher o parcelamento.")
+            messages.success(request, "Venda lancada. Envie o link para o cliente finalizar.")
 
-            return redirect("management_dashboard")
+            payment_link = build_sale_payment_link(request, sale)
+            return render(
+                request,
+                "accounts/payment_link_created.html",
+                {
+                    "payment_link": payment_link,
+                    "whatsapp_link": build_finalize_whatsapp_link(sale, payment_link),
+                    "sale": sale,
+                    "return_profile_id": getattr(getattr(sale.client, "profile", None), "id", None),
+                },
+            )
     else:
         form = CreditSaleForm()
         product_formset = CreditSaleProductFormSet()
