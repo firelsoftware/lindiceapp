@@ -11,7 +11,7 @@ from django.utils import timezone
 
 from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, User
 from .store_shipping import shipping_choices_with_prices
-from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
+from .utils import clean_digits, cpf_hash, is_valid_cpf
 
 
 MAX_DOCUMENT_UPLOAD_SIZE = 10 * 1024 * 1024
@@ -52,7 +52,7 @@ class RegisterForm(UserCreationForm):
     full_name = forms.CharField(label="Nome completo *", max_length=150)
     preferred_name = forms.CharField(label="Como prefere ser chamado(a) *", max_length=80)
     email = forms.EmailField(label="Email *")
-    cpf = forms.CharField(label="CPF *", max_length=14)
+    cpf = forms.CharField(label="CPF", max_length=14, required=False)
     rg_number = forms.CharField(label="RG", max_length=20, required=False)
     phone = forms.CharField(label="Telefone", max_length=20, required=False)
     address = forms.CharField(label="Endereco", widget=forms.Textarea, required=False)
@@ -87,6 +87,8 @@ class RegisterForm(UserCreationForm):
         self.fields["password1"].label = "Senha *"
         self.fields["password2"].label = "Confirmacao de senha *"
         if self.credit_mode:
+            self.fields["cpf"].label = "CPF *"
+            self.fields["cpf"].required = True
             self.fields["rg_number"].label = "RG *"
             self.fields["phone"].label = "Telefone *"
             self.fields["address"].label = "Endereco *"
@@ -110,8 +112,11 @@ class RegisterForm(UserCreationForm):
         return validate_document_file(self.cleaned_data.get("residence_proof"))
 
     def clean_cpf(self):
-        cpf = self.cleaned_data["cpf"]
+        cpf = self.cleaned_data.get("cpf", "")
         cpf_digits = clean_digits(cpf)
+
+        if not cpf_digits and not self.credit_mode:
+            return ""
 
         if len(cpf_digits) != 11:
             raise ValidationError("Informe um CPF com 11 numeros.")
@@ -142,10 +147,8 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
 
-            ClientProfile.objects.create(
+            profile = ClientProfile(
                 user=user,
-                cpf_hash=cpf_hash(self.cleaned_data["cpf"]),
-                cpf_last_digits=cpf_last_digits(self.cleaned_data["cpf"]),
                 rg_number=self.cleaned_data.get("rg_number", ""),
                 phone=self.cleaned_data.get("phone", ""),
                 address=self.cleaned_data.get("address", ""),
@@ -153,8 +156,44 @@ class RegisterForm(UserCreationForm):
                 residence_proof=self.cleaned_data.get("residence_proof") or "",
                 registration_status=ClientProfile.PENDING if self.credit_mode else ClientProfile.APPROVED,
             )
+            if self.cleaned_data["cpf"]:
+                profile.set_cpf(self.cleaned_data["cpf"])
+            else:
+                profile.cpf_hash = ClientProfile.generate_cpf_placeholder()
+                profile.cpf_last_digits = ""
+
+            profile.save()
 
         return user
+
+
+class CheckoutCpfForm(forms.Form):
+    cpf = forms.CharField(label="CPF *", max_length=14)
+
+    def __init__(self, *args, **kwargs):
+        self.profile = kwargs.pop("profile")
+        super().__init__(*args, **kwargs)
+
+    def clean_cpf(self):
+        cpf = self.cleaned_data["cpf"]
+        cpf_digits = clean_digits(cpf)
+
+        if len(cpf_digits) != 11:
+            raise ValidationError("Informe um CPF com 11 numeros.")
+
+        if not is_valid_cpf(cpf_digits):
+            raise ValidationError("Informe um CPF valido.")
+
+        existing = ClientProfile.objects.filter(cpf_hash=cpf_hash(cpf_digits)).exclude(pk=self.profile.pk)
+        if existing.exists():
+            raise ValidationError("Ja existe um cadastro com este CPF.")
+
+        return cpf_digits
+
+    def save(self):
+        self.profile.set_cpf(self.cleaned_data["cpf"])
+        self.profile.save(update_fields=["cpf_hash", "cpf_last_digits"])
+        return self.profile
 
 
 class PhoneVerificationForm(forms.Form):

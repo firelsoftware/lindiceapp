@@ -11,6 +11,7 @@ from django.dispatch import receiver
 from django.utils import timezone
 
 from .store_shipping import SHIPPING_DESTINATION_CHOICES
+from .utils import cpf_hash, cpf_last_digits
 
 
 class UserManager(BaseUserManager):
@@ -163,6 +164,17 @@ class ClientProfile(models.Model):
 
     def __str__(self):
         return f"Cadastro de {self.user.email}"
+
+    @staticmethod
+    def generate_cpf_placeholder():
+        return hashlib.sha256(uuid.uuid4().hex.encode()).hexdigest()
+
+    def has_cpf(self):
+        return bool(self.cpf_last_digits)
+
+    def set_cpf(self, cpf):
+        self.cpf_hash = cpf_hash(cpf)
+        self.cpf_last_digits = cpf_last_digits(cpf)
 
 
 INSTALLMENT_INTEREST_RATES = {

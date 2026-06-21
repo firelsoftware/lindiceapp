@@ -96,7 +96,6 @@ class RegistrationFlowTests(TestCase):
             "email": "cliente-teste@example.com",
             "password1": "Teste12345!",
             "password2": "Teste12345!",
-            "cpf": "529.982.247-25",
             "intent": "shop",
         }
         data.update(overrides)
@@ -118,6 +117,7 @@ class RegistrationFlowTests(TestCase):
         self.assertTrue(user.profile.phone_verified)
         self.assertEqual(user.profile.phone_verification_code, "")
         self.assertEqual(user.profile.registration_status, ClientProfile.APPROVED)
+        self.assertEqual(user.profile.cpf_last_digits, "")
         self.assertEqual(user.profile.rg_number, "")
         self.assertFalse(bool(user.profile.identity_document))
         self.assertFalse(bool(user.profile.residence_proof))
@@ -125,6 +125,7 @@ class RegistrationFlowTests(TestCase):
     def test_credit_registration_requires_rg_document_for_credit_application(self):
         data = self.registration_payload(
             intent="credit",
+            cpf="529.982.247-25",
             rg_number="1234567",
             phone="61999999999",
             address="Rua Teste, 1",
@@ -141,6 +142,7 @@ class RegistrationFlowTests(TestCase):
     def test_credit_registration_stays_pending_for_manual_review(self):
         data = self.registration_payload(
             intent="credit",
+            cpf="529.982.247-25",
             rg_number="1234567",
             phone="61999999999",
             address="Rua Teste, 1",
@@ -165,6 +167,54 @@ class RegistrationFlowTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response["Location"], "/loja/carrinho/finalizar/")
+
+    @override_settings(PHONE_VERIFICATION_REQUIRED=False)
+    def test_basic_registration_accepts_optional_cpf_when_informed(self):
+        data = self.registration_payload(cpf="529.982.247-25")
+
+        self.client.post("/cadastro/", data=data)
+        user = User.objects.get(email="cliente-teste@example.com")
+
+        self.assertEqual(user.profile.cpf_last_digits, "4725")
+
+
+class ProfileCpfTests(TestCase):
+    def registration_payload(self, **overrides):
+        data = {
+            "full_name": "Cliente Teste",
+            "preferred_name": "Cliente",
+            "email": "cliente-teste@example.com",
+            "password1": "Teste12345!",
+            "password2": "Teste12345!",
+            "intent": "shop",
+        }
+        data.update(overrides)
+
+        return data
+
+    def test_customer_can_add_optional_cpf_later_from_profile(self):
+        user = User.objects.create_user(
+            email="cliente-perfil@example.com",
+            password="Teste12345!",
+            full_name="Cliente Perfil",
+            preferred_name="Cliente",
+        )
+        profile = ClientProfile.objects.create(
+            user=user,
+            cpf_hash=ClientProfile.generate_cpf_placeholder(),
+            cpf_last_digits="",
+            phone="61999999999",
+            phone_verified=True,
+            address="Endereco",
+            registration_status=ClientProfile.APPROVED,
+        )
+        self.client.force_login(user)
+
+        response = self.client.post("/perfil/", {"action": "cpf", "cpf": "529.982.247-25"})
+        profile.refresh_from_db()
+
+        self.assertRedirects(response, "/perfil/")
+        self.assertEqual(profile.cpf_last_digits, "4725")
 
     @override_settings(DEBUG=False, PHONE_VERIFICATION_REQUIRED=True, ALLOWED_HOSTS=["testserver"])
     def test_phone_verification_code_is_hidden_outside_debug(self):

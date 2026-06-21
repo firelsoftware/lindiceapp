@@ -26,7 +26,7 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
+from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
 from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, verify_webhook_signature
@@ -1834,18 +1834,29 @@ def profile(request):
     if not profile.phone_verified:
         return redirect("verify_phone")
 
-    if request.method == "POST":
-        form = ProfilePhotoForm(request.POST, request.FILES, instance=profile)
+    if request.method == "POST" and request.POST.get("action") == "cpf":
+        photo_form = ProfilePhotoForm(instance=profile)
+        cpf_form = CheckoutCpfForm(request.POST, profile=profile)
 
-        if form.is_valid():
-            form.save()
+        if cpf_form.is_valid():
+            cpf_form.save()
+            messages.success(request, "CPF vinculado a sua conta com sucesso.")
+
+            return redirect("profile")
+    elif request.method == "POST":
+        photo_form = ProfilePhotoForm(request.POST, request.FILES, instance=profile)
+        cpf_form = CheckoutCpfForm(profile=profile)
+
+        if photo_form.is_valid():
+            photo_form.save()
             messages.success(request, "Foto atualizada com sucesso.")
 
             return redirect("profile")
     else:
-        form = ProfilePhotoForm(instance=profile)
+        photo_form = ProfilePhotoForm(instance=profile)
+        cpf_form = CheckoutCpfForm(profile=profile)
 
-    return render(request, "accounts/profile.html", {"form": form, "profile": profile})
+    return render(request, "accounts/profile.html", {"form": photo_form, "cpf_form": cpf_form, "profile": profile})
 
 
 @login_required

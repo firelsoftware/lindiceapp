@@ -16,6 +16,7 @@
 {% if request.GET.next %}
     <h2>Finalizar seu carrinho</h2>
     <p>Se ainda nao tiver conta, termine seu cadastro para voltar direto ao checkout e concluir a compra.</p>
+    <p>O CPF e opcional na conta e ajuda a localizar compras e emitir nota fiscal.</p>
     <p><a href="{% url 'register' %}?next={{ request.GET.next|urlencode }}">Faca seu cadastro</a></p>
 {% endif %}
 

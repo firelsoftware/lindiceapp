@@ -17,8 +17,25 @@
     </div>
 {% endif %}
 
+<section class="hero-note">
+    <strong>CPF opcional na compra.</strong>
+    <p>CPF facilita localizar suas compras e emitir nota fiscal. Se quiser, adicione abaixo e ele ficara vinculado ao seu cadastro.</p>
+</section>
+
+{% if profile.cpf_last_digits %}
+    <p>CPF vinculado ao cadastro com final <strong>{{ profile.cpf_last_digits }}</strong>.</p>
+{% else %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="cpf">
+        {{ cpf_form.as_p }}
+        <button type="submit">Vincular CPF a conta</button>
+    </form>
+{% endif %}
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+    <input type="hidden" name="action" value="photo">
     {{ form.as_p }}
     <button type="submit">Salvar foto</button>
 </form>
