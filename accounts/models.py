@@ -754,6 +754,14 @@ class CreditSaleProduct(models.Model):
     product_code = models.CharField(max_length=30, unique=True, blank=True)
     name = models.CharField(max_length=120, blank=True)
     brand = models.CharField(max_length=120, blank=True)
+    supplier = models.ForeignKey(
+        "Supplier",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="sale_items",
+    )
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     image = models.FileField(upload_to="sale_products/", blank=True)
     shoe_size = models.CharField(max_length=20, blank=True)
     notes = models.TextField(blank=True)

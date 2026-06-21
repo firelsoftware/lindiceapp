@@ -505,11 +505,13 @@ class CreditSaleProductForm(forms.ModelForm):
 
     class Meta:
         model = CreditSaleProduct
-        fields = ("product", "name", "brand", "image", "shoe_size", "notes")
+        fields = ("product", "name", "brand", "supplier", "unit_price", "image", "shoe_size", "notes")
         labels = {
             "product": "Produto ja cadastrado",
             "name": "Produto",
             "brand": "Marca",
+            "supplier": "Fornecedor",
+            "unit_price": "Valor",
             "image": "Foto do produto",
             "shoe_size": "Tamanho",
             "notes": "Observacoes",
@@ -522,6 +524,10 @@ class CreditSaleProductForm(forms.ModelForm):
         self.fields["name"].required = False
         self.fields["brand"].required = True
         self.fields["image"].required = False
+        self.fields["supplier"].required = False
+        self.fields["supplier"].queryset = Supplier.objects.filter(is_active=True)
+        self.fields["supplier"].empty_label = "Sem fornecedor"
+        self.fields["unit_price"].required = False
         self.fields["size_group"] = forms.ChoiceField(
             label="Tipo de tamanho",
             choices=[
@@ -535,7 +541,7 @@ class CreditSaleProductForm(forms.ModelForm):
         self.fields["shoe_size"].widget = forms.Select(
             choices=[("", "Selecione")] + (CHILD_SHOE_SIZE_CHOICES if initial_group == self.SIZE_GROUP_CHILD else SHOE_SIZE_CHOICES)
         )
-        self.order_fields(["product", "name", "brand", "image", "size_group", "shoe_size", "notes"])
+        self.order_fields(["product", "name", "brand", "supplier", "unit_price", "image", "size_group", "shoe_size", "notes"])
 
     def clean(self):
         cleaned_data = super().clean()

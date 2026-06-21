@@ -2408,6 +2408,16 @@ def create_credit_sale(request):
             sale.save()
             product_formset.instance = sale
             product_formset.save()
+
+            # Se os itens tiverem valor, o total da venda passa a ser a soma deles.
+            itens_total = sum(
+                (item.unit_price for item in sale.products.all() if item.unit_price),
+                Decimal("0.00"),
+            )
+            if itens_total > 0 and itens_total != sale.total_amount:
+                sale.total_amount = itens_total
+                sale.save(update_fields=["total_amount"])
+
             create_sale_available_notification(sale)
             messages.success(request, "Venda lancada. Envie o link para o cliente finalizar.")
 
