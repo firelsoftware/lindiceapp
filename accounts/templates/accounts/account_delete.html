@@ -13,24 +13,24 @@
 
 <section class="info-panel">
     <h2>O que acontece ao excluir</h2>
-    <p>Seus dados pessoais (nome, email, telefone, endereco, CPF, documentos e fotos enviados) sao removidos do Líndice e o acesso a esta conta e desativado imediatamente.</p>
-    <p>Pedidos, vendas a crediario e debitos ja registrados em seu nome sao mantidos de forma anonima, pois sao exigidos para fins fiscais e contabeis pela legislacao brasileira. Eles deixam de ficar associados aos seus dados pessoais.</p>
-    <p>Essa acao nao pode ser desfeita. Se quiser comprar novamente, sera necessario fazer um novo cadastro.</p>
+    <p><strong>Sua conta será excluída totalmente em até 7 dias.</strong> Nesse período o acesso fica desativado, mas <strong>se você quiser voltar antes disso, basta entrar novamente</strong> com seu e-mail e senha que a exclusão é cancelada.</p>
+    <p>Passados os 7 dias, seus dados pessoais (nome, e-mail, telefone, endereço, CPF, documentos e fotos enviados) são removidos do Líndice de forma definitiva.</p>
+    <p>Pedidos, vendas a crediário e débitos já registrados em seu nome são mantidos de forma anônima, pois são exigidos para fins fiscais e contábeis pela legislação brasileira.</p>
 </section>
 
 <section class="info-panel">
-    <h2>Confirmar exclusao</h2>
-    <form method="post">
+    <h2>Confirmar exclusão</h2>
+    <form method="post" onsubmit="return confirm('Certeza que deseja excluir sua conta? Ela será apagada em até 7 dias. Para cancelar, basta entrar novamente nesse período.');">
         {% csrf_token %}
         <label for="id_password">Digite sua senha para confirmar</label>
         <input type="password" name="password" id="id_password" required autocomplete="current-password">
 
         <div class="terms-accept">
             <input type="checkbox" name="confirm" id="id_confirm" value="1" required>
-            <label for="id_confirm">Entendo que minha conta e meus dados pessoais serao excluidos e que essa acao nao pode ser desfeita.</label>
+            <label for="id_confirm">Entendo que minha conta será excluída em até 7 dias e que posso cancelar entrando novamente nesse período.</label>
         </div>
 
-        <button type="submit" class="button-secondary">Excluir minha conta definitivamente</button>
+        <button type="submit" class="button-danger">Excluir minha conta</button>
     </form>
 </section>
 

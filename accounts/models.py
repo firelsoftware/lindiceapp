@@ -95,6 +95,21 @@ class User(AbstractUser):
             profile.admin_notes = ""
             profile.save()
 
+    def request_deletion(self):
+        """Marca a conta para exclusao (apagada de vez em ate 7 dias).
+        Os dados nao sao removidos agora: logar de novo cancela a exclusao."""
+        self.deletion_requested_at = timezone.now()
+        self.save(update_fields=["deletion_requested_at"])
+
+    def cancel_deletion(self):
+        """Cancela um pedido de exclusao pendente (cliente voltou antes dos 7 dias)."""
+        if self.deletion_requested_at:
+            self.deletion_requested_at = None
+            self.save(update_fields=["deletion_requested_at"])
+
+    def is_pending_deletion(self):
+        return self.deletion_requested_at is not None and self.is_active
+
 
 class ClientProfile(models.Model):
     PENDING = "pending"

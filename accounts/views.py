@@ -276,6 +276,15 @@ class LoginView(auth_views.LoginView):
     template_name = "accounts/login.html"
     redirect_authenticated_user = True
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        user = form.get_user()
+        # Se a conta estava marcada para exclusao, voltar a logar cancela.
+        if getattr(user, "deletion_requested_at", None):
+            user.cancel_deletion()
+            messages.success(self.request, "Bem-vindo de volta! A exclusao da sua conta foi cancelada.")
+        return response
+
     def get_success_url(self):
         redirect_to = self.get_redirect_url()
 
@@ -1718,9 +1727,13 @@ def account_delete(request):
             return redirect("account_delete")
 
         user = request.user
-        user.anonymize_personal_data()
+        user.request_deletion()
         logout(request)
-        messages.success(request, "Sua conta e seus dados pessoais foram excluidos.")
+        messages.success(
+            request,
+            "Sua conta sera excluida totalmente em ate 7 dias. Se quiser voltar antes disso, "
+            "basta entrar novamente com seu e-mail e senha que a exclusao e cancelada.",
+        )
 
         return redirect("store_front")
 
