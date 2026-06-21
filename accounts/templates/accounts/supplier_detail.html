@@ -1,0 +1,50 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<div class="page-heading-row">
+    <h1>{{ supplier.name }}</h1>
+    <a class="button button-secondary" href="{% url 'suppliers_list' %}">Voltar</a>
+</div>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <h2>Configurações do fornecedor</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar</button>
+    </form>
+</section>
+
+<section class="info-panel">
+    <div class="section-title">
+        <h2>Produtos deste fornecedor</h2>
+        <a class="button" href="{% url 'create_product' %}?fornecedor={{ supplier.id }}">+ Cadastrar produto</a>
+    </div>
+    <div class="table-wrap">
+        <table class="supplier-table">
+            <thead>
+                <tr><th>Código</th><th>Produto</th><th>Marca</th><th>Venda</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td><a href="{% url 'product_detail' product.id %}">{{ product.product_code }}</a></td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.brand|default:"-" }}</td>
+                        <td>R$ {{ product.sale_price|floatformat:2 }}</td>
+                        <td>{{ product.get_status_display }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="5">Nenhum produto deste fornecedor ainda. Use "+ Cadastrar produto".</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -55,6 +55,7 @@ urlpatterns = [
     path("gestao/loja/pedidos/<str:order_code>/", views.store_order_admin, name="store_order_admin"),
     path("gestao/produtos/", views.product_list, name="product_list"),
     path("gestao/fornecedores/", views.suppliers_list, name="suppliers_list"),
+    path("gestao/fornecedores/<int:supplier_id>/", views.supplier_detail, name="supplier_detail"),
     path("gestao/fornecedor/produtos/", views.supplier_products, name="supplier_products"),
     path("gestao/fornecedor/fontes/<str:source_key>/", views.update_supplier_catalog_source, name="update_supplier_catalog_source"),
     path("gestao/fornecedor/produtos/<int:product_id>/status/", views.update_supplier_product_status, name="update_supplier_product_status"),

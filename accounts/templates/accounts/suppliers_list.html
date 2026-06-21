@@ -28,7 +28,7 @@
         <tbody>
             {% for supplier in suppliers %}
                 <tr>
-                    <td>{{ supplier.name }}</td>
+                    <td><a href="{% url 'supplier_detail' supplier.id %}"><strong>{{ supplier.name }}</strong></a></td>
                     <td>{{ supplier.whatsapp|default:"-" }}</td>
                     <td>
                         {% if supplier.is_active %}

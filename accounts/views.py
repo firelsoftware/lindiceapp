@@ -2544,6 +2544,27 @@ def suppliers_list(request):
 
 
 @staff_member_required(login_url="login")
+def supplier_detail(request, supplier_id):
+    supplier = get_object_or_404(Supplier, id=supplier_id)
+
+    if request.method == "POST":
+        form = SupplierForm(request.POST, instance=supplier)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Fornecedor atualizado.")
+            return redirect("supplier_detail", supplier_id=supplier.id)
+    else:
+        form = SupplierForm(instance=supplier)
+
+    products = supplier.products.order_by("-created_at")
+    return render(
+        request,
+        "accounts/supplier_detail.html",
+        {"supplier": supplier, "form": form, "products": products},
+    )
+
+
+@staff_member_required(login_url="login")
 def delete_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
@@ -2867,7 +2888,11 @@ def create_product(request):
 
             return redirect("product_detail", product_id=product.id)
     else:
-        form = ProductForm()
+        initial = {}
+        supplier_id = request.GET.get("fornecedor")
+        if supplier_id:
+            initial["supplier"] = supplier_id
+        form = ProductForm(initial=initial)
 
     return render(request, "accounts/create_product.html", {"form": form})
 
