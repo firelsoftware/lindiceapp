@@ -6,6 +6,8 @@ import re
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models, transaction
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 
 from .store_shipping import SHIPPING_DESTINATION_CHOICES
@@ -983,6 +985,17 @@ class PersonalDebt(models.Model):
         return f"{self.client.email} - {self.title}"
 
 
+class PushSubscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="push_subscriptions")
+    endpoint = models.URLField(max_length=500, unique=True)
+    p256dh = models.CharField(max_length=200)
+    auth = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"PushSubscription({self.user_id})"
+
+
 class Notification(models.Model):
     DUE_SOON = "due_soon"
     DUE_TODAY = "due_today"
@@ -1026,3 +1039,16 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.recipient.email} - {self.title}"
+
+
+@receiver(post_save, sender=Notification)
+def _send_push_on_notification(sender, instance, created, **kwargs):
+    if not created:
+        return
+    try:
+        from .push import send_web_push
+        send_web_push(instance.recipient, instance.title, instance.message, url="/notificacoes/")
+    except Exception:
+        # Push e best-effort; nunca pode quebrar a criacao da notificacao.
+        import logging
+        logging.getLogger(__name__).exception("Falha ao enviar push da notificacao")

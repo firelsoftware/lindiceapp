@@ -2193,6 +2193,32 @@ def clients_list(request):
 
 
 @login_required
+def push_subscribe(request):
+    """Salva a inscricao de Web Push do aparelho do usuario."""
+    if request.method != "POST":
+        return JsonResponse({"error": "metodo"}, status=405)
+
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+        endpoint = data["endpoint"]
+        keys = data.get("keys", {})
+    except (ValueError, KeyError):
+        return JsonResponse({"error": "payload"}, status=400)
+
+    from .models import PushSubscription
+
+    PushSubscription.objects.update_or_create(
+        endpoint=endpoint,
+        defaults={
+            "user": request.user,
+            "p256dh": keys.get("p256dh", ""),
+            "auth": keys.get("auth", ""),
+        },
+    )
+    return JsonResponse({"ok": True})
+
+
+@login_required
 def notifications_unread_count(request):
     """Contagem de notificacoes nao lidas (usada pelo sino em tempo real)."""
     count = request.user.notifications.filter(read_at__isnull=True).count()

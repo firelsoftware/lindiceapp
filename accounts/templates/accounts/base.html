@@ -3475,10 +3475,64 @@
             }
 
             window.addEventListener("load", function () {
-                navigator.serviceWorker.register("{% url 'service_worker' %}").catch(function () {
-                    return null;
-                });
+                navigator.serviceWorker.register("{% url 'service_worker' %}").then(function (reg) {
+                    {% if request.user.is_authenticated and vapid_public_key %}
+                    setupWebPush(reg);
+                    {% endif %}
+                }).catch(function () { return null; });
             });
+
+            {% if request.user.is_authenticated and vapid_public_key %}
+            function urlBase64ToUint8Array(base64) {
+                var padding = "=".repeat((4 - base64.length % 4) % 4);
+                var b64 = (base64 + padding).replace(/-/g, "+").replace(/_/g, "/");
+                var raw = atob(b64);
+                var out = new Uint8Array(raw.length);
+                for (var i = 0; i < raw.length; i++) { out[i] = raw.charCodeAt(i); }
+                return out;
+            }
+
+            function sendSubscription(sub) {
+                fetch("{% url 'push_subscribe' %}", {
+                    method: "POST",
+                    credentials: "same-origin",
+                    headers: { "Content-Type": "application/json", "X-CSRFToken": getCookie("csrftoken") },
+                    body: JSON.stringify(sub)
+                }).catch(function () {});
+            }
+
+            function getCookie(name) {
+                var m = document.cookie.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)");
+                return m ? m.pop() : "";
+            }
+
+            function setupWebPush(reg) {
+                if (!("PushManager" in window) || !reg) { return; }
+                if (Notification.permission === "denied") { return; }
+
+                function subscribe() {
+                    reg.pushManager.getSubscription().then(function (existing) {
+                        if (existing) { sendSubscription(existing.toJSON()); return; }
+                        reg.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: urlBase64ToUint8Array("{{ vapid_public_key }}")
+                        }).then(function (sub) { sendSubscription(sub.toJSON()); }).catch(function () {});
+                    });
+                }
+
+                if (Notification.permission === "granted") {
+                    subscribe();
+                } else {
+                    // Pede permissao no primeiro toque do usuario (exigencia dos navegadores).
+                    document.addEventListener("click", function ask() {
+                        document.removeEventListener("click", ask);
+                        Notification.requestPermission().then(function (p) {
+                            if (p === "granted") { subscribe(); }
+                        });
+                    }, { once: true });
+                }
+            }
+            {% endif %}
         })();
 
         {% if request.user.is_authenticated and request.user.is_staff %}
