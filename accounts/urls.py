@@ -39,6 +39,7 @@ urlpatterns = [
     path("notificacoes/", views.notifications_list, name="notifications_list"),
     path("notificacoes/contagem/", views.notifications_unread_count, name="notifications_unread_count"),
     path("push/inscrever/", views.push_subscribe, name="push_subscribe"),
+    path("tarefas/expurgo-contas/", views.run_account_purge, name="run_account_purge"),
     path("notificacoes/<int:notification_id>/ler/", views.notification_mark_read, name="notification_mark_read"),
     path("notificacoes/ler-todas/", views.notifications_mark_all_read, name="notifications_mark_all_read"),
     path("parcelamento/<int:sale_id>/", views.choose_installments, name="choose_installments"),

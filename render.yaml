@@ -62,3 +62,30 @@ services:
         sync: false
       - key: SUPABASE_S3_SECRET_ACCESS_KEY
         sync: false
+  - type: cron
+    name: lindice-expurgo-contas
+    runtime: python
+    region: virginia
+    plan: starter
+    schedule: "0 6 * * *"
+    buildCommand: "bash build.sh"
+    startCommand: "python manage.py purge_deleted_accounts"
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "false"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: ".onrender.com,app.lindice.com.br"
+      - key: SUPABASE_STORAGE_BUCKET
+        sync: false
+      - key: SUPABASE_STORAGE_ENDPOINT_URL
+        sync: false
+      - key: SUPABASE_STORAGE_REGION
+        sync: false
+      - key: SUPABASE_S3_ACCESS_KEY_ID
+        sync: false
+      - key: SUPABASE_S3_SECRET_ACCESS_KEY
+        sync: false

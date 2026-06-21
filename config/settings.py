@@ -175,6 +175,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# Token para disparar tarefas de manutencao (ex.: expurgo de contas) via cron externo.
+MAINTENANCE_TOKEN = os.environ.get("MAINTENANCE_TOKEN", "")
+
 # Web Push (notificacoes com app fechado). Vazio = recurso desligado (nada quebra).
 VAPID_PUBLIC_KEY = os.environ.get("VAPID_PUBLIC_KEY", "")
 VAPID_PRIVATE_KEY = os.environ.get("VAPID_PRIVATE_KEY", "")

@@ -10,7 +10,7 @@ import uuid
 from urllib.parse import quote
 
 from django.contrib import messages
-from django.contrib.auth import login, logout, update_session_auth_hash
+from django.contrib.auth import get_user_model, login, logout, update_session_auth_hash
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -2190,6 +2190,27 @@ def clients_list(request):
             "clients_overdue": sum(summary["overdue_total"] > 0 for summary in all_summaries),
         },
     )
+
+
+def run_account_purge(request):
+    """Expurgo das contas com exclusao pedida ha mais de 7 dias.
+    Protegido por token (cron externo gratuito chama esta URL 1x/dia)."""
+    token = settings.MAINTENANCE_TOKEN
+    if not token or request.GET.get("token") != token:
+        return HttpResponseForbidden("Token invalido.")
+
+    from datetime import timedelta
+
+    cutoff = timezone.now() - timedelta(days=7)
+    pendentes = get_user_model().objects.filter(
+        deletion_requested_at__lt=cutoff, is_active=True
+    )
+    total = 0
+    for user in pendentes:
+        user.anonymize_personal_data()
+        total += 1
+
+    return JsonResponse({"purged": total})
 
 
 @login_required
