@@ -3,7 +3,7 @@
 {% block content %}
 <div class="page-heading-row">
     <h1>Clientes</h1>
-    <a class="button" href="{% url 'create_manual_debt' %}">Lancar debito</a>
+    <a class="button" href="{% url 'create_credit_sale' %}">Lançar venda</a>
 </div>
 
 {% if messages %}
@@ -70,14 +70,15 @@
             <th>Em atraso</th>
             <th>Maior atraso</th>
             <th>Baixa</th>
-            <th>Acao</th>
         </tr>
     </thead>
     <tbody>
         {% for summary in client_summaries %}
             <tr>
                 <td>
-                    <strong>ID {{ summary.profile.id|stringformat:"04d" }} - {{ summary.profile.user.full_name }}</strong><br>
+                    <a href="{% url 'review_client_profile' summary.profile.id %}">
+                        <strong>ID {{ summary.profile.id|stringformat:"04d" }} - {{ summary.profile.user.full_name }}</strong>
+                    </a><br>
                     <small>{{ summary.profile.phone }}</small>
                 </td>
                 <td>{{ summary.profile.get_registration_status_display }}</td>
@@ -102,7 +103,6 @@
                         <span class="badge badge-success">Sem debito aberto</span>
                     {% endif %}
                 </td>
-                <td><a class="button" href="{% url 'review_client_profile' summary.profile.id %}">Abrir ficha</a></td>
             </tr>
         {% empty %}
             <tr>

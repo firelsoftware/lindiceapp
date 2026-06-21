@@ -3160,7 +3160,6 @@
                         <a class="menu-link" href="{% url 'store_front' %}">Loja</a>
                         <a class="menu-link" href="{% url 'clients_list' %}">Clientes</a>
                         <a class="menu-link" href="{% url 'create_credit_sale' %}">Lancar venda</a>
-                        <a class="menu-link" href="{% url 'create_manual_debt' %}">Lancar debito</a>
                         <a class="menu-link" href="{% url 'product_list' %}">Produtos</a>
                         <a class="menu-link" href="{% url 'supplier_products' %}">Fornecedor</a>
                         <a class="menu-link" href="{% url 'store_orders' %}">Pedidos da loja</a>
@@ -3194,7 +3193,6 @@
         <a href="{% url 'store_front' %}">Loja</a>
         <a href="{% url 'privacy_policy' %}">Privacidade</a>
         <a href="{% url 'terms_of_use' %}">Termos</a>
-        <a href="{% url 'data_deletion_info' %}">Excluir conta</a>
     </footer>
 
     {% if request.user.is_authenticated and request.user.is_staff %}
