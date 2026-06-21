@@ -2608,6 +2608,19 @@ def update_debt_payment(request, debt_id):
 
 @staff_member_required(login_url="login")
 def create_credit_sale(request):
+    available_products = list(Product.objects.filter(status=Product.AVAILABLE).select_related("supplier").order_by("product_code"))
+    product_catalog = [
+        {
+            "id": product.id,
+            "name": product.name,
+            "brand": product.brand or "",
+            "supplier_id": product.supplier_id or "",
+            "sale_price": f"{product.sale_price:.2f}",
+            "shoe_size": product.shoe_size or "",
+        }
+        for product in available_products
+    ]
+
     if request.method == "POST":
         form = CreditSaleForm(request.POST)
         product_formset = CreditSaleProductFormSet(request.POST, request.FILES)
@@ -2660,7 +2673,11 @@ def create_credit_sale(request):
         form = CreditSaleForm()
         product_formset = CreditSaleProductFormSet()
 
-    return render(request, "accounts/create_credit_sale.html", {"form": form, "product_formset": product_formset})
+    return render(
+        request,
+        "accounts/create_credit_sale.html",
+        {"form": form, "product_formset": product_formset, "product_catalog": product_catalog},
+    )
 
 
 @staff_member_required(login_url="login")

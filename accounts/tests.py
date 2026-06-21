@@ -8,7 +8,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, RequestFactory, TestCase, override_settings
 from django.utils import timezone
 
-from .forms import RegisterForm
+from .forms import ProductForm, RegisterForm
 from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, StoreOrder, SupplierCatalogSource, SupplierProduct, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference
@@ -1582,6 +1582,7 @@ class StoreFlowTests(TestCase):
         response = self.client.get("/gestao/vendas/nova/")
 
         self.assertContains(response, f"ID {profile.id:04d} - Maria Cliente")
+        self.assertContains(response, "Venda sem cliente")
 
     def test_create_credit_sale_uses_client_default_installments_and_optional_description(self):
         staff = User.objects.create_superuser(
@@ -1672,6 +1673,69 @@ class StoreFlowTests(TestCase):
         self.assertIsNone(sale.client)
         self.assertEqual(sale.guest_name, "Cliente Novo")
         self.assertContains(response, f"/parcelamento/link/{sale.public_token}/")
+
+    def test_create_credit_sale_reuses_registered_product_data_without_retyping_fields(self):
+        staff = User.objects.create_superuser(
+            email="admin-venda-produto@example.com",
+            password="Teste12345!",
+            full_name="Admin Venda",
+            preferred_name="Admin",
+        )
+        user = User.objects.create_user(
+            email="cliente-produto@example.com",
+            password="Teste12345!",
+            full_name="Cliente Produto",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash="cpf-venda-produto",
+            cpf_last_digits="1122",
+            phone="61999996666",
+            address="Endereco",
+            residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf"),
+            registration_status=ClientProfile.APPROVED,
+            phone_verified=True,
+            default_max_installments=5,
+        )
+        product = Product.objects.create(
+            name="Bolsa Teste",
+            brand="Marca Bolsa",
+            shoe_size="Nao se aplica",
+            purchase_price=Decimal("100.00"),
+            sale_price=Decimal("180.00"),
+        )
+        self.client.force_login(staff)
+
+        response = self.client.post(
+            "/gestao/vendas/nova/",
+            {
+                "client": user.id,
+                "description": "",
+                "total_amount": "180.00",
+                "products-TOTAL_FORMS": "1",
+                "products-INITIAL_FORMS": "0",
+                "products-MIN_NUM_FORMS": "0",
+                "products-MAX_NUM_FORMS": "20",
+                "products-0-product": product.id,
+                "products-0-name": "",
+                "products-0-brand": "",
+                "products-0-shoe_size": "",
+                "products-0-size_group": "na",
+                "products-0-notes": "",
+            },
+        )
+        sale_item = CreditSaleProduct.objects.get(product=product)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(sale_item.name, "Bolsa Teste")
+        self.assertEqual(sale_item.brand, "Marca Bolsa")
+        self.assertEqual(sale_item.shoe_size, "Nao se aplica")
+        self.assertEqual(sale_item.unit_price, Decimal("180.00"))
+
+    def test_product_form_offers_not_applicable_size_option(self):
+        form = ProductForm()
+        self.assertIn(("", "Nao se aplica"), form.fields["shoe_size"].choices)
 
     def test_staff_menu_shows_store_link(self):
         staff = User.objects.create_superuser(

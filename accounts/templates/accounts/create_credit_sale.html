@@ -4,19 +4,178 @@
 <h1>Lancar venda para o cliente</h1>
 <p>Escolha um cliente ja cadastrado ou preencha nome, email e telefone para cliente novo.</p>
 
+<style>
+    .sale-compact-form {
+        display: grid;
+        gap: 18px;
+    }
+
+    .sale-form-grid,
+    .sale-product-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px 16px;
+    }
+
+    .sale-form-grid .full,
+    .sale-product-grid .full {
+        grid-column: 1 / -1;
+    }
+
+    .field-stack {
+        min-width: 0;
+    }
+
+    .field-stack label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+
+    .field-stack .helptext {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 14px;
+    }
+
+    .field-stack .errorlist {
+        margin: 6px 0 0;
+    }
+
+    .product-form {
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fff;
+    }
+
+    .product-form h3 {
+        margin-top: 0;
+        margin-bottom: 14px;
+    }
+
+    .compact-file-input input[type="file"] {
+        padding: 10px 12px;
+        min-height: auto;
+    }
+
+    .compact-notes textarea {
+        min-height: 44px;
+        resize: none;
+        overflow: hidden;
+    }
+
+    @media (max-width: 820px) {
+        .sale-form-grid,
+        .sale-product-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% if form.non_field_errors %}
+        <div class="errorlist">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <section class="sale-compact-form">
+        <div class="sale-form-grid">
+            <div class="field-stack full">
+                {{ form.client.label_tag }}
+                {{ form.client }}
+                {% if form.client.help_text %}<small class="helptext">{{ form.client.help_text }}</small>{% endif %}
+                {{ form.client.errors }}
+            </div>
+            <div class="field-stack">
+                {{ form.guest_name.label_tag }}
+                {{ form.guest_name }}
+                {{ form.guest_name.errors }}
+            </div>
+            <div class="field-stack">
+                {{ form.guest_email.label_tag }}
+                {{ form.guest_email }}
+                {% if form.guest_email.help_text %}<small class="helptext">{{ form.guest_email.help_text }}</small>{% endif %}
+                {{ form.guest_email.errors }}
+            </div>
+            <div class="field-stack">
+                {{ form.guest_phone.label_tag }}
+                {{ form.guest_phone }}
+                {{ form.guest_phone.errors }}
+            </div>
+            <div class="field-stack">
+                {{ form.total_amount.label_tag }}
+                {{ form.total_amount }}
+                {{ form.total_amount.errors }}
+            </div>
+            <div class="field-stack full">
+                {{ form.description.label_tag }}
+                {{ form.description }}
+                {% if form.description.help_text %}<small class="helptext">{{ form.description.help_text }}</small>{% endif %}
+                {{ form.description.errors }}
+            </div>
+        </div>
+    </section>
 
     <h2>Produtos da venda</h2>
-    <p>Adicione produto, marca e tamanho. O limite de parcelas vem do cadastro do cliente, e o vencimento da primeira parcela sera escolhido por ele em ate 30 dias.</p>
+    <p>Se escolher um produto ja cadastrado, o formulario reaproveita nome, marca, fornecedor, valor e tamanho automaticamente. Observacoes continuam opcionais.</p>
     <p>Frete nao entra separado na venda manual. Se precisar cobrar entrega, inclua esse valor no total da venda.</p>
     {{ product_formset.management_form }}
     <div id="product-forms">
         {% for product_form in product_formset %}
             <section class="product-form">
                 <h3>Produto {{ forloop.counter }}</h3>
-                {{ product_form.as_p }}
+                {% if product_form.non_field_errors %}
+                    <div class="errorlist">{{ product_form.non_field_errors }}</div>
+                {% endif %}
+                <div class="sale-product-grid">
+                    <div class="field-stack full">
+                        {{ product_form.product.label_tag }}
+                        {{ product_form.product }}
+                        {{ product_form.product.errors }}
+                    </div>
+                    <div class="field-stack">
+                        {{ product_form.name.label_tag }}
+                        {{ product_form.name }}
+                        {{ product_form.name.errors }}
+                    </div>
+                    <div class="field-stack">
+                        {{ product_form.brand.label_tag }}
+                        {{ product_form.brand }}
+                        {{ product_form.brand.errors }}
+                    </div>
+                    <div class="field-stack">
+                        {{ product_form.supplier.label_tag }}
+                        {{ product_form.supplier }}
+                        {{ product_form.supplier.errors }}
+                    </div>
+                    <div class="field-stack">
+                        {{ product_form.unit_price.label_tag }}
+                        {{ product_form.unit_price }}
+                        {{ product_form.unit_price.errors }}
+                    </div>
+                    <div class="field-stack compact-file-input">
+                        {{ product_form.image.label_tag }}
+                        {{ product_form.image }}
+                        {{ product_form.image.errors }}
+                    </div>
+                    <div class="field-stack">
+                        {{ product_form.size_group.label_tag }}
+                        {{ product_form.size_group }}
+                        {{ product_form.size_group.errors }}
+                    </div>
+                    <div class="field-stack">
+                        {{ product_form.shoe_size.label_tag }}
+                        {{ product_form.shoe_size }}
+                        {{ product_form.shoe_size.errors }}
+                    </div>
+                    <div class="field-stack full compact-notes">
+                        {{ product_form.notes.label_tag }}
+                        {{ product_form.notes }}
+                        {{ product_form.notes.errors }}
+                    </div>
+                </div>
             </section>
         {% endfor %}
     </div>
@@ -24,7 +183,44 @@
     <template id="empty-product-form">
         <section class="product-form">
             <h3>Produto __number__</h3>
-            {{ product_formset.empty_form.as_p }}
+            <div class="sale-product-grid">
+                <div class="field-stack full">
+                    {{ product_formset.empty_form.product.label_tag }}
+                    {{ product_formset.empty_form.product }}
+                </div>
+                <div class="field-stack">
+                    {{ product_formset.empty_form.name.label_tag }}
+                    {{ product_formset.empty_form.name }}
+                </div>
+                <div class="field-stack">
+                    {{ product_formset.empty_form.brand.label_tag }}
+                    {{ product_formset.empty_form.brand }}
+                </div>
+                <div class="field-stack">
+                    {{ product_formset.empty_form.supplier.label_tag }}
+                    {{ product_formset.empty_form.supplier }}
+                </div>
+                <div class="field-stack">
+                    {{ product_formset.empty_form.unit_price.label_tag }}
+                    {{ product_formset.empty_form.unit_price }}
+                </div>
+                <div class="field-stack compact-file-input">
+                    {{ product_formset.empty_form.image.label_tag }}
+                    {{ product_formset.empty_form.image }}
+                </div>
+                <div class="field-stack">
+                    {{ product_formset.empty_form.size_group.label_tag }}
+                    {{ product_formset.empty_form.size_group }}
+                </div>
+                <div class="field-stack">
+                    {{ product_formset.empty_form.shoe_size.label_tag }}
+                    {{ product_formset.empty_form.shoe_size }}
+                </div>
+                <div class="field-stack full compact-notes">
+                    {{ product_formset.empty_form.notes.label_tag }}
+                    {{ product_formset.empty_form.notes }}
+                </div>
+            </div>
         </section>
     </template>
 
@@ -36,12 +232,17 @@
 <p>O cliente escolhe Pix com 10% de desconto, cartao com juros a partir de 6x ou crediario dentro do limite aprovado.</p>
 <p><a href="{% url 'management_dashboard' %}">Voltar ao painel de gestao</a></p>
 
+{{ product_catalog|json_script:"product-catalog" }}
 <script>
     const productForms = document.getElementById("product-forms");
     const addProductButton = document.getElementById("add-product");
     const emptyProductTemplate = document.getElementById("empty-product-form");
     const totalFormsInput = document.getElementById("id_products-TOTAL_FORMS");
     const maxFormsInput = document.getElementById("id_products-MAX_NUM_FORMS");
+    const productCatalog = JSON.parse(document.getElementById("product-catalog").textContent).reduce((acc, product) => {
+        acc[String(product.id)] = product;
+        return acc;
+    }, {});
     const adultSizes = Array.from({ length: 12 }, (_, index) => String(index + 33));
     const childSizes = Array.from({ length: 19 }, (_, index) => String(index + 14));
 
@@ -55,6 +256,14 @@
         }
     };
 
+    const autoSizeTextarea = (textarea) => {
+        if (!textarea) {
+            return;
+        }
+        textarea.style.height = "auto";
+        textarea.style.height = `${Math.max(textarea.scrollHeight, 44)}px`;
+    };
+
     const updateSizeChoices = (section) => {
         const sizeGroupSelect = section.querySelector('select[name$="-size_group"]');
         const shoeSizeSelect = section.querySelector('select[name$="-shoe_size"]');
@@ -64,15 +273,56 @@
         }
 
         const currentValue = shoeSizeSelect.value;
-        const sizes = sizeGroupSelect.value === "child" ? childSizes : adultSizes;
+        const sizes = sizeGroupSelect.value === "child" ? childSizes : sizeGroupSelect.value === "adult" ? adultSizes : [];
 
-        shoeSizeSelect.replaceChildren(new Option("Selecione", ""));
+        shoeSizeSelect.replaceChildren(new Option("Nao se aplica", "Nao se aplica"));
         sizes.forEach((size) => {
             shoeSizeSelect.add(new Option(size, size));
         });
 
-        if (sizes.includes(currentValue)) {
+        if (currentValue === "Nao se aplica" || sizes.includes(currentValue)) {
             shoeSizeSelect.value = currentValue;
+        }
+    };
+
+    const syncProductFields = (section) => {
+        const productSelect = section.querySelector('select[name$="-product"]');
+        if (!productSelect) {
+            return;
+        }
+
+        const selectedProduct = productCatalog[productSelect.value];
+        const nameInput = section.querySelector('input[name$="-name"]');
+        const brandInput = section.querySelector('input[name$="-brand"]');
+        const supplierSelect = section.querySelector('select[name$="-supplier"]');
+        const unitPriceInput = section.querySelector('input[name$="-unit_price"]');
+        const sizeGroupSelect = section.querySelector('select[name$="-size_group"]');
+        const shoeSizeSelect = section.querySelector('select[name$="-shoe_size"]');
+
+        if (!selectedProduct) {
+            return;
+        }
+
+        if (nameInput && !nameInput.value) {
+            nameInput.value = selectedProduct.name || "";
+        }
+        if (brandInput && !brandInput.value) {
+            brandInput.value = selectedProduct.brand || "";
+        }
+        if (supplierSelect && !supplierSelect.value && selectedProduct.supplier_id) {
+            supplierSelect.value = String(selectedProduct.supplier_id);
+        }
+        if (unitPriceInput && !unitPriceInput.value) {
+            unitPriceInput.value = selectedProduct.sale_price || "";
+        }
+        if (sizeGroupSelect && shoeSizeSelect && !shoeSizeSelect.value) {
+            if (!selectedProduct.shoe_size || selectedProduct.shoe_size === "Nao se aplica") {
+                sizeGroupSelect.value = "na";
+            } else if (/^\d+$/.test(selectedProduct.shoe_size)) {
+                sizeGroupSelect.value = Number(selectedProduct.shoe_size) <= 32 ? "child" : "adult";
+            }
+            updateSizeChoices(section);
+            shoeSizeSelect.value = selectedProduct.shoe_size || "Nao se aplica";
         }
     };
 
@@ -87,13 +337,22 @@
         totalFormsInput.value = nextNumber;
         const section = productForms.lastElementChild;
         updateSizeChoices(section);
+        section.querySelector('select[name$="-product"]')?.addEventListener("change", () => syncProductFields(section));
         section.querySelector('select[name$="-size_group"]')?.addEventListener("change", () => updateSizeChoices(section));
+        const textarea = section.querySelector('textarea[data-autosize="true"]');
+        textarea?.addEventListener("input", () => autoSizeTextarea(textarea));
+        autoSizeTextarea(textarea);
         updateAddProductButton();
     });
 
     productForms.querySelectorAll(".product-form").forEach((section) => {
         updateSizeChoices(section);
+        section.querySelector('select[name$="-product"]')?.addEventListener("change", () => syncProductFields(section));
         section.querySelector('select[name$="-size_group"]')?.addEventListener("change", () => updateSizeChoices(section));
+        const textarea = section.querySelector('textarea[data-autosize="true"]');
+        textarea?.addEventListener("input", () => autoSizeTextarea(textarea));
+        autoSizeTextarea(textarea);
+        syncProductFields(section);
     });
 
     updateAddProductButton();

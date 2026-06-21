@@ -841,6 +841,9 @@ class CreditSaleProduct(models.Model):
     def save(self, *args, **kwargs):
         if self.product:
             self.name = self.name or self.product.name
+            self.brand = self.brand or self.product.brand
+            self.supplier = self.supplier or self.product.supplier
+            self.unit_price = self.unit_price or self.product.sale_price
             self.shoe_size = self.shoe_size or self.product.shoe_size
             self.notes = self.notes or self.product.notes
 

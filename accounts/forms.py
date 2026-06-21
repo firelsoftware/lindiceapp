@@ -35,6 +35,8 @@ def validate_document_file(uploaded_file):
 
 SHOE_SIZE_CHOICES = [(str(size), str(size)) for size in range(33, 45)]
 CHILD_SHOE_SIZE_CHOICES = [(str(size), str(size)) for size in range(14, 33)]
+NOT_APPLICABLE_SHOE_SIZE = "Nao se aplica"
+GENERAL_SHOE_SIZE_CHOICES = [("", "Nao se aplica")] + CHILD_SHOE_SIZE_CHOICES + SHOE_SIZE_CHOICES
 CHECKOUT_PAYMENT_ONLINE = "online"
 CHECKOUT_PAYMENT_CREDIT = "credit"
 CHECKOUT_PAYMENT_METHOD_CHOICES = (
@@ -326,6 +328,7 @@ class CreditSaleForm(forms.ModelForm):
         ).order_by("full_name")
         self.fields["client"].label_from_instance = client_label
         self.fields["client"].required = False
+        self.fields["client"].empty_label = "Venda sem cliente"
         self.fields["description"].required = False
 
     def clean(self):
@@ -569,6 +572,7 @@ class InstallmentChoiceForm(forms.Form):
 
 
 class CreditSaleProductForm(forms.ModelForm):
+    SIZE_GROUP_NOT_APPLICABLE = "na"
     SIZE_GROUP_ADULT = "adult"
     SIZE_GROUP_CHILD = "child"
 
@@ -591,7 +595,7 @@ class CreditSaleProductForm(forms.ModelForm):
         self.fields["product"].queryset = Product.objects.filter(status=Product.AVAILABLE).order_by("product_code")
         self.fields["product"].required = False
         self.fields["name"].required = False
-        self.fields["brand"].required = True
+        self.fields["brand"].required = False
         self.fields["image"].required = False
         self.fields["supplier"].required = False
         self.fields["supplier"].queryset = Supplier.objects.filter(is_active=True)
@@ -600,27 +604,50 @@ class CreditSaleProductForm(forms.ModelForm):
         self.fields["size_group"] = forms.ChoiceField(
             label="Tipo de tamanho",
             choices=[
+                (self.SIZE_GROUP_NOT_APPLICABLE, "Nao se aplica"),
                 (self.SIZE_GROUP_ADULT, "Adulto"),
                 (self.SIZE_GROUP_CHILD, "Crianca"),
             ],
         )
         initial_size = self.initial.get("shoe_size") or getattr(self.instance, "shoe_size", "")
-        initial_group = self.SIZE_GROUP_CHILD if str(initial_size).isdigit() and int(initial_size) <= 32 else self.SIZE_GROUP_ADULT
+        if initial_size in ("", NOT_APPLICABLE_SHOE_SIZE):
+            initial_group = self.SIZE_GROUP_NOT_APPLICABLE
+        else:
+            initial_group = self.SIZE_GROUP_CHILD if str(initial_size).isdigit() and int(initial_size) <= 32 else self.SIZE_GROUP_ADULT
         self.fields["size_group"].initial = initial_group
         self.fields["shoe_size"].widget = forms.Select(
-            choices=[("", "Selecione")] + (CHILD_SHOE_SIZE_CHOICES if initial_group == self.SIZE_GROUP_CHILD else SHOE_SIZE_CHOICES)
+            choices=GENERAL_SHOE_SIZE_CHOICES
         )
+        self.fields["notes"].required = False
+        self.fields["notes"].widget = forms.Textarea(attrs={"rows": 1, "data-autosize": "true", "placeholder": "Observacoes opcionais"})
         self.order_fields(["product", "name", "brand", "supplier", "unit_price", "image", "size_group", "shoe_size", "notes"])
 
     def clean(self):
         cleaned_data = super().clean()
+        product = cleaned_data.get("product")
         size_group = cleaned_data.get("size_group")
         shoe_size = cleaned_data.get("shoe_size")
 
-        if not cleaned_data.get("product") and not cleaned_data.get("name"):
+        if product:
+            cleaned_data["name"] = cleaned_data.get("name") or product.name
+            cleaned_data["brand"] = cleaned_data.get("brand") or product.brand
+            cleaned_data["supplier"] = cleaned_data.get("supplier") or product.supplier
+            cleaned_data["unit_price"] = cleaned_data.get("unit_price") or product.sale_price
+            cleaned_data["shoe_size"] = cleaned_data.get("shoe_size") or product.shoe_size or NOT_APPLICABLE_SHOE_SIZE
+            shoe_size = cleaned_data["shoe_size"]
+            if shoe_size in ("", NOT_APPLICABLE_SHOE_SIZE):
+                cleaned_data["size_group"] = self.SIZE_GROUP_NOT_APPLICABLE
+                size_group = self.SIZE_GROUP_NOT_APPLICABLE
+            elif str(shoe_size).isdigit():
+                cleaned_data["size_group"] = self.SIZE_GROUP_CHILD if int(shoe_size) <= 32 else self.SIZE_GROUP_ADULT
+                size_group = cleaned_data["size_group"]
+
+        if not product and not cleaned_data.get("name"):
             self.add_error("name", "Informe o produto da venda.")
 
-        if not shoe_size:
+        if size_group == self.SIZE_GROUP_NOT_APPLICABLE:
+            cleaned_data["shoe_size"] = NOT_APPLICABLE_SHOE_SIZE
+        elif not shoe_size:
             self.add_error("shoe_size", "Escolha o tamanho do calcado.")
         elif size_group == self.SIZE_GROUP_CHILD and shoe_size not in dict(CHILD_SHOE_SIZE_CHOICES):
             self.add_error("shoe_size", "Escolha um tamanho infantil entre 14 e 32.")
@@ -661,6 +688,7 @@ class ProductForm(forms.ModelForm):
         self.fields["supplier"].required = False
         self.fields["supplier"].queryset = Supplier.objects.filter(is_active=True)
         self.fields["supplier"].empty_label = "Sem fornecedor"
+        self.fields["shoe_size"] = forms.ChoiceField(label="Tamanho", required=False, choices=GENERAL_SHOE_SIZE_CHOICES)
 
 
 class SupplierForm(forms.ModelForm):
