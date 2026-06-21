@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 from django.utils import timezone
 
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, SupplierCatalogSource, User
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, Supplier, SupplierCatalogSource, User
 from .store_shipping import shipping_choices_with_prices
 from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
 
@@ -568,15 +568,35 @@ CreditSaleProductFormSet = inlineformset_factory(
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ("name", "image", "shoe_size", "purchase_price", "sale_price", "notes", "status")
+        fields = ("name", "brand", "supplier", "image", "shoe_size", "purchase_price", "sale_price", "notes", "status")
         labels = {
             "name": "Nome do produto",
+            "brand": "Marca",
+            "supplier": "Fornecedor",
             "image": "Foto do produto",
             "shoe_size": "Tamanho",
             "purchase_price": "Valor de compra",
             "sale_price": "Valor de venda",
             "notes": "Observacoes",
             "status": "Status",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["supplier"].required = False
+        self.fields["supplier"].queryset = Supplier.objects.filter(is_active=True)
+        self.fields["supplier"].empty_label = "Sem fornecedor"
+
+
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = ("name", "whatsapp", "notes", "is_active")
+        labels = {
+            "name": "Nome do fornecedor",
+            "whatsapp": "WhatsApp (opcional)",
+            "notes": "Observacoes",
+            "is_active": "Ativo",
         }
 
 

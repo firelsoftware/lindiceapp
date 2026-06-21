@@ -26,8 +26,8 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, UserPasswordChangeForm
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, StoreOrder, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, UserPasswordChangeForm
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, verify_webhook_signature
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
@@ -2431,9 +2431,66 @@ def create_credit_sale(request):
 
 @staff_member_required(login_url="login")
 def product_list(request):
-    products = Product.objects.order_by("-created_at")
+    supplier_filter = request.GET.get("fornecedor", "").strip()
+    products = Product.objects.select_related("supplier").order_by("-created_at")
 
-    return render(request, "accounts/product_list.html", {"products": products})
+    if supplier_filter == "none":
+        products = products.filter(supplier__isnull=True)
+    elif supplier_filter:
+        products = products.filter(supplier_id=supplier_filter)
+
+    suppliers = Supplier.objects.filter(is_active=True)
+
+    # Relatorio por fornecedor: vendidos, estoque, faturamento e lucro.
+    def supplier_metrics(qs):
+        sold = [p for p in qs if p.status == Product.SOLD]
+        return {
+            "total": len(qs),
+            "vendidos": len(sold),
+            "estoque": sum(1 for p in qs if p.status == Product.AVAILABLE),
+            "faturamento": sum((p.sale_price for p in sold), Decimal("0.00")),
+            "lucro": sum((p.profit() for p in sold), Decimal("0.00")),
+        }
+
+    all_products = list(Product.objects.select_related("supplier").prefetch_related("costs"))
+    supplier_report = []
+    for supplier in suppliers:
+        group = [p for p in all_products if p.supplier_id == supplier.id]
+        if group:
+            supplier_report.append({"name": supplier.name, **supplier_metrics(group)})
+    no_supplier = [p for p in all_products if p.supplier_id is None]
+    if no_supplier:
+        supplier_report.append({"name": "Sem fornecedor", **supplier_metrics(no_supplier)})
+
+    return render(
+        request,
+        "accounts/product_list.html",
+        {
+            "products": products,
+            "suppliers": suppliers,
+            "supplier_filter": supplier_filter,
+            "supplier_report": supplier_report,
+        },
+    )
+
+
+@staff_member_required(login_url="login")
+def suppliers_list(request):
+    if request.method == "POST":
+        form = SupplierForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Fornecedor cadastrado com sucesso.")
+            return redirect("suppliers_list")
+    else:
+        form = SupplierForm()
+
+    suppliers = Supplier.objects.all()
+    return render(
+        request,
+        "accounts/suppliers_list.html",
+        {"suppliers": suppliers, "form": form},
+    )
 
 
 @staff_member_required(login_url="login")

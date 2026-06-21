@@ -1,0 +1,48 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<div class="page-heading-row">
+    <h1>Fornecedores</h1>
+</div>
+
+<section class="info-panel">
+    <h2>+ Novo fornecedor</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Cadastrar fornecedor</button>
+    </form>
+</section>
+
+<section class="info-panel">
+    <h2>Cadastrados</h2>
+    <table class="supplier-table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>WhatsApp</th>
+                <th>Status</th>
+                <th>Produtos</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for supplier in suppliers %}
+                <tr>
+                    <td>{{ supplier.name }}</td>
+                    <td>{{ supplier.whatsapp|default:"-" }}</td>
+                    <td>
+                        {% if supplier.is_active %}
+                            <span class="badge badge-success">Ativo</span>
+                        {% else %}
+                            <span class="badge badge-secondary">Inativo</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ supplier.products.count }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">Nenhum fornecedor cadastrado.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}
