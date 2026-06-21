@@ -184,8 +184,17 @@ def create_cart_checkout_preference(orders, request):
     }
 
 
-def create_credit_sale_card_preference(sale, request):
+def create_credit_sale_card_preference(sale, request, public_flow=False):
     base_url = site_url(request)
+    success_path = f"{base_url}/pagamento/mercado-pago/sucesso/"
+    failure_path = f"{base_url}/pagamento/mercado-pago/falha/"
+    pending_path = f"{base_url}/pagamento/mercado-pago/pendente/"
+
+    if public_flow:
+        success_path = f"{base_url}/parcelamento/link/{sale.public_token}/pagamento/sucesso/"
+        failure_path = f"{base_url}/parcelamento/link/{sale.public_token}/pagamento/falha/"
+        pending_path = f"{base_url}/parcelamento/link/{sale.public_token}/pagamento/pendente/"
+
     payload = {
         "items": [
             {
@@ -197,9 +206,9 @@ def create_credit_sale_card_preference(sale, request):
         ],
         "external_reference": f"credit-sale:{sale.id}",
         "back_urls": {
-            "success": f"{base_url}/pagamento/mercado-pago/sucesso/",
-            "failure": f"{base_url}/pagamento/mercado-pago/falha/",
-            "pending": f"{base_url}/pagamento/mercado-pago/pendente/",
+            "success": success_path,
+            "failure": failure_path,
+            "pending": pending_path,
         },
         "notification_url": f"{base_url}/loja/mercado-pago/webhook/",
         "auto_return": "approved",
@@ -216,9 +225,9 @@ def create_credit_sale_card_preference(sale, request):
 
     if not is_test_environment():
         payload["payer"] = {
-            "name": sale.client.full_name,
-            "email": sale.client.email,
-            "phone": {"number": sale.client.profile.phone},
+            "name": sale.customer_name(),
+            "email": sale.customer_email(),
+            "phone": {"number": sale.customer_phone()},
         }
 
     response = mercado_pago_request("/checkout/preferences", payload)

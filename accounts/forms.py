@@ -300,15 +300,21 @@ class UserPasswordChangeForm(PasswordChangeForm):
 
 
 class CreditSaleForm(forms.ModelForm):
+    guest_name = forms.CharField(label="Nome do cliente novo", max_length=150, required=False)
+    guest_email = forms.EmailField(label="Email do cliente novo", required=False)
+    guest_phone = forms.CharField(label="Telefone do cliente novo", max_length=20, required=False)
+
     class Meta:
         model = CreditSale
-        fields = ("client", "description", "total_amount")
+        fields = ("client", "guest_name", "guest_email", "guest_phone", "description", "total_amount")
         labels = {
             "client": "Cliente",
             "description": "Descricao da venda",
             "total_amount": "Valor total",
         }
         help_texts = {
+            "client": "Use este campo para quem ja tem cadastro aprovado. Se ficar em branco, preencha os dados do cliente novo abaixo.",
+            "guest_email": "Para cliente novo, o link publico pode seguir so com email para Pix ou cartao.",
             "description": "Monte a venda e deixe o cliente escolher o vencimento da primeira parcela em ate 30 dias.",
         }
 
@@ -319,7 +325,31 @@ class CreditSaleForm(forms.ModelForm):
             is_staff=False,
         ).order_by("full_name")
         self.fields["client"].label_from_instance = client_label
+        self.fields["client"].required = False
         self.fields["description"].required = False
+
+    def clean(self):
+        cleaned_data = super().clean()
+        client = cleaned_data.get("client")
+        guest_name = (cleaned_data.get("guest_name") or "").strip()
+        guest_email = (cleaned_data.get("guest_email") or "").strip()
+
+        if client:
+            cleaned_data["guest_name"] = ""
+            cleaned_data["guest_email"] = ""
+            cleaned_data["guest_phone"] = (cleaned_data.get("guest_phone") or "").strip()
+            return cleaned_data
+
+        if not guest_name:
+            self.add_error("guest_name", "Informe o nome do cliente novo ou selecione um cliente cadastrado.")
+
+        if not guest_email:
+            self.add_error("guest_email", "Informe o email do cliente novo para enviar o link.")
+
+        cleaned_data["guest_name"] = guest_name
+        cleaned_data["guest_email"] = guest_email
+        cleaned_data["guest_phone"] = (cleaned_data.get("guest_phone") or "").strip()
+        return cleaned_data
 
 
 class ManualDebtForm(forms.ModelForm):

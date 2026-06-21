@@ -12,7 +12,7 @@
 {% endif %}
 
 <section class="info-panel">
-    <h2>{{ sale.client.full_name }}</h2>
+    <h2>{{ sale.customer_name }}</h2>
     <p>{{ sale.description }} - <strong>R$ {{ sale.total_amount|floatformat:2 }}</strong></p>
     <p>Envie este link para o cliente escolher Pix, cartao ou crediario com parcelas.</p>
     <label for="payment-link">Link para enviar</label>

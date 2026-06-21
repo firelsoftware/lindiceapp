@@ -26,9 +26,17 @@
 
 <p>Depois do pagamento, aguarde a confirmacao da loja.</p>
 {% if sale.payment_status != sale.PAYMENT_PAID %}
-    <p><a class="button button-secondary" href="{% url 'choose_installments' sale.id %}">Escolher outra forma de pagamento</a></p>
+    {% if is_public_sale %}
+        <p><a class="button button-secondary" href="{% url 'public_choose_installments' sale.public_token %}">Escolher outra forma de pagamento</a></p>
+    {% else %}
+        <p><a class="button button-secondary" href="{% url 'choose_installments' sale.id %}">Escolher outra forma de pagamento</a></p>
+    {% endif %}
 {% endif %}
-<p><a href="{% url 'dashboard' %}">Voltar para minhas compras</a></p>
+{% if is_public_sale %}
+    <p><a href="{% url 'store_front' %}">Voltar para a loja</a></p>
+{% else %}
+    <p><a href="{% url 'dashboard' %}">Voltar para minhas compras</a></p>
+{% endif %}
 
 <script>
     const copyPixKeyButton = document.getElementById("copy-pix-key");

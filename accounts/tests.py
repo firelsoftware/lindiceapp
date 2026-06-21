@@ -789,6 +789,60 @@ class MercadoPagoPayloadTests(TestCase):
         self.assertEqual(payload["payer"]["email"], "cliente-real@example.com")
 
 
+class PublicCreditSaleFlowTests(TestCase):
+    def create_guest_sale(self):
+        return CreditSale.objects.create(
+            guest_name="Cliente Novo",
+            guest_email="cliente-novo@example.com",
+            guest_phone="61999995555",
+            description="Venda teste",
+            total_amount=Decimal("200.00"),
+            max_installments_allowed=10,
+            first_due_date=timezone.localdate() + timedelta(days=7),
+        )
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="APP_USR-token")
+    @patch("accounts.payments.mercado_pago_request")
+    def test_public_card_checkout_sends_guest_customer_data(self, mocked_request):
+        mocked_request.return_value = {"id": "pref", "init_point": "https://example.com"}
+        sale = self.create_guest_sale()
+        sale.choose_payment(CreditSale.CARD, 3)
+
+        create_credit_sale_card_preference(sale, RequestFactory().get("/"), public_flow=True)
+        payload = mocked_request.call_args.args[1]
+
+        self.assertEqual(payload["payer"]["email"], "cliente-novo@example.com")
+        self.assertIn(str(sale.public_token), payload["back_urls"]["success"])
+
+    def test_public_link_accepts_pix_without_login(self):
+        sale = self.create_guest_sale()
+
+        response = self.client.post(
+            f"/parcelamento/link/{sale.public_token}/",
+            {
+                "payment_method": "pix",
+                "accept_terms": "on",
+                "installments": "",
+                "remainder_payment_method": "",
+            },
+        )
+        sale.refresh_from_db()
+
+        self.assertRedirects(response, f"/parcelamento/link/{sale.public_token}/pix/")
+        self.assertEqual(sale.selected_payment_method, CreditSale.PIX)
+
+    def test_public_link_redirects_guest_to_credit_registration(self):
+        sale = self.create_guest_sale()
+
+        response = self.client.post(
+            f"/parcelamento/link/{sale.public_token}/",
+            {"payment_method": "credit"},
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/cadastro/?intent=credit", response["Location"])
+
+
 class StoreFlowTests(TestCase):
     def create_supplier_product(self, **overrides):
         data = {
@@ -1581,6 +1635,43 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, "Link de pagamento gerado")
         self.assertEqual(sale.max_installments_allowed, 7)
         self.assertEqual(sale.description, "Sapato Teste")
+
+    def test_create_credit_sale_allows_guest_customer_and_generates_public_link(self):
+        staff = User.objects.create_superuser(
+            email="admin-venda-guest@example.com",
+            password="Teste12345!",
+            full_name="Admin Venda",
+            preferred_name="Admin",
+        )
+        self.client.force_login(staff)
+
+        response = self.client.post(
+            "/gestao/vendas/nova/",
+            {
+                "client": "",
+                "guest_name": "Cliente Novo",
+                "guest_email": "cliente-novo@example.com",
+                "guest_phone": "61999995555",
+                "description": "",
+                "total_amount": "240.00",
+                "products-TOTAL_FORMS": "1",
+                "products-INITIAL_FORMS": "0",
+                "products-MIN_NUM_FORMS": "0",
+                "products-MAX_NUM_FORMS": "20",
+                "products-0-product": "",
+                "products-0-name": "Sapato Teste",
+                "products-0-brand": "Marca Teste",
+                "products-0-shoe_size": "34",
+                "products-0-size_group": "adult",
+                "products-0-notes": "",
+            },
+        )
+        sale = CreditSale.objects.get(guest_email="cliente-novo@example.com")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(sale.client)
+        self.assertEqual(sale.guest_name, "Cliente Novo")
+        self.assertContains(response, f"/parcelamento/link/{sale.public_token}/")
 
     def test_staff_menu_shows_store_link(self):
         staff = User.objects.create_superuser(

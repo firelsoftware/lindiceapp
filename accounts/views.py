@@ -256,20 +256,41 @@ def authenticated_home_route(user):
 
 
 def build_sale_payment_link(request, sale):
-    return request.build_absolute_uri(reverse("choose_installments", args=[sale.id]))
+    return request.build_absolute_uri(reverse("public_choose_installments", args=[sale.public_token]))
 
 
 def build_finalize_whatsapp_link(sale, payment_link):
     """Monta o link de WhatsApp do cliente com a mensagem e o link de finalizacao."""
-    profile = getattr(sale.client, "profile", None)
-    phone = getattr(profile, "phone", "") if profile else ""
-    digits = re.sub(r"\D", "", phone or "")
+    digits = re.sub(r"\D", "", sale.customer_phone() or "")
     if digits and not digits.startswith("55"):
         digits = f"55{digits}"
     if not digits:
         return ""
     message = f"Ola! Para finalizar sua compra na Lindice, acesse: {payment_link}"
     return f"https://wa.me/{digits}?text={quote(message)}"
+
+
+def sale_checkout_context(sale, form, return_route):
+    return {
+        "form": form,
+        "sale": sale,
+        "pix_option": sale.pix_option(),
+        "card_payment_enabled": settings.CARD_PAYMENT_ENABLED,
+        "card_options": sale.card_options(),
+        "credit_options": sale.credit_options() if sale.can_use_credit() else [],
+        "card_installments": [option["installments"] for option in sale.card_options()],
+        "credit_installments": [option["installments"] for option in sale.credit_options()] if sale.can_use_credit() else [],
+        "welcome_discount_available": sale.available_welcome_discount_amount() > 0,
+        "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
+        "welcome_discount_preview": sale.available_welcome_discount_amount(),
+        "credit_financed_amount": sale.credit_financed_amount(),
+        "credit_remainder_amount": sale.credit_remainder_amount(),
+        "credit_late_fee_percent": Debt._meta.get_field("late_fee_percent").default,
+        "credit_monthly_interest_percent": Debt._meta.get_field("monthly_interest_percent").default,
+        "credit_requires_registration": not sale.can_use_credit(),
+        "return_route": return_route,
+        "is_public_sale": return_route != "dashboard",
+    }
 
 
 class LoginView(auth_views.LoginView):
@@ -1949,27 +1970,7 @@ def choose_installments(request, sale_id):
     else:
         form = InstallmentChoiceForm(sale=sale)
 
-    return render(
-        request,
-        "accounts/choose_installments.html",
-        {
-            "form": form,
-            "sale": sale,
-            "pix_option": sale.pix_option(),
-            "card_payment_enabled": settings.CARD_PAYMENT_ENABLED,
-            "card_options": sale.card_options(),
-            "credit_options": sale.credit_options(),
-            "card_installments": [option["installments"] for option in sale.card_options()],
-            "credit_installments": [option["installments"] for option in sale.credit_options()],
-            "welcome_discount_available": sale.available_welcome_discount_amount() > 0,
-            "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
-            "welcome_discount_preview": sale.available_welcome_discount_amount(),
-            "credit_financed_amount": sale.credit_financed_amount(),
-            "credit_remainder_amount": sale.credit_remainder_amount(),
-            "credit_late_fee_percent": Debt._meta.get_field("late_fee_percent").default,
-            "credit_monthly_interest_percent": Debt._meta.get_field("monthly_interest_percent").default,
-        },
-    )
+    return render(request, "accounts/choose_installments.html", sale_checkout_context(sale, form, "dashboard"))
 
 
 @login_required
@@ -1981,6 +1982,151 @@ def pix_payment_instructions(request, sale_id):
         status=CreditSale.ACCEPTED,
         selected_payment_method=CreditSale.PIX,
     )
+
+    return render(
+        request,
+        "accounts/pix_payment_instructions.html",
+        {
+            "sale": sale,
+            "pix_key": settings.STORE_PIX_KEY,
+            "responsible_name": settings.STORE_RESPONSIBLE_NAME,
+            "is_public_sale": False,
+        },
+    )
+
+
+def public_choose_installments(request, public_token):
+    sale = get_object_or_404(
+        CreditSale,
+        public_token=public_token,
+        status__in=[CreditSale.PENDING, CreditSale.ACCEPTED],
+        payment_status__in=[CreditSale.PAYMENT_PENDING, CreditSale.PAYMENT_FAILED],
+    )
+
+    if request.method == "POST" and request.POST.get("payment_method") == CreditSale.CREDIT:
+        if not request.user.is_authenticated or request.user.is_staff:
+            messages.info(request, "Para seguir no crediario, faca seu cadastro com CPF e documentos.")
+            next_url = reverse("claim_public_credit_sale", args=[sale.public_token])
+            return redirect(f"{resolve_url('register')}?intent=credit&next={next_url}")
+
+        return redirect("claim_public_credit_sale", public_token=sale.public_token)
+
+    if request.method == "POST":
+        form = InstallmentChoiceForm(request.POST, sale=sale)
+
+        if form.is_valid():
+            was_pending = sale.status == CreditSale.PENDING
+
+            with transaction.atomic():
+                if form.cleaned_data["first_due_date"]:
+                    sale.first_due_date = form.cleaned_data["first_due_date"]
+                sale.choose_payment(
+                    form.cleaned_data["payment_method"],
+                    form.cleaned_data["installments"],
+                    form.cleaned_data["use_welcome_discount"],
+                    form.cleaned_data["remainder_payment_method"],
+                )
+
+            if was_pending and sale.client_id:
+                create_sale_confirmed_notifications(sale)
+
+            if sale.selected_payment_method == CreditSale.PIX:
+                return redirect("public_pix_payment_instructions", public_token=sale.public_token)
+
+            if sale.selected_payment_method == CreditSale.CARD:
+                try:
+                    preference = create_credit_sale_card_preference(sale, request, public_flow=True)
+                except MercadoPagoNotConfigured:
+                    messages.warning(request, "Cartao ainda nao esta disponivel. Entre em contato com a loja.")
+                    return redirect("public_choose_installments", public_token=sale.public_token)
+                except MercadoPagoRequestError:
+                    logger.exception("Erro ao iniciar pagamento com cartao")
+                    messages.error(request, "Nao foi possivel abrir o pagamento com cartao agora. Tente novamente.")
+                    return redirect("public_choose_installments", public_token=sale.public_token)
+
+                sale.mercado_pago_preference_id = preference["id"]
+                sale.mercado_pago_init_point = preference["init_point"]
+                sale.save(update_fields=["mercado_pago_preference_id", "mercado_pago_init_point"])
+                return redirect(sale.mercado_pago_init_point)
+    else:
+        form = InstallmentChoiceForm(sale=sale)
+
+    return render(request, "accounts/choose_installments.html", sale_checkout_context(sale, form, "store_front"))
+
+
+@login_required
+def claim_public_credit_sale(request, public_token):
+    if request.user.is_staff:
+        return redirect("management_dashboard")
+
+    sale = get_object_or_404(
+        CreditSale,
+        public_token=public_token,
+        status__in=[CreditSale.PENDING, CreditSale.ACCEPTED],
+        payment_status__in=[CreditSale.PAYMENT_PENDING, CreditSale.PAYMENT_FAILED],
+    )
+    profile = request.user.profile
+
+    if not profile.has_cpf():
+        messages.error(request, "Para seguir no crediario, complete seu cadastro com CPF.")
+        return redirect("profile")
+
+    if sale.client_id is None:
+        sale.client = request.user
+        sale.max_installments_allowed = request.user.profile.default_max_installments
+        sale.save(update_fields=["client", "max_installments_allowed"])
+    elif sale.client_id != request.user.id:
+        messages.error(request, "Esta venda esta vinculada a outro cliente.")
+        return redirect("dashboard")
+
+    return redirect("choose_installments", sale_id=sale.id)
+
+
+def public_pix_payment_instructions(request, public_token):
+    sale = get_object_or_404(
+        CreditSale,
+        public_token=public_token,
+        status=CreditSale.ACCEPTED,
+        selected_payment_method=CreditSale.PIX,
+    )
+
+    return render(
+        request,
+        "accounts/pix_payment_instructions.html",
+        {
+            "sale": sale,
+            "pix_key": settings.STORE_PIX_KEY,
+            "responsible_name": settings.STORE_RESPONSIBLE_NAME,
+            "is_public_sale": True,
+        },
+    )
+
+
+def public_credit_sale_payment_success(request, public_token):
+    sale = get_object_or_404(CreditSale, public_token=public_token)
+    payment_id = request.GET.get("payment_id", "")
+
+    if payment_id:
+        try:
+            payment = get_payment(payment_id)
+        except (MercadoPagoNotConfigured, MercadoPagoRequestError):
+            payment = {}
+
+        if payment.get("status") == "approved" and payment.get("external_reference") == f"credit-sale:{sale.id}":
+            sale.mark_paid(str(payment.get("id", payment_id)))
+
+    messages.success(request, "Pagamento recebido. Aguarde a confirmacao da loja.")
+    return redirect("public_choose_installments", public_token=sale.public_token)
+
+
+def public_credit_sale_payment_failure(request, public_token):
+    messages.error(request, "Pagamento nao concluido. Voce pode tentar novamente neste link.")
+    return redirect("public_choose_installments", public_token=public_token)
+
+
+def public_credit_sale_payment_pending(request, public_token):
+    messages.warning(request, "Pagamento pendente. Atualizaremos a compra assim que houver confirmacao.")
+    return redirect("public_choose_installments", public_token=public_token)
 
     return render(
         request,
@@ -2470,7 +2616,7 @@ def create_credit_sale(request):
             sale = form.save(commit=False)
             sale.created_by = request.user
             sale.first_due_date = timezone.localdate() + timedelta(days=30)
-            sale.max_installments_allowed = sale.client.profile.default_max_installments
+            sale.max_installments_allowed = sale.client.profile.default_max_installments if sale.client_id else 10
             if not sale.description:
                 first_item = next(
                     (
@@ -2482,7 +2628,7 @@ def create_credit_sale(request):
                 product_name = ""
                 if first_item:
                     product_name = first_item.get("name") or getattr(first_item.get("product"), "name", "")
-                sale.description = product_name or f"Venda para {sale.client.full_name}"
+                sale.description = product_name or f"Venda para {sale.customer_name()}"
             sale.save()
             product_formset.instance = sale
             product_formset.save()

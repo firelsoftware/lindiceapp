@@ -542,7 +542,11 @@ class CreditSale(models.Model):
         (PAYMENT_FAILED, "Pagamento recusado"),
     ]
 
-    client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="credit_sales")
+    client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="credit_sales", null=True, blank=True)
+    guest_name = models.CharField(max_length=150, blank=True)
+    guest_email = models.EmailField(blank=True)
+    guest_phone = models.CharField(max_length=20, blank=True)
+    public_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     sale_code = models.CharField(max_length=20, unique=True, blank=True)
     description = models.CharField(max_length=200)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -585,9 +589,31 @@ class CreditSale(models.Model):
     def installment_options(self):
         return self.credit_options()
 
+    def customer_name(self):
+        return self.client.full_name if self.client_id else self.guest_name
+
+    def customer_email(self):
+        return self.client.email if self.client_id else self.guest_email
+
+    def customer_phone(self):
+        if self.client_id:
+            profile = getattr(self.client, "profile", None)
+            return getattr(profile, "phone", "") if profile else ""
+        return self.guest_phone
+
+    def can_use_credit(self):
+        if not self.client_id:
+            return False
+
+        profile = getattr(self.client, "profile", None)
+        return bool(profile and profile.phone_verified and profile.registration_status == ClientProfile.APPROVED and profile.has_cpf())
+
     def available_welcome_discount_amount(self):
         if self.welcome_discount_amount > 0:
             return self.welcome_discount_amount
+
+        if not self.client_id:
+            return Decimal("0.00")
 
         if (
             self.status == self.PENDING
@@ -606,6 +632,9 @@ class CreditSale(models.Model):
 
     def apply_welcome_discount(self, use_welcome_discount=False):
         if not use_welcome_discount:
+            return
+
+        if not self.client_id:
             return
 
         if self.welcome_discount_amount > 0 or self.status != self.PENDING:
@@ -682,6 +711,9 @@ class CreditSale(models.Model):
         }
 
     def credit_financed_amount(self):
+        if not self.client_id:
+            return Decimal("0.00")
+
         credit_limit = self.client.profile.pre_approved_credit_limit
         discounted_total = self.discounted_total_amount()
 
@@ -778,7 +810,7 @@ class CreditSale(models.Model):
         self.save(update_fields=["payment_status", "mercado_pago_payment_id"])
 
     def __str__(self):
-        return f"{self.sale_code} - {self.client.email} - {self.description}"
+        return f"{self.sale_code} - {self.customer_email() or 'sem-email'} - {self.description}"
 
 
 class CreditSaleProduct(models.Model):

@@ -4,13 +4,16 @@
 <h1>Finalizar compra</h1>
 
 <p>Venda: <strong>{{ sale.description }}</strong></p>
+<p>Cliente: <strong>{{ sale.customer_name }}</strong>{% if sale.customer_email %} · {{ sale.customer_email }}{% endif %}</p>
 <p>Valor original: <strong>R$ {{ sale.total_amount|floatformat:2 }}</strong></p>
 {% if welcome_discount_available %}
     <p><span class="badge badge-success">Primeira compra: {{ welcome_discount_percent|floatformat:0 }}% OFF</span></p>
     <p>Desconto de boas-vindas: <strong>- R$ {{ welcome_discount_preview|floatformat:2 }}</strong></p>
     <p>O beneficio ja esta aplicado nas opcoes abaixo e nao altera debitos anteriores.</p>
 {% endif %}
-<p>Maximo liberado no cadastro: <strong>{{ sale.max_installments_allowed }}x</strong></p>
+{% if not credit_requires_registration %}
+    <p>Maximo liberado no cadastro: <strong>{{ sale.max_installments_allowed }}x</strong></p>
+{% endif %}
 
 {% if sale.products.exists %}
     <h2>Produtos da venda</h2>
@@ -86,6 +89,13 @@
         </label>
     </section>
 
+    {% if credit_requires_registration %}
+        <section class="info-panel">
+            <h2>Crediario</h2>
+            <p>Para seguir no crediario, o cliente precisa concluir cadastro com CPF e documentos.</p>
+        </section>
+    {% endif %}
+
     <section class="selected-payment-panel" data-payment-panel="pix" hidden>
         <h2>Pix</h2>
         <p>Valor com desconto: <strong>R$ {{ pix_option.total|floatformat:2 }}</strong></p>
@@ -149,6 +159,9 @@
 
         <section data-payment-panel="credit" hidden>
             <h2>Crediario</h2>
+            {% if credit_requires_registration %}
+                <p>Para seguir no crediario, conclua primeiro o cadastro com CPF.</p>
+            {% else %}
             <label for="{{ form.first_due_date.id_for_label }}">Vencimento da primeira parcela</label>
             {{ form.first_due_date }}
             {% if form.first_due_date.errors %}
@@ -194,6 +207,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+            {% endif %}
         </section>
     </div>
 
@@ -201,7 +215,11 @@
     <p class="summary-caption">Se escolher crediario, revise juros e multa por atraso antes de concluir.</p>
 </form>
 
-<p><a href="{% url 'dashboard' %}">Voltar ao painel</a></p>
+{% if return_route == "dashboard" %}
+    <p><a href="{% url 'dashboard' %}">Voltar ao painel</a></p>
+{% else %}
+    <p><a href="{% url 'store_front' %}">Voltar para a loja</a></p>
+{% endif %}
 {{ card_installments|json_script:"card-installments" }}
 {{ credit_installments|json_script:"credit-installments" }}
 <script>
