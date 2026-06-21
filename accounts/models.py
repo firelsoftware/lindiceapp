@@ -319,6 +319,7 @@ class SupplierProduct(models.Model):
     wholesale_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     dropshipping_cost = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     suggested_sale_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    compare_at_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     stock_quantity = models.IntegerField(default=0)
     sizes = models.CharField(max_length=180, blank=True)
     is_active = models.BooleanField(default=True)
@@ -343,6 +344,15 @@ class SupplierProduct(models.Model):
 
     def store_margin(self):
         return self.suggested_sale_price - self.dropshipping_cost
+
+    def on_promo(self):
+        return bool(self.compare_at_price and self.compare_at_price > self.suggested_sale_price)
+
+    def discount_percent(self):
+        if not self.on_promo():
+            return 0
+        diff = self.compare_at_price - self.suggested_sale_price
+        return int(round(diff / self.compare_at_price * 100))
 
     def gallery_images(self):
         raw_data = self.raw_data or {}

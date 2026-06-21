@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 from django.utils import timezone
 
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, Supplier, SupplierCatalogSource, User
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, User
 from .store_shipping import shipping_choices_with_prices
 from .utils import clean_digits, cpf_hash, cpf_last_digits, is_valid_cpf
 
@@ -604,6 +604,38 @@ class SupplierForm(forms.ModelForm):
             "notes": "Observacoes",
             "is_active": "Ativo",
         }
+
+
+class SupplierProductEditForm(forms.ModelForm):
+    class Meta:
+        model = SupplierProduct
+        fields = (
+            "name", "brand", "sizes", "suggested_sale_price", "compare_at_price",
+            "stock_quantity", "is_visible", "is_active", "status_note",
+        )
+        labels = {
+            "name": "Nome do produto",
+            "brand": "Marca",
+            "sizes": "Tamanhos (separados por virgula)",
+            "suggested_sale_price": "Preco de venda (R$)",
+            "compare_at_price": "Preco 'de' / promocao (opcional)",
+            "stock_quantity": "Estoque",
+            "is_visible": "Mostrar na loja",
+            "is_active": "Ativo",
+            "status_note": "Observacao interna",
+        }
+        help_texts = {
+            "compare_at_price": "Se maior que o preco de venda, a loja mostra como promocao (de/por).",
+            "is_visible": "Desmarque para suspender o produto (sai da loja).",
+        }
+
+    def clean(self):
+        cleaned = super().clean()
+        price = cleaned.get("suggested_sale_price")
+        compare = cleaned.get("compare_at_price")
+        if compare and price and compare <= price:
+            self.add_error("compare_at_price", "O preco 'de' deve ser maior que o preco de venda.")
+        return cleaned
 
 
 class ProductCostForm(forms.ModelForm):

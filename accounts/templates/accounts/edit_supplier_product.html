@@ -1,0 +1,27 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Editar produto</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    {% with gallery=product.gallery_images %}
+        {% if gallery %}
+            <img src="{{ gallery.0 }}" alt="{{ product.name }}" style="max-width:160px; border-radius:10px; margin-bottom:12px;">
+        {% endif %}
+    {% endwith %}
+    <p class="store-product-note">Código interno: {{ product.supplier_code }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Salvar alterações</button>
+        <a class="button button-secondary" href="{% url 'supplier_products' %}">Cancelar</a>
+    </form>
+</section>
+{% endblock %}

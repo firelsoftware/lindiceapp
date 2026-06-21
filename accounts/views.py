@@ -26,7 +26,7 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, UserPasswordChangeForm
+from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
 from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, verify_webhook_signature
@@ -2501,6 +2501,26 @@ def product_list(request):
             "supplier_filter": supplier_filter,
             "supplier_report": supplier_report,
         },
+    )
+
+
+@staff_member_required(login_url="login")
+def edit_supplier_product(request, product_id):
+    product = get_object_or_404(SupplierProduct, id=product_id)
+
+    if request.method == "POST":
+        form = SupplierProductEditForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Produto atualizado com sucesso.")
+            return redirect("supplier_products")
+    else:
+        form = SupplierProductEditForm(instance=product)
+
+    return render(
+        request,
+        "accounts/edit_supplier_product.html",
+        {"form": form, "product": product},
     )
 
 

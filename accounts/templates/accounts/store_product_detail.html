@@ -31,7 +31,11 @@
                 {% if product.brand %}<span class="detail-brand">{{ product.brand }}</span>{% endif %}
             </div>
             <h1>{{ product.name }}</h1>
-            <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
+            {% if product.on_promo %}
+                <p class="store-price"><s style="color:var(--muted);font-weight:600;font-size:0.8em;">R$ {{ product.compare_at_price|floatformat:2 }}</s> R$ {{ product.suggested_sale_price|floatformat:2 }} <span class="badge badge-success">-{{ product.discount_percent }}%</span></p>
+            {% else %}
+                <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
+            {% endif %}
             <p class="detail-sizes">Tamanhos disponiveis: {{ product.sizes|default:"consultar" }}</p>
             {% if product.description %}
                 <p class="detail-note">{{ product.description }}</p>
