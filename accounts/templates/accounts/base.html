@@ -437,19 +437,21 @@
         .menu-button {
             display: flex;
             align-items: center;
+            gap: 12px;
             width: 100%;
-            min-height: 42px;
+            min-height: 48px;
             margin: 0;
-            padding: 10px 12px;
+            padding: 11px 14px;
             border: 0;
-            border-radius: 8px;
+            border-radius: 10px;
             background: transparent;
             color: var(--ink);
             font: inherit;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             text-align: left;
             text-decoration: none;
+            transition: background 0.15s ease, color 0.15s ease;
         }
 
         .menu-link:hover,
@@ -457,6 +459,29 @@
             background: #eef2ff;
             color: var(--brand-purple);
             transform: none;
+        }
+
+        .menu-link .menu-ico,
+        .menu-button .menu-ico {
+            flex: 0 0 20px;
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+        }
+
+        .menu-link.is-active {
+            background: var(--brand-blue);
+            color: #ffffff;
+        }
+
+        .menu-link.is-active .menu-ico {
+            opacity: 1;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: var(--line);
+            margin: 8px 6px;
         }
 
         .topbar-inner {
@@ -3154,33 +3179,87 @@
             </div>
 
             {% if request.user.is_authenticated %}
+                {% with active=request.resolver_match.url_name %}
                 <nav class="app-menu" aria-label="Menu do aplicativo" data-menu-panel>
                     {% if request.user.is_staff %}
-                        <a class="menu-link" href="{% url 'management_dashboard' %}">Painel de gestao</a>
-                        <a class="menu-link" href="{% url 'store_front' %}">Loja</a>
-                        <a class="menu-link" href="{% url 'clients_list' %}">Clientes</a>
-                        <a class="menu-link" href="{% url 'create_credit_sale' %}">Lancar venda</a>
-                        <a class="menu-link" href="{% url 'product_list' %}">Produtos</a>
-                        <a class="menu-link" href="{% url 'supplier_products' %}">Fornecedor</a>
-                        <a class="menu-link" href="{% url 'store_orders' %}">Pedidos da loja</a>
-                        <a class="menu-link" href="{% url 'profit_report' %}">Relatorio de lucro</a>
+                        <a class="menu-link{% if active == 'management_dashboard' %} is-active{% endif %}" href="{% url 'management_dashboard' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                            <span>Painel de gestão</span>
+                        </a>
+                        <a class="menu-link{% if active == 'store_front' %} is-active{% endif %}" href="{% url 'store_front' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M9 9v11"/></svg>
+                            <span>Loja</span>
+                        </a>
+                        <a class="menu-link{% if active == 'clients_list' %} is-active{% endif %}" href="{% url 'clients_list' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+                            <span>Clientes</span>
+                        </a>
+                        <a class="menu-link{% if active == 'create_credit_sale' %} is-active{% endif %}" href="{% url 'create_credit_sale' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+                            <span>Lançar venda</span>
+                        </a>
+                        <a class="menu-link{% if active == 'product_list' %} is-active{% endif %}" href="{% url 'product_list' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.3 7L12 12l8.7-5M12 22V12"/></svg>
+                            <span>Produtos</span>
+                        </a>
+                        <a class="menu-link{% if active == 'supplier_products' %} is-active{% endif %}" href="{% url 'supplier_products' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                            <span>Fornecedor</span>
+                        </a>
+                        <a class="menu-link{% if active == 'store_orders' %} is-active{% endif %}" href="{% url 'store_orders' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2h6a1 1 0 0 1 1 1v1H8V3a1 1 0 0 1 1-1z"/><path d="M16 4h2a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h2"/><path d="M9 12l2 2 4-4"/></svg>
+                            <span>Pedidos da loja</span>
+                        </a>
+                        <a class="menu-link{% if active == 'profit_report' %} is-active{% endif %}" href="{% url 'profit_report' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+                            <span>Relatório de lucro</span>
+                        </a>
                     {% else %}
-                        <a class="menu-link" href="{% url 'store_front' %}">Loja</a>
-                        <a class="menu-link" href="{% url 'cart_detail' %}">Carrinho</a>
-                        <a class="menu-link" href="{% url 'dashboard' %}">Minhas compras</a>
-                        <a class="menu-link" href="{% url 'customer_finances' %}">Minhas financas</a>
+                        <a class="menu-link{% if active == 'store_front' %} is-active{% endif %}" href="{% url 'store_front' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M9 9v11"/></svg>
+                            <span>Loja</span>
+                        </a>
+                        <a class="menu-link{% if active == 'cart_detail' %} is-active{% endif %}" href="{% url 'cart_detail' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+                            <span>Carrinho</span>
+                        </a>
+                        <a class="menu-link{% if active == 'dashboard' %} is-active{% endif %}" href="{% url 'dashboard' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                            <span>Minhas compras</span>
+                        </a>
+                        <a class="menu-link{% if active == 'customer_finances' %} is-active{% endif %}" href="{% url 'customer_finances' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>
+                            <span>Minhas finanças</span>
+                        </a>
                         {% if user_sales_report_enabled %}
-                            <a class="menu-link" href="{% url 'partner_sales_report' %}">{{ user_sales_report_label }}</a>
+                            <a class="menu-link{% if active == 'partner_sales_report' %} is-active{% endif %}" href="{% url 'partner_sales_report' %}">
+                                <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+                                <span>{{ user_sales_report_label }}</span>
+                            </a>
                         {% endif %}
-                        <a class="menu-link" href="{% url 'measurements' %}">Minhas medidas</a>
+                        <a class="menu-link{% if active == 'measurements' %} is-active{% endif %}" href="{% url 'measurements' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12l10 10 10-10L12 2 2 12z"/><path d="M7 12l1.5 1.5M10 9l1.5 1.5M13 12l1.5 1.5"/></svg>
+                            <span>Minhas medidas</span>
+                        </a>
                     {% endif %}
-                    <a class="menu-link" href="{% url 'account' %}">Minha conta</a>
-                    <a class="menu-link" href="{% url 'change_password' %}">Redefinir senha</a>
+                    <div class="menu-divider" aria-hidden="true"></div>
+                    <a class="menu-link{% if active == 'account' %} is-active{% endif %}" href="{% url 'account' %}">
+                        <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span>Minha conta</span>
+                    </a>
+                    <a class="menu-link{% if active == 'change_password' %} is-active{% endif %}" href="{% url 'change_password' %}">
+                        <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 2l-2 2m-7.6 7.6a5 5 0 1 1-7 7 5 5 0 0 1 7-7zm0 0L15 8m0 0l3 3 3-3-3-3"/></svg>
+                        <span>Redefinir senha</span>
+                    </a>
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
-                        <button class="menu-button" type="submit">Sair</button>
+                        <button class="menu-button" type="submit">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                            <span>Sair</span>
+                        </button>
                     </form>
                 </nav>
+                {% endwith %}
             {% endif %}
         </div>
     </header>
