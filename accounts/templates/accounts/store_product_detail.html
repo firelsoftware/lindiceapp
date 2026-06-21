@@ -37,10 +37,19 @@
                 <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
             {% endif %}
             <p class="detail-sizes">Tamanhos disponiveis: {{ product.sizes|default:"consultar" }}</p>
+            {% with raw=product.raw_data %}
+                {% if raw.modelo %}<p class="detail-note">Modelo: {{ raw.modelo }}</p>{% endif %}
+                {% if raw.cor %}<p class="detail-note">Cor: {{ raw.cor }}</p>{% endif %}
+                {% if raw.material %}<p class="detail-note">Material: {{ raw.material }}</p>{% endif %}
+                {% if raw.medida_cm %}<p class="detail-note">Medida: {{ raw.medida_cm }} cm</p>{% endif %}
+            {% endwith %}
             {% if product.description %}
                 <p class="detail-note">{{ product.description }}</p>
             {% else %}
                 <p class="detail-note">Selecione o tamanho ideal e leve o item para o carrinho antes de finalizar o pagamento.</p>
+            {% endif %}
+            {% if request.user.is_staff %}
+                <p><a class="button button-secondary" href="{% url 'edit_supplier_product' product.id %}">✎ Editar produto</a></p>
             {% endif %}
         </div>
 

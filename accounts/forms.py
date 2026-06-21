@@ -607,6 +607,21 @@ class SupplierForm(forms.ModelForm):
 
 
 class SupplierProductEditForm(forms.ModelForm):
+    MATERIAL_CHOICES = [
+        ("", "Nao se aplica"),
+        ("Prata", "Prata"),
+        ("Folheado prata", "Folheado prata"),
+        ("Ouro", "Ouro"),
+        ("Folheado ouro", "Folheado ouro"),
+        ("Aco", "Aco"),
+    ]
+
+    # Campos extras guardados em raw_data (variam por tipo de produto)
+    modelo = forms.CharField(label="Modelo", required=False)
+    cor = forms.CharField(label="Cor", required=False)
+    material = forms.ChoiceField(label="Material (joias)", required=False, choices=MATERIAL_CHOICES)
+    medida_cm = forms.CharField(label="Medida em cm (colar/pulseira)", required=False)
+
     class Meta:
         model = SupplierProduct
         fields = (
@@ -629,6 +644,15 @@ class SupplierProductEditForm(forms.ModelForm):
             "is_visible": "Desmarque para suspender o produto (sai da loja).",
         }
 
+    EXTRA_KEYS = ("modelo", "cor", "material", "medida_cm")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        raw = getattr(self.instance, "raw_data", None) or {}
+        for key in self.EXTRA_KEYS:
+            if not self.is_bound and raw.get(key):
+                self.fields[key].initial = raw.get(key)
+
     def clean(self):
         cleaned = super().clean()
         price = cleaned.get("suggested_sale_price")
@@ -636,6 +660,20 @@ class SupplierProductEditForm(forms.ModelForm):
         if compare and price and compare <= price:
             self.add_error("compare_at_price", "O preco 'de' deve ser maior que o preco de venda.")
         return cleaned
+
+    def save(self, commit=True):
+        product = super().save(commit=False)
+        raw = dict(product.raw_data or {})
+        for key in self.EXTRA_KEYS:
+            value = (self.cleaned_data.get(key) or "").strip()
+            if value:
+                raw[key] = value
+            else:
+                raw.pop(key, None)
+        product.raw_data = raw
+        if commit:
+            product.save()
+        return product
 
 
 class ProductCostForm(forms.ModelForm):
