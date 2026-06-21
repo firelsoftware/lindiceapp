@@ -1526,7 +1526,9 @@ class StoreFlowTests(TestCase):
         sale = CreditSale.objects.get(client=user)
 
         self.assertEqual(profile.default_max_installments, 7)
-        self.assertEqual(response.status_code, 302)
+        # Apos lancar, mostra a tela com o link de finalizacao (200), nao redireciona.
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Link de pagamento gerado")
         self.assertEqual(sale.max_installments_allowed, 7)
         self.assertEqual(sale.description, "Sapato Teste")
 
