@@ -2586,7 +2586,17 @@ def suppliers_list(request):
     return render(
         request,
         "accounts/suppliers_list.html",
-        {"suppliers": suppliers, "form": form},
+        {
+            "suppliers": suppliers,
+            "form": form,
+            "catalog_url_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
+            "supplier_dropshipping_url": settings.SHOE_SUPPLIER_DROPSHIPPING_URL,
+            "catalog_sources": [
+                {"instance": source, "form": SupplierCatalogSourceForm(instance=source)}
+                for source in SupplierCatalogSource.objects.all()
+            ],
+            "source_choices": SupplierProduct.SOURCE_CHOICES,
+        },
     )
 
 

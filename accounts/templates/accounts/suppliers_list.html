@@ -45,4 +45,61 @@
         </tbody>
     </table>
 </section>
+
+<section class="info-panel">
+    <h2>Catálogo / dropshipping</h2>
+    <p><a class="button button-secondary" href="{% url 'supplier_products' %}">Ver produtos importados (catálogo)</a></p>
+
+    <details class="info-panel">
+        <summary class="limit-summary">Dropshipping Revenda de Calcados</summary>
+        <p>Use a area do fornecedor para ativar o dropshipping e obter o link do catalogo em CSV ou XML.</p>
+        {% if supplier_dropshipping_url %}
+            <p><a class="button button-secondary" href="{{ supplier_dropshipping_url }}" target="_blank" rel="noopener">Abrir Revenda / Shop Integra</a></p>
+        {% endif %}
+    </details>
+
+    <details class="info-panel">
+        <summary class="limit-summary">Importar catalogo</summary>
+        <p>Baixe a planilha do dia e envie aqui, ou use a URL salva da fonte escolhida.</p>
+        <form method="post" action="{% url 'import_supplier_products' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="catalog-source-file">Fonte</label>
+            <select id="catalog-source-file" name="source">
+                {% for source_value, source_label in source_choices %}
+                    <option value="{{ source_value }}">{{ source_label }}</option>
+                {% endfor %}
+            </select>
+            <label for="catalog-file">CSV ou XML do dia</label>
+            <input id="catalog-file" name="catalog_file" type="file" accept=".csv,.xml,text/csv,text/xml,application/xml">
+            <button type="submit">Importar arquivo baixado</button>
+        </form>
+        {% if catalog_url_configured %}
+            <form method="post" action="{% url 'import_supplier_products' %}" style="margin-top:8px;">
+                {% csrf_token %}
+                <input type="hidden" name="source" value="revenda_calcados">
+                <button type="submit">Atualizar catalogo do fornecedor</button>
+            </form>
+        {% endif %}
+    </details>
+
+    <details class="info-panel">
+        <summary class="limit-summary">Fontes de catalogo</summary>
+        {% for source in catalog_sources %}
+            <article class="info-panel" style="margin-top: 1rem;">
+                <h3>{{ source.instance.get_source_display }}</h3>
+                <form method="post" action="{% url 'update_supplier_catalog_source' source.instance.source %}">
+                    {% csrf_token %}
+                    <div class="toolbar-field">{{ source.form.display_name.label_tag }} {{ source.form.display_name }}</div>
+                    <div class="toolbar-field">{{ source.form.catalog_url.label_tag }} {{ source.form.catalog_url }}</div>
+                    <div class="toolbar-field">{{ source.form.catalog_format.label_tag }} {{ source.form.catalog_format }}</div>
+                    <div class="toolbar-field">{{ source.form.purchase_flow.label_tag }} {{ source.form.purchase_flow }}</div>
+                    <div class="toolbar-field">{{ source.form.supplier_panel_note.label_tag }} {{ source.form.supplier_panel_note }}</div>
+                    <div class="toolbar-field">{{ source.form.customer_notice.label_tag }} {{ source.form.customer_notice }}</div>
+                    <div class="toolbar-field"><label for="{{ source.form.is_active.id_for_label }}">Status</label> {{ source.form.is_active }} Fonte ativa</div>
+                    <button type="submit">Salvar fonte</button>
+                </form>
+            </article>
+        {% endfor %}
+    </details>
+</section>
 {% endblock %}
