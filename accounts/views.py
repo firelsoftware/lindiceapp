@@ -2180,6 +2180,13 @@ def clients_list(request):
 
 
 @login_required
+def notifications_unread_count(request):
+    """Contagem de notificacoes nao lidas (usada pelo sino em tempo real)."""
+    count = request.user.notifications.filter(read_at__isnull=True).count()
+    return JsonResponse({"count": count})
+
+
+@login_required
 def notifications_list(request):
     generate_due_notifications()
     notifications = request.user.notifications.select_related("debt")[:100]

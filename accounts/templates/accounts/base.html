@@ -3146,11 +3146,9 @@
                 {% endif %}
 
                 {% if request.user.is_authenticated %}
-                    <a class="notification-bell" href="{% url 'notifications_list' %}" aria-label="Abrir notificacoes">
+                    <a class="notification-bell" href="{% url 'notifications_list' %}" aria-label="Abrir notificacoes" data-notification-bell>
                         <span class="notification-bell-symbol" aria-hidden="true">&#128276;&#65038;</span>
-                        {% if notification_unread_count %}
-                            <span class="notification-count">{{ notification_unread_count }}</span>
-                        {% endif %}
+                        <span class="notification-count" data-notification-count {% if not notification_unread_count %}hidden{% endif %}>{{ notification_unread_count|default:0 }}</span>
                     </a>
                     <button class="account-status-toggle" type="button" data-menu-toggle aria-label="Abrir minha conta" aria-expanded="false">
                         <svg class="account-status-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -4106,5 +4104,40 @@
 
         {% block extra_scripts %}{% endblock %}
     </script>
+    {% if request.user.is_authenticated %}
+    <script>
+        (function () {
+            var bell = document.querySelector("[data-notification-bell]");
+            var badge = document.querySelector("[data-notification-count]");
+            if (!bell || !badge) {
+                return;
+            }
+            var url = "{% url 'notifications_unread_count' %}";
+
+            function refresh() {
+                fetch(url, { credentials: "same-origin", headers: { "X-Requested-With": "XMLHttpRequest" } })
+                    .then(function (r) { return r.ok ? r.json() : null; })
+                    .then(function (data) {
+                        if (!data) { return; }
+                        var n = data.count || 0;
+                        if (n > 0) {
+                            badge.textContent = n > 99 ? "99+" : n;
+                            badge.hidden = false;
+                        } else {
+                            badge.hidden = true;
+                        }
+                    })
+                    .catch(function () {});
+            }
+
+            // Atualiza ao abrir a aba e a cada 30s (sino em tempo real).
+            document.addEventListener("visibilitychange", function () {
+                if (!document.hidden) { refresh(); }
+            });
+            setInterval(refresh, 30000);
+            refresh();
+        })();
+    </script>
+    {% endif %}
 </body>
 </html>

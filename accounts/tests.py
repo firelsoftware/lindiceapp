@@ -1543,8 +1543,8 @@ class StoreFlowTests(TestCase):
 
         response = self.client.get("/gestao/fornecedor/produtos/")
 
-        self.assertContains(response, '>Loja</a>', html=False)
-        self.assertNotContains(response, '>Minhas financas</a>', html=False)
+        self.assertContains(response, '>Loja</span>', html=False)
+        self.assertNotContains(response, 'Minhas finanças', html=False)
         self.assertContains(response, "Línde IA")
 
     def test_client_menu_shows_customer_finances_link(self):
@@ -1568,7 +1568,7 @@ class StoreFlowTests(TestCase):
 
         response = self.client.get("/painel/")
 
-        self.assertContains(response, '>Minhas financas</a>', html=False)
+        self.assertContains(response, 'Minhas finanças', html=False)
         self.assertNotContains(response, "Línde IA")
 
     def test_customer_finances_page_is_visible_only_for_client(self):
