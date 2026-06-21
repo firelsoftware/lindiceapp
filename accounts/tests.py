@@ -8,7 +8,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, RequestFactory, TestCase, override_settings
 from django.utils import timezone
 
-from .forms import ProductForm, RegisterForm
+from .forms import CreditSaleForm, ProductForm, RegisterForm
 from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, StoreOrder, SupplierCatalogSource, SupplierProduct, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference
@@ -176,6 +176,22 @@ class RegistrationFlowTests(TestCase):
         user = User.objects.get(email="cliente-teste@example.com")
 
         self.assertEqual(user.profile.cpf_last_digits, "4725")
+
+
+class CreditSaleFormTests(TestCase):
+    def test_manual_sale_form_allows_blank_contact_for_sale_without_client(self):
+        form = CreditSaleForm(
+            data={
+                "client": "",
+                "guest_name": "",
+                "guest_email": "",
+                "guest_phone": "",
+                "description": "Venda livre",
+                "total_amount": "120.00",
+            }
+        )
+
+        self.assertTrue(form.is_valid(), form.errors)
 
 
 class ProfileCpfTests(TestCase):

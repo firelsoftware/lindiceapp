@@ -590,7 +590,9 @@ class CreditSale(models.Model):
         return self.credit_options()
 
     def customer_name(self):
-        return self.client.full_name if self.client_id else self.guest_name
+        if self.client_id:
+            return self.client.full_name
+        return self.guest_name or "Cliente sem cadastro"
 
     def customer_email(self):
         return self.client.email if self.client_id else self.guest_email

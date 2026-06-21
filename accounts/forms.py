@@ -336,11 +336,18 @@ class CreditSaleForm(forms.ModelForm):
         client = cleaned_data.get("client")
         guest_name = (cleaned_data.get("guest_name") or "").strip()
         guest_email = (cleaned_data.get("guest_email") or "").strip()
+        guest_phone = (cleaned_data.get("guest_phone") or "").strip()
 
         if client:
             cleaned_data["guest_name"] = ""
             cleaned_data["guest_email"] = ""
-            cleaned_data["guest_phone"] = (cleaned_data.get("guest_phone") or "").strip()
+            cleaned_data["guest_phone"] = ""
+            return cleaned_data
+
+        if not guest_name and not guest_email and not guest_phone:
+            cleaned_data["guest_name"] = ""
+            cleaned_data["guest_email"] = ""
+            cleaned_data["guest_phone"] = ""
             return cleaned_data
 
         if not guest_name:
@@ -351,7 +358,7 @@ class CreditSaleForm(forms.ModelForm):
 
         cleaned_data["guest_name"] = guest_name
         cleaned_data["guest_email"] = guest_email
-        cleaned_data["guest_phone"] = (cleaned_data.get("guest_phone") or "").strip()
+        cleaned_data["guest_phone"] = guest_phone
         return cleaned_data
 
 

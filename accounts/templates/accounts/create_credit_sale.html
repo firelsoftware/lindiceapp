@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Lancar venda para o cliente</h1>
-<p>Escolha um cliente ja cadastrado ou preencha nome, email e telefone para cliente novo.</p>
+<p>Escolha um cliente ja cadastrado ou deixe como <strong>Venda sem cliente</strong> para gerar um link livre e enviar direto para a pessoa.</p>
 
 <style>
     .sale-compact-form {
@@ -66,6 +66,31 @@
         overflow: hidden;
     }
 
+    .guest-contact-card {
+        grid-column: 1 / -1;
+        padding: 14px 16px;
+        border: 1px dashed var(--line);
+        border-radius: 14px;
+        background: #fbfdff;
+    }
+
+    .guest-contact-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+    }
+
+    .guest-contact-header p {
+        margin: 0;
+        color: var(--muted);
+    }
+
+    .guest-contact-fields[hidden] {
+        display: none;
+    }
+
     @media (max-width: 820px) {
         .sale-form-grid,
         .sale-product-grid {
@@ -85,24 +110,35 @@
             <div class="field-stack full">
                 {{ form.client.label_tag }}
                 {{ form.client }}
-                {% if form.client.help_text %}<small class="helptext">{{ form.client.help_text }}</small>{% endif %}
+                <small class="helptext">Se escolher um cliente aprovado, o link fica vinculado a ele. Em <strong>Venda sem cliente</strong>, o link fica livre para enviar diretamente.</small>
                 {{ form.client.errors }}
             </div>
-            <div class="field-stack">
-                {{ form.guest_name.label_tag }}
-                {{ form.guest_name }}
-                {{ form.guest_name.errors }}
-            </div>
-            <div class="field-stack">
-                {{ form.guest_email.label_tag }}
-                {{ form.guest_email }}
-                {% if form.guest_email.help_text %}<small class="helptext">{{ form.guest_email.help_text }}</small>{% endif %}
-                {{ form.guest_email.errors }}
-            </div>
-            <div class="field-stack">
-                {{ form.guest_phone.label_tag }}
-                {{ form.guest_phone }}
-                {{ form.guest_phone.errors }}
+            <div class="guest-contact-card">
+                <div class="guest-contact-header">
+                    <div>
+                        <strong>Contato do cliente novo</strong>
+                        <p>Opcional. Preencha so se quiser deixar algum contato vinculado a esta venda antes de enviar o link.</p>
+                    </div>
+                    <button type="button" class="button button-secondary" id="toggle-guest-contact">Adicionar contato agora</button>
+                </div>
+                <div class="sale-form-grid guest-contact-fields" id="guest-contact-fields" hidden>
+                    <div class="field-stack">
+                        {{ form.guest_name.label_tag }}
+                        {{ form.guest_name }}
+                        {{ form.guest_name.errors }}
+                    </div>
+                    <div class="field-stack">
+                        {{ form.guest_email.label_tag }}
+                        {{ form.guest_email }}
+                        {% if form.guest_email.help_text %}<small class="helptext">{{ form.guest_email.help_text }}</small>{% endif %}
+                        {{ form.guest_email.errors }}
+                    </div>
+                    <div class="field-stack">
+                        {{ form.guest_phone.label_tag }}
+                        {{ form.guest_phone }}
+                        {{ form.guest_phone.errors }}
+                    </div>
+                </div>
             </div>
             <div class="field-stack">
                 {{ form.total_amount.label_tag }}
@@ -239,6 +275,14 @@
     const emptyProductTemplate = document.getElementById("empty-product-form");
     const totalFormsInput = document.getElementById("id_products-TOTAL_FORMS");
     const maxFormsInput = document.getElementById("id_products-MAX_NUM_FORMS");
+    const clientSelect = document.getElementById("id_client");
+    const guestContactFields = document.getElementById("guest-contact-fields");
+    const toggleGuestContactButton = document.getElementById("toggle-guest-contact");
+    const guestInputs = [
+        document.getElementById("id_guest_name"),
+        document.getElementById("id_guest_email"),
+        document.getElementById("id_guest_phone"),
+    ];
     const productCatalog = JSON.parse(document.getElementById("product-catalog").textContent).reduce((acc, product) => {
         acc[String(product.id)] = product;
         return acc;
@@ -262,6 +306,15 @@
         }
         textarea.style.height = "auto";
         textarea.style.height = `${Math.max(textarea.scrollHeight, 44)}px`;
+    };
+
+    const guestFieldsHaveValue = () => guestInputs.some((input) => input && input.value.trim() !== "");
+
+    const updateGuestContactVisibility = () => {
+        const showFields = !clientSelect.value && guestFieldsHaveValue();
+        guestContactFields.hidden = !showFields;
+        toggleGuestContactButton.hidden = !!clientSelect.value;
+        toggleGuestContactButton.textContent = showFields ? "Ocultar contato" : "Adicionar contato agora";
     };
 
     const updateSizeChoices = (section) => {
@@ -345,6 +398,31 @@
         updateAddProductButton();
     });
 
+    toggleGuestContactButton?.addEventListener("click", () => {
+        guestContactFields.hidden = !guestContactFields.hidden;
+        if (guestContactFields.hidden) {
+            guestInputs.forEach((input) => {
+                if (input) {
+                    input.value = "";
+                }
+            });
+        }
+        updateGuestContactVisibility();
+    });
+
+    clientSelect?.addEventListener("change", () => {
+        if (clientSelect.value) {
+            guestInputs.forEach((input) => {
+                if (input) {
+                    input.value = "";
+                }
+            });
+        }
+        updateGuestContactVisibility();
+    });
+
+    guestInputs.forEach((input) => input?.addEventListener("input", updateGuestContactVisibility));
+
     productForms.querySelectorAll(".product-form").forEach((section) => {
         updateSizeChoices(section);
         section.querySelector('select[name$="-product"]')?.addEventListener("change", () => syncProductFields(section));
@@ -356,5 +434,6 @@
     });
 
     updateAddProductButton();
+    updateGuestContactVisibility();
 </script>
 {% endblock %}
