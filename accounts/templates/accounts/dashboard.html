@@ -36,7 +36,7 @@
             <p>Restante fora do crediario: <strong>R$ {{ group.remainder_amount|floatformat:2 }}</strong>{% if group.remainder_payment_method %} via {{ group.remainder_payment_method }}{% endif %}.</p>
         {% endif %}
 
-        <table>
+        <table class="parcelas-table">
             <thead>
                 <tr>
                     <th>Parcela</th>
@@ -50,12 +50,12 @@
             <tbody>
                 {% for debt in group.debts %}
                     <tr>
-                        <td>{{ debt.description }}</td>
-                        <td>{{ debt.due_date }}</td>
-                        <td>R$ {{ debt.amount|floatformat:2 }}</td>
-                        <td>{{ debt.days_late }} dias</td>
-                        <td>R$ {{ debt.total_amount|floatformat:2 }}</td>
-                        <td>{% if debt.paid %}Pago{% else %}Pendente{% endif %}</td>
+                        <td data-label="Parcela">{{ debt.description }}</td>
+                        <td data-label="Vencimento">{{ debt.due_date }}</td>
+                        <td data-label="Valor">R$ {{ debt.amount|floatformat:2 }}</td>
+                        <td data-label="Atraso">{{ debt.days_late }} dias</td>
+                        <td data-label="Total">R$ {{ debt.total_amount|floatformat:2 }}</td>
+                        <td data-label="Status">{% if debt.paid %}Pago{% else %}Pendente{% endif %}</td>
                     </tr>
                 {% empty %}
                     <tr>
