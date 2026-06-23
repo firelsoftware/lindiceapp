@@ -104,8 +104,11 @@
 <form class="toolbar store-toolbar" method="get">
     <div class="store-toolbar-grid">
         <div class="toolbar-field store-toolbar-search">
-            <label for="q">Buscar produto</label>
-            <input id="q" name="q" value="{{ query }}" placeholder="Sandalia, tenis, marca">
+            <label for="q" class="sr-only">Buscar produto</label>
+            <span class="store-search-pill">
+                <svg class="store-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+                <input id="q" name="q" value="{{ query }}" placeholder="Buscar produto">
+            </span>
         </div>
         {% if selected_category %}<input type="hidden" name="categoria" value="{{ selected_category }}">{% endif %}
         <div class="store-toolbar-inline">

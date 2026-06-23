@@ -1592,12 +1592,41 @@
 
         .toolbar.store-toolbar {
             margin-top: 0;
-            margin-bottom: 24px;
-            padding: 18px;
+            margin-bottom: 18px;
+            padding: 0;
+            border: none;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .store-search-pill {
+            position: relative;
+            display: block;
+        }
+
+        .store-search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--muted);
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            pointer-events: none;
+        }
+
+        .store-search-pill input {
+            margin-top: 0;
+            padding: 11px 16px 11px 42px;
             border: 1px solid var(--line);
-            border-radius: 16px;
-            background: #fbfcfe;
-            box-shadow: 0 12px 24px rgba(24, 34, 48, 0.04);
+            border-radius: 999px;
+            background: #ffffff;
         }
 
         .store-toolbar-grid {
