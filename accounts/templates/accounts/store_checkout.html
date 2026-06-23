@@ -47,11 +47,13 @@
                 {% endif %}
             </div>
             <div class="checkout-mini-media">
-                {% if product.image_url %}
-                    <img src="{{ product.image_url }}" alt="{{ product.name }}">
-                {% else %}
-                    <span class="store-product-placeholder">Foto</span>
-                {% endif %}
+                {% with img=product.gallery_images.0 %}
+                    {% if img %}
+                        <img src="{{ img }}" alt="{{ product.name }}">
+                    {% else %}
+                        <span class="store-product-placeholder">Foto</span>
+                    {% endif %}
+                {% endwith %}
             </div>
         </div>
         <div class="summary-list">

@@ -21,11 +21,13 @@
             {% for item in items %}
                 <article class="cart-item-card">
                     <div class="cart-item-media">
-                        {% if item.product.image_url %}
-                            <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">
-                        {% else %}
-                            <span class="store-product-placeholder">Foto em breve</span>
-                        {% endif %}
+                        {% with img=item.product.gallery_images.0 %}
+                            {% if img %}
+                                <img src="{{ img }}" alt="{{ item.product.name }}">
+                            {% else %}
+                                <span class="store-product-placeholder">Foto em breve</span>
+                            {% endif %}
+                        {% endwith %}
                     </div>
                     <div class="cart-item-body">
                         <h2>{{ item.product.name }}</h2>
