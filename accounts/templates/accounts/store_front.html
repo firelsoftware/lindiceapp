@@ -1,6 +1,53 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
+<div class="store-search-bar">
+    <button class="store-search-toggle" type="button" data-search-toggle aria-label="Buscar produto" aria-expanded="{% if query %}true{% else %}false{% endif %}">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+    </button>
+</div>
+
+<form class="toolbar store-toolbar" method="get" data-search-form {% if not query %}hidden{% endif %}>
+    <div class="store-toolbar-grid">
+        <div class="toolbar-field store-toolbar-search">
+            <label for="q" class="sr-only">Buscar produto</label>
+            <span class="store-search-pill">
+                <svg class="store-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+                <input id="q" name="q" value="{{ query }}" placeholder="Buscar produto">
+            </span>
+        </div>
+        {% if selected_category %}<input type="hidden" name="categoria" value="{{ selected_category }}">{% endif %}
+        <div class="store-toolbar-inline">
+            <div class="toolbar-field store-toolbar-size">
+                <label for="grupo-tamanho">Numeracao</label>
+                <select id="grupo-tamanho" name="grupo_tamanho">
+                    <option value="" {% if not size_group %}selected{% endif %}>Adulto ou infantil</option>
+                    <option value="adult" {% if size_group == "adult" %}selected{% endif %}>Adulto</option>
+                    <option value="child" {% if size_group == "child" %}selected{% endif %}>Infantil</option>
+                </select>
+            </div>
+            <div class="toolbar-field store-toolbar-size">
+                <label for="tamanho">Tamanho</label>
+                <select id="tamanho" name="tamanho">
+                    <option value="" {% if not size %}selected{% endif %}>Selecione</option>
+                </select>
+            </div>
+            <div class="store-toolbar-actions">
+                <a class="button button-secondary" href="{% url 'store_front' %}">Limpar</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% if categories %}
+    <nav class="store-categories" aria-label="Categorias">
+        <a class="store-category-chip{% if not selected_category %} active{% endif %}" href="{% url 'store_front' %}">Tudo</a>
+        {% for cat in categories %}
+            <a class="store-category-chip{% if cat == selected_category %} active{% endif %}" href="?categoria={{ cat|urlencode }}">{{ cat }}</a>
+        {% endfor %}
+    </nav>
+{% endif %}
+
 <div class="storefront-showcase-grid">
     {% for section in showcase_sections %}
         <section class="storefront-showcase-panel">
@@ -66,7 +113,6 @@
     </section>
 {% endif %}
 
-
 {% if reserved_sales %}
     <h2>Separado para voce</h2>
     <div class="reserved-sales-grid">
@@ -100,47 +146,6 @@
         {% endfor %}
     </div>
 {% endif %}
-
-{% if categories %}
-    <nav class="store-categories" aria-label="Categorias">
-        <a class="store-category-chip{% if not selected_category %} active{% endif %}" href="{% url 'store_front' %}">Tudo</a>
-        {% for cat in categories %}
-            <a class="store-category-chip{% if cat == selected_category %} active{% endif %}" href="?categoria={{ cat|urlencode }}">{{ cat }}</a>
-        {% endfor %}
-    </nav>
-{% endif %}
-
-<form class="toolbar store-toolbar" method="get">
-    <div class="store-toolbar-grid">
-        <div class="toolbar-field store-toolbar-search">
-            <label for="q" class="sr-only">Buscar produto</label>
-            <span class="store-search-pill">
-                <svg class="store-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
-                <input id="q" name="q" value="{{ query }}" placeholder="Buscar produto">
-            </span>
-        </div>
-        {% if selected_category %}<input type="hidden" name="categoria" value="{{ selected_category }}">{% endif %}
-        <div class="store-toolbar-inline">
-            <div class="toolbar-field store-toolbar-size">
-                <label for="grupo-tamanho">Numeracao</label>
-                <select id="grupo-tamanho" name="grupo_tamanho">
-                    <option value="" {% if not size_group %}selected{% endif %}>Adulto ou infantil</option>
-                    <option value="adult" {% if size_group == "adult" %}selected{% endif %}>Adulto</option>
-                    <option value="child" {% if size_group == "child" %}selected{% endif %}>Infantil</option>
-                </select>
-            </div>
-            <div class="toolbar-field store-toolbar-size">
-                <label for="tamanho">Tamanho</label>
-                <select id="tamanho" name="tamanho">
-                    <option value="" {% if not size %}selected{% endif %}>Selecione</option>
-                </select>
-            </div>
-            <div class="store-toolbar-actions">
-                <a class="button button-secondary" href="{% url 'store_front' %}">Limpar</a>
-            </div>
-        </div>
-    </div>
-</form>
 
 <div class="store-grid">
     {% for product in products %}
@@ -223,6 +228,28 @@
 {% endblock %}
 
 {% block extra_scripts %}
+(function () {
+    var toggle = document.querySelector("[data-search-toggle]");
+    var form = document.querySelector("[data-search-form]");
+    if (!toggle || !form) {
+        return;
+    }
+    toggle.addEventListener("click", function () {
+        var willShow = form.hasAttribute("hidden");
+        if (willShow) {
+            form.removeAttribute("hidden");
+            toggle.setAttribute("aria-expanded", "true");
+            var input = form.querySelector("#q");
+            if (input) {
+                input.focus();
+            }
+        } else {
+            form.setAttribute("hidden", "");
+            toggle.setAttribute("aria-expanded", "false");
+        }
+    });
+})();
+
 (function () {
     document.querySelectorAll("[data-carousel]").forEach(function (carousel) {
         var prev = carousel.querySelector("[data-carousel-prev]");
