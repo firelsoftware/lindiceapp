@@ -1,13 +1,7 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<div class="store-search-bar">
-    <button class="store-search-toggle" type="button" data-search-toggle aria-label="Buscar produto" aria-expanded="{% if query %}true{% else %}false{% endif %}">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
-    </button>
-</div>
-
-<form class="toolbar store-toolbar" method="get" data-search-form {% if not query %}hidden{% endif %}>
+<form class="toolbar store-toolbar" method="get">
     <div class="store-toolbar-grid">
         <div class="toolbar-field store-toolbar-search">
             <label for="q" class="sr-only">Buscar produto</label>
@@ -17,6 +11,7 @@
             </span>
         </div>
         {% if selected_category %}<input type="hidden" name="categoria" value="{{ selected_category }}">{% endif %}
+        {% if selected_category or size_group or size %}
         <div class="store-toolbar-inline">
             <div class="toolbar-field store-toolbar-size">
                 <label for="grupo-tamanho">Numeracao</label>
@@ -36,6 +31,7 @@
                 <a class="button button-secondary" href="{% url 'store_front' %}">Limpar</a>
             </div>
         </div>
+        {% endif %}
     </div>
 </form>
 
@@ -228,28 +224,6 @@
 {% endblock %}
 
 {% block extra_scripts %}
-(function () {
-    var toggle = document.querySelector("[data-search-toggle]");
-    var form = document.querySelector("[data-search-form]");
-    if (!toggle || !form) {
-        return;
-    }
-    toggle.addEventListener("click", function () {
-        var willShow = form.hasAttribute("hidden");
-        if (willShow) {
-            form.removeAttribute("hidden");
-            toggle.setAttribute("aria-expanded", "true");
-            var input = form.querySelector("#q");
-            if (input) {
-                input.focus();
-            }
-        } else {
-            form.setAttribute("hidden", "");
-            toggle.setAttribute("aria-expanded", "false");
-        }
-    });
-})();
-
 (function () {
     document.querySelectorAll("[data-carousel]").forEach(function (carousel) {
         var prev = carousel.querySelector("[data-carousel-prev]");
