@@ -1261,35 +1261,42 @@
         .store-categories {
             display: flex;
             flex-wrap: nowrap;
-            gap: 8px;
-            margin-top: 16px;
-            padding-bottom: 6px;
+            gap: 22px;
+            margin: 0 0 16px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--line);
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
         }
 
         .store-category-chip {
             flex: 0 0 auto;
-            padding: 8px 14px;
-            border-radius: 999px;
-            border: 1px solid var(--border, #e2e6ee);
-            background: #fff;
-            color: var(--ink);
-            font-size: 14px;
+            position: relative;
+            padding: 8px 2px;
+            color: var(--muted);
+            font-size: 15px;
             font-weight: 600;
             text-decoration: none;
             white-space: nowrap;
         }
 
         .store-category-chip:hover {
-            border-color: var(--brand-purple);
             color: var(--brand-purple);
         }
 
         .store-category-chip.active {
+            color: var(--brand-purple);
+        }
+
+        .store-category-chip.active::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -5px;
+            height: 3px;
+            border-radius: 3px 3px 0 0;
             background: var(--brand-purple);
-            border-color: var(--brand-purple);
-            color: #fff;
         }
 
         .store-pagination {
