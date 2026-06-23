@@ -15,7 +15,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
-from django.db.models import Case, IntegerField, Q, Sum, Value, When
+from django.db.models import Case, Count, IntegerField, Q, Sum, Value, When
 from django.db.models.deletion import ProtectedError
 from django.http import HttpResponseForbidden, JsonResponse
 from django.core.paginator import Paginator
@@ -869,6 +869,7 @@ def store_front(request):
     )
     reserved_sales = CreditSale.objects.none()
     query = request.GET.get("q", "").strip()
+    category = request.GET.get("categoria", "").strip()
     size_group = request.GET.get("grupo_tamanho", "").strip()
     size = request.GET.get("tamanho", "").strip()
     cart_product_ids = {
@@ -897,6 +898,23 @@ def store_front(request):
             | Q(brand__icontains=query)
             | Q(description__icontains=query)
         )
+
+    category_rows = (
+        SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0)
+        .exclude(category="")
+        .values("category")
+        .annotate(n=Count("id"))
+        .order_by("-n", "category")
+    )
+    categories = [row["category"] for row in category_rows][:16]
+
+    if category and category not in categories:
+        # Permite categoria valida fora do top 16 (digitada via link), senao ignora.
+        if not category_rows.filter(category__iexact=category).exists():
+            category = ""
+
+    if category:
+        products = products.filter(category__iexact=category)
 
     if size:
         products = products.filter(sizes__icontains=size)
@@ -986,6 +1004,8 @@ def store_front(request):
             "base_querystring": base_querystring,
             "showcase_sections": showcase_sections,
             "query": query,
+            "categories": categories,
+            "selected_category": category,
             "size_group": size_group,
             "size": size,
             "child_size_options": child_size_options,

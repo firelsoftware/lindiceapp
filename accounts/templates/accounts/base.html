@@ -1258,6 +1258,40 @@
             margin-top: 22px;
         }
 
+        .store-categories {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 8px;
+            margin-top: 16px;
+            padding-bottom: 6px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .store-category-chip {
+            flex: 0 0 auto;
+            padding: 8px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--border, #e2e6ee);
+            background: #fff;
+            color: var(--ink);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .store-category-chip:hover {
+            border-color: var(--brand-purple);
+            color: var(--brand-purple);
+        }
+
+        .store-category-chip.active {
+            background: var(--brand-purple);
+            border-color: var(--brand-purple);
+            color: #fff;
+        }
+
         .store-pagination {
             display: flex;
             align-items: center;

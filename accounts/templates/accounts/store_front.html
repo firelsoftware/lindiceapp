@@ -107,6 +107,7 @@
             <label for="q">Buscar produto</label>
             <input id="q" name="q" value="{{ query }}" placeholder="Sandalia, tenis, marca">
         </div>
+        {% if selected_category %}<input type="hidden" name="categoria" value="{{ selected_category }}">{% endif %}
         <div class="store-toolbar-inline">
             <div class="toolbar-field store-toolbar-size">
                 <label for="grupo-tamanho">Numeracao</label>
@@ -128,6 +129,15 @@
         </div>
     </div>
 </form>
+
+{% if categories %}
+    <nav class="store-categories" aria-label="Categorias">
+        <a class="store-category-chip{% if not selected_category %} active{% endif %}" href="{% url 'store_front' %}">Todos</a>
+        {% for cat in categories %}
+            <a class="store-category-chip{% if cat == selected_category %} active{% endif %}" href="?categoria={{ cat|urlencode }}">{{ cat }}</a>
+        {% endfor %}
+    </nav>
+{% endif %}
 
 <div class="store-grid">
     {% for product in products %}
