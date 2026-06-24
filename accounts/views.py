@@ -38,6 +38,32 @@ logger = logging.getLogger(__name__)
 STORE_CHILD_SIZES = [str(size) for size in range(14, 33)]
 STORE_ADULT_SIZES = [str(size) for size in range(33, 45)]
 
+# Navegacao da loja em dois niveis: grupo (nivel 1) -> categorias (nivel 2).
+# As categorias sao os valores reais do campo SupplierProduct.category.
+CATEGORY_GROUPS = [
+    ("Calçados", [
+        "Tênis", "Tênis Premium", "Saltos Anabelas Chinelos",
+        "Rasteiras Papetes Flatforms", "Sapato Scarpin",
+        "Ortopedicos Scarpin Mocassim Sapatilha", "Botas",
+        "Botas Femininas", "Sandálias", "Anabela", "Meia Pata",
+        "Sapatilhas", "Numeração Especial",
+    ]),
+    ("Infantil", ["Linha Infantil"]),
+    ("Bolsas", ["Bolsas"]),
+    ("Relógios", ["Relógios"]),
+]
+# Rotulos curtos para as abas de nivel 2.
+CATEGORY_SHORT_LABELS = {
+    "Saltos Anabelas Chinelos": "Saltos",
+    "Rasteiras Papetes Flatforms": "Rasteiras",
+    "Sapato Scarpin": "Scarpin",
+    "Ortopedicos Scarpin Mocassim Sapatilha": "Ortopédicos",
+    "Botas Femininas": "Botas Fem.",
+    "Numeração Especial": "Num. especial",
+}
+# Grupos onde os filtros de numeracao/tamanho fazem sentido.
+FOOTWEAR_GROUPS = {"Calçados", "Infantil"}
+
 # Banners de categoria da Shopee (link de afiliado). Sao redirecionamentos
 # externos por categoria, sem produto/imagem/preco especifico - o cliente
 # sai do site e navega na Shopee, gerando comissao pro parceiro.
@@ -906,6 +932,7 @@ def store_front(request):
     reserved_sales = CreditSale.objects.none()
     query = request.GET.get("q", "").strip()
     category = request.GET.get("categoria", "").strip()
+    group = request.GET.get("grupo", "").strip()
     size_group = request.GET.get("grupo_tamanho", "").strip()
     size = request.GET.get("tamanho", "").strip()
     cart_product_ids = {
@@ -935,22 +962,66 @@ def store_front(request):
             | Q(description__icontains=query)
         )
 
-    category_rows = (
+    # Categorias existentes (com produtos visiveis em estoque).
+    existing_categories = set(
         SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0)
         .exclude(category="")
-        .values("category")
-        .annotate(n=Count("id"))
-        .order_by("-n", "category")
+        .values_list("category", flat=True)
+        .distinct()
     )
-    categories = [row["category"] for row in category_rows][:16]
 
-    if category and category not in categories:
-        # Permite categoria valida fora do top 16 (digitada via link), senao ignora.
-        if not category_rows.filter(category__iexact=category).exists():
-            category = ""
+    # Mapeia cada categoria conhecida ao seu grupo.
+    cat_to_group = {}
+    for group_name, group_cats in CATEGORY_GROUPS:
+        for cat_name in group_cats:
+            cat_to_group[cat_name] = group_name
 
+    # Subcategorias presentes por grupo, na ordem definida; extras (nao mapeadas)
+    # caem em Calçados.
+    group_subcats = {}
+    for group_name, group_cats in CATEGORY_GROUPS:
+        group_subcats[group_name] = [c for c in group_cats if c in existing_categories]
+    extras = sorted(c for c in existing_categories if c not in cat_to_group)
+    group_subcats["Calçados"] = group_subcats.get("Calçados", []) + extras
+
+    # Nivel 1: grupos que tem ao menos uma categoria presente.
+    group_order = [g for g, _ in CATEGORY_GROUPS]
+    groups_present = [g for g in group_order if group_subcats.get(g)]
+
+    # Valida categoria selecionada.
+    if category and category not in existing_categories:
+        category = ""
+
+    # Grupo ativo: derivado da categoria, ou do parametro grupo.
+    if category:
+        active_group = cat_to_group.get(category, "Calçados")
+    elif group in groups_present:
+        active_group = group
+    else:
+        active_group = ""
+
+    # Filtra os produtos.
     if category:
         products = products.filter(category__iexact=category)
+    elif active_group:
+        products = products.filter(category__in=group_subcats.get(active_group, []))
+
+    # Nivel 2: subcategorias do grupo ativo (so quando ha mais de uma).
+    subcategories = []
+    if active_group:
+        subs = group_subcats.get(active_group, [])
+        if len(subs) > 1:
+            subcategories = [
+                {
+                    "value": c,
+                    "label": CATEGORY_SHORT_LABELS.get(c, c),
+                    "active": c == category,
+                }
+                for c in subs
+            ]
+
+    groups = [{"name": g, "active": g == active_group} for g in groups_present]
+    show_size_filters = active_group in FOOTWEAR_GROUPS
 
     if size:
         products = products.filter(sizes__icontains=size)
@@ -1040,8 +1111,11 @@ def store_front(request):
             "base_querystring": base_querystring,
             "showcase_sections": showcase_sections,
             "query": query,
-            "categories": categories,
+            "groups": groups,
+            "subcategories": subcategories,
+            "active_group": active_group,
             "selected_category": category,
+            "show_size_filters": show_size_filters,
             "size_group": size_group,
             "size": size,
             "child_size_options": child_size_options,

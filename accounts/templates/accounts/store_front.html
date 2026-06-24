@@ -10,8 +10,9 @@
                 <input id="q" name="q" value="{{ query }}" placeholder="Buscar produto">
             </span>
         </div>
+        {% if active_group %}<input type="hidden" name="grupo" value="{{ active_group }}">{% endif %}
         {% if selected_category %}<input type="hidden" name="categoria" value="{{ selected_category }}">{% endif %}
-        {% if selected_category or size_group or size %}
+        {% if show_size_filters %}
         <div class="store-toolbar-inline">
             <div class="toolbar-field store-toolbar-size">
                 <label for="grupo-tamanho">Numeracao</label>
@@ -35,11 +36,20 @@
     </div>
 </form>
 
-{% if categories %}
+{% if groups %}
     <nav class="store-categories" aria-label="Categorias">
-        <a class="store-category-chip{% if not selected_category %} active{% endif %}" href="{% url 'store_front' %}">Tudo</a>
-        {% for cat in categories %}
-            <a class="store-category-chip{% if cat == selected_category %} active{% endif %}" href="?categoria={{ cat|urlencode }}">{{ cat }}</a>
+        <a class="store-category-chip{% if not active_group %} active{% endif %}" href="{% url 'store_front' %}">Tudo</a>
+        {% for g in groups %}
+            <a class="store-category-chip{% if g.active %} active{% endif %}" href="?grupo={{ g.name|urlencode }}">{{ g.name }}</a>
+        {% endfor %}
+    </nav>
+{% endif %}
+
+{% if subcategories %}
+    <nav class="store-subcategories" aria-label="Modelos">
+        <a class="store-subcat-chip{% if not selected_category %} active{% endif %}" href="?grupo={{ active_group|urlencode }}">Todos</a>
+        {% for s in subcategories %}
+            <a class="store-subcat-chip{% if s.active %} active{% endif %}" href="?grupo={{ active_group|urlencode }}&amp;categoria={{ s.value|urlencode }}">{{ s.label }}</a>
         {% endfor %}
     </nav>
 {% endif %}

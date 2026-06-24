@@ -905,7 +905,7 @@ class StoreFlowTests(TestCase):
 
         self.assertLess(grid_content.index("Tenis Branco"), grid_content.index("Sandalia Azul"))
 
-    def test_store_front_shows_showcase_carousels_before_filters(self):
+    def test_store_front_shows_search_and_categories_before_carousels(self):
         self.create_supplier_product(name="Sandalia Azul", category="Sandalia")
         self.create_supplier_product(
             supplier_code="RC002",
@@ -932,17 +932,21 @@ class StoreFlowTests(TestCase):
         response = self.client.get("/loja/")
         content = response.content.decode()
 
-        # O carrossel de destaques (imagens aleatorias do site) aparece antes dos filtros.
+        # A busca aparece no topo, antes do carrossel de destaques.
         self.assertContains(response, "Destaques")
-        self.assertLess(content.index("Destaques"), content.index("Buscar produto"))
+        self.assertLess(content.index("Buscar produto"), content.index("Destaques"))
         # Produtos com imagem entram no carrossel de destaques.
         self.assertContains(response, "Bota Ankle Boot Capa Cano Curto")
 
-    def test_store_front_uses_live_search_with_size_group_selector(self):
-        self.create_supplier_product()
+    def test_store_front_shows_size_filters_only_inside_footwear_group(self):
+        self.create_supplier_product(category="Tênis")
 
+        # Sem grupo selecionado, os filtros de tamanho ficam ocultos.
         response = self.client.get("/loja/")
+        self.assertNotContains(response, "Numeracao")
 
+        # Ao entrar no grupo Calçados, os filtros aparecem.
+        response = self.client.get("/loja/?grupo=Calçados")
         self.assertContains(response, "Numeracao")
         self.assertContains(response, ">Adulto<", html=False)
         self.assertContains(response, ">Infantil<", html=False)

@@ -1299,6 +1299,40 @@
             background: var(--brand-purple);
         }
 
+        .store-subcategories {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 8px;
+            margin: 0 0 16px;
+            padding-bottom: 4px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .store-subcat-chip {
+            flex: 0 0 auto;
+            padding: 7px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: #ffffff;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .store-subcat-chip:hover {
+            border-color: var(--brand-purple);
+            color: var(--brand-purple);
+        }
+
+        .store-subcat-chip.active {
+            background: var(--brand-purple);
+            border-color: var(--brand-purple);
+            color: #ffffff;
+        }
+
         .store-pagination {
             display: flex;
             align-items: center;
