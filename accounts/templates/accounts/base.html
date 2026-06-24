@@ -2423,41 +2423,90 @@
             font-size: 18px;
         }
 
-        .shopee-offers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
+        .shopee-carousel {
+            position: relative;
+            height: 130px;
             margin-top: 18px;
-            text-align: left;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 24px rgba(238, 77, 45, 0.18);
         }
 
-        .shopee-offer-card {
+        .shopee-carousel-track {
+            position: relative;
+            height: 100%;
+        }
+
+        .shopee-carousel-slide {
+            position: absolute;
+            inset: 0;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             gap: 6px;
-            padding: 14px 16px;
-            border: 1px solid var(--line);
-            border-radius: 12px;
+            padding: 20px 28px;
+            text-align: left;
             text-decoration: none;
-            color: inherit;
-            background: var(--surface, #fff);
-            transition: border-color .15s, transform .15s;
+            color: #ffffff;
+            background: linear-gradient(135deg, #ee4d2d, #f53d2d);
+            pointer-events: none;
+            transform: translateX(100%);
+            transition: transform 220ms ease;
         }
 
-        .shopee-offer-card:hover {
-            border-color: #ee4d2d;
-            transform: translateY(-2px);
+        .shopee-carousel-slide.active {
+            pointer-events: auto;
+            transform: translateX(0);
         }
 
-        .shopee-offer-name {
-            font-size: 14px;
+        .shopee-slide-badge {
+            align-self: flex-start;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 3px 10px;
+            border-radius: 999px;
+        }
+
+        .shopee-slide-name {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .shopee-slide-cta {
+            font-size: 13px;
             font-weight: 700;
+            text-decoration: underline;
         }
 
-        .shopee-offer-cta {
-            font-size: 12px;
-            font-weight: 700;
+        .shopee-carousel-nav {
+            width: 36px;
+            min-width: 36px;
+            height: 36px;
+            min-height: 36px;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.85);
             color: #ee4d2d;
+            font-size: 20px;
+            line-height: 1;
+            position: absolute;
+            top: 50%;
+            z-index: 4;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        .shopee-carousel-prev {
+            left: 10px;
+        }
+
+        .shopee-carousel-next {
+            right: 10px;
         }
 
         .boticario-partner-button {

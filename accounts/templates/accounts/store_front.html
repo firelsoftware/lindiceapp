@@ -225,14 +225,19 @@
 {% if shopee_category_offers %}
     <section class="shopee-offers-panel" aria-label="Ofertas Shopee">
         <h2 class="shopee-offers-title">Ofertas Shopee</h2>
-        <p class="summary-caption">Ao clicar, voce sai do site e vai pra Shopee.</p>
-        <div class="shopee-offers-grid">
-            {% for offer in shopee_category_offers %}
-            <a class="shopee-offer-card" href="{{ offer.url }}" target="_blank" rel="noopener sponsored">
-                <span class="shopee-offer-name">{{ offer.name }}</span>
-                <span class="shopee-offer-cta">Ver na Shopee ↗</span>
-            </a>
-            {% endfor %}
+        <p class="summary-caption">Aproveite descontos por categoria. Ao clicar, voce vai pra Shopee.</p>
+        <div class="shopee-carousel" data-carousel>
+            <div class="shopee-carousel-track" data-carousel-track>
+                {% for offer in shopee_category_offers %}
+                <a class="shopee-carousel-slide{% if forloop.first %} active{% endif %}" data-carousel-slide href="{{ offer.url }}" target="_blank" rel="noopener sponsored">
+                    <span class="shopee-slide-badge">Shopee</span>
+                    <span class="shopee-slide-name">{{ offer.name }}</span>
+                    <span class="shopee-slide-cta">Aproveitar agora ↗</span>
+                </a>
+                {% endfor %}
+            </div>
+            <button class="shopee-carousel-nav shopee-carousel-prev" type="button" aria-label="Anterior" data-carousel-prev>&lsaquo;</button>
+            <button class="shopee-carousel-nav shopee-carousel-next" type="button" aria-label="Proximo" data-carousel-next>&rsaquo;</button>
         </div>
     </section>
 {% endif %}
