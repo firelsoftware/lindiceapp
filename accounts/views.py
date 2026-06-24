@@ -37,6 +37,42 @@ from .utils import generate_phone_code
 logger = logging.getLogger(__name__)
 STORE_CHILD_SIZES = [str(size) for size in range(14, 33)]
 STORE_ADULT_SIZES = [str(size) for size in range(33, 45)]
+
+# Banners de categoria da Shopee (link de afiliado). Sao redirecionamentos
+# externos por categoria, sem produto/imagem/preco especifico - o cliente
+# sai do site e navega na Shopee, gerando comissao pro parceiro.
+SHOPEE_CATEGORY_OFFERS = [
+    {"name": "Calçados Femininos", "url": "https://s.shopee.com.br/7VEGw5hVWY"},
+    {"name": "Calçados Masculinos", "url": "https://s.shopee.com.br/7AbQXTimCO"},
+    {"name": "Moda Infantil", "url": "https://s.shopee.com.br/6AitLdmaEQ"},
+    {"name": "Roupas Femininas", "url": "https://s.shopee.com.br/7pr7KhgEqa"},
+    {"name": "Roupas Masculinas", "url": "https://s.shopee.com.br/8fQEKEd49f"},
+    {"name": "Bolsas Femininas", "url": "https://s.shopee.com.br/6ff9wYkgDL"},
+    {"name": "Bolsas Masculinas", "url": "https://s.shopee.com.br/7Kuqjmi8rX"},
+    {"name": "Acessórios de Moda", "url": "https://s.shopee.com.br/9034iqbnTh"},
+    {"name": "Relógios", "url": "https://s.shopee.com.br/5q62x1nquG"},
+    {"name": "Beleza", "url": "https://s.shopee.com.br/5L9mM6pkvD"},
+    {"name": "Saúde", "url": "https://s.shopee.com.br/9AMUv9bA8i"},
+    {"name": "Mamãe e Bebê", "url": "https://s.shopee.com.br/6L2JXwlwtR"},
+    {"name": "Pets", "url": "https://s.shopee.com.br/6VLjkFlJYS"},
+    {"name": "Celulares e Gadgets", "url": "https://s.shopee.com.br/70I0LAjPXN"},
+    {"name": "Informática e Acessórios", "url": "https://s.shopee.com.br/80AXX0fbVT"},
+    {"name": "Áudio", "url": "https://s.shopee.com.br/5fmckioUFF"},
+    {"name": "Câmeras e Drones", "url": "https://s.shopee.com.br/9UzLJlZtSc"},
+    {"name": "Games e Consoles", "url": "https://s.shopee.com.br/60PT9KnDZP"},
+    {"name": "Eletrodomésticos", "url": "https://s.shopee.com.br/8pjeWXcQog"},
+    {"name": "Casa e Construção", "url": "https://s.shopee.com.br/9Kfv7SaWnb"},
+    {"name": "Esportes e Lazer", "url": "https://s.shopee.com.br/AUrsVbW5Qq"},
+    {"name": "Brinquedos e Hobbies", "url": "https://s.shopee.com.br/AAF26zXM6o"},
+    {"name": "Papelaria", "url": "https://s.shopee.com.br/AKYSJIWilp"},
+    {"name": "Livros e Revistas", "url": "https://s.shopee.com.br/8ATxjJeyAU"},
+    {"name": "Automóveis", "url": "https://s.shopee.com.br/9zvbugXzRn"},
+    {"name": "Motos", "url": "https://s.shopee.com.br/8V6o7vdhUW"},
+    {"name": "Viagem e Bagagem", "url": "https://s.shopee.com.br/6pya8rk2sM"},
+    {"name": "Passagens, Vouchers e Serviços", "url": "https://s.shopee.com.br/8KnNvceKpV"},
+    {"name": "Alimentos e Bebidas", "url": "https://s.shopee.com.br/5VTCYPp7aE"},
+    {"name": "Delivery de Comida", "url": "https://s.shopee.com.br/7fXh8OgsBZ"},
+]
 PARTNER_SALES_STATUSES = (
     StoreOrder.PAID,
     StoreOrder.SUPPLIER_ORDERED,
@@ -1017,6 +1053,7 @@ def store_front(request):
             "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
             "boticario_store_url": settings.BOTICARIO_STORE_URL,
             "consultation_sources": consultation_sources,
+            "shopee_category_offers": SHOPEE_CATEGORY_OFFERS,
         },
     )
 

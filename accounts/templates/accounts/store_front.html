@@ -221,6 +221,21 @@
         <p class="summary-caption">Atendimento desse parceiro por WhatsApp.</p>
     </section>
 {% endif %}
+
+{% if shopee_category_offers %}
+    <section class="shopee-offers-panel" aria-label="Ofertas Shopee">
+        <h2 class="shopee-offers-title">Ofertas Shopee</h2>
+        <p class="summary-caption">Ao clicar, voce sai do site e vai pra Shopee.</p>
+        <div class="shopee-offers-grid">
+            {% for offer in shopee_category_offers %}
+            <a class="shopee-offer-card" href="{{ offer.url }}" target="_blank" rel="noopener sponsored">
+                <span class="shopee-offer-name">{{ offer.name }}</span>
+                <span class="shopee-offer-cta">Ver na Shopee ↗</span>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
 {% endblock %}
 
 {% block extra_scripts %}

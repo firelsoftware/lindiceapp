@@ -2411,6 +2411,55 @@
             color: var(--brand-purple);
         }
 
+        .shopee-offers-panel {
+            margin-top: 46px;
+            padding-top: 22px;
+            border-top: 1px solid var(--line);
+            text-align: center;
+        }
+
+        .shopee-offers-title {
+            margin: 0 0 4px;
+            font-size: 18px;
+        }
+
+        .shopee-offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+            text-align: left;
+        }
+
+        .shopee-offer-card {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 14px 16px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            text-decoration: none;
+            color: inherit;
+            background: var(--surface, #fff);
+            transition: border-color .15s, transform .15s;
+        }
+
+        .shopee-offer-card:hover {
+            border-color: #ee4d2d;
+            transform: translateY(-2px);
+        }
+
+        .shopee-offer-name {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .shopee-offer-cta {
+            font-size: 12px;
+            font-weight: 700;
+            color: #ee4d2d;
+        }
+
         .boticario-partner-button {
             display: inline-flex;
             overflow: hidden;
