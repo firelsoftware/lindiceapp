@@ -21,6 +21,7 @@
     <a class="button" href="{% url 'supplier_products' %}">Produtos do fornecedor</a>
     <a class="button" href="{% url 'store_orders' %}">Pedidos da loja</a>
     <a class="button" href="{% url 'profit_report' %}">Relatorio de lucro</a>
+    {% if google_analytics_id %}<a class="button" href="https://analytics.google.com/" target="_blank" rel="noopener">Visitas do site</a>{% endif %}
     <a class="button" href="{% url 'admin:index' %}">Painel de superusuario</a>
 </p>
 
