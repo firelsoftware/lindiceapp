@@ -56,8 +56,14 @@
             box-sizing: border-box;
         }
 
+        html {
+            overflow-x: hidden;
+        }
+
         body {
             margin: 0;
+            overflow-x: hidden;
+            max-width: 100%;
             font-family: Arial, Helvetica, sans-serif;
             background:
                 linear-gradient(180deg, rgba(77, 99, 183, 0.07), rgba(244, 246, 248, 0) 260px),
@@ -3175,11 +3181,11 @@
             }
 
             main {
-                width: calc(100% - 24px);
+                width: auto;
                 max-width: none;
-                margin: 16px auto;
-                padding: 22px 18px;
-                border-radius: 8px;
+                margin: 12px 8px;
+                padding: 16px 12px;
+                border-radius: 12px;
             }
 
             h1 {
@@ -3277,6 +3283,14 @@
             .storefront-showcase-panel {
                 aspect-ratio: 3 / 4;
                 min-height: 0;
+            }
+
+            .storefront-carousel-media img {
+                inset: 6px;
+                width: calc(100% - 12px);
+                height: calc(100% - 12px);
+                object-fit: cover;
+                border-radius: 8px;
             }
 
             .storefront-carousel-body {
