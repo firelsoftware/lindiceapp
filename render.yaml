@@ -34,6 +34,8 @@ services:
         sync: false
       - key: ANDROID_SHA256_CERT_FINGERPRINTS
         sync: false
+      - key: GOOGLE_ANALYTICS_ID
+        sync: false
       - key: STORE_CONTACT_EMAIL
         value: "lindicecalcados@gmail.com"
       - key: STORE_RESPONSIBLE_NAME

@@ -24,6 +24,12 @@ def store_cart(request):
     }
 
 
+def site_analytics(request):
+    return {
+        "google_analytics_id": settings.GOOGLE_ANALYTICS_ID,
+    }
+
+
 def user_extras(request):
     if not request.user.is_authenticated:
         return {}

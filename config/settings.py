@@ -108,6 +108,7 @@ TEMPLATES = [
                 "accounts.context_processors.notifications",
                 "accounts.context_processors.store_cart",
                 "accounts.context_processors.user_extras",
+                "accounts.context_processors.site_analytics",
             ],
         },
     },
@@ -267,6 +268,9 @@ BOTICARIO_STORE_URL = os.environ.get(
 # Numero de WhatsApp da loja (formato internacional, so digitos) usado no
 # botao "Mais informacoes" dos produtos.
 STORE_WHATSAPP_NUMBER = os.environ.get("STORE_WHATSAPP_NUMBER", "5561995524748")
+# ID de medicao do Google Analytics (GA4), formato "G-XXXXXXXXXX". Quando
+# vazio, o script de analytics nao e carregado.
+GOOGLE_ANALYTICS_ID = os.environ.get("GOOGLE_ANALYTICS_ID", "")
 ANDROID_APP_PACKAGE_ID = os.environ.get("ANDROID_APP_PACKAGE_ID", "")
 ANDROID_SHA256_CERT_FINGERPRINTS = env_list("ANDROID_SHA256_CERT_FINGERPRINTS")
 PHONE_VERIFICATION_REQUIRED = env_bool("PHONE_VERIFICATION_REQUIRED", default=True)
