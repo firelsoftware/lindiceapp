@@ -75,7 +75,7 @@ class User(AbstractUser):
         profile = getattr(self, "profile", None)
 
         if profile is not None:
-            for file_field in ("identity_document", "residence_proof", "profile_photo"):
+            for file_field in ("identity_document", "identity_document_back", "residence_proof", "profile_photo"):
                 field_file = getattr(profile, file_field)
 
                 if field_file:
@@ -91,6 +91,7 @@ class User(AbstractUser):
             profile.phone_verification_attempts = 0
             profile.address = ""
             profile.identity_document = ""
+            profile.identity_document_back = ""
             profile.residence_proof = ""
             profile.profile_photo = ""
             profile.finger_sizes = {}
@@ -138,6 +139,7 @@ class ClientProfile(models.Model):
     phone_verification_attempts = models.PositiveSmallIntegerField(default=0)
     address = models.TextField()
     identity_document = models.FileField(upload_to="identity_documents/", blank=True)
+    identity_document_back = models.FileField(upload_to="identity_documents/", blank=True)
     residence_proof = models.FileField(upload_to="residence_proofs/", blank=True)
     profile_photo = models.FileField(upload_to="profile_photos/", blank=True)
     shoe_size = models.DecimalField(max_digits=4, decimal_places=1, null=True, blank=True)

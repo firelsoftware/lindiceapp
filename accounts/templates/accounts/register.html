@@ -77,15 +77,22 @@
 
         {% if credit_mode %}
         <section class="reg-step" data-reg-step>
-            <h1 class="reg-question">Foto ou PDF do RG</h1>
-            <p class="reg-hint">Frente do documento, legível.</p>
+            <h1 class="reg-question">RG — frente</h1>
+            <p class="reg-hint">Foto nítida da frente do RG, sem reflexo e com todos os dados legíveis. Pode ser imagem ou PDF.</p>
             {{ form.identity_document }}
             {{ form.identity_document.errors }}
         </section>
 
         <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">RG — verso</h1>
+            <p class="reg-hint">Agora a foto do verso (parte de trás) do mesmo RG, também legível.</p>
+            {{ form.identity_document_back }}
+            {{ form.identity_document_back.errors }}
+        </section>
+
+        <section class="reg-step" data-reg-step>
             <h1 class="reg-question">Comprovante de residência</h1>
-            <p class="reg-hint">No nome do cliente.</p>
+            <p class="reg-hint">Conta de luz, água, telefone ou internet dos últimos 3 meses, no nome do cliente.</p>
             {{ form.residence_proof }}
             {{ form.residence_proof.errors }}
         </section>

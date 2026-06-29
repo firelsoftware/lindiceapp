@@ -121,7 +121,14 @@
     {% if profile.identity_document %}
         <p>
             <a class="button button-secondary" href="{{ profile.identity_document.url }}" target="_blank" rel="noopener">
-                Abrir RG do cliente
+                Abrir RG do cliente (frente)
+            </a>
+        </p>
+    {% endif %}
+    {% if profile.identity_document_back %}
+        <p>
+            <a class="button button-secondary" href="{{ profile.identity_document_back.url }}" target="_blank" rel="noopener">
+                Abrir RG do cliente (verso)
             </a>
         </p>
     {% endif %}

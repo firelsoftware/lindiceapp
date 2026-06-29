@@ -59,7 +59,11 @@ class RegisterForm(UserCreationForm):
     phone = forms.CharField(label="Telefone", max_length=20, required=False)
     address = forms.CharField(label="Endereco", widget=forms.Textarea, required=False)
     identity_document = forms.FileField(
-        label="Foto ou PDF do RG",
+        label="Foto ou PDF do RG (frente)",
+        required=False,
+    )
+    identity_document_back = forms.FileField(
+        label="Foto ou PDF do RG (verso)",
         required=False,
     )
     residence_proof = forms.FileField(
@@ -80,6 +84,7 @@ class RegisterForm(UserCreationForm):
             "phone",
             "address",
             "identity_document",
+            "identity_document_back",
             "residence_proof",
         )
 
@@ -94,9 +99,10 @@ class RegisterForm(UserCreationForm):
             self.fields["rg_number"].label = "RG *"
             self.fields["phone"].label = "Telefone *"
             self.fields["address"].label = "Endereco *"
-            self.fields["identity_document"].label = "Foto ou PDF do RG *"
+            self.fields["identity_document"].label = "Foto ou PDF do RG (frente) *"
+            self.fields["identity_document_back"].label = "Foto ou PDF do RG (verso) *"
             self.fields["residence_proof"].label = "Comprovante de residencia no nome do cliente *"
-            for field_name in ("rg_number", "phone", "address", "identity_document", "residence_proof"):
+            for field_name in ("rg_number", "phone", "address", "identity_document", "identity_document_back", "residence_proof"):
                 self.fields[field_name].required = True
 
     def clean_email(self):
@@ -109,6 +115,9 @@ class RegisterForm(UserCreationForm):
 
     def clean_identity_document(self):
         return validate_document_file(self.cleaned_data.get("identity_document"))
+
+    def clean_identity_document_back(self):
+        return validate_document_file(self.cleaned_data.get("identity_document_back"))
 
     def clean_residence_proof(self):
         return validate_document_file(self.cleaned_data.get("residence_proof"))
@@ -155,6 +164,7 @@ class RegisterForm(UserCreationForm):
                 phone=self.cleaned_data.get("phone", ""),
                 address=self.cleaned_data.get("address", ""),
                 identity_document=self.cleaned_data.get("identity_document") or "",
+                identity_document_back=self.cleaned_data.get("identity_document_back") or "",
                 residence_proof=self.cleaned_data.get("residence_proof") or "",
                 registration_status=ClientProfile.PENDING if self.credit_mode else ClientProfile.APPROVED,
             )
