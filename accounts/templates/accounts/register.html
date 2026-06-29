@@ -1,41 +1,173 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-{% if credit_mode %}
-    <h1>Cadastro para crediario</h1>
-    <section class="hero-note">
-        <strong>A loja continua aberta sem login.</strong>
-        <p>Use esta etapa quando quiser solicitar crediario e enviar os dados de analise.</p>
-    </section>
-    <p>Campos com * sao obrigatorios.</p>
-    <ul class="support-points">
-        <li>Informe CPF, RG, telefone e endereco.</li>
-        <li>Anexe foto ou PDF do RG.</li>
-        <li>Anexe comprovante de residencia no nome do cliente.</li>
-    </ul>
-{% else %}
-    <h1>Criar conta para comprar</h1>
-    <section class="hero-note">
-        <strong>Compra comum nao precisa de comprovante nem CPF obrigatorio.</strong>
-        <p>Crie sua conta com nome, como prefere ser chamado, email e senha. Se quiser, informe o CPF agora ou depois: ele facilita localizar suas compras e emitir nota fiscal.</p>
-    </section>
-    <p>Campos com * sao obrigatorios.</p>
-{% endif %}
-<p>Ao enviar seus dados, consulte nossa <a href="{% url 'privacy_policy' %}" target="_blank" rel="noopener">politica de privacidade</a> e os <a href="{% url 'terms_of_use' %}" target="_blank" rel="noopener">termos de uso</a>.</p>
+<div class="reg-wizard" data-reg-wizard>
+    <form method="post" enctype="multipart/form-data" data-reg-form>
+        {% csrf_token %}
+        <input type="hidden" name="intent" value="{% if credit_mode %}credit{% else %}shop{% endif %}">
+        {% if next_url %}<input type="hidden" name="next" value="{{ next_url }}">{% endif %}
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="hidden" name="intent" value="{% if credit_mode %}credit{% else %}shop{% endif %}">
-    {% if next_url %}
-        <input type="hidden" name="next" value="{{ next_url }}">
+        <div class="reg-progress" aria-hidden="true"><span class="reg-progress-bar" data-reg-bar></span></div>
+
+        {% if form.non_field_errors %}
+            <div class="reg-errors">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <section class="reg-step" data-reg-step>
+            <p class="reg-step-eyebrow">{% if credit_mode %}Cadastro para crediário{% else %}Criar conta{% endif %}</p>
+            <h1 class="reg-question">Qual o seu nome completo?</h1>
+            {{ form.full_name }}
+            {{ form.full_name.errors }}
+        </section>
+
+        <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">Como prefere ser chamado(a)?</h1>
+            <p class="reg-hint">É o nome que vamos usar pra falar com você.</p>
+            {{ form.preferred_name }}
+            {{ form.preferred_name.errors }}
+        </section>
+
+        <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">Qual o seu e-mail?</h1>
+            {{ form.email }}
+            {{ form.email.errors }}
+        </section>
+
+        {% if credit_mode %}
+        <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">Seu telefone</h1>
+            <p class="reg-hint">Usamos pra confirmar o cadastro por código.</p>
+            {{ form.phone }}
+            {{ form.phone.errors }}
+        </section>
+        {% endif %}
+
+        <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">Seu CPF{% if not credit_mode %} <span class="reg-optional">(opcional)</span>{% endif %}</h1>
+            <p class="reg-hint">{% if credit_mode %}Necessário para a análise do crediário.{% else %}Facilita localizar suas compras e emitir nota fiscal.{% endif %}</p>
+            {{ form.cpf }}
+            {{ form.cpf.errors }}
+        </section>
+
+        {% if credit_mode %}
+        <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">Seu RG</h1>
+            {{ form.rg_number }}
+            {{ form.rg_number.errors }}
+        </section>
+
+        <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">Seu endereço</h1>
+            {{ form.address }}
+            {{ form.address.errors }}
+        </section>
+        {% endif %}
+
+        <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">Crie uma senha</h1>
+            {{ form.password1 }}
+            {{ form.password1.errors }}
+        </section>
+
+        <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">Confirme a senha</h1>
+            {{ form.password2 }}
+            {{ form.password2.errors }}
+        </section>
+
+        {% if credit_mode %}
+        <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">Foto ou PDF do RG</h1>
+            <p class="reg-hint">Frente do documento, legível.</p>
+            {{ form.identity_document }}
+            {{ form.identity_document.errors }}
+        </section>
+
+        <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">Comprovante de residência</h1>
+            <p class="reg-hint">No nome do cliente.</p>
+            {{ form.residence_proof }}
+            {{ form.residence_proof.errors }}
+        </section>
+        {% endif %}
+
+        <div class="reg-nav">
+            <button type="button" class="button button-secondary" data-reg-back hidden>Voltar</button>
+            <button type="button" class="button reg-advance" data-reg-next>Continuar</button>
+            <button type="submit" class="button reg-advance" data-reg-submit hidden>{% if credit_mode %}Enviar cadastro{% else %}Criar conta{% endif %}</button>
+        </div>
+    </form>
+
+    <p class="reg-foot">Ao continuar, você concorda com a <a href="{% url 'privacy_policy' %}" target="_blank" rel="noopener">política de privacidade</a> e os <a href="{% url 'terms_of_use' %}" target="_blank" rel="noopener">termos de uso</a>.</p>
+    <p class="reg-foot">Já tem cadastro? <a href="{% url 'login' %}{% if next_url %}?next={{ next_url|urlencode }}{% endif %}">Entrar</a></p>
+    {% if not credit_mode %}
+        <p class="reg-foot">Vai pedir crediário? <a href="{% url 'register' %}?intent=credit{% if next_url %}&amp;next={{ next_url|urlencode }}{% endif %}">Cadastro completo</a></p>
     {% endif %}
-    {{ form.as_p }}
-    <button type="submit">{% if credit_mode %}Enviar cadastro para analise{% else %}Criar conta e continuar{% endif %}</button>
-</form>
+    <p class="reg-foot"><a href="{% url 'store_front' %}">Voltar para a loja</a></p>
+</div>
+{% endblock %}
 
-<p><a class="button button-secondary" href="{% url 'store_front' %}">Voltar para a loja publica</a></p>
-{% if not credit_mode %}
-    <p>Vai pedir crediario? <a href="{% url 'register' %}?intent=credit{% if next_url %}&amp;next={{ next_url|urlencode }}{% endif %}">Termine seu cadastro completo</a></p>
-{% endif %}
-<p>Ja tem cadastro? <a href="{% url 'login' %}{% if next_url %}?next={{ next_url|urlencode }}{% endif %}">Entrar</a></p>
+{% block extra_scripts %}
+(function () {
+    var wizard = document.querySelector("[data-reg-wizard]");
+    if (!wizard) { return; }
+    var steps = Array.prototype.slice.call(wizard.querySelectorAll("[data-reg-step]"));
+    var back = wizard.querySelector("[data-reg-back]");
+    var next = wizard.querySelector("[data-reg-next]");
+    var submit = wizard.querySelector("[data-reg-submit]");
+    var bar = wizard.querySelector("[data-reg-bar]");
+    if (!steps.length) { return; }
+
+    wizard.classList.add("js-ready");
+    var index = 0;
+
+    // Se o servidor devolveu erro num campo, comeca naquele passo.
+    for (var i = 0; i < steps.length; i++) {
+        if (steps[i].querySelector(".errorlist")) { index = i; break; }
+    }
+
+    function render() {
+        steps.forEach(function (step, i) {
+            step.classList.toggle("active", i === index);
+        });
+        var isLast = index === steps.length - 1;
+        back.hidden = index === 0;
+        next.hidden = isLast;
+        submit.hidden = !isLast;
+        if (bar) { bar.style.width = ((index + 1) / steps.length * 100) + "%"; }
+        var field = steps[index].querySelector("input, select, textarea");
+        if (field && field.type !== "file") { field.focus(); }
+    }
+
+    function valid(step) {
+        var fields = step.querySelectorAll("input, select, textarea");
+        for (var i = 0; i < fields.length; i++) {
+            if (!fields[i].checkValidity()) {
+                fields[i].reportValidity();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    next.addEventListener("click", function () {
+        if (!valid(steps[index])) { return; }
+        if (index < steps.length - 1) { index++; render(); }
+    });
+
+    back.addEventListener("click", function () {
+        if (index > 0) { index--; render(); }
+    });
+
+    steps.forEach(function (step) {
+        step.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
+                e.preventDefault();
+                if (index < steps.length - 1) { next.click(); }
+            }
+        });
+    });
+
+    render();
+})();
 {% endblock %}

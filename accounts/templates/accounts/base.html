@@ -1656,6 +1656,97 @@
             box-shadow: none;
         }
 
+        .reg-wizard {
+            max-width: 460px;
+            margin: 0 auto;
+        }
+
+        .reg-progress {
+            height: 6px;
+            border-radius: 999px;
+            background: var(--line);
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+
+        .reg-progress-bar {
+            display: block;
+            height: 100%;
+            width: 0;
+            border-radius: 999px;
+            background: var(--brand-purple);
+            transition: width 220ms ease;
+        }
+
+        .reg-wizard.js-ready .reg-step {
+            display: none;
+        }
+
+        .reg-wizard.js-ready .reg-step.active {
+            display: block;
+            animation: reg-fade 220ms ease;
+        }
+
+        @keyframes reg-fade {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reg-step {
+            min-height: 180px;
+        }
+
+        .reg-step-eyebrow {
+            margin: 0 0 6px;
+            color: var(--brand-purple);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .reg-question {
+            margin: 0 0 6px;
+            font-size: 26px;
+            line-height: 1.2;
+        }
+
+        .reg-optional {
+            color: var(--muted);
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .reg-hint {
+            margin: 0 0 16px;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .reg-step input,
+        .reg-step textarea {
+            font-size: 17px;
+            padding: 14px 15px;
+        }
+
+        .reg-nav {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .reg-nav .reg-advance {
+            flex: 1;
+            margin-top: 0;
+        }
+
+        .reg-foot {
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+            text-align: center;
+        }
+
         .store-search-pill {
             position: relative;
             display: block;
