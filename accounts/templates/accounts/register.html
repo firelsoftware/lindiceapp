@@ -33,14 +33,12 @@
             {{ form.email.errors }}
         </section>
 
-        {% if credit_mode %}
         <section class="reg-step" data-reg-step>
-            <h1 class="reg-question">Seu telefone</h1>
-            <p class="reg-hint">Usamos pra confirmar o cadastro por código.</p>
+            <h1 class="reg-question">Telefone / WhatsApp{% if not credit_mode %} <span class="reg-optional">(opcional)</span>{% endif %}</h1>
+            <p class="reg-hint">{% if credit_mode %}Usamos pra confirmar o cadastro por código.{% else %}Pra falarmos com você sobre seus pedidos e novidades.{% endif %}</p>
             {{ form.phone }}
             {{ form.phone.errors }}
         </section>
-        {% endif %}
 
         <section class="reg-step" data-reg-step>
             <h1 class="reg-question">Seu CPF{% if not credit_mode %} <span class="reg-optional">(opcional)</span>{% endif %}</h1>
