@@ -6,6 +6,7 @@
         {% csrf_token %}
         <input type="hidden" name="intent" value="{% if credit_mode %}credit{% else %}shop{% endif %}">
         {% if next_url %}<input type="hidden" name="next" value="{{ next_url }}">{% endif %}
+        {% if ref_code %}<input type="hidden" name="ref" value="{{ ref_code }}">{% endif %}
 
         <div class="reg-progress" aria-hidden="true"><span class="reg-progress-bar" data-reg-bar></span></div>
 

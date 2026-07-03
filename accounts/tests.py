@@ -3004,3 +3004,74 @@ class CashbackTests(TestCase):
         order.mark_paid()
 
         self.assertEqual(cashback_balance(staff), Decimal("0.00"))
+
+
+class ReferralTests(TestCase):
+    def _client_user(self, email, code=None):
+        from accounts.models import get_or_create_referral_code
+        u = User.objects.create_user(email=email, password="Teste12345!", full_name="Fulano " + email, preferred_name="Fulano")
+        ClientProfile.objects.create(
+            user=u,
+            cpf_hash="hash-" + email,
+            cpf_last_digits="0000",
+            phone="61999999999",
+            phone_verified=True,
+            registration_status=ClientProfile.APPROVED,
+        )
+        if code:
+            u.profile.referral_code = code
+            u.profile.save(update_fields=["referral_code"])
+        return u
+
+    def _paid_order(self, customer, total=Decimal("100.00")):
+        code = "RC" + str(SupplierProduct.objects.count() + 1).zfill(4)
+        product = SupplierProduct.objects.create(
+            supplier_code=code, name="Tenis", wholesale_price=Decimal("50.00"),
+            dropshipping_cost=Decimal("55.00"), suggested_sale_price=total,
+            stock_quantity=5, is_active=True, is_visible=True,
+        )
+        order = StoreOrder.objects.create(
+            product=product, customer=customer, product_name="Tenis", supplier_code=code,
+            selected_size="38", customer_name="Fulano", customer_email=customer.email,
+            customer_phone="61999999999", shipping_address="Rua 1", shipping_cost=Decimal("0.00"),
+            unit_price=total, supplier_cost=Decimal("55.00"), total_amount=total, estimated_profit=Decimal("10.00"),
+        )
+        order.mark_paid()
+        return order
+
+    def test_referrer_earns_bonus_on_referred_first_purchase(self):
+        from accounts.models import REFERRAL_BONUS, cashback_balance, CashbackTransaction
+        referrer = self._client_user("ref@exemplo.com", code="ABC123")
+        referred = self._client_user("amigo@exemplo.com")
+        referred.profile.referred_by = referrer
+        referred.profile.save(update_fields=["referred_by"])
+
+        self._paid_order(referred)
+
+        self.assertEqual(referrer.cashback_transactions.filter(kind=CashbackTransaction.REFERRAL).count(), 1)
+        # Bonus (10) + cashback proprio do indicado nao afeta o indicador.
+        self.assertEqual(cashback_balance(referrer), REFERRAL_BONUS)
+
+    def test_referral_bonus_is_awarded_only_once(self):
+        from accounts.models import CashbackTransaction
+        referrer = self._client_user("ref2@exemplo.com", code="XYZ999")
+        referred = self._client_user("amigo2@exemplo.com")
+        referred.profile.referred_by = referrer
+        referred.profile.save(update_fields=["referred_by"])
+
+        self._paid_order(referred, Decimal("100.00"))
+        self._paid_order(referred, Decimal("200.00"))
+
+        self.assertEqual(referrer.cashback_transactions.filter(kind=CashbackTransaction.REFERRAL).count(), 1)
+
+    def test_register_with_ref_links_referrer(self):
+        referrer = self._client_user("dono@exemplo.com", code="LINK55")
+        data = {
+            "full_name": "Novo Cliente", "preferred_name": "Novo",
+            "email": "novo@exemplo.com", "password1": "Teste12345!", "password2": "Teste12345!",
+            "intent": "shop", "ref": "LINK55",
+        }
+        resp = self.client.post("/cadastro/", data=data)
+        self.assertEqual(resp.status_code, 302)
+        novo = User.objects.get(email="novo@exemplo.com")
+        self.assertEqual(novo.profile.referred_by_id, referrer.pk)

@@ -27,7 +27,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
-from .models import CASHBACK_PERCENT, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .models import CASHBACK_PERCENT, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, REFERRAL_BONUS, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, verify_webhook_signature
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
@@ -1644,6 +1644,7 @@ def mercado_pago_webhook(request):
 def register(request):
     credit_mode = (request.POST.get("intent") or request.GET.get("intent") or "").strip() == "credit"
     next_url = safe_next_url(request, request.POST.get("next") or request.GET.get("next"))
+    ref_code = (request.POST.get("ref") or request.GET.get("ref") or "").strip()
 
     if request.method == "POST":
         form = RegisterForm(request.POST, request.FILES, credit_mode=credit_mode)
@@ -1662,11 +1663,15 @@ def register(request):
                 return render(
                     request,
                     "accounts/register.html",
-                    {"form": form, "credit_mode": credit_mode, "next_url": next_url},
+                    {"form": form, "credit_mode": credit_mode, "next_url": next_url, "ref_code": ref_code},
                     status=500,
                 )
 
             profile = user.profile
+            referrer = resolve_referrer(ref_code)
+            if referrer and referrer.pk != user.pk:
+                profile.referred_by = referrer
+                profile.save(update_fields=["referred_by"])
             if credit_mode and settings.PHONE_VERIFICATION_REQUIRED and profile.phone:
                 profile.phone_verification_code = generate_phone_code()
                 profile.phone_verification_sent_at = timezone.now()
@@ -1763,6 +1768,8 @@ def dashboard(request):
         return render(request, "accounts/registration_pending.html", {"profile": profile})
 
     purchase_groups = build_purchase_groups(request.user)
+    referral_code = get_or_create_referral_code(request.user)
+    referral_link = request.build_absolute_uri(f"{resolve_url('register')}?ref={referral_code}") if referral_code else ""
     return render(
         request,
         "accounts/dashboard.html",
@@ -1771,6 +1778,10 @@ def dashboard(request):
             "cashback_balance": cashback_balance(request.user),
             "cashback_percent": CASHBACK_PERCENT,
             "cashback_history": request.user.cashback_transactions.all()[:10],
+            "referral_code": referral_code,
+            "referral_link": referral_link,
+            "referral_count": request.user.referrals.count(),
+            "referral_bonus": REFERRAL_BONUS,
         },
     )
 

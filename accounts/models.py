@@ -149,6 +149,9 @@ class ClientProfile(models.Model):
     pre_approved_credit_limit = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     first_purchase_discount_used = models.BooleanField(default=False)
     welcome_discount_expires_at = models.DateField(null=True, blank=True)
+    referral_code = models.CharField(max_length=12, unique=True, null=True, blank=True)
+    referred_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="referrals")
+    referral_bonus_awarded = models.BooleanField(default=False)
     default_max_installments = models.PositiveSmallIntegerField(default=5)
     registration_status = models.CharField(
         max_length=20,
@@ -210,6 +213,8 @@ PIX_DISCOUNT_PERCENT = Decimal("10.00")
 WELCOME_DISCOUNT_PERCENT = Decimal("5.00")
 # Percentual de cashback devolvido ao cliente em cada compra paga.
 CASHBACK_PERCENT = Decimal("5.00")
+# Bonus em cashback dado a quem indica, quando o indicado faz a 1a compra paga.
+REFERRAL_BONUS = Decimal("10.00")
 
 
 def money(value):
@@ -488,6 +493,8 @@ class StoreOrder(models.Model):
         self.paid_at = self.paid_at or timezone.now()
         self.save(update_fields=["status", "mercado_pago_payment_id", "paid_at", "updated_at"])
         award_purchase_cashback(self.customer, self.items_total_amount, store_order=self)
+        if self.customer_id:
+            award_referral_bonus(self.customer)
 
     def mark_payment_failed(self, payment_id=""):
         self.status = self.PAYMENT_FAILED
@@ -514,10 +521,12 @@ class CashbackTransaction(models.Model):
     EARN = "earn"
     REDEEM = "redeem"
     ADJUST = "adjust"
+    REFERRAL = "referral"
     KIND_CHOICES = [
         (EARN, "Ganho"),
         (REDEEM, "Resgate"),
         (ADJUST, "Ajuste"),
+        (REFERRAL, "Indicação"),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cashback_transactions")
@@ -572,6 +581,59 @@ def award_purchase_cashback(user, amount, *, store_order=None, credit_sale=None)
         description=f"Cashback de {CASHBACK_PERCENT:.0f}% da compra",
         store_order=store_order,
         credit_sale=credit_sale,
+    )
+
+
+def get_or_create_referral_code(user):
+    """Codigo de indicacao unico e estavel do usuario."""
+    profile = getattr(user, "profile", None)
+    if profile is None:
+        return ""
+    if profile.referral_code:
+        return profile.referral_code
+
+    import secrets
+
+    alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+    for _ in range(10):
+        code = "".join(secrets.choice(alphabet) for _ in range(6))
+        if not ClientProfile.objects.filter(referral_code=code).exists():
+            profile.referral_code = code
+            profile.save(update_fields=["referral_code"])
+            return code
+    return ""
+
+
+def resolve_referrer(code):
+    """Devolve o usuario dono do codigo de indicacao, ou None."""
+    code = (code or "").strip().upper()
+    if not code:
+        return None
+    profile = ClientProfile.objects.filter(referral_code=code).select_related("user").first()
+    return profile.user if profile else None
+
+
+def award_referral_bonus(referred_user):
+    """Credita o bonus ao indicador na 1a compra paga do indicado (idempotente)."""
+    profile = getattr(referred_user, "profile", None)
+    if profile is None or profile.referral_bonus_awarded or not profile.referred_by_id:
+        return None
+
+    referrer = profile.referred_by
+    if referrer is None or referrer.pk == referred_user.pk or getattr(referrer, "is_staff", False):
+        profile.referral_bonus_awarded = True
+        profile.save(update_fields=["referral_bonus_awarded"])
+        return None
+
+    profile.referral_bonus_awarded = True
+    profile.save(update_fields=["referral_bonus_awarded"])
+
+    referred_name = getattr(referred_user, "preferred_name", "") or getattr(referred_user, "full_name", "") or "seu indicado"
+    return CashbackTransaction.objects.create(
+        user=referrer,
+        kind=CashbackTransaction.REFERRAL,
+        amount=REFERRAL_BONUS,
+        description=f"Bônus por indicar {referred_name}",
     )
 
 
@@ -877,6 +939,8 @@ class CreditSale(models.Model):
         self.mercado_pago_payment_id = payment_id or self.mercado_pago_payment_id
         self.save(update_fields=["payment_status", "mercado_pago_payment_id"])
         award_purchase_cashback(self.client, self.total_amount, credit_sale=self)
+        if self.client_id:
+            award_referral_bonus(self.client)
 
     def mark_payment_failed(self, payment_id=""):
         self.payment_status = self.PAYMENT_FAILED
