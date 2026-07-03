@@ -3,6 +3,27 @@
 {% block content %}
 <h1>Minhas compras</h1>
 
+<section class="cashback-card">
+    <div class="cashback-head">
+        <span class="cashback-label">Meu cashback</span>
+        <span class="cashback-value">R$ {{ cashback_balance|floatformat:2 }}</span>
+    </div>
+    <p class="cashback-note">Você ganha {{ cashback_percent|floatformat:0 }}% de volta em cada compra paga, para usar como desconto nas próximas.</p>
+    {% if cashback_history %}
+        <details class="cashback-history">
+            <summary>Ver extrato</summary>
+            <ul>
+                {% for tx in cashback_history %}
+                    <li>
+                        <span>{{ tx.created_at|date:"d/m/Y" }} — {{ tx.description|default:tx.get_kind_display }}</span>
+                        <strong class="{% if tx.amount < 0 %}cashback-out{% else %}cashback-in{% endif %}">{% if tx.amount >= 0 %}+{% endif %}R$ {{ tx.amount|floatformat:2 }}</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+        </details>
+    {% endif %}
+</section>
+
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}

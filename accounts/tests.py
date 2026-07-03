@@ -9,7 +9,7 @@ from django.test import Client, RequestFactory, TestCase, override_settings
 from django.utils import timezone
 
 from .forms import CreditSaleForm, ProductForm, RegisterForm
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, StoreOrder, SupplierCatalogSource, SupplierProduct, User, add_months
+from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, StoreOrder, SupplierCatalogSource, SupplierProduct, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference
 from .store_shipping import shipping_cost_for
@@ -135,7 +135,7 @@ class RegistrationFlowTests(TestCase):
         response = self.client.post("/cadastro/", data=data)
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Foto ou PDF do RG")
+        self.assertContains(response, "RG — frente")
         self.assertEqual(User.objects.count(), 0)
 
     @override_settings(PHONE_VERIFICATION_REQUIRED=False)
@@ -147,6 +147,7 @@ class RegistrationFlowTests(TestCase):
             phone="61999999999",
             address="Rua Teste, 1",
             identity_document=SimpleUploadedFile("rg.pdf", b"pdf", content_type="application/pdf"),
+            identity_document_back=SimpleUploadedFile("rg-verso.pdf", b"pdf", content_type="application/pdf"),
             residence_proof=SimpleUploadedFile("comprovante.pdf", b"pdf", content_type="application/pdf"),
         )
 
@@ -2935,3 +2936,71 @@ class PlayStorePreparationTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertJSONEqual(response.content, [])
+
+
+class CashbackTests(TestCase):
+    def _user(self, email="cash@exemplo.com", staff=False):
+        return User.objects.create_user(
+            email=email,
+            password="Teste12345!",
+            full_name="Cliente Cash",
+            preferred_name="Cash",
+            is_staff=staff,
+        )
+
+    def _order(self, customer, total, **overrides):
+        product = SupplierProduct.objects.create(
+            supplier_code="RC900",
+            name="Tenis Cash",
+            wholesale_price=Decimal("50.00"),
+            dropshipping_cost=Decimal("55.00"),
+            suggested_sale_price=total,
+            stock_quantity=5,
+            is_active=True,
+            is_visible=True,
+        )
+        data = {
+            "product": product,
+            "customer": customer,
+            "product_name": "Tenis Cash",
+            "supplier_code": "RC900",
+            "selected_size": "38",
+            "customer_name": "Cliente Cash",
+            "customer_email": customer.email,
+            "customer_phone": "61999999999",
+            "shipping_address": "Rua 1",
+            "shipping_cost": Decimal("0.00"),
+            "unit_price": total,
+            "supplier_cost": Decimal("55.00"),
+            "total_amount": total,
+            "estimated_profit": Decimal("20.00"),
+        }
+        data.update(overrides)
+        return StoreOrder.objects.create(**data)
+
+    def test_paid_order_credits_cashback(self):
+        user = self._user()
+        order = self._order(user, Decimal("200.00"))
+
+        order.mark_paid()
+
+        expected = (Decimal("200.00") * CASHBACK_PERCENT / Decimal("100")).quantize(Decimal("0.01"))
+        self.assertEqual(cashback_balance(user), expected)
+        self.assertEqual(user.cashback_transactions.filter(kind=CashbackTransaction.EARN).count(), 1)
+
+    def test_cashback_is_not_credited_twice_for_same_order(self):
+        user = self._user()
+        order = self._order(user, Decimal("100.00"))
+
+        order.mark_paid()
+        order.mark_paid()
+
+        self.assertEqual(user.cashback_transactions.count(), 1)
+
+    def test_staff_purchase_does_not_earn_cashback(self):
+        staff = self._user(email="staff@exemplo.com", staff=True)
+        order = self._order(staff, Decimal("100.00"))
+
+        order.mark_paid()
+
+        self.assertEqual(cashback_balance(staff), Decimal("0.00"))

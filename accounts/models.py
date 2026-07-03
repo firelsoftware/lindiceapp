@@ -6,6 +6,7 @@ import re
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models, transaction
+from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
@@ -207,6 +208,8 @@ CARD_INSTALLMENT_INTEREST_RATES = {
 
 PIX_DISCOUNT_PERCENT = Decimal("10.00")
 WELCOME_DISCOUNT_PERCENT = Decimal("5.00")
+# Percentual de cashback devolvido ao cliente em cada compra paga.
+CASHBACK_PERCENT = Decimal("5.00")
 
 
 def money(value):
@@ -484,6 +487,7 @@ class StoreOrder(models.Model):
         self.mercado_pago_payment_id = payment_id or self.mercado_pago_payment_id
         self.paid_at = self.paid_at or timezone.now()
         self.save(update_fields=["status", "mercado_pago_payment_id", "paid_at", "updated_at"])
+        award_purchase_cashback(self.customer, self.items_total_amount, store_order=self)
 
     def mark_payment_failed(self, payment_id=""):
         self.status = self.PAYMENT_FAILED
@@ -504,6 +508,71 @@ class StoreOrder(models.Model):
     @property
     def items_total_amount(self):
         return money(self.total_amount - self.shipping_cost)
+
+
+class CashbackTransaction(models.Model):
+    EARN = "earn"
+    REDEEM = "redeem"
+    ADJUST = "adjust"
+    KIND_CHOICES = [
+        (EARN, "Ganho"),
+        (REDEEM, "Resgate"),
+        (ADJUST, "Ajuste"),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cashback_transactions")
+    kind = models.CharField(max_length=10, choices=KIND_CHOICES, default=EARN)
+    # Positivo para ganho/credito, negativo para resgate/uso.
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.CharField(max_length=180, blank=True)
+    store_order = models.ForeignKey("StoreOrder", on_delete=models.SET_NULL, null=True, blank=True, related_name="cashback_transactions")
+    credit_sale = models.ForeignKey("CreditSale", on_delete=models.SET_NULL, null=True, blank=True, related_name="cashback_transactions")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.user} {self.kind} R$ {self.amount}"
+
+
+def cashback_balance(user):
+    if user is None or not getattr(user, "pk", None):
+        return Decimal("0.00")
+    total = CashbackTransaction.objects.filter(user=user).aggregate(s=Sum("amount"))["s"]
+    return money(total or Decimal("0.00"))
+
+
+def award_purchase_cashback(user, amount, *, store_order=None, credit_sale=None):
+    """Credita cashback (idempotente por pedido/venda) sobre um valor pago."""
+    if user is None or not getattr(user, "pk", None):
+        return None
+    if getattr(user, "is_staff", False):
+        return None
+
+    base = Decimal(amount or 0)
+    if base <= 0:
+        return None
+
+    # Evita creditar duas vezes o mesmo pedido/venda.
+    existing = CashbackTransaction.objects.filter(kind=CashbackTransaction.EARN)
+    if store_order is not None and existing.filter(store_order=store_order).exists():
+        return None
+    if credit_sale is not None and existing.filter(credit_sale=credit_sale).exists():
+        return None
+
+    value = money(base * (CASHBACK_PERCENT / Decimal("100")))
+    if value <= 0:
+        return None
+
+    return CashbackTransaction.objects.create(
+        user=user,
+        kind=CashbackTransaction.EARN,
+        amount=value,
+        description=f"Cashback de {CASHBACK_PERCENT:.0f}% da compra",
+        store_order=store_order,
+        credit_sale=credit_sale,
+    )
 
 
 class CreditSale(models.Model):
@@ -807,6 +876,7 @@ class CreditSale(models.Model):
         self.payment_status = self.PAYMENT_PAID
         self.mercado_pago_payment_id = payment_id or self.mercado_pago_payment_id
         self.save(update_fields=["payment_status", "mercado_pago_payment_id"])
+        award_purchase_cashback(self.client, self.total_amount, credit_sale=self)
 
     def mark_payment_failed(self, payment_id=""):
         self.payment_status = self.PAYMENT_FAILED
