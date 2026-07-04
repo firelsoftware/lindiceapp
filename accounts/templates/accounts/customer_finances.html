@@ -40,6 +40,46 @@
         color: #fff;
     }
 
+    .finance-compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 0 0 16px;
+    }
+
+    .finance-compare-card {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fff;
+    }
+
+    .finance-compare-card.active {
+        border-color: var(--brand-purple);
+        box-shadow: 0 0 0 2px rgba(122, 45, 132, 0.12);
+    }
+
+    .finance-compare-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+    }
+
+    .finance-compare-net {
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .finance-compare-net.pos { color: #256b41; }
+    .finance-compare-net.neg { color: var(--danger); }
+
+    .finance-compare-detail {
+        font-size: 12px;
+        color: var(--muted);
+    }
+
     .finance-summary-grid,
     .finance-section-grid {
         display: grid;
@@ -249,6 +289,20 @@
         <a class="finance-scope-tab{% if finance_scope == 'personal' %} active{% endif %}" href="?tipo=personal">Pessoal</a>
         <a class="finance-scope-tab{% if finance_scope == 'business' %} active{% endif %}" href="?tipo=business">Empresarial</a>
     </nav>
+    {% if finance_comparison %}
+        <div class="finance-compare">
+            <div class="finance-compare-card{% if finance_scope == 'personal' %} active{% endif %}">
+                <span class="finance-compare-label">Pessoal</span>
+                <span class="finance-compare-net {% if finance_comparison.personal.net < 0 %}neg{% else %}pos{% endif %}">R$ {{ finance_comparison.personal.net|floatformat:2 }}</span>
+                <span class="finance-compare-detail">Entra R$ {{ finance_comparison.personal.receivable|floatformat:2 }} · Sai R$ {{ finance_comparison.personal.debt|floatformat:2 }}</span>
+            </div>
+            <div class="finance-compare-card{% if finance_scope == 'business' %} active{% endif %}">
+                <span class="finance-compare-label">Empresarial</span>
+                <span class="finance-compare-net {% if finance_comparison.business.net < 0 %}neg{% else %}pos{% endif %}">R$ {{ finance_comparison.business.net|floatformat:2 }}</span>
+                <span class="finance-compare-detail">Entra R$ {{ finance_comparison.business.receivable|floatformat:2 }} · Sai R$ {{ finance_comparison.business.debt|floatformat:2 }}</span>
+            </div>
+        </div>
+    {% endif %}
     <section class="finance-hero">
         <h2>Finanças — {{ finance_scope_label }}</h2>
         <p><strong>Sua área privada de organização.</strong> Acompanhe o que entra e o que sai, separado entre pessoal e empresarial. Isso não tem relação com as finanças dos clientes.</p>

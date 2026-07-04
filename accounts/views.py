@@ -2016,11 +2016,21 @@ def staff_finances(request):
     else:
         form = PersonalDebtForm()
 
+    def scope_totals(target_scope):
+        entries = request.user.personal_debts.filter(paid=False, scope=target_scope)
+        debts = entries.filter(entry_type=PersonalDebt.TYPE_DEBT).aggregate(s=Sum("amount"))["s"] or Decimal("0.00")
+        receivables = entries.filter(entry_type=PersonalDebt.TYPE_RECEIVABLE).aggregate(s=Sum("amount"))["s"] or Decimal("0.00")
+        return {"debt": money(debts), "receivable": money(receivables), "net": money(receivables - debts)}
+
     context = build_customer_finance_context(request.user, scope=scope, include_store=False)
     context["personal_debt_form"] = form
     context["finance_staff_mode"] = True
     context["finance_scope"] = scope
     context["finance_scope_label"] = "Empresarial" if scope == PersonalDebt.SCOPE_BUSINESS else "Pessoal"
+    context["finance_comparison"] = {
+        "personal": scope_totals(PersonalDebt.SCOPE_PERSONAL),
+        "business": scope_totals(PersonalDebt.SCOPE_BUSINESS),
+    }
     return render(request, "accounts/customer_finances.html", context)
 
 
