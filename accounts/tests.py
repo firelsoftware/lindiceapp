@@ -1770,7 +1770,8 @@ class StoreFlowTests(TestCase):
         response = self.client.get("/gestao/fornecedor/produtos/")
 
         self.assertContains(response, '>Loja</span>', html=False)
-        self.assertNotContains(response, 'Minhas finanças', html=False)
+        # O admin agora tem a propria aba de financas (pessoal/empresarial).
+        self.assertContains(response, 'Minhas finanças', html=False)
         self.assertContains(response, "Línde IA")
 
     def test_client_menu_shows_customer_finances_link(self):
@@ -3129,3 +3130,40 @@ class CashbackRedeemTests(TestCase):
         order.mark_paid()
 
         self.assertEqual(user.cashback_transactions.filter(kind=CashbackTransaction.REDEEM).count(), 1)
+
+
+class StaffFinancesTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_superuser(
+            email="dono@example.com", password="Teste12345!",
+            full_name="Dono Loja", preferred_name="Dono",
+        )
+
+    def test_non_staff_redirected_from_staff_finances(self):
+        client_user = User.objects.create_user(
+            email="cli@example.com", password="Teste12345!", full_name="Cli", preferred_name="Cli")
+        self.client.force_login(client_user)
+        resp = self.client.get("/gestao/minhas-financas/")
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(resp["Location"], "/painel/financas/")
+
+    def test_staff_can_add_personal_and_business_entries_separately(self):
+        from accounts.models import PersonalDebt
+        self.client.force_login(self.staff)
+
+        self.client.post("/gestao/minhas-financas/?tipo=personal", data={
+            "title": "Aluguel casa", "entry_type": PersonalDebt.TYPE_DEBT, "category": PersonalDebt.CATEGORY_RENT,
+            "color": "#7a2d84", "amount": "1500.00", "due_date": "2026-08-10", "notes": "",
+        })
+        self.client.post("/gestao/minhas-financas/?tipo=business", data={
+            "title": "Fornecedor tenis", "entry_type": PersonalDebt.TYPE_DEBT, "category": PersonalDebt.CATEGORY_OTHER,
+            "color": "#7a2d84", "amount": "3000.00", "due_date": "2026-08-15", "notes": "",
+        })
+
+        self.assertEqual(self.staff.personal_debts.filter(scope=PersonalDebt.SCOPE_PERSONAL).count(), 1)
+        self.assertEqual(self.staff.personal_debts.filter(scope=PersonalDebt.SCOPE_BUSINESS).count(), 1)
+
+        # A aba pessoal nao mostra o lancamento empresarial.
+        resp = self.client.get("/gestao/minhas-financas/?tipo=personal")
+        self.assertContains(resp, "Aluguel casa")
+        self.assertNotContains(resp, "Fornecedor tenis")

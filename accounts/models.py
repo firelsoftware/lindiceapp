@@ -1151,9 +1151,17 @@ class PersonalDebt(models.Model):
         (CATEGORY_OTHER, "Outro"),
     )
 
+    SCOPE_PERSONAL = "personal"
+    SCOPE_BUSINESS = "business"
+    SCOPE_CHOICES = (
+        (SCOPE_PERSONAL, "Pessoal"),
+        (SCOPE_BUSINESS, "Empresarial"),
+    )
+
     DEFAULT_COLOR = "#7a2d84"
 
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="personal_debts")
+    scope = models.CharField(max_length=20, choices=SCOPE_CHOICES, default=SCOPE_PERSONAL)
     title = models.CharField(max_length=120)
     entry_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default=TYPE_DEBT)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default=CATEGORY_OTHER)

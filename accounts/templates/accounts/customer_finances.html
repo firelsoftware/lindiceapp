@@ -16,6 +16,30 @@
         margin-bottom: 0;
     }
 
+    .finance-scope-tabs {
+        display: flex;
+        gap: 8px;
+        margin: 0 0 16px;
+    }
+
+    .finance-scope-tab {
+        flex: 1;
+        text-align: center;
+        padding: 10px 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fff;
+        color: var(--muted);
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .finance-scope-tab.active {
+        background: var(--brand-purple);
+        border-color: var(--brand-purple);
+        color: #fff;
+    }
+
     .finance-summary-grid,
     .finance-section-grid {
         display: grid;
@@ -218,18 +242,34 @@
     }
 </style>
 
-<h1>Minhas financas</h1>
+<h1>Minhas finanças</h1>
 
-<section class="finance-hero">
-    <h2>Organizacao financeira pessoal</h2>
-    <p><strong>Somente voce ve esta area no aplicativo.</strong> Ela foi pensada para voce acompanhar suas contas pessoais com clareza, para melhor organizacao financeira.</p>
-    <p>Ative a notificacao no seu celular, porque voce recebe avisos das suas dividas pessoais e tambem nossos lembretes de vencimento.</p>
-{% if next_debt %}
-        <p>Proximo vencimento: <strong>{{ next_debt.due_date|date:"d/m/Y" }}</strong> no valor de <strong>R$ {{ next_debt.amount|floatformat:2 }}</strong>.</p>
-    {% else %}
-        <p>Voce esta sem debitos abertos no momento.</p>
-    {% endif %}
-</section>
+{% if finance_staff_mode %}
+    <nav class="finance-scope-tabs" aria-label="Tipo de finanças">
+        <a class="finance-scope-tab{% if finance_scope == 'personal' %} active{% endif %}" href="?tipo=personal">Pessoal</a>
+        <a class="finance-scope-tab{% if finance_scope == 'business' %} active{% endif %}" href="?tipo=business">Empresarial</a>
+    </nav>
+    <section class="finance-hero">
+        <h2>Finanças — {{ finance_scope_label }}</h2>
+        <p><strong>Sua área privada de organização.</strong> Acompanhe o que entra e o que sai, separado entre pessoal e empresarial. Isso não tem relação com as finanças dos clientes.</p>
+        {% if next_debt %}
+            <p>Próximo vencimento: <strong>{{ next_debt.due_date|date:"d/m/Y" }}</strong> no valor de <strong>R$ {{ next_debt.amount|floatformat:2 }}</strong>.</p>
+        {% else %}
+            <p>Sem lançamentos abertos neste tipo.</p>
+        {% endif %}
+    </section>
+{% else %}
+    <section class="finance-hero">
+        <h2>Organizacao financeira pessoal</h2>
+        <p><strong>Somente voce ve esta area no aplicativo.</strong> Ela foi pensada para voce acompanhar suas contas pessoais com clareza, para melhor organizacao financeira.</p>
+        <p>Ative a notificacao no seu celular, porque voce recebe avisos das suas dividas pessoais e tambem nossos lembretes de vencimento.</p>
+        {% if next_debt %}
+            <p>Proximo vencimento: <strong>{{ next_debt.due_date|date:"d/m/Y" }}</strong> no valor de <strong>R$ {{ next_debt.amount|floatformat:2 }}</strong>.</p>
+        {% else %}
+            <p>Voce esta sem debitos abertos no momento.</p>
+        {% endif %}
+    </section>
+{% endif %}
 
 <section class="info-panel">
     <h2>Criar</h2>

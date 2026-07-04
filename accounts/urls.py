@@ -30,6 +30,7 @@ urlpatterns = [
     path("verificar-telefone/", views.verify_phone, name="verify_phone"),
     path("painel/", views.dashboard, name="dashboard"),
     path("painel/financas/", views.customer_finances, name="customer_finances"),
+    path("gestao/minhas-financas/", views.staff_finances, name="staff_finances"),
     path("painel/relatorio-vendas/", views.partner_sales_report, name="partner_sales_report"),
     path("minha-conta/", views.account, name="account"),
     path("minha-conta/excluir/", views.account_delete, name="account_delete"),

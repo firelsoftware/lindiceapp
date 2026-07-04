@@ -626,13 +626,19 @@ def build_personal_commitment_entry(debt):
     }
 
 
-def build_customer_finance_context(user):
+def build_customer_finance_context(user, scope=None, include_store=True):
     today = timezone.localdate()
     month_start = today.replace(day=1)
     next_month = add_months(month_start, 1)
     month_end = next_month - timedelta(days=1)
-    store_debts = list(user.debts.filter(paid=False, canceled=False).order_by("due_date", "id"))
-    personal_debts = list(user.personal_debts.filter(paid=False).order_by("due_date", "id"))
+    if include_store:
+        store_debts = list(user.debts.filter(paid=False, canceled=False).order_by("due_date", "id"))
+    else:
+        store_debts = []
+    personal_qs = user.personal_debts.filter(paid=False)
+    if scope:
+        personal_qs = personal_qs.filter(scope=scope)
+    personal_debts = list(personal_qs.order_by("due_date", "id"))
     commitments = [build_store_commitment_entry(debt) for debt in store_debts] + [
         build_personal_commitment_entry(debt) for debt in personal_debts
     ]
@@ -1985,6 +1991,36 @@ def customer_finances(request):
 
     context = build_customer_finance_context(request.user)
     context["personal_debt_form"] = form
+    return render(request, "accounts/customer_finances.html", context)
+
+
+@login_required
+def staff_finances(request):
+    if not request.user.is_staff:
+        return redirect("customer_finances")
+
+    scope = request.GET.get("tipo", "").strip()
+    if scope != PersonalDebt.SCOPE_BUSINESS:
+        scope = PersonalDebt.SCOPE_PERSONAL
+
+    if request.method == "POST":
+        form = PersonalDebtForm(request.POST)
+
+        if form.is_valid():
+            entry = form.save(commit=False)
+            entry.client = request.user
+            entry.scope = scope
+            entry.save()
+            messages.success(request, "Lançamento adicionado.")
+            return redirect(f"{resolve_url('staff_finances')}?tipo={scope}")
+    else:
+        form = PersonalDebtForm()
+
+    context = build_customer_finance_context(request.user, scope=scope, include_store=False)
+    context["personal_debt_form"] = form
+    context["finance_staff_mode"] = True
+    context["finance_scope"] = scope
+    context["finance_scope_label"] = "Empresarial" if scope == PersonalDebt.SCOPE_BUSINESS else "Pessoal"
     return render(request, "accounts/customer_finances.html", context)
 
 
