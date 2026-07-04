@@ -56,6 +56,12 @@
                     <strong id="cart-voucher-value">- R$ {{ voucher_discount|floatformat:2 }}</strong>
                 </div>
             {% endif %}
+            {% if cashback_available > 0 %}
+                <div class="summary-row" id="cart-cashback-row" hidden>
+                    <span>Cashback usado</span>
+                    <strong id="cart-cashback-value">- R$ {{ cashback_redeem_preview|floatformat:2 }}</strong>
+                </div>
+            {% endif %}
             <div class="summary-row">
                 <span>Frete</span>
                 <strong id="cart-shipping-value">Escolha a UF</strong>
@@ -124,10 +130,14 @@
 (function () {
     var stateField = document.getElementById("id_shipping_state");
     var voucherField = document.getElementById("id_use_welcome_discount");
+    var cashbackField = document.getElementById("id_use_cashback");
+    var cashbackRow = document.getElementById("cart-cashback-row");
+    var cashbackNode = document.getElementById("cart-cashback-value");
     var shippingNode = document.getElementById("cart-shipping-value");
     var totalNode = document.getElementById("cart-total-value");
     var subtotal = Number("{{ subtotal|floatformat:2 }}".replace(",", "."));
     var voucher = Number("{{ voucher_discount|default:'0.00'|floatformat:2 }}".replace(",", "."));
+    var cashbackMax = Number("{{ cashback_redeem_preview|default:'0.00'|floatformat:2 }}".replace(",", "."));
     var rates = { ...JSON.parse('{{ shipping_rates_json|escapejs }}'), DEFAULT: "40.00" };
 
     function formatMoney(value) {
@@ -145,7 +155,16 @@
     function refreshSummary() {
         var shipping = shippingFor(stateField ? stateField.value : "");
         var discount = voucherField && voucherField.checked ? voucher : 0;
-        var total = subtotal - discount + (shipping || 0);
+        var itemsAfterVoucher = Math.max(subtotal - discount, 0);
+        var cashback = 0;
+        if (cashbackField && cashbackField.checked) {
+            cashback = Math.min(cashbackMax, Math.max(itemsAfterVoucher - 0.5, 0));
+        }
+        if (cashbackRow) {
+            cashbackRow.hidden = cashback <= 0;
+            if (cashbackNode) { cashbackNode.textContent = "- " + formatMoney(cashback); }
+        }
+        var total = itemsAfterVoucher - cashback + (shipping || 0);
 
         shippingNode.textContent = shipping === null ? "Escolha a UF" : formatMoney(shipping);
         totalNode.textContent = formatMoney(total);
@@ -157,6 +176,10 @@
 
     if (voucherField) {
         voucherField.addEventListener("change", refreshSummary);
+    }
+
+    if (cashbackField) {
+        cashbackField.addEventListener("change", refreshSummary);
     }
 
     refreshSummary();

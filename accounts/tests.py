@@ -3075,3 +3075,57 @@ class ReferralTests(TestCase):
         self.assertEqual(resp.status_code, 302)
         novo = User.objects.get(email="novo@exemplo.com")
         self.assertEqual(novo.profile.referred_by_id, referrer.pk)
+
+
+class CashbackRedeemTests(TestCase):
+    def _redeem_order(self, customer, discount, total=Decimal("100.00")):
+        code = "RD" + str(SupplierProduct.objects.count() + 1).zfill(4)
+        product = SupplierProduct.objects.create(
+            supplier_code=code, name="Tenis", wholesale_price=Decimal("50.00"),
+            dropshipping_cost=Decimal("55.00"), suggested_sale_price=total,
+            stock_quantity=5, is_active=True, is_visible=True,
+        )
+        return StoreOrder.objects.create(
+            product=product, customer=customer, product_name="Tenis", supplier_code=code,
+            selected_size="38", customer_name="Fulano", customer_email=customer.email,
+            customer_phone="61999999999", shipping_address="Rua 1", shipping_cost=Decimal("0.00"),
+            unit_price=total, supplier_cost=Decimal("55.00"), total_amount=total,
+            cashback_discount_amount=discount, estimated_profit=Decimal("10.00"),
+        )
+
+    def _user(self, email="rd@exemplo.com", balance=Decimal("0.00")):
+        u = User.objects.create_user(email=email, password="Teste12345!", full_name="Fulano", preferred_name="Fulano")
+        ClientProfile.objects.create(user=u, cpf_hash="h-" + email, cpf_last_digits="0000",
+                                     phone="61999999999", phone_verified=True, registration_status=ClientProfile.APPROVED)
+        if balance > 0:
+            CashbackTransaction.objects.create(user=u, kind=CashbackTransaction.EARN, amount=balance, description="seed")
+        return u
+
+    def test_paying_order_debits_used_cashback(self):
+        user = self._user(balance=Decimal("30.00"))
+        order = self._redeem_order(user, discount=Decimal("20.00"))
+
+        order.mark_paid()
+
+        # Saldo: 30 - 20 (resgate) + 5% de 80 (ganho da compra ja com desconto? total_amount=100 aqui) 
+        redeem = user.cashback_transactions.filter(kind=CashbackTransaction.REDEEM).first()
+        self.assertIsNotNone(redeem)
+        self.assertEqual(redeem.amount, Decimal("-20.00"))
+
+    def test_redeem_is_capped_to_balance(self):
+        user = self._user(balance=Decimal("5.00"))
+        order = self._redeem_order(user, discount=Decimal("20.00"))
+
+        order.mark_paid()
+
+        redeem = user.cashback_transactions.filter(kind=CashbackTransaction.REDEEM).first()
+        self.assertEqual(redeem.amount, Decimal("-5.00"))
+
+    def test_redeem_not_duplicated(self):
+        user = self._user(balance=Decimal("30.00"))
+        order = self._redeem_order(user, discount=Decimal("10.00"))
+
+        order.mark_paid()
+        order.mark_paid()
+
+        self.assertEqual(user.cashback_transactions.filter(kind=CashbackTransaction.REDEEM).count(), 1)

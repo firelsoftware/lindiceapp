@@ -1247,14 +1247,23 @@ def cart_checkout(request):
     subtotal = money(sum((item["total"] for item in items), Decimal("0.00")))
     voucher_discount = welcome_discount_amount(subtotal) if welcome_profile else Decimal("0.00")
 
+    is_client = request.user.is_authenticated and not request.user.is_staff
+    cashback_available = cashback_balance(request.user) if is_client else Decimal("0.00")
+    # Preview: nunca deixa a compra abaixo de R$0,50 em produtos.
+    cashback_redeem_preview = min(cashback_available, max(subtotal - voucher_discount - Decimal("0.50"), Decimal("0.00")))
+    cashback_redeem_preview = money(max(cashback_redeem_preview, Decimal("0.00")))
+
     if request.method == "POST":
         form = CartCheckoutForm(request.POST)
 
         if not welcome_profile:
             form.fields.pop("use_welcome_discount")
+        if cashback_available <= 0:
+            form.fields.pop("use_cashback")
 
         if form.is_valid():
             use_voucher = bool(welcome_profile and form.cleaned_data.get("use_welcome_discount"))
+            use_cashback = bool(cashback_available > 0 and form.cleaned_data.get("use_cashback"))
             checkout_reference = uuid.uuid4()
             shipping_state = form.cleaned_data["shipping_state"]
             shipping_cost = shipping_cost_for(shipping_state)
@@ -1324,6 +1333,26 @@ def cart_checkout(request):
                     )
                     orders.append(order)
 
+                if use_cashback and orders:
+                    items_subtotal = sum((o.items_total_amount for o in orders), Decimal("0.00"))
+                    available_now = cashback_balance(request.user)
+                    redeem = money(min(available_now, max(items_subtotal - Decimal("0.50"), Decimal("0.00"))))
+                    if redeem > 0 and items_subtotal > 0:
+                        remaining = redeem
+                        last_index = len(orders) - 1
+                        for i, o in enumerate(orders):
+                            if i == last_index:
+                                share = remaining
+                            else:
+                                share = money(redeem * (o.items_total_amount / items_subtotal))
+                            share = min(share, remaining, o.items_total_amount)
+                            if share <= 0:
+                                continue
+                            o.cashback_discount_amount = share
+                            o.total_amount = money(o.total_amount - share)
+                            o.save(update_fields=["cashback_discount_amount", "total_amount", "updated_at"])
+                            remaining = money(remaining - share)
+
             request.session["store_cart"] = {}
 
             try:
@@ -1356,6 +1385,8 @@ def cart_checkout(request):
 
         if not welcome_profile:
             form.fields.pop("use_welcome_discount")
+        if cashback_available <= 0:
+            form.fields.pop("use_cashback")
 
     return render(
         request,
@@ -1368,6 +1399,8 @@ def cart_checkout(request):
             "welcome_discount_available": bool(welcome_profile),
             "welcome_discount_percent": WELCOME_DISCOUNT_PERCENT,
             "welcome_discount_expires_at": welcome_profile.welcome_discount_expires_at if welcome_profile else None,
+            "cashback_available": cashback_available,
+            "cashback_redeem_preview": cashback_redeem_preview,
             "shipping_rates": shipping_rates_payload(),
             "shipping_rates_json": json.dumps(shipping_rates_payload()),
         },

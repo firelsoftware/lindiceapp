@@ -463,6 +463,7 @@ class StoreOrder(models.Model):
     supplier_cost = models.DecimalField(max_digits=10, decimal_places=2)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     welcome_discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    cashback_discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     estimated_profit = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default=PENDING_PAYMENT)
     mercado_pago_preference_id = models.CharField(max_length=120, blank=True)
@@ -492,6 +493,7 @@ class StoreOrder(models.Model):
         self.mercado_pago_payment_id = payment_id or self.mercado_pago_payment_id
         self.paid_at = self.paid_at or timezone.now()
         self.save(update_fields=["status", "mercado_pago_payment_id", "paid_at", "updated_at"])
+        redeem_cashback_for_order(self)
         award_purchase_cashback(self.customer, self.items_total_amount, store_order=self)
         if self.customer_id:
             award_referral_bonus(self.customer)
@@ -581,6 +583,30 @@ def award_purchase_cashback(user, amount, *, store_order=None, credit_sale=None)
         description=f"Cashback de {CASHBACK_PERCENT:.0f}% da compra",
         store_order=store_order,
         credit_sale=credit_sale,
+    )
+
+
+def redeem_cashback_for_order(order):
+    """Debita o cashback usado no pedido, na confirmacao do pagamento (idempotente)."""
+    customer = order.customer
+    amount = Decimal(order.cashback_discount_amount or 0)
+    if customer is None or not getattr(customer, "pk", None) or amount <= 0:
+        return None
+    if CashbackTransaction.objects.filter(kind=CashbackTransaction.REDEEM, store_order=order).exists():
+        return None
+
+    # Nunca debita mais do que o saldo disponivel.
+    available = cashback_balance(customer)
+    debit = min(amount, available)
+    if debit <= 0:
+        return None
+
+    return CashbackTransaction.objects.create(
+        user=customer,
+        kind=CashbackTransaction.REDEEM,
+        amount=-money(debit),
+        description="Cashback usado como desconto",
+        store_order=order,
     )
 
 

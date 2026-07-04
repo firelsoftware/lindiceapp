@@ -873,6 +873,7 @@ class CartCheckoutForm(forms.Form):
         widget=forms.RadioSelect,
     )
     use_welcome_discount = forms.BooleanField(label="Usar voucher de 5% nesta compra", required=False)
+    use_cashback = forms.BooleanField(label="Usar meu cashback nesta compra", required=False)
     accept_terms = forms.BooleanField(
         label="Li e aceito os termos de uso e a politica de privacidade",
         required=True,
