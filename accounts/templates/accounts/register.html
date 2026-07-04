@@ -74,6 +74,13 @@
             {{ form.password2.errors }}
         </section>
 
+        <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">Promoções e novidades</h1>
+            <p class="reg-hint">Quer receber nossas ofertas e novidades por e-mail? Você pode cancelar quando quiser.</p>
+            <label class="reg-checkbox">{{ form.marketing_opt_in }} <span>Sim, quero receber promoções por e-mail</span></label>
+            {{ form.marketing_opt_in.errors }}
+        </section>
+
         {% if credit_mode %}
         <section class="reg-step" data-reg-step>
             <h1 class="reg-question">RG — frente</h1>

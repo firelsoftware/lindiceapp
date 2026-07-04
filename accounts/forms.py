@@ -70,6 +70,10 @@ class RegisterForm(UserCreationForm):
         label="Comprovante de residencia no nome do cliente",
         required=False,
     )
+    marketing_opt_in = forms.BooleanField(
+        label="Quero receber promocoes e novidades por email",
+        required=False,
+    )
 
     class Meta:
         model = User
@@ -166,6 +170,7 @@ class RegisterForm(UserCreationForm):
                 identity_document=self.cleaned_data.get("identity_document") or "",
                 identity_document_back=self.cleaned_data.get("identity_document_back") or "",
                 residence_proof=self.cleaned_data.get("residence_proof") or "",
+                marketing_opt_in=self.cleaned_data.get("marketing_opt_in", False),
                 registration_status=ClientProfile.PENDING if self.credit_mode else ClientProfile.APPROVED,
             )
             if self.cleaned_data["cpf"]:
@@ -424,6 +429,14 @@ class ManualDebtForm(forms.ModelForm):
                 self.add_error("due_date", "Para gerar link, o primeiro vencimento deve ficar entre hoje e os proximos 30 dias.")
 
         return cleaned_data
+
+
+class PromoEmailForm(forms.Form):
+    subject = forms.CharField(label="Assunto", max_length=150)
+    message = forms.CharField(
+        label="Mensagem",
+        widget=forms.Textarea(attrs={"rows": 8, "placeholder": "Escreva a promocao ou novidade..."}),
+    )
 
 
 class PersonalDebtForm(forms.ModelForm):

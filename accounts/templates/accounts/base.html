@@ -1815,6 +1815,21 @@
             text-align: center;
         }
 
+        .reg-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .reg-checkbox input {
+            width: 22px;
+            height: 22px;
+            margin: 0;
+            flex: 0 0 auto;
+        }
+
         .cashback-card {
             margin: 0 0 22px;
             padding: 18px 20px;
@@ -3772,6 +3787,14 @@
                         <a class="menu-link{% if active == 'store_orders' %} is-active{% endif %}" href="{% url 'store_orders' %}">
                             <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2h6a1 1 0 0 1 1 1v1H8V3a1 1 0 0 1 1-1z"/><path d="M16 4h2a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h2"/><path d="M9 12l2 2 4-4"/></svg>
                             <span>Pedidos da loja</span>
+                        </a>
+                        <a class="menu-link{% if active == 'staff_promo_email' %} is-active{% endif %}" href="{% url 'staff_promo_email' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                            <span>Enviar promoção</span>
+                        </a>
+                        <a class="menu-link{% if active == 'staff_finances' %} is-active{% endif %}" href="{% url 'staff_finances' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/></svg>
+                            <span>Minhas finanças</span>
                         </a>
                         <a class="menu-link{% if active == 'profit_report' %} is-active{% endif %}" href="{% url 'profit_report' %}">
                             <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>

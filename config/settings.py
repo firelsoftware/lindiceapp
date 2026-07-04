@@ -259,6 +259,21 @@ MERCADO_PAGO_ACCOUNT_URL = os.environ.get("MERCADO_PAGO_ACCOUNT_URL", "")
 CARD_PAYMENT_ENABLED = env_bool("CARD_PAYMENT_ENABLED", default=True)
 PUBLIC_SITE_URL = os.environ.get("PUBLIC_SITE_URL", "")
 STORE_CONTACT_EMAIL = os.environ.get("STORE_CONTACT_EMAIL", "lindicecalcados@gmail.com")
+
+# Envio de e-mail. Se EMAIL_HOST nao estiver configurado, cai no backend de
+# console (nao envia de verdade, so registra), evitando erro em dev/producao
+# ate o provedor ser configurado.
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
+if EMAIL_HOST:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+    EMAIL_USE_TLS = env_bool("EMAIL_USE_TLS", default=True)
+    EMAIL_USE_SSL = env_bool("EMAIL_USE_SSL", default=False)
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", f"Líndice <{STORE_CONTACT_EMAIL}>")
 STORE_RESPONSIBLE_NAME = os.environ.get("STORE_RESPONSIBLE_NAME", "Fabrício Pereira da Silva Alves")
 STORE_PIX_KEY = os.environ.get("STORE_PIX_KEY", "")
 BOTICARIO_STORE_URL = os.environ.get(

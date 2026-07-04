@@ -3167,3 +3167,51 @@ class StaffFinancesTests(TestCase):
         resp = self.client.get("/gestao/minhas-financas/?tipo=personal")
         self.assertContains(resp, "Aluguel casa")
         self.assertNotContains(resp, "Fornecedor tenis")
+
+
+class PromoEmailTests(TestCase):
+    def _client(self, email, opt_in):
+        u = User.objects.create_user(email=email, password="Teste12345!", full_name="Cli " + email, preferred_name="Cli")
+        ClientProfile.objects.create(user=u, cpf_hash="h-" + email, cpf_last_digits="0000",
+                                     phone="61999999999", phone_verified=True,
+                                     registration_status=ClientProfile.APPROVED, marketing_opt_in=opt_in)
+        return u
+
+    def test_register_saves_marketing_opt_in(self):
+        data = {
+            "full_name": "Novo", "preferred_name": "Novo", "email": "novo-promo@example.com",
+            "password1": "Teste12345!", "password2": "Teste12345!", "intent": "shop",
+            "marketing_opt_in": "on",
+        }
+        resp = self.client.post("/cadastro/", data=data)
+        self.assertEqual(resp.status_code, 302)
+        u = User.objects.get(email="novo-promo@example.com")
+        self.assertTrue(u.profile.marketing_opt_in)
+
+    def test_staff_sends_only_to_opted_in(self):
+        from django.core import mail
+        self._client("sim@example.com", True)
+        self._client("nao@example.com", False)
+        staff = User.objects.create_superuser(email="dono2@example.com", password="Teste12345!", full_name="Dono", preferred_name="Dono")
+        self.client.force_login(staff)
+
+        resp = self.client.post("/gestao/promocoes/", data={"subject": "Oferta", "message": "50% off"})
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["sim@example.com"])
+        self.assertIn("descadastrar", mail.outbox[0].body)
+
+    def test_unsubscribe_link_opts_out(self):
+        from django.core import signing
+        u = self._client("quer-sair@example.com", True)
+        token = signing.dumps({"uid": u.pk}, salt="marketing-unsubscribe")
+        resp = self.client.get(f"/descadastrar/{token}/")
+        self.assertEqual(resp.status_code, 200)
+        u.profile.refresh_from_db()
+        self.assertFalse(u.profile.marketing_opt_in)
+
+    def test_non_staff_cannot_send_promo(self):
+        u = self._client("comum@example.com", True)
+        self.client.force_login(u)
+        resp = self.client.get("/gestao/promocoes/")
+        self.assertEqual(resp.status_code, 403)

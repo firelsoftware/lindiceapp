@@ -152,6 +152,7 @@ class ClientProfile(models.Model):
     referral_code = models.CharField(max_length=12, unique=True, null=True, blank=True)
     referred_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="referrals")
     referral_bonus_awarded = models.BooleanField(default=False)
+    marketing_opt_in = models.BooleanField(default=False)
     default_max_installments = models.PositiveSmallIntegerField(default=5)
     registration_status = models.CharField(
         max_length=20,

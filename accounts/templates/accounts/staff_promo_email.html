@@ -1,0 +1,35 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Enviar promoção por e-mail</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <p>Este e-mail será enviado para <strong>{{ recipient_count }}</strong> cliente{{ recipient_count|pluralize }} que aceitou receber promoções. Cada mensagem inclui um link de descadastro automático.</p>
+    {% if recipient_count == 0 %}
+        <p>Ainda não há clientes que aceitaram receber promoções.</p>
+    {% endif %}
+</section>
+
+<form method="post">
+    {% csrf_token %}
+    <p>
+        <label for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
+        {{ form.subject }}
+        {{ form.subject.errors }}
+    </p>
+    <p>
+        <label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+        {{ form.message }}
+        {{ form.message.errors }}
+    </p>
+    <button type="submit"{% if recipient_count == 0 %} disabled{% endif %}>Enviar para {{ recipient_count }} contato{{ recipient_count|pluralize }}</button>
+</form>
+{% endblock %}

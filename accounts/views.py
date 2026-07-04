@@ -18,6 +18,8 @@ from django.db import transaction
 from django.db.models import Case, Count, IntegerField, Q, Sum, Value, When
 from django.db.models.deletion import ProtectedError
 from django.http import HttpResponseForbidden, JsonResponse
+from django.core import signing
+from django.core.mail import EmailMultiAlternatives
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
 from django.urls import reverse
@@ -26,7 +28,7 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
+from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
 from .models import CASHBACK_PERCENT, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, REFERRAL_BONUS, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, verify_webhook_signature
@@ -2032,6 +2034,69 @@ def staff_finances(request):
         "business": scope_totals(PersonalDebt.SCOPE_BUSINESS),
     }
     return render(request, "accounts/customer_finances.html", context)
+
+
+def _unsubscribe_url(request, user):
+    token = signing.dumps({"uid": user.pk}, salt="marketing-unsubscribe")
+    return request.build_absolute_uri(resolve_url("marketing_unsubscribe", token=token))
+
+
+def staff_promo_email(request):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("Area exclusiva da loja.")
+
+    recipients = ClientProfile.objects.filter(
+        marketing_opt_in=True,
+    ).exclude(user__email="").select_related("user")
+    recipient_count = recipients.count()
+
+    if request.method == "POST":
+        form = PromoEmailForm(request.POST)
+
+        if form.is_valid():
+            subject = form.cleaned_data["subject"]
+            body = form.cleaned_data["message"]
+            sent = 0
+            for profile in recipients:
+                user = profile.user
+                unsubscribe = _unsubscribe_url(request, user)
+                greeting = user.preferred_name or user.full_name or "Ola"
+                text = (
+                    f"{greeting},\n\n{body}\n\n"
+                    f"---\nVoce recebe este email porque aceitou receber promocoes da Lindice.\n"
+                    f"Para nao receber mais, acesse: {unsubscribe}"
+                )
+                try:
+                    email = EmailMultiAlternatives(subject, text, settings.DEFAULT_FROM_EMAIL, [user.email])
+                    email.send(fail_silently=False)
+                    sent += 1
+                except Exception:
+                    logger.exception("Falha ao enviar promocao para %s", user.email)
+
+            messages.success(request, f"Promoção enviada para {sent} de {recipient_count} contato(s).")
+            return redirect("staff_promo_email")
+    else:
+        form = PromoEmailForm()
+
+    return render(
+        request,
+        "accounts/staff_promo_email.html",
+        {"form": form, "recipient_count": recipient_count},
+    )
+
+
+def marketing_unsubscribe(request, token):
+    try:
+        data = signing.loads(token, salt="marketing-unsubscribe", max_age=60 * 60 * 24 * 365)
+    except signing.BadSignature:
+        return render(request, "accounts/marketing_unsubscribe.html", {"ok": False})
+
+    profile = ClientProfile.objects.filter(user_id=data.get("uid")).first()
+    if profile:
+        profile.marketing_opt_in = False
+        profile.save(update_fields=["marketing_opt_in"])
+
+    return render(request, "accounts/marketing_unsubscribe.html", {"ok": True})
 
 
 @login_required

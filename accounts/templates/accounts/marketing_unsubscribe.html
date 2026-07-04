@@ -1,0 +1,14 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<div class="reg-wizard">
+    {% if ok %}
+        <h1 class="reg-question">Pronto!</h1>
+        <p class="reg-hint">Você não vai mais receber e-mails de promoções da Líndice. Se mudar de ideia, é só ativar de novo no seu perfil.</p>
+    {% else %}
+        <h1 class="reg-question">Link inválido</h1>
+        <p class="reg-hint">Este link de descadastro não é válido ou expirou. Se precisar, entre em contato com a loja.</p>
+    {% endif %}
+    <p class="reg-foot"><a href="{% url 'store_front' %}">Voltar para a loja</a></p>
+</div>
+{% endblock %}
