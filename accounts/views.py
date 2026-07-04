@@ -1955,8 +1955,11 @@ def data_deletion_info(request):
     )
 
 
-@login_required
 def customer_finances(request):
+    if not request.user.is_authenticated:
+        messages.info(request, "Para organizar suas finanças, cadastre-se e aprenda sobre organização financeira.")
+        return redirect(f"{resolve_url('login')}?next={resolve_url('customer_finances')}")
+
     if request.user.is_staff:
         return HttpResponseForbidden("Area exclusiva do cliente.")
 

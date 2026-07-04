@@ -312,6 +312,50 @@
             font-weight: 800;
         }
 
+        .finances-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 48px;
+            padding: 0 14px;
+            border: 1px solid #cfe9d8;
+            border-radius: 12px;
+            background: #eef8f1;
+            color: #2f7a4d;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            box-shadow: 0 8px 20px rgba(24, 34, 48, 0.05);
+        }
+
+        .finances-tab:hover {
+            border-color: #a9d9bd;
+            color: #256b41;
+        }
+
+        .finances-tab-icon {
+            width: 20px;
+            height: 20px;
+            flex: 0 0 auto;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.7;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @media (max-width: 600px) {
+            .finances-tab {
+                padding: 0 12px;
+                gap: 0;
+            }
+
+            .finances-tab-label {
+                display: none;
+            }
+        }
+
         .topbar-cart {
             position: relative;
             display: inline-grid;
@@ -3629,6 +3673,12 @@
             </a>
 
             <div class="topbar-actions">
+                {% if not request.user.is_staff %}
+                    <a class="finances-tab" href="{% url 'customer_finances' %}" aria-label="Minhas finanças">
+                        <svg class="finances-tab-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2.5"></rect><path d="M3 10h18"></path><circle cx="16.5" cy="14.5" r="1.2"></circle></svg>
+                        <span class="finances-tab-label">Minhas finanças</span>
+                    </a>
+                {% endif %}
                 {% if store_cart_item_count %}
                     <a class="topbar-cart" href="{% url 'cart_detail' %}" aria-label="Abrir carrinho com {{ store_cart_item_count }} item{% if store_cart_item_count != 1 %}s{% endif %}">
                         <svg class="topbar-cart-icon" viewBox="0 0 24 24" aria-hidden="true">

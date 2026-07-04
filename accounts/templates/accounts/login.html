@@ -2,7 +2,14 @@
 
 {% block content %}
 <div class="reg-wizard">
-    {% if request.GET.next %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if request.GET.next and "carrinho" in request.GET.next %}
         <h1 class="reg-question">Finalizar seu carrinho</h1>
         <p class="reg-hint">Falta pouco! Entre na sua conta para concluir a compra.</p>
     {% else %}
