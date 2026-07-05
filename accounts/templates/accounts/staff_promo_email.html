@@ -30,6 +30,9 @@
         {{ form.message }}
         {{ form.message.errors }}
     </p>
-    <button type="submit"{% if recipient_count == 0 %} disabled{% endif %}>Enviar para {{ recipient_count }} contato{{ recipient_count|pluralize }}</button>
+    <div class="promo-actions">
+        <button type="submit"{% if recipient_count == 0 %} disabled{% endif %}>Enviar para {{ recipient_count }} contato{{ recipient_count|pluralize }}</button>
+        <button type="submit" name="action" value="test" class="button button-secondary" formnovalidate>Enviar teste para mim</button>
+    </div>
 </form>
 {% endblock %}

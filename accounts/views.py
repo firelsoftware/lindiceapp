@@ -2053,6 +2053,24 @@ def staff_promo_email(request):
     if request.method == "POST":
         form = PromoEmailForm(request.POST)
 
+        # Teste: envia so para o proprio admin, ignorando a lista/opt-in.
+        if request.POST.get("action") == "test":
+            if request.user.email:
+                try:
+                    EmailMultiAlternatives(
+                        "Teste de envio - Líndice",
+                        "Este é um e-mail de teste. Se você recebeu, a configuração de envio está funcionando.",
+                        settings.DEFAULT_FROM_EMAIL,
+                        [request.user.email],
+                    ).send(fail_silently=False)
+                    messages.success(request, f"E-mail de teste enviado para {request.user.email}.")
+                except Exception as exc:
+                    logger.exception("Falha no e-mail de teste")
+                    messages.error(request, f"Não foi possível enviar o teste: {exc}")
+            else:
+                messages.error(request, "Sua conta não tem e-mail cadastrado.")
+            return redirect("staff_promo_email")
+
         if form.is_valid():
             subject = form.cleaned_data["subject"]
             body = form.cleaned_data["message"]
