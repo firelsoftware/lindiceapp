@@ -1,0 +1,21 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<section class="partner-welcome">
+    <h1>Bem-vinda, {{ partner_name }}. Estamos animados com a parceria 💛</h1>
+    <p>Aqui você acompanha as vendas das suas bolsas e lança novos modelos da marca Ramosê.</p>
+</section>
+
+<div class="partner-actions">
+    <a class="partner-tile" href="{% url 'partner_sales_report' %}">
+        <strong>Relatório de vendas</strong>
+        <span>Faturamento, modelos mais vendidos e crescimento.</span>
+    </a>
+    <a class="partner-tile" href="{% url 'partner_sales_report' %}?scope=brand_only">
+        <strong>Minhas vendas</strong>
+        <span>Vendas das suas bolsas, sem dados dos clientes.</span>
+    </a>
+</div>
+
+<p class="summary-caption">Nesta parceria, a Líndice fica com {{ commission_percent|floatformat:0 }}% de comissão em cada venda. Por aqui você não vê dados dos clientes — o contato e o atendimento ficam com a Líndice.</p>
+{% endblock %}

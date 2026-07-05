@@ -58,6 +58,7 @@ urlpatterns = [
     path("gestao/promocoes/", views.staff_promo_email, name="staff_promo_email"),
     path("gestao/cashback/", views.staff_loyalty_settings, name="staff_loyalty_settings"),
     path("descadastrar/<str:token>/", views.marketing_unsubscribe, name="marketing_unsubscribe"),
+    path("parceira/", views.partner_home, name="partner_home"),
     path("painel/relatorio-vendas/", views.partner_sales_report, name="partner_sales_report"),
     path("minha-conta/", views.account, name="account"),
     path("minha-conta/excluir/", views.account_delete, name="account_delete"),

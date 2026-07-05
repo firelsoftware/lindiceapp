@@ -203,6 +203,22 @@ def user_can_view_partner_sales(user):
     return bool(partner_sales_config(user).get("keyword"))
 
 
+def partner_profile_config(user):
+    """Dados do papel de parceira (Ramose/Selma), guardados no extra_data."""
+    profile = getattr(user, "profile", None)
+    extra = (profile.extra_data if profile else None) or {}
+    return {
+        "is_partner": bool(extra.get("is_partner")),
+        "name": (extra.get("partner_name") or "").strip(),
+        "commission_percent": Decimal(str(extra.get("partner_commission_percent") or 0)),
+        "notify_email": (extra.get("partner_notify_email") or "").strip(),
+    }
+
+
+def is_partner_user(user):
+    return user.is_authenticated and not user.is_staff and partner_profile_config(user)["is_partner"]
+
+
 def build_partner_sales_brand_query(aliases):
     query = Q()
 
@@ -1806,6 +1822,9 @@ def dashboard(request):
     if request.user.is_staff:
         return redirect("management_dashboard")
 
+    if is_partner_user(request.user):
+        return redirect("partner_home")
+
     profile = request.user.profile
 
     if not profile.phone_verified:
@@ -1830,6 +1849,22 @@ def dashboard(request):
             "referral_link": referral_link,
             "referral_count": request.user.referrals.count(),
             "referral_bonus": store_settings.referral_bonus,
+        },
+    )
+
+
+@login_required
+def partner_home(request):
+    if not is_partner_user(request.user):
+        return redirect("dashboard")
+
+    config = partner_profile_config(request.user)
+    return render(
+        request,
+        "accounts/partner_home.html",
+        {
+            "partner_name": config["name"] or "parceira",
+            "commission_percent": config["commission_percent"],
         },
     )
 
@@ -2788,8 +2823,34 @@ def review_client_profile(request, profile_id):
     previous_credit_limit = profile.pre_approved_credit_limit
 
     if request.method == "POST":
-        form = ClientApprovalForm(request.POST, instance=profile)
         action = request.POST.get("action")
+
+        if action == "make_partner":
+            extra = profile.extra_data or {}
+            extra.update({
+                "is_partner": True,
+                "partner_name": "Selma",
+                "partner_commission_percent": 20,
+                "partner_notify_email": "Sellmaramos.3012@gmail.com",
+                "sales_report_brand_keyword": "Ramose",
+                "sales_report_brand_aliases": ["Ramosê", "Ramose"],
+                "sales_report_title": "Vendas Ramosê",
+            })
+            profile.extra_data = extra
+            profile.save(update_fields=["extra_data"])
+            messages.success(request, "Cliente definida como parceira Ramosê (Selma).")
+            return redirect("review_client_profile", profile_id=profile.id)
+
+        if action == "remove_partner":
+            extra = profile.extra_data or {}
+            for key in ("is_partner", "partner_name", "partner_commission_percent", "partner_notify_email"):
+                extra.pop(key, None)
+            profile.extra_data = extra
+            profile.save(update_fields=["extra_data"])
+            messages.success(request, "Papel de parceira removido.")
+            return redirect("review_client_profile", profile_id=profile.id)
+
+        form = ClientApprovalForm(request.POST, instance=profile)
 
         if form.is_valid():
             profile = form.save(commit=False)
@@ -2849,6 +2910,7 @@ def review_client_profile(request, profile_id):
             "pending_sales": pending_sales,
             "form": form,
             "profile": profile,
+            "partner_config": partner_profile_config(profile.user),
         },
     )
 

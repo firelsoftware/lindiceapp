@@ -143,6 +143,23 @@
     {% endif %}
 </section>
 
+<section class="info-panel">
+    <h2>Parceria</h2>
+    {% if partner_config.is_partner %}
+        <p>Este cliente é <strong>parceira Ramosê ({{ partner_config.name }})</strong>. Líndice fica com {{ partner_config.commission_percent|floatformat:0 }}% de comissão. Notificações de venda vão para {{ partner_config.notify_email }}.</p>
+        <form method="post" onsubmit="return confirm('Remover o papel de parceira?');">
+            {% csrf_token %}
+            <button type="submit" name="action" value="remove_partner" class="button button-secondary">Remover parceria</button>
+        </form>
+    {% else %}
+        <p>Transforme este cliente na parceira Ramosê (Selma): ela poderá lançar bolsas da marca e ver as vendas dela, sem acesso aos dados dos clientes.</p>
+        <form method="post" onsubmit="return confirm('Definir esta conta como parceira Ramosê (Selma)?');">
+            {% csrf_token %}
+            <button type="submit" name="action" value="make_partner" class="button">Tornar parceira Ramosê</button>
+        </form>
+    {% endif %}
+</section>
+
 {% if pending_sales %}
 <section class="info-panel">
     <h2>Aguardando o cliente finalizar</h2>
