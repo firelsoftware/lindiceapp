@@ -16,6 +16,10 @@
     {% if recipient_count == 0 %}
         <p>Ainda não há clientes que aceitaram receber promoções.</p>
     {% endif %}
+    <form method="post" onsubmit="return confirm('Ativar o recebimento de promoções para todos os clientes já cadastrados?');">
+        {% csrf_token %}
+        <button type="submit" name="action" value="optin_existing" class="button button-secondary" formnovalidate>Ativar promoções para clientes já cadastrados</button>
+    </form>
 </section>
 
 <form method="post">

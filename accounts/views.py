@@ -2053,6 +2053,16 @@ def staff_promo_email(request):
     if request.method == "POST":
         form = PromoEmailForm(request.POST)
 
+        # Ativa o opt-in para os clientes ja cadastrados (aprovados, com email).
+        if request.POST.get("action") == "optin_existing":
+            updated = ClientProfile.objects.filter(
+                registration_status=ClientProfile.APPROVED,
+                marketing_opt_in=False,
+                user__is_staff=False,
+            ).exclude(user__email="").update(marketing_opt_in=True)
+            messages.success(request, f"{updated} cliente(s) ativados para receber promoções.")
+            return redirect("staff_promo_email")
+
         # Teste: envia so para o proprio admin, ignorando a lista/opt-in.
         if request.POST.get("action") == "test":
             if request.user.email:
