@@ -29,7 +29,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
-from .models import CASHBACK_PERCENT, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, REFERRAL_BONUS, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .models import CASHBACK_MAX_REDEEM_PERCENT, CASHBACK_PERCENT, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, REFERRAL_BONUS, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, verify_webhook_signature
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
@@ -1257,8 +1257,10 @@ def cart_checkout(request):
 
     is_client = request.user.is_authenticated and not request.user.is_staff
     cashback_available = cashback_balance(request.user) if is_client else Decimal("0.00")
-    # Preview: nunca deixa a compra abaixo de R$0,50 em produtos.
-    cashback_redeem_preview = min(cashback_available, max(subtotal - voucher_discount - Decimal("0.50"), Decimal("0.00")))
+    # Preview: no maximo 25% da compra (apos voucher), e sem zerar (min R$0,50).
+    items_after_voucher_preview = max(subtotal - voucher_discount, Decimal("0.00"))
+    cashback_cap = items_after_voucher_preview * (CASHBACK_MAX_REDEEM_PERCENT / Decimal("100"))
+    cashback_redeem_preview = min(cashback_available, cashback_cap, max(items_after_voucher_preview - Decimal("0.50"), Decimal("0.00")))
     cashback_redeem_preview = money(max(cashback_redeem_preview, Decimal("0.00")))
 
     if request.method == "POST":
@@ -1344,7 +1346,8 @@ def cart_checkout(request):
                 if use_cashback and orders:
                     items_subtotal = sum((o.items_total_amount for o in orders), Decimal("0.00"))
                     available_now = cashback_balance(request.user)
-                    redeem = money(min(available_now, max(items_subtotal - Decimal("0.50"), Decimal("0.00"))))
+                    max_by_percent = items_subtotal * (CASHBACK_MAX_REDEEM_PERCENT / Decimal("100"))
+                    redeem = money(min(available_now, max_by_percent, max(items_subtotal - Decimal("0.50"), Decimal("0.00"))))
                     if redeem > 0 and items_subtotal > 0:
                         remaining = redeem
                         last_index = len(orders) - 1
@@ -1409,6 +1412,7 @@ def cart_checkout(request):
             "welcome_discount_expires_at": welcome_profile.welcome_discount_expires_at if welcome_profile else None,
             "cashback_available": cashback_available,
             "cashback_redeem_preview": cashback_redeem_preview,
+            "cashback_max_percent": CASHBACK_MAX_REDEEM_PERCENT,
             "shipping_rates": shipping_rates_payload(),
             "shipping_rates_json": json.dumps(shipping_rates_payload()),
         },

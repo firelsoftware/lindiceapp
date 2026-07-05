@@ -137,7 +137,8 @@
     var totalNode = document.getElementById("cart-total-value");
     var subtotal = Number("{{ subtotal|floatformat:2 }}".replace(",", "."));
     var voucher = Number("{{ voucher_discount|default:'0.00'|floatformat:2 }}".replace(",", "."));
-    var cashbackMax = Number("{{ cashback_redeem_preview|default:'0.00'|floatformat:2 }}".replace(",", "."));
+    var cashbackBalance = Number("{{ cashback_available|default:'0.00'|floatformat:2 }}".replace(",", "."));
+    var cashbackPct = Number("{{ cashback_max_percent|default:'25'|floatformat:2 }}".replace(",", ".")) / 100;
     var rates = { ...JSON.parse('{{ shipping_rates_json|escapejs }}'), DEFAULT: "40.00" };
 
     function formatMoney(value) {
@@ -158,7 +159,8 @@
         var itemsAfterVoucher = Math.max(subtotal - discount, 0);
         var cashback = 0;
         if (cashbackField && cashbackField.checked) {
-            cashback = Math.min(cashbackMax, Math.max(itemsAfterVoucher - 0.5, 0));
+            cashback = Math.min(cashbackBalance, itemsAfterVoucher * cashbackPct, Math.max(itemsAfterVoucher - 0.5, 0));
+            cashback = Math.max(cashback, 0);
         }
         if (cashbackRow) {
             cashbackRow.hidden = cashback <= 0;
