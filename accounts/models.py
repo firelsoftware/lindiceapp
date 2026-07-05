@@ -550,6 +550,23 @@ class CashbackTransaction(models.Model):
         return f"{self.user} {self.kind} R$ {self.amount}"
 
 
+class StoreSettings(models.Model):
+    """Configuracoes ajustaveis do programa de fidelidade (linha unica)."""
+    cashback_percent = models.DecimalField(max_digits=5, decimal_places=2, default=CASHBACK_PERCENT)
+    cashback_max_redeem_percent = models.DecimalField(max_digits=5, decimal_places=2, default=CASHBACK_MAX_REDEEM_PERCENT)
+    referral_bonus = models.DecimalField(max_digits=10, decimal_places=2, default=REFERRAL_BONUS)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+
 def cashback_balance(user):
     if user is None or not getattr(user, "pk", None):
         return Decimal("0.00")
@@ -575,7 +592,8 @@ def award_purchase_cashback(user, amount, *, store_order=None, credit_sale=None)
     if credit_sale is not None and existing.filter(credit_sale=credit_sale).exists():
         return None
 
-    value = money(base * (CASHBACK_PERCENT / Decimal("100")))
+    percent = StoreSettings.load().cashback_percent
+    value = money(base * (percent / Decimal("100")))
     if value <= 0:
         return None
 
@@ -583,7 +601,7 @@ def award_purchase_cashback(user, amount, *, store_order=None, credit_sale=None)
         user=user,
         kind=CashbackTransaction.EARN,
         amount=value,
-        description=f"Cashback de {CASHBACK_PERCENT:.0f}% da compra",
+        description=f"Cashback de {percent:.0f}% da compra",
         store_order=store_order,
         credit_sale=credit_sale,
     )
@@ -658,10 +676,13 @@ def award_referral_bonus(referred_user):
     profile.save(update_fields=["referral_bonus_awarded"])
 
     referred_name = getattr(referred_user, "preferred_name", "") or getattr(referred_user, "full_name", "") or "seu indicado"
+    bonus = StoreSettings.load().referral_bonus
+    if bonus <= 0:
+        return None
     return CashbackTransaction.objects.create(
         user=referrer,
         kind=CashbackTransaction.REFERRAL,
-        amount=REFERRAL_BONUS,
+        amount=bonus,
         description=f"Bônus por indicar {referred_name}",
     )
 

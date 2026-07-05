@@ -28,8 +28,8 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
-from .models import CASHBACK_MAX_REDEEM_PERCENT, CASHBACK_PERCENT, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, REFERRAL_BONUS, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
+from .models import StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, verify_webhook_signature
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
@@ -1257,9 +1257,11 @@ def cart_checkout(request):
 
     is_client = request.user.is_authenticated and not request.user.is_staff
     cashback_available = cashback_balance(request.user) if is_client else Decimal("0.00")
-    # Preview: no maximo 25% da compra (apos voucher), e sem zerar (min R$0,50).
+    store_settings = StoreSettings.load()
+    cashback_max_percent = store_settings.cashback_max_redeem_percent
+    # Preview: no maximo o % configurado da compra (apos voucher), sem zerar.
     items_after_voucher_preview = max(subtotal - voucher_discount, Decimal("0.00"))
-    cashback_cap = items_after_voucher_preview * (CASHBACK_MAX_REDEEM_PERCENT / Decimal("100"))
+    cashback_cap = items_after_voucher_preview * (cashback_max_percent / Decimal("100"))
     cashback_redeem_preview = min(cashback_available, cashback_cap, max(items_after_voucher_preview - Decimal("0.50"), Decimal("0.00")))
     cashback_redeem_preview = money(max(cashback_redeem_preview, Decimal("0.00")))
 
@@ -1346,7 +1348,7 @@ def cart_checkout(request):
                 if use_cashback and orders:
                     items_subtotal = sum((o.items_total_amount for o in orders), Decimal("0.00"))
                     available_now = cashback_balance(request.user)
-                    max_by_percent = items_subtotal * (CASHBACK_MAX_REDEEM_PERCENT / Decimal("100"))
+                    max_by_percent = items_subtotal * (cashback_max_percent / Decimal("100"))
                     redeem = money(min(available_now, max_by_percent, max(items_subtotal - Decimal("0.50"), Decimal("0.00"))))
                     if redeem > 0 and items_subtotal > 0:
                         remaining = redeem
@@ -1412,7 +1414,7 @@ def cart_checkout(request):
             "welcome_discount_expires_at": welcome_profile.welcome_discount_expires_at if welcome_profile else None,
             "cashback_available": cashback_available,
             "cashback_redeem_preview": cashback_redeem_preview,
-            "cashback_max_percent": CASHBACK_MAX_REDEEM_PERCENT,
+            "cashback_max_percent": cashback_max_percent,
             "shipping_rates": shipping_rates_payload(),
             "shipping_rates_json": json.dumps(shipping_rates_payload()),
         },
@@ -1815,18 +1817,19 @@ def dashboard(request):
     purchase_groups = build_purchase_groups(request.user)
     referral_code = get_or_create_referral_code(request.user)
     referral_link = request.build_absolute_uri(f"{resolve_url('register')}?ref={referral_code}") if referral_code else ""
+    store_settings = StoreSettings.load()
     return render(
         request,
         "accounts/dashboard.html",
         {
             "purchase_groups": purchase_groups,
             "cashback_balance": cashback_balance(request.user),
-            "cashback_percent": CASHBACK_PERCENT,
+            "cashback_percent": store_settings.cashback_percent,
             "cashback_history": request.user.cashback_transactions.all()[:10],
             "referral_code": referral_code,
             "referral_link": referral_link,
             "referral_count": request.user.referrals.count(),
-            "referral_bonus": REFERRAL_BONUS,
+            "referral_bonus": store_settings.referral_bonus,
         },
     )
 
@@ -2115,6 +2118,24 @@ def staff_promo_email(request):
         "accounts/staff_promo_email.html",
         {"form": form, "recipient_count": recipient_count},
     )
+
+
+def staff_loyalty_settings(request):
+    if not request.user.is_staff:
+        return HttpResponseForbidden("Area exclusiva da loja.")
+
+    settings_obj = StoreSettings.load()
+
+    if request.method == "POST":
+        form = StoreSettingsForm(request.POST, instance=settings_obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Configurações do cashback atualizadas.")
+            return redirect("staff_loyalty_settings")
+    else:
+        form = StoreSettingsForm(instance=settings_obj)
+
+    return render(request, "accounts/staff_loyalty_settings.html", {"form": form})
 
 
 def marketing_unsubscribe(request, token):

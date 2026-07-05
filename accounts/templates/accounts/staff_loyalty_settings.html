@@ -1,0 +1,40 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Configurações do cashback</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <p>Ajuste os números do programa de fidelidade. As mudanças valem na hora, sem precisar de novo deploy.</p>
+</section>
+
+<form method="post">
+    {% csrf_token %}
+    <p>
+        <label for="{{ form.cashback_percent.id_for_label }}">{{ form.cashback_percent.label }}</label>
+        {{ form.cashback_percent }}
+        <small>Quanto o cliente ganha de volta em cada compra paga.</small>
+        {{ form.cashback_percent.errors }}
+    </p>
+    <p>
+        <label for="{{ form.cashback_max_redeem_percent.id_for_label }}">{{ form.cashback_max_redeem_percent.label }}</label>
+        {{ form.cashback_max_redeem_percent }}
+        <small>Limite de quanto o saldo pode abater em uma compra (evita prejuízo).</small>
+        {{ form.cashback_max_redeem_percent.errors }}
+    </p>
+    <p>
+        <label for="{{ form.referral_bonus.id_for_label }}">{{ form.referral_bonus.label }}</label>
+        {{ form.referral_bonus }}
+        <small>Bônus para quem indica, quando o indicado faz a 1ª compra.</small>
+        {{ form.referral_bonus.errors }}
+    </p>
+    <button type="submit">Salvar configurações</button>
+</form>
+{% endblock %}

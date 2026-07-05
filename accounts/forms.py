@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 from django.utils import timezone
 
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, User
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, StoreSettings, Supplier, SupplierCatalogSource, SupplierProduct, User
 from .store_shipping import shipping_choices_with_prices
 from .utils import clean_digits, cpf_hash, is_valid_cpf
 
@@ -429,6 +429,34 @@ class ManualDebtForm(forms.ModelForm):
                 self.add_error("due_date", "Para gerar link, o primeiro vencimento deve ficar entre hoje e os proximos 30 dias.")
 
         return cleaned_data
+
+
+class StoreSettingsForm(forms.ModelForm):
+    class Meta:
+        model = StoreSettings
+        fields = ("cashback_percent", "cashback_max_redeem_percent", "referral_bonus")
+        labels = {
+            "cashback_percent": "Cashback por compra (%)",
+            "cashback_max_redeem_percent": "Máximo de resgate por compra (%)",
+            "referral_bonus": "Bônus de indicação (R$)",
+        }
+        widgets = {
+            "cashback_percent": forms.NumberInput(attrs={"min": "0", "max": "100", "step": "0.5"}),
+            "cashback_max_redeem_percent": forms.NumberInput(attrs={"min": "0", "max": "100", "step": "1"}),
+            "referral_bonus": forms.NumberInput(attrs={"min": "0", "step": "1"}),
+        }
+
+    def clean_cashback_percent(self):
+        value = self.cleaned_data["cashback_percent"]
+        if value < 0 or value > 100:
+            raise ValidationError("Informe um percentual entre 0 e 100.")
+        return value
+
+    def clean_cashback_max_redeem_percent(self):
+        value = self.cleaned_data["cashback_max_redeem_percent"]
+        if value < 0 or value > 100:
+            raise ValidationError("Informe um percentual entre 0 e 100.")
+        return value
 
 
 class PromoEmailForm(forms.Form):
