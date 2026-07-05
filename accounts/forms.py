@@ -761,6 +761,40 @@ class SupplierForm(forms.ModelForm):
         }
 
 
+class PartnerBagForm(forms.ModelForm):
+    class Meta:
+        model = SupplierProduct
+        fields = ("name", "suggested_sale_price", "compare_at_price", "stock_quantity", "sizes", "image_file")
+        labels = {
+            "name": "Nome da bolsa",
+            "suggested_sale_price": "Preço de venda (R$)",
+            "compare_at_price": "Preço 'de' / promoção (opcional)",
+            "stock_quantity": "Quantidade em estoque",
+            "sizes": "Medida/tamanho (opcional)",
+            "image_file": "Foto da bolsa",
+        }
+        help_texts = {
+            "compare_at_price": "Se maior que o preço de venda, aparece como promoção (de/por).",
+        }
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "Ex.: Bolsa tiracolo caramelo"}),
+            "suggested_sale_price": forms.NumberInput(attrs={"min": "0.01", "step": "0.01"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["image_file"].required = True
+        self.fields["suggested_sale_price"].required = True
+
+    def clean(self):
+        cleaned = super().clean()
+        price = cleaned.get("suggested_sale_price")
+        compare = cleaned.get("compare_at_price")
+        if compare and price and compare <= price:
+            self.add_error("compare_at_price", "O preço 'de' deve ser maior que o preço de venda.")
+        return cleaned
+
+
 class SupplierProductEditForm(forms.ModelForm):
     MATERIAL_CHOICES = [
         ("", "Nao se aplica"),

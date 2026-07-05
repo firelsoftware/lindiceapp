@@ -28,7 +28,7 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
+from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
 from .models import StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, verify_webhook_signature
@@ -1867,6 +1867,39 @@ def partner_home(request):
             "commission_percent": config["commission_percent"],
         },
     )
+
+
+PARTNER_BRAND = "Ramosê"
+
+
+@login_required
+def partner_add_bag(request):
+    if not is_partner_user(request.user):
+        return redirect("dashboard")
+
+    if request.method == "POST":
+        form = PartnerBagForm(request.POST, request.FILES)
+        if form.is_valid():
+            bag = form.save(commit=False)
+            # Trava categoria e marca: parceira so lanca bolsas da Ramose.
+            bag.category = "Bolsas"
+            bag.brand = PARTNER_BRAND
+            # Garante que o nome carrega a marca (o relatorio filtra por nome).
+            if "ramos" not in (bag.name or "").lower():
+                bag.name = f"{PARTNER_BRAND} {bag.name}".strip()
+            bag.sizes = bag.sizes or "Único"
+            bag.source = SupplierProduct.SOURCE_REVENDA_CALCADOS
+            bag.supplier_code = f"RAMOSE-{uuid.uuid4().hex[:8].upper()}"
+            bag.is_visible = True
+            bag.is_active = True
+            bag.save()
+            messages.success(request, "Bolsa lançada com sucesso e já disponível na loja.")
+            return redirect("partner_add_bag")
+    else:
+        form = PartnerBagForm()
+
+    my_bags = SupplierProduct.objects.filter(brand__iexact=PARTNER_BRAND).order_by("-created_at")[:50]
+    return render(request, "accounts/partner_add_bag.html", {"form": form, "my_bags": my_bags})
 
 
 @login_required

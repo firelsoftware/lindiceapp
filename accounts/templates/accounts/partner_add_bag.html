@@ -1,0 +1,78 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Lançar bolsa</h1>
+<p><a href="{% url 'partner_home' %}">&larr; Voltar</a></p>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <p>Cadastre uma bolsa da marca <strong>Ramosê</strong>. Ela entra na loja automaticamente na categoria <strong>Bolsas</strong>. A marca e a categoria já ficam definidas.</p>
+</section>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>
+        <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+        {{ form.name }}
+        {{ form.name.errors }}
+    </p>
+    <p>
+        <label for="{{ form.image_file.id_for_label }}">{{ form.image_file.label }}</label>
+        {{ form.image_file }}
+        {{ form.image_file.errors }}
+    </p>
+    <p>
+        <label for="{{ form.suggested_sale_price.id_for_label }}">{{ form.suggested_sale_price.label }}</label>
+        {{ form.suggested_sale_price }}
+        {{ form.suggested_sale_price.errors }}
+    </p>
+    <p>
+        <label for="{{ form.compare_at_price.id_for_label }}">{{ form.compare_at_price.label }}</label>
+        {{ form.compare_at_price }}
+        <small>{{ form.compare_at_price.help_text }}</small>
+        {{ form.compare_at_price.errors }}
+    </p>
+    <p>
+        <label for="{{ form.stock_quantity.id_for_label }}">{{ form.stock_quantity.label }}</label>
+        {{ form.stock_quantity }}
+        {{ form.stock_quantity.errors }}
+    </p>
+    <p>
+        <label for="{{ form.sizes.id_for_label }}">{{ form.sizes.label }}</label>
+        {{ form.sizes }}
+        {{ form.sizes.errors }}
+    </p>
+    <button type="submit">Lançar bolsa</button>
+</form>
+
+<h2>Minhas bolsas</h2>
+{% if my_bags %}
+    <div class="store-grid">
+        {% for bag in my_bags %}
+            <article class="store-product">
+                <div class="store-product-media">
+                    {% if bag.image_file %}<img src="{{ bag.image_file.url }}" alt="{{ bag.name }}">{% else %}<span class="store-product-placeholder">Sem foto</span>{% endif %}
+                </div>
+                <div class="store-product-body">
+                    <div class="store-product-summary">
+                        <div class="store-product-copy">
+                            <h2>{{ bag.name }}</h2>
+                            <p class="store-product-sizes">Estoque: {{ bag.stock_quantity }} · {% if bag.is_visible %}Na loja{% else %}Oculta{% endif %}</p>
+                        </div>
+                        <p class="store-price">R$ {{ bag.suggested_sale_price|floatformat:2 }}</p>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Você ainda não lançou nenhuma bolsa.</p>
+{% endif %}
+{% endblock %}
