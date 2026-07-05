@@ -1741,7 +1741,7 @@ def register(request):
     return render(
         request,
         "accounts/register.html",
-        {"form": form, "credit_mode": credit_mode, "next_url": next_url},
+        {"form": form, "credit_mode": credit_mode, "next_url": next_url, "ref_code": ref_code},
     )
 
 

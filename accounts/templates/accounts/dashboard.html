@@ -8,7 +8,7 @@
         <span class="cashback-label">Meu cashback</span>
         <span class="cashback-value">R$ {{ cashback_balance|floatformat:2 }}</span>
     </div>
-    <p class="cashback-note">Você ganha {{ cashback_percent|floatformat:0 }}% de volta em cada compra paga, para usar como desconto nas próximas.</p>
+    <p class="cashback-note">Você ganha {{ cashback_percent|floatformat:0 }}% de volta em cada compra paga, para usar como desconto nas próximas. Válido apenas para compras pelo site ou aplicativo.</p>
     {% if cashback_history %}
         <details class="cashback-history">
             <summary>Ver extrato</summary>
@@ -27,13 +27,19 @@
 {% if referral_link %}
 <section class="info-panel referral-panel">
     <h2>Indique e ganhe</h2>
-    <p>Compartilhe seu link. Quando seu amigo fizer a primeira compra, você ganha <strong>R$ {{ referral_bonus|floatformat:2 }}</strong> de cashback.</p>
+    <p>Quando seu amigo fizer a primeira compra pelo site ou aplicativo, você ganha <strong>R$ {{ referral_bonus|floatformat:2 }}</strong> de cashback. O amigo pode usar seu link ou digitar seu código no cadastro.</p>
+
+    <p class="referral-code-label">Seu código de indicação</p>
+    <div class="referral-code-box"><span id="referral-code">{{ referral_code }}</span></div>
+
+    <p class="referral-code-label">Seu link de indicação</p>
     <div class="referral-link-row">
         <input type="text" id="referral-link" value="{{ referral_link }}" readonly>
         <button type="button" class="button" data-copy-referral>Copiar</button>
     </div>
     <p><a class="button button-secondary" target="_blank" rel="noopener" href="https://wa.me/?text={{ referral_link|urlencode }}">Enviar no WhatsApp</a></p>
     {% if referral_count %}<p class="referral-count">Você já indicou {{ referral_count }} pessoa{{ referral_count|pluralize }}.</p>{% endif %}
+    <p class="referral-count">Válido apenas para compras pelo site ou aplicativo.</p>
 </section>
 {% endif %}
 

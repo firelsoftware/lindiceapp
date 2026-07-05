@@ -217,7 +217,7 @@ CASHBACK_PERCENT = Decimal("5.00")
 # Limite de quanto o saldo de cashback pode abater em uma unica compra.
 CASHBACK_MAX_REDEEM_PERCENT = Decimal("25.00")
 # Bonus em cashback dado a quem indica, quando o indicado faz a 1a compra paga.
-REFERRAL_BONUS = Decimal("10.00")
+REFERRAL_BONUS = Decimal("20.00")
 
 
 def money(value):

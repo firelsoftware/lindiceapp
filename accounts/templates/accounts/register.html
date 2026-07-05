@@ -6,7 +6,6 @@
         {% csrf_token %}
         <input type="hidden" name="intent" value="{% if credit_mode %}credit{% else %}shop{% endif %}">
         {% if next_url %}<input type="hidden" name="next" value="{{ next_url }}">{% endif %}
-        {% if ref_code %}<input type="hidden" name="ref" value="{{ ref_code }}">{% endif %}
 
         <div class="reg-progress" aria-hidden="true"><span class="reg-progress-bar" data-reg-bar></span></div>
 
@@ -32,6 +31,12 @@
             <h1 class="reg-question">Qual o seu e-mail?</h1>
             {{ form.email }}
             {{ form.email.errors }}
+        </section>
+
+        <section class="reg-step" data-reg-step>
+            <h1 class="reg-question">Código de indicação <span class="reg-optional">(opcional)</span></h1>
+            <p class="reg-hint">Alguém te indicou a Líndice? Digite o código de indicação (ou já vem preenchido pelo link). Quem te indicou ganha um bônus quando você fizer sua primeira compra pelo site ou app.</p>
+            <input type="text" name="ref" value="{{ ref_code }}" placeholder="Ex.: ABC123" style="text-transform:uppercase;">
         </section>
 
         <section class="reg-step" data-reg-step>
