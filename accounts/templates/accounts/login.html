@@ -29,6 +29,8 @@
         </div>
     </form>
 
+    <p class="reg-foot"><a href="{% url 'password_reset' %}">Esqueci minha senha</a></p>
+
     <p class="reg-foot">
         Ainda nao tem conta?
         {% if request.GET.next %}

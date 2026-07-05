@@ -26,6 +26,30 @@ urlpatterns = [
     path("loja/mercado-pago/webhook/", views.mercado_pago_webhook, name="mercado_pago_webhook"),
     path("cadastro/", views.register, name="register"),
     path("login/", views.LoginView.as_view(), name="login"),
+    path(
+        "esqueci-senha/",
+        auth_views.PasswordResetView.as_view(
+            template_name="accounts/password_reset.html",
+            email_template_name="accounts/password_reset_email.html",
+            subject_template_name="accounts/password_reset_subject.txt",
+        ),
+        name="password_reset",
+    ),
+    path(
+        "esqueci-senha/enviado/",
+        auth_views.PasswordResetDoneView.as_view(template_name="accounts/password_reset_done.html"),
+        name="password_reset_done",
+    ),
+    path(
+        "redefinir-senha/<uidb64>/<token>/",
+        auth_views.PasswordResetConfirmView.as_view(template_name="accounts/password_reset_confirm.html"),
+        name="password_reset_confirm",
+    ),
+    path(
+        "redefinir-senha/concluido/",
+        auth_views.PasswordResetCompleteView.as_view(template_name="accounts/password_reset_complete.html"),
+        name="password_reset_complete",
+    ),
     path("sair/", auth_views.LogoutView.as_view(), name="logout"),
     path("verificar-telefone/", views.verify_phone, name="verify_phone"),
     path("painel/", views.dashboard, name="dashboard"),
