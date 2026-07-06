@@ -3,15 +3,24 @@
 {% block content %}
 <h1>Minhas compras</h1>
 
-<section class="cashback-card">
-    <div class="cashback-head">
-        <span class="cashback-label">Meu cashback</span>
-        <span class="cashback-value">R$ {{ cashback_balance|floatformat:2 }}</span>
-    </div>
-    <p class="cashback-note">Você ganha {{ cashback_percent|floatformat:0 }}% de volta em cada compra paga, para usar como desconto nas próximas. Válido apenas para compras pelo site ou aplicativo.</p>
+<details class="cashback-card">
+    <summary class="cashback-row">
+        <span class="cashback-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2.5"></rect><path d="M3 10h18"></path><circle cx="16.5" cy="14.5" r="1.2"></circle></svg>
+        </span>
+        <span class="cashback-main">
+            <span class="cashback-title">Meu cashback</span>
+            <span class="cashback-note">Você ganha {{ cashback_percent|floatformat:0 }}% de volta em cada compra paga, para usar como desconto nas próximas.</span>
+        </span>
+        <span class="cashback-side">
+            <span class="cashback-side-label">Saldo disponível</span>
+            <span class="cashback-value">R$ {{ cashback_balance|floatformat:2 }}</span>
+            {% if cashback_history %}<span class="cashback-more">Ver detalhes <span aria-hidden="true">&rsaquo;</span></span>{% endif %}
+        </span>
+    </summary>
     {% if cashback_history %}
-        <details class="cashback-history">
-            <summary>Ver extrato</summary>
+        <div class="cashback-extrato">
+            <p class="cashback-rules">Como funciona: você acumula cashback em cada compra paga e pode usar como desconto nas próximas. Em cada compra, o cashback pode cobrir até <strong>{{ cashback_max_percent|floatformat:0 }}%</strong> do valor. Válido apenas para compras pelo site ou aplicativo.</p>
             <ul>
                 {% for tx in cashback_history %}
                     <li>
@@ -20,9 +29,9 @@
                     </li>
                 {% endfor %}
             </ul>
-        </details>
+        </div>
     {% endif %}
-</section>
+</details>
 
 {% if referral_link %}
 <section class="info-panel referral-panel">

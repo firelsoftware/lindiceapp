@@ -1831,65 +1831,131 @@
         }
 
         .cashback-card {
-            margin: 0 0 22px;
-            padding: 18px 20px;
+            margin: 0 0 18px;
+            border: 1px solid var(--line);
             border-radius: 16px;
+            background: #ffffff;
+            box-shadow: 0 10px 24px rgba(24, 34, 48, 0.05);
+            overflow: hidden;
+        }
+
+        .cashback-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .cashback-row::-webkit-details-marker {
+            display: none;
+        }
+
+        .cashback-icon {
+            flex: 0 0 auto;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: inline-grid;
+            place-items: center;
             background: linear-gradient(135deg, #4d63b7, #7a2d84);
             color: #ffffff;
         }
 
-        .cashback-head {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 12px;
+        .cashback-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
-        .cashback-label {
-            font-size: 14px;
+        .cashback-main {
+            flex: 1;
+            min-width: 0;
+            display: grid;
+            gap: 3px;
+        }
+
+        .cashback-title {
             font-weight: 600;
-            opacity: 0.92;
-        }
-
-        .cashback-value {
-            font-size: 26px;
-            font-weight: 700;
+            font-size: 16px;
+            color: var(--ink);
         }
 
         .cashback-note {
-            margin: 8px 0 0;
+            color: var(--muted);
             font-size: 13px;
-            line-height: 1.4;
-            opacity: 0.92;
+            line-height: 1.35;
         }
 
-        .cashback-history {
-            margin-top: 12px;
+        .cashback-side {
+            flex: 0 0 auto;
+            display: grid;
+            gap: 2px;
+            justify-items: end;
+            text-align: right;
         }
 
-        .cashback-history summary {
-            cursor: pointer;
-            font-size: 13px;
+        .cashback-side-label {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .cashback-value {
+            color: var(--brand-purple);
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .cashback-more {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-height: 34px;
+            padding: 8px 12px;
+            margin-top: 4px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #ffffff;
+            color: var(--brand-blue);
+            font-size: 12px;
             font-weight: 600;
+            line-height: 1;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(24, 34, 48, 0.04);
         }
 
-        .cashback-history ul {
+        .cashback-more span {
+            font-size: 17px;
+            line-height: 0.75;
+        }
+
+        .cashback-extrato {
+            padding: 0 18px 14px;
+        }
+
+        .cashback-extrato ul {
             list-style: none;
-            margin: 10px 0 0;
+            margin: 0;
             padding: 0;
         }
 
-        .cashback-history li {
+        .cashback-extrato li {
             display: flex;
             justify-content: space-between;
             gap: 10px;
-            padding: 6px 0;
+            padding: 8px 0;
             font-size: 13px;
-            border-top: 1px solid rgba(255, 255, 255, 0.18);
+            border-top: 1px solid var(--line);
         }
 
-        .cashback-in { color: #d6ffe6; }
-        .cashback-out { color: #ffd9d9; }
+        .cashback-in { color: #256b41; }
+        .cashback-out { color: var(--danger); }
 
         .referral-link-row {
             display: flex;
