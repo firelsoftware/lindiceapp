@@ -1,0 +1,44 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Minhas vendas</h1>
+<p><a href="{% url 'partner_home' %}">&larr; Voltar</a></p>
+
+<section class="info-panel">
+    <p>Vendas das suas bolsas Ramosê. Por privacidade, os dados dos clientes não aparecem aqui — o atendimento é feito pela Líndice.</p>
+</section>
+
+{% if entries %}
+    <table class="parcelas-table">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Bolsa</th>
+                <th>Qtd</th>
+                <th>Valor</th>
+                <th>Desconto</th>
+                <th>Prazo</th>
+                <th>Pagamento</th>
+                <th>Forma</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in entries %}
+                <tr>
+                    <td data-label="Data">{{ e.date|date:"d/m/Y" }}</td>
+                    <td data-label="Bolsa">{{ e.product }}</td>
+                    <td data-label="Qtd">{{ e.quantity }}</td>
+                    <td data-label="Valor">R$ {{ e.total|floatformat:2 }}</td>
+                    <td data-label="Desconto">{% if e.discount %}R$ {{ e.discount|floatformat:2 }}{% else %}—{% endif %}</td>
+                    <td data-label="Prazo">{% if e.installments %}{{ e.installments }}x{% else %}À vista{% endif %}</td>
+                    <td data-label="Pagamento">{% if e.payment_date %}{{ e.payment_date|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+                    <td data-label="Forma">{{ e.method }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p class="summary-caption">Prazo/data escolhida aparecem no crediário. Em cartão/Pix, o parcelamento é feito direto na operadora e não fica registrado aqui.</p>
+{% else %}
+    <p>Ainda não há vendas das suas bolsas.</p>
+{% endif %}
+{% endblock %}

@@ -1903,6 +1903,59 @@ def partner_add_bag(request):
 
 
 @login_required
+def partner_sales_detail(request):
+    if not is_partner_user(request.user):
+        return redirect("dashboard")
+
+    aliases = partner_sales_config(request.user).get("aliases") or [PARTNER_BRAND]
+    brand_q = build_partner_sales_brand_query(aliases)
+
+    entries = []
+
+    # Vendas na loja (cartao/Pix) - o parcelamento do cartao nao fica salvo.
+    orders = StoreOrder.objects.filter(status__in=PARTNER_SALES_STATUSES).filter(brand_q)
+    for order in orders:
+        discount = money((order.welcome_discount_amount or Decimal("0.00")) + (order.cashback_discount_amount or Decimal("0.00")))
+        entries.append({
+            "date": order.paid_at or order.created_at,
+            "product": order.product_name,
+            "quantity": order.quantity,
+            "total": order.total_amount,
+            "discount": discount,
+            "installments": None,
+            "method": "Cartão/Pix",
+            "payment_date": order.paid_at,
+        })
+
+    # Vendas no crediario que incluem bolsas da marca dela.
+    sale_ids = set(
+        CreditSaleProduct.objects.filter(
+            Q(brand__icontains=PARTNER_BRAND) | Q(name__icontains="Ramos")
+        ).values_list("sale_id", flat=True)
+    )
+    credit_sales = CreditSale.objects.filter(id__in=sale_ids, status=CreditSale.ACCEPTED).prefetch_related("products")
+    for sale in credit_sales:
+        her_names = [
+            p.name for p in sale.products.all()
+            if "ramos" in ((p.brand or "") + " " + (p.name or "")).lower()
+        ]
+        entries.append({
+            "date": sale.created_at,
+            "product": ", ".join(her_names) or "Bolsa Ramosê",
+            "quantity": len(her_names) or 1,
+            "total": sale.total_amount,
+            "discount": sale.welcome_discount_amount,
+            "installments": sale.selected_installments,
+            "method": sale.get_selected_payment_method_display() if sale.selected_payment_method else "Crediário",
+            "payment_date": sale.first_due_date,
+        })
+
+    entries.sort(key=lambda item: item["date"] or timezone.now(), reverse=True)
+
+    return render(request, "accounts/partner_sales_detail.html", {"entries": entries})
+
+
+@login_required
 def partner_sales_report(request):
     if not user_can_view_partner_sales(request.user):
         return HttpResponseForbidden("Voce nao tem acesso a este relatorio.")
