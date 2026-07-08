@@ -214,3 +214,51 @@ def generate_due_notifications(now=None):
                     f"total atualizado R$ {format_brl(debt.total_amount())}."
                 ),
             )
+
+
+def create_partner_sale_notification(product_names, detail, dedupe_key):
+    """Avisa a parceira (app + e-mail) que uma bolsa da marca dela foi vendida.
+
+    Nunca inclui dados do cliente. Idempotente por dedupe_key.
+    """
+    from django.conf import settings
+    from django.core.mail import send_mail
+
+    from .models import ClientProfile
+
+    partners = ClientProfile.objects.filter(extra_data__is_partner=True).select_related("user")
+    names = ", ".join(product_names)
+    created_any = False
+
+    for profile in partners:
+        notification, created = Notification.objects.get_or_create(
+            unique_key=f"{dedupe_key}:partner:{profile.user_id}",
+            defaults={
+                "recipient": profile.user,
+                "kind": Notification.SALE_CONFIRMED,
+                "title": "Bolsa vendida!",
+                "message": f"{names} — {detail} Veja em Minhas vendas.",
+            },
+        )
+        if not created:
+            continue
+        created_any = True
+
+        email = (profile.extra_data or {}).get("partner_notify_email", "").strip()
+        if email:
+            try:
+                send_mail(
+                    "Bolsa Ramosê vendida - Líndice",
+                    (
+                        f"Boa notícia! Uma venda das suas bolsas foi registrada.\n\n"
+                        f"{names}\n{detail}\n\n"
+                        "Acesse o app da Líndice e abra 'Minhas vendas' para ver os detalhes."
+                    ),
+                    settings.DEFAULT_FROM_EMAIL,
+                    [email],
+                    fail_silently=True,
+                )
+            except Exception:
+                pass
+
+    return created_any

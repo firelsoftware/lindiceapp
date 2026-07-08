@@ -217,7 +217,7 @@ CASHBACK_PERCENT = Decimal("5.00")
 # Limite de quanto o saldo de cashback pode abater em uma unica compra.
 CASHBACK_MAX_REDEEM_PERCENT = Decimal("25.00")
 # Bonus em cashback dado a quem indica, quando o indicado faz a 1a compra paga.
-REFERRAL_BONUS = Decimal("20.00")
+REFERRAL_BONUS = Decimal("10.00")
 
 
 def money(value):
@@ -500,6 +500,7 @@ class StoreOrder(models.Model):
         award_purchase_cashback(self.customer, self.items_total_amount, store_order=self)
         if self.customer_id:
             award_referral_bonus(self.customer)
+        notify_partner_if_bag_sale(self)
 
     def mark_payment_failed(self, payment_id=""):
         self.status = self.PAYMENT_FAILED
@@ -605,6 +606,32 @@ def award_purchase_cashback(user, amount, *, store_order=None, credit_sale=None)
         store_order=store_order,
         credit_sale=credit_sale,
     )
+
+
+def notify_partner_if_bag_sale(order):
+    """Se o pedido pago contém bolsa da marca parceira, avisa a parceira."""
+    haystack = f"{order.product_name} {getattr(order.product, 'brand', '')}".lower()
+    if "ramos" not in haystack:
+        return
+    from .notifications import create_partner_sale_notification
+
+    detail = f"Valor: R$ {order.total_amount:.2f}".replace(".", ",") + ". Pagamento online (cartão/Pix)."
+    create_partner_sale_notification([order.product_name], detail, f"partner-sale:order:{order.id}")
+
+
+def notify_partner_if_credit_bag_sale(sale):
+    """Se a venda de crediário fechada contém bolsa Ramosê, avisa a parceira."""
+    her = [
+        p.name for p in sale.products.all()
+        if "ramos" in f"{p.brand or ''} {p.name or ''}".lower()
+    ]
+    if not her:
+        return
+    from .notifications import create_partner_sale_notification
+
+    parcelas = f"{sale.selected_installments}x" if sale.selected_installments and sale.selected_installments > 1 else "à vista"
+    detail = f"Valor: R$ {sale.total_amount:.2f}".replace(".", ",") + f". Prazo: {parcelas}."
+    create_partner_sale_notification(her, detail, f"partner-sale:credit:{sale.id}")
 
 
 def redeem_cashback_for_order(order):
@@ -940,6 +967,7 @@ class CreditSale(models.Model):
             self.status = self.ACCEPTED
             self.accepted_at = timezone.now()
             self.save()
+            notify_partner_if_credit_bag_sale(self)
 
             return
 
@@ -968,6 +996,7 @@ class CreditSale(models.Model):
         self.status = self.ACCEPTED
         self.accepted_at = timezone.now()
         self.save()
+        notify_partner_if_credit_bag_sale(self)
 
         if payment_method != self.CREDIT:
             return
