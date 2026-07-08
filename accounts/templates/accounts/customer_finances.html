@@ -16,6 +16,56 @@
         margin-bottom: 0;
     }
 
+    .finance-tip {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        margin-top: 16px;
+        padding: 16px 18px;
+        border: 1px solid #cfe9d8;
+        border-radius: 16px;
+        background: #eef8f1;
+    }
+
+    .finance-tip-icon {
+        flex: 0 0 auto;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: inline-grid;
+        place-items: center;
+        background: #ffffff;
+        color: #2f7a4d;
+        border: 1px solid #cfe9d8;
+    }
+
+    .finance-tip-icon svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .finance-tip-label {
+        margin: 0 0 4px;
+        color: #2f7a4d;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+
+    .finance-tip-text {
+        margin: 0;
+        color: #23503a;
+        font-size: 15px;
+        line-height: 1.45;
+        font-weight: 600;
+    }
+
     .finance-scope-tabs {
         display: flex;
         gap: 8px;
@@ -323,6 +373,18 @@
             <p>Voce esta sem debitos abertos no momento.</p>
         {% endif %}
     </section>
+
+    {% if finance_tip %}
+        <section class="finance-tip">
+            <span class="finance-tip-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M9 18h6"></path><path d="M10 21h4"></path><path d="M12 3a6 6 0 0 0-3.5 10.9c.7.5 1.1 1.2 1.3 2.1h4.4c.2-.9.6-1.6 1.3-2.1A6 6 0 0 0 12 3z"></path></svg>
+            </span>
+            <div>
+                <p class="finance-tip-label">Dica do dia</p>
+                <p class="finance-tip-text">{{ finance_tip }}</p>
+            </div>
+        </section>
+    {% endif %}
 {% endif %}
 
 <section class="info-panel">

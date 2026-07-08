@@ -2091,6 +2091,47 @@ def data_deletion_info(request):
     )
 
 
+# Dicas diárias de educação financeira mostradas em "Minhas finanças".
+# A dica do dia é escolhida pela data (todas as clientes veem a mesma).
+FINANCE_TIPS = [
+    "Anote tudo o que você gasta durante uma semana. Só de enxergar para onde o dinheiro vai, você já começa a economizar.",
+    "Antes de comprar, espere 24 horas. Se no dia seguinte ainda fizer sentido, compre com tranquilidade.",
+    "Separe uma quantia fixa por mês para você, como se fosse uma conta a pagar. Poupar primeiro, gastar depois.",
+    "Divida seus gastos em três grupos: necessidades, desejos e sonhos. O equilíbrio entre eles é o segredo.",
+    "Parcelar não é vilão — o vilão é parcelar sem somar quanto já está comprometido nos próximos meses.",
+    "Guarde o troco: transferir os centavos e valores quebrados para uma reserva no fim do dia rende mais do que parece.",
+    "Tenha uma reserva para emergências, mesmo que pequena. Começar com R$ 20 por mês já é começar.",
+    "Revise suas assinaturas e serviços mensais. O que você não usa há 2 meses pode ser cancelado sem dor.",
+    "Compare preços em 3 lugares antes de compras maiores. Dez minutos de pesquisa podem valer um bom desconto.",
+    "Promoção só é economia se você já ia comprar. Se não ia, é gasto novo.",
+    "Combine limites de presente em datas comemorativas. Carinho não se mede pelo preço.",
+    "Pague primeiro as dívidas com juros maiores. Elas crescem mais rápido que as outras.",
+    "Negociar dívida não é vergonha: quem procura o credor primeiro consegue as melhores condições.",
+    "Evite usar o limite do cheque especial: ele é um dos créditos mais caros que existem.",
+    "Faça uma lista antes de ir às compras e siga a lista. O supermercado é desenhado para te fazer gastar mais.",
+    "Comprar usado ou trocar com amigas também é inteligência financeira.",
+    "Defina um valor mensal para 'gastos livres' sem culpa. Orçamento apertado demais ninguém sustenta.",
+    "Ensine as crianças sobre dinheiro com o cofrinho: elas aprendem vendo você cuidar do seu.",
+    "Um sonho grande fica possível quando vira meta com prazo e valor mensal definidos.",
+    "Cuidado com compras por impulso à noite: cansaço e celular são uma dupla perigosa para o bolso.",
+    "Registre suas contas com vencimento aqui no app: pagar em dia evita juros e multas desnecessárias.",
+    "Quando receber um dinheiro extra, divida: uma parte para dívidas, uma para reserva e uma para você.",
+    "Renegociar plano de celular, internet e energia de tempos em tempos quase sempre traz desconto.",
+    "Se a parcela não cabe no mês junto com as outras contas, o problema não é o preço: é o momento.",
+    "Ter objetivos escritos aumenta muito a chance de alcançá-los. Escreva os seus três maiores.",
+    "Cartão de crédito é ferramenta, não renda extra. Use apenas o que você conseguiria pagar à vista.",
+    "Pequenos gastos diários somam: R$ 8 por dia úteis são mais de R$ 160 no mês.",
+    "Reserve um dia do mês para 'cuidar do dinheiro': revisar contas, dívidas e metas. Meia hora basta.",
+    "Antes de assumir uma dívida nova, quite ou reduza uma antiga. Uma entra, uma sai.",
+    "Celebre suas pequenas vitórias financeiras. Quitou uma conta? Reconheça seu progresso!",
+]
+
+
+def daily_finance_tip():
+    index = timezone.localdate().toordinal() % len(FINANCE_TIPS)
+    return FINANCE_TIPS[index]
+
+
 def customer_finances(request):
     if not request.user.is_authenticated:
         messages.info(request, "Para organizar suas finanças, cadastre-se e aprenda sobre organização financeira.")
@@ -2121,6 +2162,7 @@ def customer_finances(request):
 
     context = build_customer_finance_context(request.user)
     context["personal_debt_form"] = form
+    context["finance_tip"] = daily_finance_tip()
     return render(request, "accounts/customer_finances.html", context)
 
 
