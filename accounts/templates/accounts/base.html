@@ -3899,6 +3899,10 @@
                             <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c2 3 5 4 5 8a5 5 0 0 1-10 0c0-4 3-5 5-8z"/><path d="M5 22h14"/><path d="M8 18h8"/></svg>
                             <span>Doces e Mais</span>
                         </a>
+                        <a class="menu-link{% if active == 'doces_e_mais_finances' %} is-active{% endif %}" href="{% url 'doces_e_mais_finances' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/><path d="M8 15h3"/><path d="M15 15h1"/></svg>
+                            <span>Finanças Doces e Mais</span>
+                        </a>
                         {% endif %}
                         <a class="menu-link{% if active == 'clients_list' %} is-active{% endif %}" href="{% url 'clients_list' %}">
                             <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
@@ -3945,6 +3949,10 @@
                         <a class="menu-link{% if active == 'doces_e_mais_painel' %} is-active{% endif %}" href="{% url 'doces_e_mais_painel' %}">
                             <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c2 3 5 4 5 8a5 5 0 0 1-10 0c0-4 3-5 5-8z"/><path d="M5 22h14"/><path d="M8 18h8"/></svg>
                             <span>Doces e Mais</span>
+                        </a>
+                        <a class="menu-link{% if active == 'doces_e_mais_finances' %} is-active{% endif %}" href="{% url 'doces_e_mais_finances' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/><path d="M8 15h3"/><path d="M15 15h1"/></svg>
+                            <span>Finanças Doces e Mais</span>
                         </a>
                         {% endif %}
                         <a class="menu-link{% if active == 'cart_detail' %} is-active{% endif %}" href="{% url 'cart_detail' %}">

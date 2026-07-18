@@ -698,6 +698,61 @@ def build_customer_finance_context(user, scope=None, include_store=True):
     }
 
 
+def finance_scope_totals(user, target_scope):
+    entries = user.personal_debts.filter(paid=False, scope=target_scope)
+    debts = entries.filter(entry_type=PersonalDebt.TYPE_DEBT).aggregate(s=Sum("amount"))["s"] or Decimal("0.00")
+    receivables = entries.filter(entry_type=PersonalDebt.TYPE_RECEIVABLE).aggregate(s=Sum("amount"))["s"] or Decimal("0.00")
+    return {"debt": money(debts), "receivable": money(receivables), "net": money(receivables - debts)}
+
+
+def apply_doces_e_mais_finance_labels(form):
+    form.fields["entry_type"].choices = (
+        (PersonalDebt.TYPE_RECEIVABLE, "Entrada"),
+        (PersonalDebt.TYPE_DEBT, "Saída"),
+    )
+    form.fields["title"].label = "Descrição"
+    form.fields["title"].widget.attrs["placeholder"] = "Ex.: Venda de cones, compra de chocolate, embalagem"
+    form.fields["amount"].label = "Valor"
+    form.fields["due_date"].label = "Data"
+    form.fields["notes"].label = "Observação"
+    form.fields["notes"].widget.attrs["placeholder"] = "Opcional: forma de pagamento, cliente, fornecedor ou detalhe do pedido"
+    return form
+
+
+def doces_e_mais_finance_ui_context(scope):
+    return {
+        "finance_staff_mode": True,
+        "finance_doces_mode": True,
+        "finance_scope": scope,
+        "finance_scope_label": "Doces e Mais" if scope == PersonalDebt.SCOPE_BUSINESS else "Pessoal",
+        "finance_personal_tab_label": "Minhas finanças",
+        "finance_business_tab_label": "Finanças Doces e Mais",
+        "finance_business_url": reverse("doces_e_mais_finances"),
+        "finance_personal_url": reverse("customer_finances"),
+        "finance_page_title": "Finanças Doces e Mais" if scope == PersonalDebt.SCOPE_BUSINESS else "Minhas finanças",
+        "finance_create_title": "Adicionar entrada ou saída",
+        "finance_create_help": "Registre vendas, encomendas a receber, compras de ingredientes, embalagens, entregas e qualquer movimento da Doces e Mais.",
+        "finance_submit_label": "Salvar lançamento",
+        "finance_total_label": "Total em lançamentos",
+        "finance_debt_label": "Saídas",
+        "finance_debt_help": "Valores a pagar registrados",
+        "finance_receivable_label": "Entradas",
+        "finance_receivable_help": "Valores a receber registrados",
+        "finance_net_label": "Diferença entre entradas e saídas",
+        "finance_net_positive": "Entradas acima das saídas",
+        "finance_net_negative": "Saídas acima das entradas",
+        "finance_calendar_title": "Calendário de entradas e saídas",
+        "finance_debts_this_month_title": "Saídas deste mês",
+        "finance_debts_this_month_empty": "Nenhuma saída prevista neste mês.",
+        "finance_future_debts_title": "Saídas futuras",
+        "finance_future_debts_empty": "Nenhuma saída futura registrada.",
+        "finance_receivables_this_month_title": "Entradas deste mês",
+        "finance_receivables_this_month_empty": "Nenhuma entrada prevista neste mês.",
+        "finance_future_receivables_title": "Entradas futuras",
+        "finance_future_receivables_empty": "Nenhuma entrada futura registrada.",
+    }
+
+
 def get_welcome_discount_profile(request):
     if not request.user.is_authenticated or request.user.is_staff:
         return None
@@ -1070,9 +1125,39 @@ def doces_e_mais_painel(request):
         {
             "rows": rows,
             "versao1_url": reverse("doces_e_mais"),
-            "versao2_url": reverse("doces_e_mais_cardapio"),
+            "finances_url": reverse("doces_e_mais_finances"),
         },
     )
+
+
+@login_required(login_url="login")
+def doces_e_mais_finances(request):
+    if not can_manage_doces_e_mais(request.user):
+        return HttpResponseForbidden("Acesso restrito a proprietária da Doces e Mais.")
+
+    scope = PersonalDebt.SCOPE_BUSINESS
+
+    if request.method == "POST":
+        form = apply_doces_e_mais_finance_labels(PersonalDebtForm(request.POST))
+
+        if form.is_valid():
+            entry = form.save(commit=False)
+            entry.client = request.user
+            entry.scope = scope
+            entry.save()
+            messages.success(request, "Lançamento da Doces e Mais adicionado.")
+            return redirect("doces_e_mais_finances")
+    else:
+        form = apply_doces_e_mais_finance_labels(PersonalDebtForm())
+
+    context = build_customer_finance_context(request.user, scope=scope, include_store=False)
+    context["personal_debt_form"] = form
+    context["finance_comparison"] = {
+        "personal": finance_scope_totals(request.user, PersonalDebt.SCOPE_PERSONAL),
+        "business": finance_scope_totals(request.user, PersonalDebt.SCOPE_BUSINESS),
+    }
+    context.update(doces_e_mais_finance_ui_context(scope))
+    return render(request, "accounts/customer_finances.html", context)
 
 
 def brand_preview(request):
@@ -2346,21 +2431,32 @@ def customer_finances(request):
     if profile.registration_status != ClientProfile.APPROVED:
         return render(request, "accounts/registration_pending.html", {"profile": profile})
 
+    owner_finance_mode = can_manage_doces_e_mais(request.user)
+    finance_scope = PersonalDebt.SCOPE_PERSONAL if owner_finance_mode else None
+
     if request.method == "POST":
         form = PersonalDebtForm(request.POST)
 
         if form.is_valid():
             personal_debt = form.save(commit=False)
             personal_debt.client = request.user
+            if owner_finance_mode:
+                personal_debt.scope = PersonalDebt.SCOPE_PERSONAL
             personal_debt.save()
             messages.success(request, "Conta pessoal criada com sucesso.")
             return redirect("customer_finances")
     else:
         form = PersonalDebtForm()
 
-    context = build_customer_finance_context(request.user)
+    context = build_customer_finance_context(request.user, scope=finance_scope)
     context["personal_debt_form"] = form
     context["finance_tip"] = daily_finance_tip()
+    if owner_finance_mode:
+        context["finance_comparison"] = {
+            "personal": finance_scope_totals(request.user, PersonalDebt.SCOPE_PERSONAL),
+            "business": finance_scope_totals(request.user, PersonalDebt.SCOPE_BUSINESS),
+        }
+        context.update(doces_e_mais_finance_ui_context(PersonalDebt.SCOPE_PERSONAL))
     return render(request, "accounts/customer_finances.html", context)
 
 
@@ -2386,20 +2482,14 @@ def staff_finances(request):
     else:
         form = PersonalDebtForm()
 
-    def scope_totals(target_scope):
-        entries = request.user.personal_debts.filter(paid=False, scope=target_scope)
-        debts = entries.filter(entry_type=PersonalDebt.TYPE_DEBT).aggregate(s=Sum("amount"))["s"] or Decimal("0.00")
-        receivables = entries.filter(entry_type=PersonalDebt.TYPE_RECEIVABLE).aggregate(s=Sum("amount"))["s"] or Decimal("0.00")
-        return {"debt": money(debts), "receivable": money(receivables), "net": money(receivables - debts)}
-
     context = build_customer_finance_context(request.user, scope=scope, include_store=False)
     context["personal_debt_form"] = form
     context["finance_staff_mode"] = True
     context["finance_scope"] = scope
     context["finance_scope_label"] = "Empresarial" if scope == PersonalDebt.SCOPE_BUSINESS else "Pessoal"
     context["finance_comparison"] = {
-        "personal": scope_totals(PersonalDebt.SCOPE_PERSONAL),
-        "business": scope_totals(PersonalDebt.SCOPE_BUSINESS),
+        "personal": finance_scope_totals(request.user, PersonalDebt.SCOPE_PERSONAL),
+        "business": finance_scope_totals(request.user, PersonalDebt.SCOPE_BUSINESS),
     }
     return render(request, "accounts/customer_finances.html", context)
 

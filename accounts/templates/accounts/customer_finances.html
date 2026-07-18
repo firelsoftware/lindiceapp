@@ -332,22 +332,27 @@
     }
 </style>
 
-<h1>Minhas finanças</h1>
+<h1>{{ finance_page_title|default:"Minhas finanças" }}</h1>
 
 {% if finance_staff_mode %}
     <nav class="finance-scope-tabs" aria-label="Tipo de finanças">
-        <a class="finance-scope-tab{% if finance_scope == 'personal' %} active{% endif %}" href="?tipo=personal">Pessoal</a>
-        <a class="finance-scope-tab{% if finance_scope == 'business' %} active{% endif %}" href="?tipo=business">Empresarial</a>
+        {% if finance_doces_mode %}
+            <a class="finance-scope-tab{% if finance_scope == 'personal' %} active{% endif %}" href="{{ finance_personal_url }}">{{ finance_personal_tab_label|default:"Minhas finanças" }}</a>
+            <a class="finance-scope-tab{% if finance_scope == 'business' %} active{% endif %}" href="{{ finance_business_url }}">{{ finance_business_tab_label|default:"Finanças Doces e Mais" }}</a>
+        {% else %}
+            <a class="finance-scope-tab{% if finance_scope == 'personal' %} active{% endif %}" href="?tipo=personal">Pessoal</a>
+            <a class="finance-scope-tab{% if finance_scope == 'business' %} active{% endif %}" href="?tipo=business">Empresarial</a>
+        {% endif %}
     </nav>
     {% if finance_comparison %}
         <div class="finance-compare">
             <div class="finance-compare-card{% if finance_scope == 'personal' %} active{% endif %}">
-                <span class="finance-compare-label">Pessoal</span>
+                <span class="finance-compare-label">{% if finance_doces_mode %}Minhas finanças{% else %}Pessoal{% endif %}</span>
                 <span class="finance-compare-net {% if finance_comparison.personal.net < 0 %}neg{% else %}pos{% endif %}">R$ {{ finance_comparison.personal.net|floatformat:2 }}</span>
                 <span class="finance-compare-detail">Entra R$ {{ finance_comparison.personal.receivable|floatformat:2 }} · Sai R$ {{ finance_comparison.personal.debt|floatformat:2 }}</span>
             </div>
             <div class="finance-compare-card{% if finance_scope == 'business' %} active{% endif %}">
-                <span class="finance-compare-label">Empresarial</span>
+                <span class="finance-compare-label">{% if finance_doces_mode %}Doces e Mais{% else %}Empresarial{% endif %}</span>
                 <span class="finance-compare-net {% if finance_comparison.business.net < 0 %}neg{% else %}pos{% endif %}">R$ {{ finance_comparison.business.net|floatformat:2 }}</span>
                 <span class="finance-compare-detail">Entra R$ {{ finance_comparison.business.receivable|floatformat:2 }} · Sai R$ {{ finance_comparison.business.debt|floatformat:2 }}</span>
             </div>
@@ -355,7 +360,13 @@
     {% endif %}
     <section class="finance-hero">
         <h2>Finanças — {{ finance_scope_label }}</h2>
-        <p><strong>Sua área privada de organização.</strong> Acompanhe o que entra e o que sai, separado entre pessoal e empresarial. Isso não tem relação com as finanças dos clientes.</p>
+        {% if finance_doces_mode and finance_scope == 'business' %}
+            <p><strong>Controle privado da Doces e Mais.</strong> Organize entradas, saídas, compras de ingredientes, embalagens, entregas e previsões de recebimento da loja.</p>
+        {% elif finance_doces_mode %}
+            <p><strong>Sua área privada de organização.</strong> Aqui ficam apenas seus lançamentos pessoais, separados das finanças da Doces e Mais.</p>
+        {% else %}
+            <p><strong>Sua área privada de organização.</strong> Acompanhe o que entra e o que sai, separado entre pessoal e empresarial. Isso não tem relação com as finanças dos clientes.</p>
+        {% endif %}
         {% if next_debt %}
             <p>Próximo vencimento: <strong>{{ next_debt.due_date|date:"d/m/Y" }}</strong> no valor de <strong>R$ {{ next_debt.amount|floatformat:2 }}</strong>.</p>
         {% else %}
@@ -388,8 +399,8 @@
 {% endif %}
 
 <section class="info-panel">
-    <h2>Criar</h2>
-    <p>Cadastre compromissos como aluguel, mercado, escola ou qualquer outra conta sua. Voce tambem pode marcar recebiveis para comparar o que entra com o que sai.</p>
+    <h2>{{ finance_create_title|default:"Criar" }}</h2>
+    <p>{{ finance_create_help|default:"Cadastre compromissos como aluguel, mercado, escola ou qualquer outra conta sua. Voce tambem pode marcar recebiveis para comparar o que entra com o que sai." }}</p>
     <form method="post">
         {% csrf_token %}
         <div class="finance-form-grid">
@@ -445,36 +456,36 @@
                 {% endif %}
             </div>
         </div>
-        <p><button class="button" type="submit">Salvar conta pessoal</button></p>
+        <p><button class="button" type="submit">{{ finance_submit_label|default:"Salvar conta pessoal" }}</button></p>
     </form>
 </section>
 
 <section class="finance-summary-grid" aria-label="Resumo financeiro">
     <article class="finance-stat">
-        <span>Total em registros</span>
+        <span>{{ finance_total_label|default:"Total em registros" }}</span>
         <strong>R$ {{ open_total|floatformat:2 }}</strong>
         <small>{{ open_count }} pendencia{{ open_count|pluralize }}</small>
     </article>
     <article class="finance-stat">
-        <span>Dividas</span>
+        <span>{{ finance_debt_label|default:"Dividas" }}</span>
         <strong>R$ {{ debt_total|floatformat:2 }}</strong>
-        <small>Contas a pagar registradas</small>
+        <small>{{ finance_debt_help|default:"Contas a pagar registradas" }}</small>
     </article>
     <article class="finance-stat">
-        <span>Recebiveis</span>
+        <span>{{ finance_receivable_label|default:"Recebiveis" }}</span>
         <strong>R$ {{ receivable_total|floatformat:2 }}</strong>
-        <small>Valores a receber registrados</small>
+        <small>{{ finance_receivable_help|default:"Valores a receber registrados" }}</small>
     </article>
     <article class="finance-stat {% if net_balance >= 0 %}finance-stat-balance-positive{% else %}finance-stat-balance-negative{% endif %}">
-        <span>Diferenca entre recebiveis e dividas</span>
+        <span>{{ finance_net_label|default:"Diferenca entre recebiveis e dividas" }}</span>
         <strong>{% if net_balance >= 0 %}+{% endif %}R$ {{ net_balance|floatformat:2 }}</strong>
-        <small>{% if net_balance >= 0 %}Recebiveis acima das dividas{% else %}Dividas acima dos recebiveis{% endif %}</small>
+        <small>{% if net_balance >= 0 %}{{ finance_net_positive|default:"Recebiveis acima das dividas" }}{% else %}{{ finance_net_negative|default:"Dividas acima dos recebiveis" }}{% endif %}</small>
     </article>
 </section>
 
 <section class="finance-calendar">
     <div class="finance-calendar-header">
-        <h2>Calendario de vencimentos - {{ calendar.label }}</h2>
+        <h2>{{ finance_calendar_title|default:"Calendario de vencimentos" }} - {{ calendar.label }}</h2>
     </div>
     <div class="finance-calendar-weekdays" aria-hidden="true">
         <span>Seg</span>
@@ -509,7 +520,7 @@
 
 <section class="finance-section-grid">
     <section class="info-panel">
-        <h2>Contas pessoais do mes</h2>
+        <h2>{{ finance_debts_this_month_title|default:"Contas pessoais do mes" }}</h2>
         <div class="finance-list">
             {% for debt in personal_due_this_month %}
                 <article class="finance-item">
@@ -528,13 +539,13 @@
                     {% endif %}
                 </article>
             {% empty %}
-                <p class="finance-empty">Nenhuma conta pessoal com vencimento neste mes.</p>
+                <p class="finance-empty">{{ finance_debts_this_month_empty|default:"Nenhuma conta pessoal com vencimento neste mes." }}</p>
             {% endfor %}
         </div>
     </section>
 
     <section class="info-panel">
-        <h2>Contas pessoais futuras</h2>
+        <h2>{{ finance_future_debts_title|default:"Contas pessoais futuras" }}</h2>
         <div class="finance-list">
             {% for debt in personal_future_debts %}
                 <article class="finance-item">
@@ -550,7 +561,7 @@
                     {% endif %}
                 </article>
             {% empty %}
-                <p class="finance-empty">Voce nao tem contas pessoais futuras registradas.</p>
+                <p class="finance-empty">{{ finance_future_debts_empty|default:"Voce nao tem contas pessoais futuras registradas." }}</p>
             {% endfor %}
         </div>
     </section>
@@ -558,7 +569,7 @@
 
 <section class="finance-section-grid">
     <section class="info-panel">
-        <h2>Recebiveis deste mes</h2>
+        <h2>{{ finance_receivables_this_month_title|default:"Recebiveis deste mes" }}</h2>
         <div class="finance-list">
             {% for debt in receivables_this_month %}
                 <article class="finance-item">
@@ -574,13 +585,13 @@
                     {% endif %}
                 </article>
             {% empty %}
-                <p class="finance-empty">Nenhum recebivel previsto neste mes.</p>
+                <p class="finance-empty">{{ finance_receivables_this_month_empty|default:"Nenhum recebivel previsto neste mes." }}</p>
             {% endfor %}
         </div>
     </section>
 
     <section class="info-panel">
-        <h2>Recebiveis futuros</h2>
+        <h2>{{ finance_future_receivables_title|default:"Recebiveis futuros" }}</h2>
         <div class="finance-list">
             {% for debt in future_receivables %}
                 <article class="finance-item">
@@ -596,7 +607,7 @@
                     {% endif %}
                 </article>
             {% empty %}
-                <p class="finance-empty">Nenhum recebivel futuro registrado.</p>
+                <p class="finance-empty">{{ finance_future_receivables_empty|default:"Nenhum recebivel futuro registrado." }}</p>
             {% endfor %}
         </div>
     </section>
