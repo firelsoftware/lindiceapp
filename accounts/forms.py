@@ -16,7 +16,7 @@ from .utils import clean_digits, cpf_hash, is_valid_cpf
 
 MAX_DOCUMENT_UPLOAD_SIZE = 10 * 1024 * 1024
 ALLOWED_DOCUMENT_CONTENT_TYPES = ("image/jpeg", "image/png", "image/webp", "application/pdf")
-DOCES_E_MAIS_OWNER_EMAIL = "andrezamartinsantossilva@gmail.com"
+DOCES_E_MAIS_OWNER_EMAIL = "andrezamartinssantossilva@gmail.com"
 
 
 def validate_document_file(uploaded_file):

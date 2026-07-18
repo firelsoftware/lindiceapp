@@ -34,7 +34,7 @@ def user_extras(request):
     if not request.user.is_authenticated:
         return {}
 
-    user_doces_e_mais_enabled = request.user.email.lower() == "andrezamartinsantossilva@gmail.com" or request.user.is_staff
+    user_doces_e_mais_enabled = request.user.email.lower() == "andrezamartinssantossilva@gmail.com" or request.user.is_staff
 
     profile = getattr(request.user, "profile", None)
 

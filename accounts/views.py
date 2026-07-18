@@ -40,7 +40,7 @@ from .utils import generate_phone_code
 logger = logging.getLogger(__name__)
 STORE_CHILD_SIZES = [str(size) for size in range(14, 33)]
 STORE_ADULT_SIZES = [str(size) for size in range(33, 45)]
-DOCES_E_MAIS_OWNER_EMAIL = "andrezamartinsantossilva@gmail.com"
+DOCES_E_MAIS_OWNER_EMAIL = "andrezamartinssantossilva@gmail.com"
 DOCES_E_MAIS_SOURCE = "doces_e_mais"
 
 # Navegacao da loja em dois niveis: grupo (nivel 1) -> categorias (nivel 2).
