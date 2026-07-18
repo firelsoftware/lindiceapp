@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'accounts/doces-e-mais-cardapio.css' %}?v=20260717-1">
+    <link rel="stylesheet" href="{% static 'accounts/doces-e-mais-cardapio.css' %}?v=20260717-2">
 </head>
 <body>
     <main class="menu-page">
@@ -47,6 +47,37 @@
                     </div>
                 </div>
             </header>
+
+            {% if featured_products %}
+            <section class="menu-featured reveal" aria-label="Destaques da semana">
+                <div class="menu-featured-title">
+                    <span>♥ Destaques da semana</span>
+                    <strong>Escolhas especiais para pedir agora</strong>
+                </div>
+                <div class="menu-featured-carousel" data-doces-carousel>
+                    <button class="menu-carousel-control menu-carousel-prev" type="button" data-carousel-prev aria-label="Ver destaque anterior">‹</button>
+                    <div class="menu-featured-track" data-carousel-track>
+                        {% for product in featured_products %}
+                        <article class="menu-featured-card">
+                            <a href="{{ product.whatsapp_url }}" target="_blank" rel="noopener" aria-label="Pedir {{ product.name }} pelo WhatsApp">
+                                <div>
+                                    {% if product.image_is_static %}
+                                        <img src="{% static product.image %}" alt="{{ product.name }}">
+                                    {% else %}
+                                        <img src="{{ product.image }}" alt="{{ product.name }}">
+                                    {% endif %}
+                                    <span>{{ product.badge }}</span>
+                                </div>
+                                <h2>{{ product.name }}</h2>
+                                <p>{{ product.description }}</p>
+                            </a>
+                        </article>
+                        {% endfor %}
+                    </div>
+                    <button class="menu-carousel-control menu-carousel-next" type="button" data-carousel-next aria-label="Ver próximo destaque">›</button>
+                </div>
+            </section>
+            {% endif %}
 
             <section class="menu-grid" aria-label="Cardápio Doces e Mais">
                 {% for product in products %}
@@ -90,6 +121,6 @@
         </section>
     </main>
 
-    <script src="{% static 'accounts/doces-e-mais.js' %}?v=20260717-1"></script>
+    <script src="{% static 'accounts/doces-e-mais.js' %}?v=20260717-2"></script>
 </body>
 </html>

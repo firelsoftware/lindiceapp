@@ -321,6 +321,169 @@ h1 {
     text-align: center;
 }
 
+.featured-section {
+    padding-top: 28px;
+}
+
+.featured-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 22px;
+    margin-bottom: 28px;
+}
+
+.featured-heading h2 {
+    max-width: 760px;
+    margin-top: 12px;
+    margin-bottom: 0;
+    font-size: clamp(32px, 4vw, 54px);
+    line-height: 1;
+}
+
+.featured-heading > a {
+    flex: 0 0 auto;
+    padding: 14px 18px;
+    border-radius: 999px;
+    background: var(--chocolate);
+    color: #fff7f2;
+    font-size: 14px;
+    font-weight: 900;
+    box-shadow: 0 16px 34px rgba(60, 31, 22, 0.18);
+}
+
+.featured-carousel {
+    position: relative;
+}
+
+.featured-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(310px, 36%);
+    gap: 20px;
+    overflow-x: auto;
+    padding: 6px 6px 20px;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+}
+
+.featured-card {
+    scroll-snap-align: start;
+}
+
+.featured-card a {
+    display: grid;
+    grid-template-columns: minmax(130px, 0.92fr) minmax(150px, 1fr);
+    min-height: 246px;
+    overflow: hidden;
+    border: 1px solid rgba(198, 161, 91, 0.32);
+    border-radius: 34px;
+    background:
+        radial-gradient(circle at top right, rgba(248, 210, 222, 0.62), transparent 42%),
+        #fffdfb;
+    box-shadow: 0 20px 56px rgba(60, 31, 22, 0.1);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.featured-card a:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow);
+}
+
+.featured-photo {
+    position: relative;
+    min-height: 246px;
+    overflow: hidden;
+    background: var(--rose-soft);
+}
+
+.featured-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.featured-card a:hover .featured-photo img {
+    transform: scale(1.05);
+}
+
+.featured-photo span {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--chocolate);
+    font-size: 11px;
+    font-weight: 900;
+    box-shadow: 0 10px 24px rgba(60, 31, 22, 0.14);
+}
+
+.featured-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 24px;
+}
+
+.featured-copy small {
+    width: fit-content;
+    margin-bottom: 12px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: #f7dbe3;
+    color: var(--chocolate);
+    font-weight: 900;
+}
+
+.featured-copy h3 {
+    margin-bottom: 10px;
+    color: var(--chocolate);
+    font-size: clamp(24px, 2vw, 32px);
+    line-height: 1;
+}
+
+.featured-copy p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.carousel-control {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(60, 31, 22, 0.92);
+    color: #fff7f2;
+    font-size: 34px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 16px 34px rgba(60, 31, 22, 0.22);
+    transform: translateY(-50%);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.carousel-control:hover {
+    transform: translateY(-50%) scale(1.06);
+}
+
+.carousel-control-prev {
+    left: -12px;
+}
+
+.carousel-control-next {
+    right: -12px;
+}
+
 .section-heading {
     width: min(760px, 100%);
     margin-bottom: 38px;
@@ -645,6 +808,15 @@ h1 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .featured-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .featured-track {
+        grid-auto-columns: minmax(300px, 76%);
+    }
+
     .final-cta {
         display: grid;
     }
@@ -707,6 +879,24 @@ h1 {
     .feature-grid,
     .testimonial-grid {
         grid-template-columns: 1fr;
+    }
+
+    .featured-track {
+        grid-auto-columns: minmax(270px, 88%);
+        padding-right: 18px;
+    }
+
+    .featured-card a {
+        grid-template-columns: 1fr;
+    }
+
+    .featured-photo {
+        min-height: 220px;
+        aspect-ratio: 1 / 0.78;
+    }
+
+    .carousel-control {
+        display: none;
     }
 
     .product-media {

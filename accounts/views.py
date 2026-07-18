@@ -1011,8 +1011,13 @@ def doces_e_mais_context():
             "whatsapp_url": f"https://wa.me/{whatsapp_number}?text={quote(product_message)}",
         })
 
+    featured_products = [product for product in products if product["featured"]]
+    if not featured_products:
+        featured_products = products[:3]
+
     return {
         "products": products,
+        "featured_products": featured_products,
         "hero_product": products[0] if products else None,
         "whatsapp_url": f"https://wa.me/{whatsapp_number}?text={quote(base_message)}",
         "instagram_url": "https://www.instagram.com/doces.e.mais",

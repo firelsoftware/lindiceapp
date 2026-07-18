@@ -194,6 +194,157 @@ img {
     font-size: 28px;
 }
 
+.menu-featured {
+    margin: clamp(24px, 4vw, 44px) 0;
+    padding: clamp(16px, 3vw, 24px);
+    border: 1px solid rgba(167, 59, 78, 0.18);
+    border-radius: 26px;
+    background:
+        radial-gradient(circle at top left, rgba(232, 134, 156, 0.22), transparent 38%),
+        rgba(255, 249, 246, 0.78);
+    box-shadow: 0 18px 44px rgba(106, 56, 42, 0.08);
+}
+
+.menu-featured-title {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.menu-featured-title span {
+    color: var(--wine);
+    font-family: "Caveat", cursive;
+    font-size: clamp(30px, 4vw, 46px);
+    font-weight: 700;
+    line-height: 0.95;
+}
+
+.menu-featured-title strong {
+    color: var(--brown);
+    font-size: clamp(13px, 1.8vw, 16px);
+    text-align: right;
+}
+
+.menu-featured-carousel {
+    position: relative;
+}
+
+.menu-featured-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(260px, 31%);
+    gap: 16px;
+    overflow-x: auto;
+    padding: 4px 4px 16px;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+}
+
+.menu-featured-card {
+    scroll-snap-align: start;
+}
+
+.menu-featured-card a {
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(167, 59, 78, 0.22);
+    border-radius: 20px;
+    background: #fffaf8;
+    box-shadow: 0 14px 34px rgba(106, 56, 42, 0.09);
+    transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.menu-featured-card a:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 46px rgba(106, 56, 42, 0.16);
+}
+
+.menu-featured-card div {
+    position: relative;
+    aspect-ratio: 1 / 0.78;
+    overflow: hidden;
+}
+
+.menu-featured-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+}
+
+.menu-featured-card a:hover img {
+    transform: scale(1.045);
+}
+
+.menu-featured-card div span {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    padding: 8px 11px;
+    border-radius: 999px;
+    background: rgba(255, 249, 246, 0.92);
+    color: var(--wine);
+    font-size: 11px;
+    font-weight: 900;
+    box-shadow: 0 8px 20px rgba(106, 56, 42, 0.14);
+}
+
+.menu-featured-card h2 {
+    margin: 0;
+    padding: 14px 14px 5px;
+    color: var(--chocolate);
+    font-family: "Caveat", cursive;
+    font-size: clamp(27px, 3vw, 36px);
+    font-weight: 700;
+    line-height: 0.96;
+    text-align: center;
+}
+
+.menu-featured-card p {
+    margin: 0;
+    padding: 0 16px 18px;
+    color: var(--brown);
+    font-size: 13px;
+    line-height: 1.45;
+    text-align: center;
+}
+
+.menu-carousel-control {
+    position: absolute;
+    z-index: 2;
+    top: 45%;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(93, 50, 38, 0.94);
+    color: #fff9f6;
+    font-size: 30px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 14px 28px rgba(106, 56, 42, 0.24);
+    transform: translateY(-50%);
+    transition: transform 0.2s ease;
+}
+
+.menu-carousel-control:hover {
+    transform: translateY(-50%) scale(1.06);
+}
+
+.menu-carousel-prev {
+    left: -12px;
+}
+
+.menu-carousel-next {
+    right: -12px;
+}
+
 .menu-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -389,6 +540,19 @@ img {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .menu-featured-title {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .menu-featured-title strong {
+        text-align: left;
+    }
+
+    .menu-featured-track {
+        grid-auto-columns: minmax(250px, 48%);
+    }
+
     .menu-card h2 {
         min-height: 76px;
     }
@@ -440,6 +604,20 @@ img {
 
     .menu-grid {
         grid-template-columns: 1fr;
+    }
+
+    .menu-featured {
+        padding: 14px;
+        border-radius: 22px;
+    }
+
+    .menu-featured-track {
+        grid-auto-columns: minmax(245px, 86%);
+        padding-right: 18px;
+    }
+
+    .menu-carousel-control {
+        display: none;
     }
 
     .photo {

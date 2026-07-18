@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'accounts/doces-e-mais.css' %}?v=20260717-1">
+    <link rel="stylesheet" href="{% static 'accounts/doces-e-mais.css' %}?v=20260717-2">
 </head>
 <body>
     <main class="sweet-page">
@@ -68,6 +68,43 @@
                 <span>Doces com presenca de presente</span>
             </div>
         </section>
+
+        {% if featured_products %}
+        <section class="section featured-section reveal" id="destaques">
+            <div class="featured-heading">
+                <div>
+                    <span class="section-kicker">Destaques da semana</span>
+                    <h2>Os queridinhos que merecem aparecer primeiro.</h2>
+                </div>
+                <a href="{{ whatsapp_url }}" target="_blank" rel="noopener">Pedir pelo WhatsApp</a>
+            </div>
+            <div class="featured-carousel" data-doces-carousel>
+                <button class="carousel-control carousel-control-prev" type="button" data-carousel-prev aria-label="Ver destaque anterior">‹</button>
+                <div class="featured-track" data-carousel-track>
+                    {% for product in featured_products %}
+                    <article class="featured-card">
+                        <a href="{{ product.whatsapp_url }}" target="_blank" rel="noopener" aria-label="Pedir {{ product.name }} pelo WhatsApp">
+                            <div class="featured-photo">
+                                {% if product.image_is_static %}
+                                    <img src="{% static product.image %}" alt="{{ product.name }}">
+                                {% else %}
+                                    <img src="{{ product.image }}" alt="{{ product.name }}">
+                                {% endif %}
+                                <span>{{ product.badge }}</span>
+                            </div>
+                            <div class="featured-copy">
+                                <small>{{ product.number }}</small>
+                                <h3>{{ product.name }}</h3>
+                                <p>{{ product.description }}</p>
+                            </div>
+                        </a>
+                    </article>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control carousel-control-next" type="button" data-carousel-next aria-label="Ver próximo destaque">›</button>
+            </div>
+        </section>
+        {% endif %}
 
         <section class="section products" id="doces">
             <div class="section-heading reveal">
@@ -161,6 +198,6 @@
         </nav>
     </footer>
 
-    <script src="{% static 'accounts/doces-e-mais.js' %}?v=20260717-1"></script>
+    <script src="{% static 'accounts/doces-e-mais.js' %}?v=20260717-2"></script>
 </body>
 </html>
