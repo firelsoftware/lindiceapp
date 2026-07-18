@@ -18,7 +18,13 @@
     <main class="sweet-page">
         <section class="hero" id="inicio">
             <div class="hero-photo" aria-hidden="true">
-                <img src="{% static 'accounts/doces-e-mais/pastel-leite-ninho-nutella.jpeg' %}" alt="">
+                {% if hero_product and hero_product.image_is_static %}
+                    <img src="{% static hero_product.image %}" alt="">
+                {% elif hero_product %}
+                    <img src="{{ hero_product.image }}" alt="">
+                {% else %}
+                    <img src="{% static 'accounts/doces-e-mais/pastel-leite-ninho-nutella.jpeg' %}" alt="">
+                {% endif %}
             </div>
             <div class="hero-overlay"></div>
             <nav class="topnav" aria-label="Navegacao principal">
@@ -73,7 +79,11 @@
                 {% for product in products %}
                 <article class="product-card reveal">
                     <div class="product-media">
-                        <img src="{% static product.image %}" alt="{{ product.name }}">
+                        {% if product.image_is_static %}
+                            <img src="{% static product.image %}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{{ product.image }}" alt="{{ product.name }}">
+                        {% endif %}
                         <span>{{ product.badge }}</span>
                     </div>
                     <div class="product-copy">

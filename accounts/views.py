@@ -28,7 +28,7 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
+from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
 from .models import StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, verify_webhook_signature
@@ -39,6 +39,8 @@ from .utils import generate_phone_code
 logger = logging.getLogger(__name__)
 STORE_CHILD_SIZES = [str(size) for size in range(14, 33)]
 STORE_ADULT_SIZES = [str(size) for size in range(33, 45)]
+DOCES_E_MAIS_OWNER_EMAIL = "andrezamartinsantossilva@gmail.com"
+DOCES_E_MAIS_SOURCE = "doces_e_mais"
 
 # Navegacao da loja em dois niveis: grupo (nivel 1) -> categorias (nivel 2).
 # As categorias sao os valores reais do campo SupplierProduct.category.
@@ -877,59 +879,70 @@ def home(request):
     return redirect("store_front")
 
 
-def doces_e_mais_context():
-    whatsapp_number = "5561992655947"
-    base_message = "Olá! Vim pela página da Doces e Mais e gostaria de iniciar um atendimento."
-    product_data = [
+def can_manage_doces_e_mais(user):
+    return user.is_authenticated and (user.is_staff or user.email.lower() == DOCES_E_MAIS_OWNER_EMAIL)
+
+
+def doces_e_mais_defaults():
+    return [
         {
+            "code": "doces-01",
             "name": "Pastel de leite ninho recheado com Nutella",
             "description": "Casquinha delicada, recheio cremoso e aquele encontro perfeito entre leite ninho e Nutella.",
             "image": "accounts/doces-e-mais/pastel-leite-ninho-nutella.jpeg",
             "badge": "Muito recheio",
         },
         {
+            "code": "doces-02",
             "name": "Pão de mel tradicional",
             "description": "Massa macia, cobertura generosa de chocolate e sabor artesanal com cara de presente.",
             "image": "accounts/doces-e-mais/pao-de-mel-tradicional.jpeg",
             "badge": "Classico premium",
         },
         {
+            "code": "doces-03",
             "name": "Cone trufado - Brigadeiro",
             "description": "Cone crocante com brigadeiro cremoso e finalizacao caprichada para matar a vontade de chocolate.",
             "image": "accounts/doces-e-mais/cone-trufado-brigadeiro.jpeg",
             "badge": "Queridinho",
         },
         {
+            "code": "doces-04",
             "name": "Cone trufado - Paçoca",
             "description": "Camadas de sabor, textura crocante e cobertura de paçoca para quem ama doce brasileiro.",
             "image": "accounts/doces-e-mais/cone-trufado-pacoca.jpeg",
             "badge": "Artesanal",
         },
         {
+            "code": "doces-05",
             "name": "Trufa recheada - Morango",
             "description": "Chocolate envolvente com recheio de morango, embalagem charmosa e sabor marcante.",
             "image": "accounts/doces-e-mais/trufa-recheada-morango.jpeg",
             "badge": "Frutada",
         },
         {
+            "code": "doces-06",
             "name": "Trufa recheada - Uva",
             "description": "Trufa cremosa com toque de uva, feita para presentear ou deixar o dia mais gostoso.",
             "image": "accounts/doces-e-mais/trufa-recheada-uva.jpeg",
             "badge": "Especial",
         },
         {
+            "code": "doces-07",
             "name": "Fatia de bolo - Chocolate com brigadeiro de maracuja",
             "description": "Chocolate intenso com recheio de brigadeiro de maracujá para equilibrar doçura e frescor.",
             "image": "accounts/doces-e-mais/fatia-bolo-chocolate-maracuja.jpeg",
             "badge": "Irresistível",
         },
         {
+            "code": "doces-08",
             "name": "Fatia de bolo - Cacau Black",
             "description": "Fatia de bolo escura, elegante e chocolatuda, com visual premium e sabor profundo.",
             "image": "accounts/doces-e-mais/fatia-bolo-cacau-black.jpeg",
             "badge": "Chocolate intenso",
         },
         {
+            "code": "doces-09",
             "name": "Morango do Amor",
             "description": "Morango envolvido em brilho, carinho e capricho: bonito para presentear, melhor ainda para comer.",
             "image": "accounts/doces-e-mais/morango-do-amor.jpeg",
@@ -937,17 +950,70 @@ def doces_e_mais_context():
         },
     ]
 
+
+def ensure_doces_e_mais_products():
     products = []
-    for index, product in enumerate(product_data, start=1):
-        product_message = f"{base_message} Tenho interesse em: {product['name']}."
+    for order, item in enumerate(doces_e_mais_defaults(), start=1):
+        product, created = SupplierProduct.objects.get_or_create(
+            source=DOCES_E_MAIS_SOURCE,
+            supplier_code=item["code"],
+            defaults={
+                "name": item["name"],
+                "description": item["description"],
+                "image_url": item["image"],
+                "suggested_sale_price": Decimal("0.00"),
+                "stock_quantity": 1,
+                "is_active": True,
+                "is_visible": True,
+                "raw_data": {
+                    "badge": item["badge"],
+                    "featured": order <= 3,
+                    "promo_text": "",
+                    "order": order,
+                    "static_image": item["image"],
+                },
+            },
+        )
+        if not created:
+            raw = dict(product.raw_data or {})
+            changed = False
+            for key, value in {"order": order, "static_image": item["image"], "badge": raw.get("badge") or item["badge"]}.items():
+                if raw.get(key) != value:
+                    raw[key] = value
+                    changed = True
+            if changed:
+                product.raw_data = raw
+                product.save(update_fields=["raw_data", "updated_at"])
+        products.append(product)
+    return products
+
+
+def doces_e_mais_context():
+    whatsapp_number = "5561992655947"
+    base_message = "Olá! Vim pela página da Doces e Mais e gostaria de iniciar um atendimento."
+
+    products = []
+    visible_products = [product for product in ensure_doces_e_mais_products() if product.is_visible]
+    visible_products.sort(key=lambda product: (product.raw_data or {}).get("order", 99))
+    for index, product in enumerate(visible_products, start=1):
+        raw = product.raw_data or {}
+        product_message = f"{base_message} Tenho interesse em: {product.name}."
+        image_url = product.image_file.url if product.image_file else ""
         products.append({
-            **product,
+            "name": product.name,
+            "description": product.description,
+            "image": image_url or raw.get("static_image") or product.image_url,
+            "image_is_static": not bool(image_url),
+            "badge": raw.get("promo_text") or raw.get("badge") or "Artesanal",
+            "featured": bool(raw.get("featured")),
+            "promo_text": raw.get("promo_text", ""),
             "number": f"{index:02d}",
             "whatsapp_url": f"https://wa.me/{whatsapp_number}?text={quote(product_message)}",
         })
 
     return {
         "products": products,
+        "hero_product": products[0] if products else None,
         "whatsapp_url": f"https://wa.me/{whatsapp_number}?text={quote(base_message)}",
         "instagram_url": "https://www.instagram.com/doces.e.mais",
         "phone_label": "(61) 9 9265-5947",
@@ -961,6 +1027,47 @@ def doces_e_mais(request):
 
 def doces_e_mais_cardapio(request):
     return render(request, "accounts/doces_e_mais_cardapio.html", doces_e_mais_context())
+
+
+@login_required(login_url="login")
+def doces_e_mais_painel(request):
+    if not can_manage_doces_e_mais(request.user):
+        return HttpResponseForbidden("Acesso restrito a proprietária da Doces e Mais.")
+
+    products = ensure_doces_e_mais_products()
+    products.sort(key=lambda product: (product.raw_data or {}).get("order", 99))
+    forms_by_id = {}
+
+    if request.method == "POST":
+        product_id = request.POST.get("product_id", "").strip()
+        product = get_object_or_404(SupplierProduct, id=product_id, source=DOCES_E_MAIS_SOURCE)
+        form = DocesEMaisProductForm(request.POST, request.FILES, instance=product)
+        forms_by_id[product.id] = form
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"{product.name} atualizado.")
+            return redirect("doces_e_mais_painel")
+        messages.error(request, "Revise os dados do produto.")
+
+    rows = []
+    for product in products:
+        rows.append({
+            "product": product,
+            "form": forms_by_id.get(product.id) or DocesEMaisProductForm(instance=product),
+            "raw": product.raw_data or {},
+            "preview_image": product.image_file.url if product.image_file else (product.raw_data or {}).get("static_image") or product.image_url,
+            "preview_is_static": not bool(product.image_file),
+        })
+
+    return render(
+        request,
+        "accounts/doces_e_mais_painel.html",
+        {
+            "rows": rows,
+            "versao1_url": reverse("doces_e_mais"),
+            "versao2_url": reverse("doces_e_mais_cardapio"),
+        },
+    )
 
 
 def brand_preview(request):

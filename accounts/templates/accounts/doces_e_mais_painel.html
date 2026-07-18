@@ -1,0 +1,135 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .doces-panel-list {
+        display: grid;
+        gap: 18px;
+    }
+
+    .doces-panel-card {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.65fr) minmax(0, 1.35fr);
+        gap: 22px;
+        align-items: start;
+    }
+
+    .doces-panel-preview {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #ffffff;
+        box-shadow: 0 12px 26px rgba(24, 34, 48, 0.06);
+    }
+
+    .doces-panel-preview img {
+        width: 100%;
+        aspect-ratio: 1 / 0.82;
+        object-fit: cover;
+    }
+
+    .doces-panel-preview div {
+        display: grid;
+        gap: 6px;
+        padding: 14px;
+    }
+
+    .doces-panel-preview span {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .doces-panel-form {
+        display: grid;
+        gap: 14px;
+    }
+
+    .doces-panel-form input[type="text"],
+    .doces-panel-form textarea,
+    .doces-panel-form input[type="file"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #ffffff;
+        font: inherit;
+    }
+
+    .doces-panel-form textarea {
+        resize: vertical;
+    }
+
+    .form-field {
+        display: grid;
+        gap: 6px;
+    }
+
+    .form-field-inline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-field-inline label {
+        order: 2;
+    }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    @media (max-width: 780px) {
+        .doces-panel-card {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+<section class="card">
+    <div class="page-heading-row">
+        <div>
+            <h1>Painel Doces e Mais</h1>
+            <p>Atualize fotos, destaques e promoções que aparecem nas duas versões da página.</p>
+        </div>
+        <div class="actions">
+            <a class="button button-secondary" href="{{ versao1_url }}" target="_blank" rel="noopener">Ver versão 1</a>
+            <a class="button button-secondary" href="{{ versao2_url }}" target="_blank" rel="noopener">Ver versão 2</a>
+        </div>
+    </div>
+</section>
+
+<section class="doces-panel-list">
+    {% for row in rows %}
+    <article class="card doces-panel-card">
+        <div class="doces-panel-preview">
+            {% if row.preview_is_static %}
+                <img src="{% static row.preview_image %}" alt="{{ row.product.name }}">
+            {% else %}
+                <img src="{{ row.preview_image }}" alt="{{ row.product.name }}">
+            {% endif %}
+            <div>
+                <strong>{{ row.product.name }}</strong>
+                {% if row.raw.promo_text %}<span>{{ row.raw.promo_text }}</span>{% endif %}
+                {% if row.raw.featured %}<span>Destaque ativo</span>{% endif %}
+            </div>
+        </div>
+        <form method="post" enctype="multipart/form-data" class="form-grid doces-panel-form">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ row.product.id }}">
+            {% for field in row.form %}
+                <div class="form-field{% if field.field.widget.input_type == 'checkbox' %} form-field-inline{% endif %}">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                    {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+                </div>
+            {% endfor %}
+            <button class="button" type="submit">Salvar este doce</button>
+        </form>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}

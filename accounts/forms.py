@@ -467,6 +467,56 @@ class PromoEmailForm(forms.Form):
     )
 
 
+class DocesEMaisProductForm(forms.ModelForm):
+    featured = forms.BooleanField(label="Destacar produto", required=False)
+    promo_text = forms.CharField(
+        label="Promoção / chamada",
+        required=False,
+        max_length=80,
+        widget=forms.TextInput(attrs={"placeholder": "Ex.: Especial da semana"}),
+    )
+    badge = forms.CharField(
+        label="Etiqueta",
+        required=False,
+        max_length=40,
+        widget=forms.TextInput(attrs={"placeholder": "Ex.: Muito recheio"}),
+    )
+
+    class Meta:
+        model = SupplierProduct
+        fields = ("name", "description", "image_file", "is_visible", "featured", "promo_text", "badge")
+        labels = {
+            "name": "Nome do doce",
+            "description": "Descrição",
+            "image_file": "Foto",
+            "is_visible": "Mostrar na página",
+        }
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        raw = getattr(self.instance, "raw_data", None) or {}
+        if not self.is_bound:
+            self.fields["featured"].initial = bool(raw.get("featured"))
+            self.fields["promo_text"].initial = raw.get("promo_text", "")
+            self.fields["badge"].initial = raw.get("badge", "")
+        self.fields["image_file"].required = False
+        self.fields["is_visible"].required = False
+
+    def save(self, commit=True):
+        product = super().save(commit=False)
+        raw = dict(product.raw_data or {})
+        raw["featured"] = bool(self.cleaned_data.get("featured"))
+        raw["promo_text"] = (self.cleaned_data.get("promo_text") or "").strip()
+        raw["badge"] = (self.cleaned_data.get("badge") or "").strip()
+        product.raw_data = raw
+        if commit:
+            product.save()
+        return product
+
+
 class PersonalDebtForm(forms.ModelForm):
     class Meta:
         model = PersonalDebt

@@ -34,10 +34,12 @@ def user_extras(request):
     if not request.user.is_authenticated:
         return {}
 
+    user_doces_e_mais_enabled = request.user.email.lower() == "andrezamartinsantossilva@gmail.com" or request.user.is_staff
+
     profile = getattr(request.user, "profile", None)
 
     if not profile:
-        return {}
+        return {"user_doces_e_mais_enabled": user_doces_e_mais_enabled}
 
     extra_data = profile.extra_data or {}
     sales_keyword = (extra_data.get("sales_report_brand_keyword") or "").strip()
@@ -48,4 +50,5 @@ def user_extras(request):
         "user_sales_report_enabled": bool(sales_keyword),
         "user_sales_report_label": sales_title,
         "user_brand_theme": theme if isinstance(theme, dict) else {},
+        "user_doces_e_mais_enabled": user_doces_e_mais_enabled,
     }

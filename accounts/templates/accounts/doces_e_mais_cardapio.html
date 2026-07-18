@@ -53,7 +53,11 @@
                 <article class="menu-card reveal">
                     <a href="{{ product.whatsapp_url }}" target="_blank" rel="noopener" aria-label="Pedir {{ product.name }} pelo WhatsApp">
                         <div class="photo">
-                            <img src="{% static product.image %}" alt="{{ product.name }}">
+                            {% if product.image_is_static %}
+                                <img src="{% static product.image %}" alt="{{ product.name }}">
+                            {% else %}
+                                <img src="{{ product.image }}" alt="{{ product.name }}">
+                            {% endif %}
                             <span>{{ product.number }}</span>
                         </div>
                         <h2>{{ product.name }}</h2>

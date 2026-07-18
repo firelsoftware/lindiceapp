@@ -3894,6 +3894,12 @@
                             <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M9 9v11"/></svg>
                             <span>Loja</span>
                         </a>
+                        {% if user_doces_e_mais_enabled %}
+                        <a class="menu-link{% if active == 'doces_e_mais_painel' %} is-active{% endif %}" href="{% url 'doces_e_mais_painel' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c2 3 5 4 5 8a5 5 0 0 1-10 0c0-4 3-5 5-8z"/><path d="M5 22h14"/><path d="M8 18h8"/></svg>
+                            <span>Doces e Mais</span>
+                        </a>
+                        {% endif %}
                         <a class="menu-link{% if active == 'clients_list' %} is-active{% endif %}" href="{% url 'clients_list' %}">
                             <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
                             <span>Clientes</span>
@@ -3935,6 +3941,12 @@
                             <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M9 9v11"/></svg>
                             <span>Loja</span>
                         </a>
+                        {% if user_doces_e_mais_enabled %}
+                        <a class="menu-link{% if active == 'doces_e_mais_painel' %} is-active{% endif %}" href="{% url 'doces_e_mais_painel' %}">
+                            <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c2 3 5 4 5 8a5 5 0 0 1-10 0c0-4 3-5 5-8z"/><path d="M5 22h14"/><path d="M8 18h8"/></svg>
+                            <span>Doces e Mais</span>
+                        </a>
+                        {% endif %}
                         <a class="menu-link{% if active == 'cart_detail' %} is-active{% endif %}" href="{% url 'cart_detail' %}">
                             <svg class="menu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
                             <span>Carrinho</span>
