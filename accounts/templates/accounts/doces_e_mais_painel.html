@@ -8,6 +8,88 @@
         gap: 18px;
     }
 
+    .doces-guide-grid,
+    .doces-shortcuts {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    .doces-guide-card,
+    .doces-shortcut {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #ffffff;
+        box-shadow: 0 10px 24px rgba(24, 34, 48, 0.05);
+    }
+
+    .doces-guide-card strong,
+    .doces-shortcut strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--ink);
+    }
+
+    .doces-guide-card span {
+        display: inline-grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        margin-bottom: 10px;
+        border-radius: 50%;
+        background: var(--brand-purple);
+        color: #ffffff;
+        font-weight: 800;
+    }
+
+    .doces-guide-card p,
+    .doces-shortcut p,
+    .doces-panel-section-intro {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+    }
+
+    .doces-shortcut {
+        color: inherit;
+        text-decoration: none;
+        transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .doces-shortcut:hover {
+        border-color: var(--brand-purple);
+        color: inherit;
+        transform: translateY(-2px);
+    }
+
+    .doces-section-anchor {
+        scroll-margin-top: 96px;
+    }
+
+    .doces-panel-tools {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 14px;
+        padding: 14px;
+        border: 1px dashed rgba(122, 45, 132, 0.38);
+        border-radius: 12px;
+        background: #fbf7ff;
+    }
+
+    .doces-panel-tools h3 {
+        margin: 0;
+        color: var(--brand-purple);
+        font-size: 18px;
+    }
+
+    .doces-panel-tools p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+    }
+
     .doces-panel-card {
         display: grid;
         grid-template-columns: minmax(220px, 0.65fr) minmax(0, 1.35fr);
@@ -144,6 +226,19 @@
         gap: 6px;
     }
 
+    .form-field label {
+        font-weight: 800;
+    }
+
+    .form-field:has(input[name="featured"]),
+    .form-field:has(input[name="promo_text"]),
+    .form-field:has(input[name="badge"]) {
+        padding: 12px;
+        border: 1px solid rgba(122, 45, 132, 0.24);
+        border-radius: 12px;
+        background: #fbf7ff;
+    }
+
     .form-field-inline {
         display: flex;
         align-items: center;
@@ -165,12 +260,16 @@
             grid-template-columns: 1fr;
         }
 
+        .doces-guide-grid,
+        .doces-shortcuts,
         .doces-report-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
     @media (max-width: 520px) {
+        .doces-guide-grid,
+        .doces-shortcuts,
         .doces-report-grid,
         .doces-report-day {
             grid-template-columns: 1fr;
@@ -191,6 +290,51 @@
 </section>
 
 <section class="card">
+    <h2>Como usar o painel</h2>
+    <p class="doces-panel-section-intro">Aqui a proprietária muda o que aparece na página pública. Cada doce tem seu próprio botão “Salvar este doce”.</p>
+    <div class="doces-guide-grid">
+        <article class="doces-guide-card">
+            <span>1</span>
+            <strong>Editar produtos</strong>
+            <p>Altere nome, descrição, foto e se o doce aparece ou não na página.</p>
+        </article>
+        <article class="doces-guide-card">
+            <span>2</span>
+            <strong>Escolher destaques</strong>
+            <p>Marque “Destacar produto” para colocar o doce no carrossel de destaques.</p>
+        </article>
+        <article class="doces-guide-card">
+            <span>3</span>
+            <strong>Criar promoções</strong>
+            <p>Use “Promoção / chamada” para textos como “Especial da semana”.</p>
+        </article>
+        <article class="doces-guide-card">
+            <span>4</span>
+            <strong>Salvar</strong>
+            <p>Depois de editar um doce, clique em “Salvar este doce” no card dele.</p>
+        </article>
+    </div>
+    <div class="doces-shortcuts" aria-label="Atalhos do painel">
+        <a class="doces-shortcut" href="#produtos">
+            <strong>Produtos</strong>
+            <p>Editar fotos, nomes e descrições.</p>
+        </a>
+        <a class="doces-shortcut" href="#destaques-promocoes">
+            <strong>Destaques e promoções</strong>
+            <p>Marcar destaque e escrever chamada.</p>
+        </a>
+        <a class="doces-shortcut" href="#relatorio">
+            <strong>Relatório de visitas</strong>
+            <p>Ver quantas pessoas acessaram.</p>
+        </a>
+        <a class="doces-shortcut" href="{{ finances_url }}">
+            <strong>Finanças</strong>
+            <p>Organizar entradas e saídas.</p>
+        </a>
+    </div>
+</section>
+
+<section class="card doces-section-anchor" id="relatorio">
     <h2>Relatório de visitas</h2>
     <p>Acompanhamento simples das visitas na página da Doces e Mais. As suas visitas quando estiver logada não entram na contagem.</p>
     <div class="doces-report-grid">
@@ -233,7 +377,12 @@
     </div>
 </section>
 
-<section class="doces-panel-list">
+<section class="card doces-section-anchor" id="destaques-promocoes">
+    <h2>Destaques e promoções</h2>
+    <p class="doces-panel-section-intro">Para destacar um doce, marque “Destacar produto”. Para criar uma chamada promocional, escreva no campo “Promoção / chamada”. Essas opções aparecem dentro de cada produto abaixo.</p>
+</section>
+
+<section class="doces-panel-list doces-section-anchor" id="produtos">
     {% for row in rows %}
     <article class="card doces-panel-card">
         <div class="doces-panel-preview">
@@ -251,6 +400,10 @@
         <form method="post" enctype="multipart/form-data" class="form-grid doces-panel-form">
             {% csrf_token %}
             <input type="hidden" name="product_id" value="{{ row.product.id }}">
+            <div class="doces-panel-tools">
+                <h3>Editar este doce</h3>
+                <p>Use os campos abaixo. Para promoção e destaque, procure os campos roxos deste card.</p>
+            </div>
             {% for field in row.form %}
                 <div class="form-field{% if field.field.widget.input_type == 'checkbox' %} form-field-inline{% endif %}">
                     {{ field.label_tag }}
