@@ -1,0 +1,91 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Cardápio premium da Doces e Mais com doces artesanais feitos com amor.">
+    <meta property="og:title" content="Doces e Mais | Cardápio artesanal">
+    <meta property="og:description" content="Doces artesanais feitos com amor e ingredientes selecionados.">
+    <meta property="og:image" content="{% static 'accounts/doces-e-mais/pastel-leite-ninho-nutella.jpeg' %}">
+    <title>Doces e Mais | Cardápio artesanal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'accounts/doces-e-mais-cardapio.css' %}?v=20260717-1">
+</head>
+<body>
+    <main class="menu-page">
+        <section class="poster reveal">
+            <header class="poster-header">
+                <div class="logo-block" aria-label="Doces e Mais">
+                    <div class="logo-art" aria-hidden="true">
+                        <span class="swirl">∿</span>
+                        <span class="bonbon">◆</span>
+                        <span class="cake">▰</span>
+                        <span class="whisk">⌇</span>
+                    </div>
+                    <h1>Doces e mais</h1>
+                    <p>Feito com amor, para adoçar seus dias! <span>♥</span></p>
+                </div>
+                <div class="headline-block">
+                    <strong>Doces artesanais</strong>
+                    <em>Feitos com amor e ingredientes selecionados!</em>
+                    <div class="mini-features" id="diferenciais">
+                        <div>
+                            <span>✪</span>
+                            <b>Ingredientes<br>de qualidade</b>
+                        </div>
+                        <div>
+                            <span>♡</span>
+                            <b>Produção<br>artesanal</b>
+                        </div>
+                        <div>
+                            <span>◷</span>
+                            <b>Entrega<br>rápida</b>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="menu-grid" aria-label="Cardápio Doces e Mais">
+                {% for product in products %}
+                <article class="menu-card reveal">
+                    <a href="{{ product.whatsapp_url }}" target="_blank" rel="noopener" aria-label="Pedir {{ product.name }} pelo WhatsApp">
+                        <div class="photo">
+                            <img src="{% static product.image %}" alt="{{ product.name }}">
+                            <span>{{ product.number }}</span>
+                        </div>
+                        <h2>{{ product.name }}</h2>
+                    </a>
+                </article>
+                {% endfor %}
+            </section>
+
+            <section class="order-strip reveal" aria-label="Atendimento">
+                <a class="contact-pill whatsapp" href="{{ whatsapp_url }}" target="_blank" rel="noopener" aria-label="Fazer pedido pelo WhatsApp">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.56 2 2.1 6.43 2.1 11.88c0 1.75.46 3.46 1.34 4.96L2 22l5.3-1.39a9.94 9.94 0 0 0 4.74 1.2h.01c5.48 0 9.94-4.43 9.94-9.88C21.99 6.45 17.53 2 12.04 2Zm0 18.13h-.01a8.27 8.27 0 0 1-4.2-1.15l-.3-.18-3.15.82.84-3.06-.2-.31a8.2 8.2 0 0 1-1.25-4.37c0-4.53 3.71-8.22 8.28-8.22a8.27 8.27 0 0 1 8.28 8.27c0 4.52-3.72 8.2-8.29 8.2Zm4.54-6.15c-.25-.12-1.47-.72-1.7-.8-.23-.09-.4-.13-.56.12-.17.25-.65.8-.8.96-.14.17-.29.19-.54.07-.25-.13-1.05-.39-2-1.23a7.48 7.48 0 0 1-1.38-1.71c-.14-.25-.02-.38.1-.5.12-.11.25-.29.38-.43.12-.15.16-.25.25-.42.08-.16.04-.31-.02-.43-.06-.13-.56-1.34-.77-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.73 2.63 4.18 3.69.58.25 1.04.4 1.39.51.59.19 1.12.16 1.54.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.15-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
+                    <span>Faça seu pedido!</span>
+                    <strong>{{ phone_label }}</strong>
+                </a>
+                <a class="contact-pill instagram" href="{{ instagram_url }}" target="_blank" rel="noopener" aria-label="Seguir Doces e Mais no Instagram">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.1 2h9.8A5.1 5.1 0 0 1 22 7.1v9.8a5.1 5.1 0 0 1-5.1 5.1H7.1A5.1 5.1 0 0 1 2 16.9V7.1A5.1 5.1 0 0 1 7.1 2Zm-.2 2A2.9 2.9 0 0 0 4 6.9v10.2A2.9 2.9 0 0 0 6.9 20h10.2a2.9 2.9 0 0 0 2.9-2.9V6.9A2.9 2.9 0 0 0 17.1 4H6.9Zm10.6 1.5a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+                    <span>Siga nosso Instagram</span>
+                    <strong>{{ instagram_label }}</strong>
+                </a>
+                <div class="made-for-you">
+                    <span>♡</span>
+                    <p>Cada doce é feito especialmente para você!</p>
+                </div>
+            </section>
+        </section>
+
+        <section class="final-bar reveal">
+            <a href="{{ whatsapp_url }}" target="_blank" rel="noopener">♥ Adoce momentos. Crie lembranças.</a>
+            <span>Desenvolvido por <a href="https://www.firelsoft.com.br" target="_blank" rel="noopener">FirelSoft</a></span>
+        </section>
+    </main>
+
+    <script src="{% static 'accounts/doces-e-mais.js' %}?v=20260717-1"></script>
+</body>
+</html>

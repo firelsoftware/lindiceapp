@@ -877,6 +877,92 @@ def home(request):
     return redirect("store_front")
 
 
+def doces_e_mais_context():
+    whatsapp_number = "5561992655947"
+    base_message = "Olá! Vim pela página da Doces e Mais e gostaria de iniciar um atendimento."
+    product_data = [
+        {
+            "name": "Pastel de leite ninho recheado com Nutella",
+            "description": "Casquinha delicada, recheio cremoso e aquele encontro perfeito entre leite ninho e Nutella.",
+            "image": "accounts/doces-e-mais/pastel-leite-ninho-nutella.jpeg",
+            "badge": "Muito recheio",
+        },
+        {
+            "name": "Pão de mel tradicional",
+            "description": "Massa macia, cobertura generosa de chocolate e sabor artesanal com cara de presente.",
+            "image": "accounts/doces-e-mais/pao-de-mel-tradicional.jpeg",
+            "badge": "Classico premium",
+        },
+        {
+            "name": "Cone trufado - Brigadeiro",
+            "description": "Cone crocante com brigadeiro cremoso e finalizacao caprichada para matar a vontade de chocolate.",
+            "image": "accounts/doces-e-mais/cone-trufado-brigadeiro.jpeg",
+            "badge": "Queridinho",
+        },
+        {
+            "name": "Cone trufado - Paçoca",
+            "description": "Camadas de sabor, textura crocante e cobertura de paçoca para quem ama doce brasileiro.",
+            "image": "accounts/doces-e-mais/cone-trufado-pacoca.jpeg",
+            "badge": "Artesanal",
+        },
+        {
+            "name": "Trufa recheada - Morango",
+            "description": "Chocolate envolvente com recheio de morango, embalagem charmosa e sabor marcante.",
+            "image": "accounts/doces-e-mais/trufa-recheada-morango.jpeg",
+            "badge": "Frutada",
+        },
+        {
+            "name": "Trufa recheada - Uva",
+            "description": "Trufa cremosa com toque de uva, feita para presentear ou deixar o dia mais gostoso.",
+            "image": "accounts/doces-e-mais/trufa-recheada-uva.jpeg",
+            "badge": "Especial",
+        },
+        {
+            "name": "Fatia de bolo - Chocolate com brigadeiro de maracuja",
+            "description": "Chocolate intenso com recheio de brigadeiro de maracujá para equilibrar doçura e frescor.",
+            "image": "accounts/doces-e-mais/fatia-bolo-chocolate-maracuja.jpeg",
+            "badge": "Irresistível",
+        },
+        {
+            "name": "Fatia de bolo - Cacau Black",
+            "description": "Fatia de bolo escura, elegante e chocolatuda, com visual premium e sabor profundo.",
+            "image": "accounts/doces-e-mais/fatia-bolo-cacau-black.jpeg",
+            "badge": "Chocolate intenso",
+        },
+        {
+            "name": "Morango do Amor",
+            "description": "Morango envolvido em brilho, carinho e capricho: bonito para presentear, melhor ainda para comer.",
+            "image": "accounts/doces-e-mais/morango-do-amor.jpeg",
+            "badge": "Presente perfeito",
+        },
+    ]
+
+    products = []
+    for index, product in enumerate(product_data, start=1):
+        product_message = f"{base_message} Tenho interesse em: {product['name']}."
+        products.append({
+            **product,
+            "number": f"{index:02d}",
+            "whatsapp_url": f"https://wa.me/{whatsapp_number}?text={quote(product_message)}",
+        })
+
+    return {
+        "products": products,
+        "whatsapp_url": f"https://wa.me/{whatsapp_number}?text={quote(base_message)}",
+        "instagram_url": "https://www.instagram.com/doces.e.mais",
+        "phone_label": "(61) 9 9265-5947",
+        "instagram_label": "@doces.e.mais",
+    }
+
+
+def doces_e_mais(request):
+    return render(request, "accounts/doces_e_mais.html", doces_e_mais_context())
+
+
+def doces_e_mais_cardapio(request):
+    return render(request, "accounts/doces_e_mais_cardapio.html", doces_e_mais_context())
+
+
 def brand_preview(request):
     return render(request, "accounts/brand_preview.html")
 
