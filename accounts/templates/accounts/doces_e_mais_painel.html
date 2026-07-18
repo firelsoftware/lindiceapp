@@ -46,6 +46,84 @@
         gap: 14px;
     }
 
+    .doces-report-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+    }
+
+    .doces-report-stat {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #ffffff;
+    }
+
+    .doces-report-stat span {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .doces-report-stat strong {
+        display: block;
+        margin-top: 6px;
+        color: var(--brand-purple);
+        font-size: 26px;
+        line-height: 1;
+    }
+
+    .doces-report-days,
+    .doces-report-visits {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    .doces-report-day {
+        display: grid;
+        grid-template-columns: 64px minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: center;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .doces-report-bar {
+        height: 10px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #eef2ff;
+    }
+
+    .doces-report-bar span {
+        display: block;
+        width: calc(var(--views, 0) * 8%);
+        max-width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--brand-purple), var(--brand-blue));
+    }
+
+    .doces-report-visit {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #f8fafc;
+        font-size: 13px;
+    }
+
+    .doces-report-visit span {
+        color: var(--muted);
+    }
+
     .doces-panel-form input[type="text"],
     .doces-panel-form textarea,
     .doces-panel-form input[type="file"] {
@@ -86,6 +164,17 @@
         .doces-panel-card {
             grid-template-columns: 1fr;
         }
+
+        .doces-report-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 520px) {
+        .doces-report-grid,
+        .doces-report-day {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 <section class="card">
@@ -98,6 +187,49 @@
             <a class="button button-secondary" href="{{ versao1_url }}" target="_blank" rel="noopener">Ver página</a>
             <a class="button button-secondary" href="{{ finances_url }}">Finanças Doces e Mais</a>
         </div>
+    </div>
+</section>
+
+<section class="card">
+    <h2>Relatório de visitas</h2>
+    <p>Acompanhamento simples das visitas na página da Doces e Mais. As suas visitas quando estiver logada não entram na contagem.</p>
+    <div class="doces-report-grid">
+        <article class="doces-report-stat">
+            <span>Total de visitas</span>
+            <strong>{{ visit_report.total_views }}</strong>
+        </article>
+        <article class="doces-report-stat">
+            <span>Visitas hoje</span>
+            <strong>{{ visit_report.today_views }}</strong>
+        </article>
+        <article class="doces-report-stat">
+            <span>Visitantes hoje</span>
+            <strong>{{ visit_report.today_unique }}</strong>
+        </article>
+        <article class="doces-report-stat">
+            <span>Versão oficial</span>
+            <strong>{{ visit_report.versao1_views }}</strong>
+        </article>
+    </div>
+    <div class="doces-report-days" aria-label="Visitas dos últimos 7 dias">
+        {% for day in visit_report.last_7_days %}
+            <div class="doces-report-day">
+                <strong>{{ day.label }}</strong>
+                <div class="doces-report-bar" aria-hidden="true"><span style="--views: {{ day.views }};"></span></div>
+                <span>{{ day.views }} visita{{ day.views|pluralize }}</span>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="doces-report-visits">
+        <h3>Últimos acessos</h3>
+        {% for visit in visit_report.last_visits %}
+            <div class="doces-report-visit">
+                <strong>{{ visit.at }}</strong>
+                <span>{{ visit.device }} · {{ visit.path }}</span>
+            </div>
+        {% empty %}
+            <p>Nenhuma visita registrada ainda.</p>
+        {% endfor %}
     </div>
 </section>
 

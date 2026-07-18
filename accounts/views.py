@@ -1,4 +1,5 @@
 import calendar
+import hashlib
 from django.conf import settings
 from datetime import timedelta
 import json
@@ -938,6 +939,36 @@ def can_manage_doces_e_mais(user):
     return user.is_authenticated and (user.is_staff or user.email.lower() == DOCES_E_MAIS_OWNER_EMAIL)
 
 
+def is_doces_e_mais_owner_email(email):
+    return (email or "").strip().lower() == DOCES_E_MAIS_OWNER_EMAIL
+
+
+def ensure_doces_e_mais_profile_access(user):
+    profile = getattr(user, "profile", None)
+    if not profile or not is_doces_e_mais_owner_email(user.email):
+        return
+
+    changed_fields = []
+    if not profile.phone_verified:
+        profile.phone_verified = True
+        profile.phone_verification_code = ""
+        profile.phone_verification_attempts = 0
+        changed_fields.extend(["phone_verified", "phone_verification_code", "phone_verification_attempts"])
+    if profile.registration_status != ClientProfile.APPROVED:
+        profile.registration_status = ClientProfile.APPROVED
+        profile.approved_at = profile.approved_at or timezone.now()
+        changed_fields.extend(["registration_status", "approved_at"])
+
+    extra = dict(profile.extra_data or {})
+    if not extra.get("doces_e_mais_owner"):
+        extra["doces_e_mais_owner"] = True
+        profile.extra_data = extra
+        changed_fields.append("extra_data")
+
+    if changed_fields:
+        profile.save(update_fields=sorted(set(changed_fields)))
+
+
 def doces_e_mais_defaults():
     return [
         {
@@ -1043,6 +1074,113 @@ def ensure_doces_e_mais_products():
     return products
 
 
+def doces_e_mais_analytics_record():
+    record, _ = SupplierProduct.objects.get_or_create(
+        source=DOCES_E_MAIS_SOURCE,
+        supplier_code="__analytics__",
+        defaults={
+            "name": "Relatório de visitas Doces e Mais",
+            "description": "Registro interno de visitas da página Doces e Mais.",
+            "suggested_sale_price": Decimal("0.00"),
+            "stock_quantity": 0,
+            "is_active": False,
+            "is_visible": False,
+            "raw_data": {},
+        },
+    )
+    return record
+
+
+def request_ip_hash(request):
+    forwarded = request.META.get("HTTP_X_FORWARDED_FOR", "")
+    ip = (forwarded.split(",")[0] if forwarded else request.META.get("REMOTE_ADDR", "")).strip()
+    if not ip:
+        return ""
+    return hashlib.sha256(f"{settings.SECRET_KEY}:{ip}".encode()).hexdigest()[:16]
+
+
+def request_device_label(request):
+    agent = (request.META.get("HTTP_USER_AGENT") or "").lower()
+    if "mobile" in agent or "android" in agent or "iphone" in agent:
+        return "Celular"
+    if "tablet" in agent or "ipad" in agent:
+        return "Tablet"
+    if agent:
+        return "Computador"
+    return "Desconhecido"
+
+
+def record_doces_e_mais_visit(request, variant):
+    if can_manage_doces_e_mais(request.user):
+        return
+
+    today = timezone.localdate().isoformat()
+    session_key = f"doces_e_mais_seen_{variant}_{today}"
+    unique_today = not request.session.get(session_key)
+    request.session[session_key] = True
+    request.session.modified = True
+
+    record = doces_e_mais_analytics_record()
+    raw = dict(record.raw_data or {})
+    days = dict(raw.get("days") or {})
+    day_data = dict(days.get(today) or {"views": 0, "unique": 0})
+    day_data["views"] = int(day_data.get("views") or 0) + 1
+    if unique_today:
+        day_data["unique"] = int(day_data.get("unique") or 0) + 1
+    days[today] = day_data
+
+    variants = dict(raw.get("variants") or {})
+    variant_data = dict(variants.get(variant) or {"views": 0})
+    variant_data["views"] = int(variant_data.get("views") or 0) + 1
+    variants[variant] = variant_data
+
+    last_visits = list(raw.get("last_visits") or [])
+    last_visits.insert(0, {
+        "at": timezone.localtime().strftime("%d/%m/%Y %H:%M"),
+        "variant": variant,
+        "path": request.path,
+        "device": request_device_label(request),
+        "ip_hash": request_ip_hash(request),
+    })
+
+    raw.update({
+        "total_views": int(raw.get("total_views") or 0) + 1,
+        "days": days,
+        "variants": variants,
+        "last_visits": last_visits[:12],
+        "updated_at": timezone.now().isoformat(),
+    })
+    record.raw_data = raw
+    record.save(update_fields=["raw_data", "updated_at"])
+
+
+def doces_e_mais_visit_report():
+    raw = doces_e_mais_analytics_record().raw_data or {}
+    today = timezone.localdate().isoformat()
+    days = raw.get("days") or {}
+    today_data = days.get(today) or {}
+    last_7_days = []
+    for offset in range(6, -1, -1):
+        date = timezone.localdate() - timedelta(days=offset)
+        date_key = date.isoformat()
+        day_data = days.get(date_key) or {}
+        last_7_days.append({
+            "label": date.strftime("%d/%m"),
+            "views": int(day_data.get("views") or 0),
+            "unique": int(day_data.get("unique") or 0),
+        })
+
+    variants = raw.get("variants") or {}
+    return {
+        "total_views": int(raw.get("total_views") or 0),
+        "today_views": int(today_data.get("views") or 0),
+        "today_unique": int(today_data.get("unique") or 0),
+        "versao1_views": int((variants.get("versao1") or {}).get("views") or 0),
+        "last_7_days": last_7_days,
+        "last_visits": raw.get("last_visits") or [],
+    }
+
+
 def doces_e_mais_context():
     whatsapp_number = "5561992655947"
     base_message = "Olá! Vim pela página da Doces e Mais e gostaria de iniciar um atendimento."
@@ -1082,10 +1220,12 @@ def doces_e_mais_context():
 
 
 def doces_e_mais(request):
+    record_doces_e_mais_visit(request, "versao1")
     return render(request, "accounts/doces_e_mais.html", doces_e_mais_context())
 
 
 def doces_e_mais_cardapio(request):
+    record_doces_e_mais_visit(request, "versao2")
     return render(request, "accounts/doces_e_mais_cardapio.html", doces_e_mais_context())
 
 
@@ -1093,6 +1233,7 @@ def doces_e_mais_cardapio(request):
 def doces_e_mais_painel(request):
     if not can_manage_doces_e_mais(request.user):
         return HttpResponseForbidden("Acesso restrito a proprietária da Doces e Mais.")
+    ensure_doces_e_mais_profile_access(request.user)
 
     products = ensure_doces_e_mais_products()
     products.sort(key=lambda product: (product.raw_data or {}).get("order", 99))
@@ -1124,6 +1265,7 @@ def doces_e_mais_painel(request):
         "accounts/doces_e_mais_painel.html",
         {
             "rows": rows,
+            "visit_report": doces_e_mais_visit_report(),
             "versao1_url": reverse("doces_e_mais"),
             "finances_url": reverse("doces_e_mais_finances"),
         },
@@ -1134,6 +1276,7 @@ def doces_e_mais_painel(request):
 def doces_e_mais_finances(request):
     if not can_manage_doces_e_mais(request.user):
         return HttpResponseForbidden("Acesso restrito a proprietária da Doces e Mais.")
+    ensure_doces_e_mais_profile_access(request.user)
 
     scope = PersonalDebt.SCOPE_BUSINESS
 
@@ -2018,7 +2161,9 @@ def register(request):
             if referrer and referrer.pk != user.pk:
                 profile.referred_by = referrer
                 profile.save(update_fields=["referred_by"])
-            if credit_mode and settings.PHONE_VERIFICATION_REQUIRED and profile.phone:
+            if is_doces_e_mais_owner_email(user.email):
+                ensure_doces_e_mais_profile_access(user)
+            elif credit_mode and settings.PHONE_VERIFICATION_REQUIRED and profile.phone:
                 profile.phone_verification_code = generate_phone_code()
                 profile.phone_verification_sent_at = timezone.now()
                 profile.save(update_fields=["phone_verification_code", "phone_verification_sent_at"])
@@ -2027,7 +2172,7 @@ def register(request):
                 profile.save(update_fields=["phone_verified"])
             login(request, user)
 
-            if credit_mode and settings.PHONE_VERIFICATION_REQUIRED and profile.phone:
+            if not is_doces_e_mais_owner_email(user.email) and credit_mode and settings.PHONE_VERIFICATION_REQUIRED and profile.phone:
                 return redirect("verify_phone")
 
             if next_url:

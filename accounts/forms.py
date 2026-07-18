@@ -16,6 +16,7 @@ from .utils import clean_digits, cpf_hash, is_valid_cpf
 
 MAX_DOCUMENT_UPLOAD_SIZE = 10 * 1024 * 1024
 ALLOWED_DOCUMENT_CONTENT_TYPES = ("image/jpeg", "image/png", "image/webp", "application/pdf")
+DOCES_E_MAIS_OWNER_EMAIL = "andrezamartinsantossilva@gmail.com"
 
 
 def validate_document_file(uploaded_file):
@@ -95,6 +96,10 @@ class RegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         self.credit_mode = kwargs.pop("credit_mode", False)
         super().__init__(*args, **kwargs)
+        bound_email = ""
+        if self.is_bound:
+            bound_email = (self.data.get(self.add_prefix("email")) or self.data.get("email") or "").strip().lower()
+        self.doces_e_mais_owner_mode = bound_email == DOCES_E_MAIS_OWNER_EMAIL
         self.fields["password1"].label = "Senha *"
         self.fields["password2"].label = "Confirmacao de senha *"
         if self.credit_mode:
@@ -108,6 +113,10 @@ class RegisterForm(UserCreationForm):
             self.fields["residence_proof"].label = "Comprovante de residencia no nome do cliente *"
             for field_name in ("rg_number", "phone", "address", "identity_document", "identity_document_back", "residence_proof"):
                 self.fields[field_name].required = True
+            if self.doces_e_mais_owner_mode:
+                for field_name in ("identity_document", "identity_document_back", "residence_proof"):
+                    self.fields[field_name].required = False
+                    self.fields[field_name].label = self.fields[field_name].label.replace(" *", " (dispensado para Doces e Mais)")
 
     def clean_email(self):
         email = self.cleaned_data["email"].lower()
