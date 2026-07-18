@@ -90,11 +90,40 @@
         font-size: 14px;
     }
 
+    .doces-panel-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .doces-delete-button {
+        border-color: #fecaca;
+        background: #fff1f2;
+        color: #b42318;
+    }
+
+    .doces-delete-button:hover {
+        border-color: #fda4af;
+        color: #991b1b;
+    }
+
+    .doces-restore-button {
+        border-color: #bbf7d0;
+        background: #f0fdf4;
+        color: #166534;
+    }
+
     .doces-panel-card {
         display: grid;
         grid-template-columns: minmax(220px, 0.65fr) minmax(0, 1.35fr);
         gap: 22px;
         align-items: start;
+    }
+
+    .doces-panel-card.is-deleted {
+        opacity: 0.78;
+        background: #f8fafc;
     }
 
     .doces-panel-preview {
@@ -310,14 +339,18 @@
         </article>
         <article class="doces-guide-card">
             <span>4</span>
-            <strong>Salvar</strong>
-            <p>Depois de editar um doce, clique em “Salvar este doce” no card dele.</p>
+            <strong>Salvar ou excluir</strong>
+            <p>Depois de editar, clique em “Salvar este doce”. Para tirar da página, use “Excluir da página”.</p>
         </article>
     </div>
     <div class="doces-shortcuts" aria-label="Atalhos do painel">
         <a class="doces-shortcut" href="#produtos">
             <strong>Produtos</strong>
             <p>Editar fotos, nomes e descrições.</p>
+        </a>
+        <a class="doces-shortcut" href="#excluidos">
+            <strong>Excluídos</strong>
+            <p>Restaurar doces removidos.</p>
         </a>
         <a class="doces-shortcut" href="#destaques-promocoes">
             <strong>Destaques e promoções</strong>
@@ -383,6 +416,10 @@
 </section>
 
 <section class="doces-panel-list doces-section-anchor" id="produtos">
+    <section class="card">
+        <h2>Produtos ativos</h2>
+        <p class="doces-panel-section-intro">Estes doces aparecem ou podem aparecer na página. Edite um card por vez e salve.</p>
+    </section>
     {% for row in rows %}
     <article class="card doces-panel-card">
         <div class="doces-panel-preview">
@@ -412,9 +449,51 @@
                     {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
                 </div>
             {% endfor %}
-            <button class="button" type="submit">Salvar este doce</button>
+            <div class="doces-panel-actions">
+                <button class="button" type="submit">Salvar este doce</button>
+                <button class="button button-secondary doces-delete-button" type="submit" name="action" value="delete" onclick="return confirm('Excluir este doce da página? Ele ficará escondido e poderá ser restaurado depois.');">Excluir da página</button>
+            </div>
         </form>
     </article>
+    {% empty %}
+        <section class="card">
+            <p>Nenhum produto ativo no momento.</p>
+        </section>
+    {% endfor %}
+</section>
+
+<section class="doces-panel-list doces-section-anchor" id="excluidos">
+    <section class="card">
+        <h2>Produtos excluídos</h2>
+        <p class="doces-panel-section-intro">Itens excluídos ficam escondidos da página pública. Se precisar, clique em “Restaurar na página”.</p>
+    </section>
+    {% for row in deleted_rows %}
+    <article class="card doces-panel-card is-deleted">
+        <div class="doces-panel-preview">
+            {% if row.preview_is_static %}
+                <img src="{% static row.preview_image %}" alt="{{ row.product.name }}">
+            {% else %}
+                <img src="{{ row.preview_image }}" alt="{{ row.product.name }}">
+            {% endif %}
+            <div>
+                <strong>{{ row.product.name }}</strong>
+                <span>Excluído da página</span>
+            </div>
+        </div>
+        <form method="post" class="doces-panel-form">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ row.product.id }}">
+            <div class="doces-panel-tools">
+                <h3>Produto excluído</h3>
+                <p>Este doce não aparece na página pública. Você pode restaurar quando quiser.</p>
+            </div>
+            <button class="button button-secondary doces-restore-button" type="submit" name="action" value="restore">Restaurar na página</button>
+        </form>
+    </article>
+    {% empty %}
+        <section class="card">
+            <p>Nenhum produto excluído.</p>
+        </section>
     {% endfor %}
 </section>
 {% endblock %}

@@ -1186,7 +1186,10 @@ def doces_e_mais_context():
     base_message = "Olá! Vim pela página da Doces e Mais e gostaria de iniciar um atendimento."
 
     products = []
-    visible_products = [product for product in ensure_doces_e_mais_products() if product.is_visible]
+    visible_products = [
+        product for product in ensure_doces_e_mais_products()
+        if product.is_visible and not (product.raw_data or {}).get("deleted")
+    ]
     visible_products.sort(key=lambda product: (product.raw_data or {}).get("order", 99))
     for index, product in enumerate(visible_products, start=1):
         raw = product.raw_data or {}
@@ -1240,8 +1243,29 @@ def doces_e_mais_painel(request):
     forms_by_id = {}
 
     if request.method == "POST":
+        action = request.POST.get("action", "save").strip()
         product_id = request.POST.get("product_id", "").strip()
         product = get_object_or_404(SupplierProduct, id=product_id, source=DOCES_E_MAIS_SOURCE)
+
+        if action == "delete":
+            raw = dict(product.raw_data or {})
+            raw["deleted"] = True
+            raw["featured"] = False
+            product.raw_data = raw
+            product.is_visible = False
+            product.save(update_fields=["raw_data", "is_visible", "updated_at"])
+            messages.success(request, f"{product.name} excluído da página. Você pode restaurar depois.")
+            return redirect("doces_e_mais_painel")
+
+        if action == "restore":
+            raw = dict(product.raw_data or {})
+            raw["deleted"] = False
+            product.raw_data = raw
+            product.is_visible = True
+            product.save(update_fields=["raw_data", "is_visible", "updated_at"])
+            messages.success(request, f"{product.name} restaurado na página.")
+            return redirect("doces_e_mais_painel")
+
         form = DocesEMaisProductForm(request.POST, request.FILES, instance=product)
         forms_by_id[product.id] = form
         if form.is_valid():
@@ -1251,20 +1275,26 @@ def doces_e_mais_painel(request):
         messages.error(request, "Revise os dados do produto.")
 
     rows = []
+    deleted_rows = []
     for product in products:
-        rows.append({
+        row = {
             "product": product,
             "form": forms_by_id.get(product.id) or DocesEMaisProductForm(instance=product),
             "raw": product.raw_data or {},
             "preview_image": product.image_file.url if product.image_file else (product.raw_data or {}).get("static_image") or product.image_url,
             "preview_is_static": not bool(product.image_file),
-        })
+        }
+        if row["raw"].get("deleted"):
+            deleted_rows.append(row)
+        else:
+            rows.append(row)
 
     return render(
         request,
         "accounts/doces_e_mais_painel.html",
         {
             "rows": rows,
+            "deleted_rows": deleted_rows,
             "visit_report": doces_e_mais_visit_report(),
             "versao1_url": reverse("doces_e_mais"),
             "finances_url": reverse("doces_e_mais_finances"),
