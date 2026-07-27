@@ -69,6 +69,48 @@ CATEGORY_SHORT_LABELS = {
 # Grupos onde os filtros de numeracao/tamanho fazem sentido.
 FOOTWEAR_GROUPS = {"Calçados", "Infantil"}
 
+# Fotos de modelo usadas na faixa de inspiracao da loja. Ficam em
+# accounts/static/accounts/img/modelos/<slug>.webp e ja vem com o topo
+# esmaecido, entao o rosto praticamente nao aparece.
+STORE_MODEL_PHOTOS = ["tenis", "sandalia", "rasteira", "bota", "bolsa", "bolsa2"]
+CATEGORY_MODEL_PHOTOS = {
+    "Tênis": ["tenis"],
+    "Tênis Premium": ["tenis"],
+    "Sandálias": ["sandalia"],
+    "Anabela": ["sandalia"],
+    "Meia Pata": ["sandalia"],
+    "Saltos Anabelas Chinelos": ["sandalia", "rasteira"],
+    "Rasteiras Papetes Flatforms": ["rasteira"],
+    "Botas": ["bota"],
+    "Botas Femininas": ["bota"],
+    "Bolsas": ["bolsa", "bolsa2"],
+    # Sem modelo propria de relogio ainda: usa os looks de trabalho, que
+    # combinam com acessorio de pulso.
+    "Bolsas e Relogios": ["bolsa", "bota"],
+}
+GROUP_MODEL_PHOTOS = {
+    "Calçados": ["tenis", "sandalia", "rasteira", "bota"],
+    "Bolsas": ["bolsa", "bolsa2"],
+    "Relógios": ["bolsa", "bota"],
+}
+
+
+def pick_store_model_photos(category, group, limit=2):
+    """Modelos das laterais da loja: a da categoria primeiro, depois as outras.
+
+    A ordem das complementares gira a cada dia, entao a vitrine muda sozinha.
+    """
+    preferred = []
+    if category or group:
+        preferred = CATEGORY_MODEL_PHOTOS.get(category) or GROUP_MODEL_PHOTOS.get(group) or []
+        if not preferred:
+            return []
+    others = [p for p in STORE_MODEL_PHOTOS if p not in preferred]
+    if others:
+        start = timezone.localdate().toordinal() % len(others)
+        others = others[start:] + others[:start]
+    return (preferred + others)[:limit]
+
 # Banners de categoria da Shopee (link de afiliado). Sao redirecionamentos
 # externos por categoria, sem produto/imagem/preco especifico - o cliente
 # sai do site e navega na Shopee, gerando comissao pro parceiro.
@@ -1595,6 +1637,7 @@ def store_front(request):
             "subcategories": subcategories,
             "active_group": active_group,
             "selected_category": category,
+            "store_model_photos": pick_store_model_photos(category, active_group),
             "show_size_filters": show_size_filters,
             "size_group": size_group,
             "size": size,

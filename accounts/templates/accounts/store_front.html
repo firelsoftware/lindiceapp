@@ -1,4 +1,8 @@
 {% extends "accounts/base.html" %}
+{% load static %}
+
+{% block body_class %}store-page{% endblock %}
+{% block body_style %}{% if store_model_photos %} style="{% for modelo in store_model_photos %}{% with arquivo="accounts/img/modelos/"|add:modelo|add:".webp" %}--modelo-{{ forloop.counter }}: url('{% static arquivo %}');{% endwith %}{% endfor %}"{% endif %}{% endblock %}
 
 {% block content %}
 <form class="toolbar store-toolbar" method="get">

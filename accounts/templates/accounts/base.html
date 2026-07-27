@@ -1416,6 +1416,39 @@
             color: #ffffff;
         }
 
+        /* Modelos nas laterais vazias da pagina, fora do painel da loja.
+           O halo cinza atras destaca a figura do fundo claro. */
+        @media (min-width: 1220px) {
+            .store-page::before,
+            .store-page::after {
+                --halo: linear-gradient(180deg,
+                    rgba(58, 67, 88, 0) 0%,
+                    rgba(58, 67, 88, 0.09) 14%,
+                    rgba(58, 67, 88, 0.20) 40%,
+                    rgba(58, 67, 88, 0.26) 100%);
+                content: "";
+                position: fixed;
+                bottom: 0;
+                z-index: -1;
+                width: calc((100vw - 960px) / 2);
+                height: min(80vh, 700px);
+                background-repeat: no-repeat;
+                background-position: center bottom;
+                background-size: contain, 100% 100%;
+                pointer-events: none;
+            }
+
+            .store-page::before {
+                left: 0;
+                background-image: var(--modelo-1, none), var(--halo);
+            }
+
+            .store-page::after {
+                right: 0;
+                background-image: var(--modelo-2, none), var(--halo);
+            }
+        }
+
         .store-pagination {
             display: flex;
             align-items: center;
@@ -3818,7 +3851,7 @@
         }
     </style>
 </head>
-<body{% if user_brand_theme %} class="brand-theme-user"{% endif %}>
+<body class="{% block body_class %}{% endblock %}{% if user_brand_theme %} brand-theme-user{% endif %}"{% block body_style %}{% endblock %}>
     <div class="app-splash" data-app-splash aria-hidden="true">
         <img src="{% static 'accounts/lindice-icon.svg' %}" alt="">
     </div>
