@@ -219,6 +219,23 @@ CASHBACK_MAX_REDEEM_PERCENT = Decimal("25.00")
 # Bonus em cashback dado a quem indica, quando o indicado faz a 1a compra paga.
 REFERRAL_BONUS = Decimal("10.00")
 
+# --- Sistema de pontos de fidelidade (substitui o cashback em dinheiro) ---
+# Teto de pontos que um cliente pode acumular.
+POINTS_CAP = 200
+# Ganho por compra conforme o metodo de pagamento (a vista/Pix > cartao > crediario).
+POINTS_PIX = 10
+POINTS_CARD = 6
+POINTS_CREDIT = 3
+# Bonus de quitacao: carne do crediario fechado sem nenhum dia de atraso.
+POINTS_PAYOFF_BONUS = 20
+# Pontos que o indicador ganha quando o indicado entra (uma indicacao = 10% de desconto).
+REFERRAL_POINTS = 100
+# Resgate: cada 100 pontos valem 10% de desconto (so em compra a vista/Pix). (Fase 2)
+POINTS_PER_DISCOUNT_STEP = 100
+POINTS_DISCOUNT_STEP_PERCENT = Decimal("10.00")
+# Ao atingir o teto, o cliente tem este prazo para usar antes de expirar. (Fase 2)
+POINTS_EXPIRY_DAYS = 90
+
 
 def money(value):
     return value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
@@ -551,11 +568,56 @@ class CashbackTransaction(models.Model):
         return f"{self.user} {self.kind} R$ {self.amount}"
 
 
+class PointsTransaction(models.Model):
+    """Lancamento no cofre de pontos de fidelidade (substitui o cashback em dinheiro).
+
+    points e positivo para ganho (compra, indicacao, quitacao) e negativo para
+    resgate ou expiracao. O saldo do cliente e a soma dos lancamentos, limitado
+    ao teto configurado.
+    """
+    EARN = "earn"
+    REDEEM = "redeem"
+    REFERRAL = "referral"
+    PAYOFF = "payoff"
+    ADJUST = "adjust"
+    EXPIRE = "expire"
+    KIND_CHOICES = [
+        (EARN, "Ganho em compra"),
+        (REDEEM, "Resgate"),
+        (REFERRAL, "Indicacao"),
+        (PAYOFF, "Bonus de quitacao"),
+        (ADJUST, "Ajuste"),
+        (EXPIRE, "Expiracao"),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="points_transactions")
+    kind = models.CharField(max_length=10, choices=KIND_CHOICES, default=EARN)
+    points = models.IntegerField()
+    description = models.CharField(max_length=180, blank=True)
+    store_order = models.ForeignKey("StoreOrder", on_delete=models.SET_NULL, null=True, blank=True, related_name="points_transactions")
+    credit_sale = models.ForeignKey("CreditSale", on_delete=models.SET_NULL, null=True, blank=True, related_name="points_transactions")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.user} {self.kind} {self.points:+d} pts"
+
+
 class StoreSettings(models.Model):
     """Configuracoes ajustaveis do programa de fidelidade (linha unica)."""
+    # Campos do cashback antigo (mantidos ate a migracao completa para pontos).
     cashback_percent = models.DecimalField(max_digits=5, decimal_places=2, default=CASHBACK_PERCENT)
     cashback_max_redeem_percent = models.DecimalField(max_digits=5, decimal_places=2, default=CASHBACK_MAX_REDEEM_PERCENT)
     referral_bonus = models.DecimalField(max_digits=10, decimal_places=2, default=REFERRAL_BONUS)
+    # Sistema de pontos (ajustavel pelo admin, sem mexer no codigo).
+    points_cap = models.PositiveSmallIntegerField("teto de pontos", default=POINTS_CAP)
+    points_pix = models.PositiveSmallIntegerField("pontos por compra a vista/Pix", default=POINTS_PIX)
+    points_card = models.PositiveSmallIntegerField("pontos por compra no cartao", default=POINTS_CARD)
+    points_credit = models.PositiveSmallIntegerField("pontos por compra no crediario", default=POINTS_CREDIT)
+    points_payoff_bonus = models.PositiveSmallIntegerField("bonus de quitacao do carne", default=POINTS_PAYOFF_BONUS)
+    referral_points = models.PositiveSmallIntegerField("pontos por indicacao", default=REFERRAL_POINTS)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
@@ -712,6 +774,123 @@ def award_referral_bonus(referred_user):
         amount=bonus,
         description=f"Bônus por indicar {referred_name}",
     )
+
+
+# --- Sistema de pontos de fidelidade (Fase 1: fundacao) ---
+
+def points_balance(user):
+    """Saldo bruto de pontos (soma dos lancamentos)."""
+    if user is None or not getattr(user, "pk", None):
+        return 0
+    total = PointsTransaction.objects.filter(user=user).aggregate(s=Sum("points"))["s"]
+    return max(0, int(total or 0))
+
+
+def points_balance_capped(user):
+    """Saldo mostrado ao cliente, limitado ao teto configurado."""
+    return min(points_balance(user), StoreSettings.load().points_cap)
+
+
+def can_earn_points(user):
+    """Regra de Ouro: so pontua quem tem cadastro ativo (aprovado) no app; staff nunca."""
+    if user is None or not getattr(user, "pk", None) or getattr(user, "is_staff", False):
+        return False
+    profile = getattr(user, "profile", None)
+    return bool(profile and profile.registration_status == ClientProfile.APPROVED)
+
+
+def _grant_points(user, kind, points, description, *, store_order=None, credit_sale=None):
+    """Credita pontos respeitando o teto. Devolve o lancamento ou None se nao coube nada."""
+    points = int(points)
+    if points <= 0:
+        return None
+    room = StoreSettings.load().points_cap - points_balance(user)
+    grant = min(points, max(room, 0))
+    if grant <= 0:
+        return None
+    return PointsTransaction.objects.create(
+        user=user, kind=kind, points=grant, description=description,
+        store_order=store_order, credit_sale=credit_sale,
+    )
+
+
+def award_purchase_points(user, method, *, store_order=None, credit_sale=None):
+    """Credita pontos por compra conforme o metodo (pix/card/credit). Idempotente por pedido/venda.
+
+    Crediario so pontua quando o pagamento e valido/em dia (quem chama garante isso).
+    """
+    if not can_earn_points(user):
+        return None
+    settings = StoreSettings.load()
+    per_method = {"pix": settings.points_pix, "card": settings.points_card, "credit": settings.points_credit}
+    base = int(per_method.get(method, 0))
+    if base <= 0:
+        return None
+    earned = PointsTransaction.objects.filter(kind=PointsTransaction.EARN)
+    if store_order is not None and earned.filter(store_order=store_order).exists():
+        return None
+    if credit_sale is not None and earned.filter(credit_sale=credit_sale).exists():
+        return None
+    label = {"pix": "à vista/Pix", "card": "cartão", "credit": "crediário"}.get(method, method)
+    return _grant_points(user, PointsTransaction.EARN, base, f"Pontos da compra ({label})",
+                         store_order=store_order, credit_sale=credit_sale)
+
+
+def award_payoff_bonus_points(user, *, credit_sale=None):
+    """Bonus de quitacao: carne pago ate o fim sem atraso. Idempotente por venda."""
+    if not can_earn_points(user):
+        return None
+    if credit_sale is not None and PointsTransaction.objects.filter(
+        kind=PointsTransaction.PAYOFF, credit_sale=credit_sale
+    ).exists():
+        return None
+    bonus = StoreSettings.load().points_payoff_bonus
+    return _grant_points(user, PointsTransaction.PAYOFF, bonus, "Bônus de quitação do crediário",
+                         credit_sale=credit_sale)
+
+
+def award_referral_points(referred_user):
+    """Credita os pontos de indicacao ao indicador quando o indicado entra. Idempotente."""
+    profile = getattr(referred_user, "profile", None)
+    if profile is None or profile.referral_bonus_awarded or not profile.referred_by_id:
+        return None
+    referrer = profile.referred_by
+    if referrer is None or referrer.pk == referred_user.pk or getattr(referrer, "is_staff", False):
+        profile.referral_bonus_awarded = True
+        profile.save(update_fields=["referral_bonus_awarded"])
+        return None
+    profile.referral_bonus_awarded = True
+    profile.save(update_fields=["referral_bonus_awarded"])
+    referred_name = getattr(referred_user, "preferred_name", "") or getattr(referred_user, "full_name", "") or "seu indicado"
+    pts = StoreSettings.load().referral_points
+    return _grant_points(referrer, PointsTransaction.REFERRAL, pts, f"Pontos por indicar {referred_name}")
+
+
+def points_discount_percent(points, settings=None):
+    """Percentual de desconto que 'points' pontos concedem (100 pontos = 10%),
+    limitado ao teto configurado (no default, 200 pontos = 20%)."""
+    settings = settings or StoreSettings.load()
+    usable = min(max(0, int(points)), settings.points_cap)
+    return (Decimal(usable) / Decimal(POINTS_PER_DISCOUNT_STEP)) * POINTS_DISCOUNT_STEP_PERCENT
+
+
+def redeem_points_discount(base_amount, points, method, settings=None):
+    """Desconto em R$ que 'points' pontos dao sobre 'base_amount'. So vale a vista/Pix.
+
+    A matematica e cumulativa: 'base_amount' ja deve vir apos o desconto padrao do
+    a vista/Pix (ex.: os 15%). Devolve (desconto, pontos_usados).
+    """
+    settings = settings or StoreSettings.load()
+    # Resgate so em pagamento a vista / Pix.
+    if method not in ("pix",):
+        return (money(Decimal("0.00")), 0)
+    base = Decimal(base_amount or 0)
+    usable = min(max(0, int(points)), settings.points_cap)
+    if base <= 0 or usable <= 0:
+        return (money(Decimal("0.00")), 0)
+    percent = points_discount_percent(usable, settings)
+    discount = money(base * (percent / Decimal("100")))
+    return (discount, usable)
 
 
 class CreditSale(models.Model):

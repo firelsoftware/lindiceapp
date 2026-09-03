@@ -35,6 +35,49 @@
         <small>Bônus para quem indica, quando o indicado faz a 1ª compra.</small>
         {{ form.referral_bonus.errors }}
     </p>
+
+    <h2 style="margin-top:28px">Sistema de pontos</h2>
+    <section class="info-panel">
+        <p>Os pontos substituem o cashback em dinheiro. O cliente ganha pontos por compra
+        (conforme o método de pagamento) e usa em desconto. Teto de {{ form.instance.points_cap }} pontos.</p>
+    </section>
+    <p>
+        <label for="{{ form.points_pix.id_for_label }}">{{ form.points_pix.label }}</label>
+        {{ form.points_pix }}
+        <small>À vista/Pix recebe a maior pontuação.</small>
+        {{ form.points_pix.errors }}
+    </p>
+    <p>
+        <label for="{{ form.points_card.id_for_label }}">{{ form.points_card.label }}</label>
+        {{ form.points_card }}
+        <small>Cartão: pontuação intermediária.</small>
+        {{ form.points_card.errors }}
+    </p>
+    <p>
+        <label for="{{ form.points_credit.id_for_label }}">{{ form.points_credit.label }}</label>
+        {{ form.points_credit }}
+        <small>Crediário: menor pontuação, e só vale se pagar em dia.</small>
+        {{ form.points_credit.errors }}
+    </p>
+    <p>
+        <label for="{{ form.points_payoff_bonus.id_for_label }}">{{ form.points_payoff_bonus.label }}</label>
+        {{ form.points_payoff_bonus }}
+        <small>Prêmio por fechar o carnê sem nenhum atraso.</small>
+        {{ form.points_payoff_bonus.errors }}
+    </p>
+    <p>
+        <label for="{{ form.referral_points.id_for_label }}">{{ form.referral_points.label }}</label>
+        {{ form.referral_points }}
+        <small>Pontos para quem indica um cliente que se cadastra.</small>
+        {{ form.referral_points.errors }}
+    </p>
+    <p>
+        <label for="{{ form.points_cap.id_for_label }}">{{ form.points_cap.label }}</label>
+        {{ form.points_cap }}
+        <small>Máximo de pontos que um cliente pode acumular.</small>
+        {{ form.points_cap.errors }}
+    </p>
+
     <button type="submit">Salvar configurações</button>
 </form>
 {% endblock %}

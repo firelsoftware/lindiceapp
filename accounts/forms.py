@@ -459,16 +459,32 @@ class ManualDebtForm(forms.ModelForm):
 class StoreSettingsForm(forms.ModelForm):
     class Meta:
         model = StoreSettings
-        fields = ("cashback_percent", "cashback_max_redeem_percent", "referral_bonus")
+        fields = (
+            "cashback_percent", "cashback_max_redeem_percent", "referral_bonus",
+            "points_pix", "points_card", "points_credit",
+            "points_payoff_bonus", "referral_points", "points_cap",
+        )
         labels = {
             "cashback_percent": "Cashback por compra (%)",
             "cashback_max_redeem_percent": "Máximo de resgate por compra (%)",
             "referral_bonus": "Bônus de indicação (R$)",
+            "points_pix": "Pontos por compra à vista/Pix",
+            "points_card": "Pontos por compra no cartão",
+            "points_credit": "Pontos por compra no crediário",
+            "points_payoff_bonus": "Bônus de quitação do carnê (pontos)",
+            "referral_points": "Pontos por indicação",
+            "points_cap": "Teto de pontos por cliente",
         }
         widgets = {
             "cashback_percent": forms.NumberInput(attrs={"min": "0", "max": "100", "step": "0.5"}),
             "cashback_max_redeem_percent": forms.NumberInput(attrs={"min": "0", "max": "100", "step": "1"}),
             "referral_bonus": forms.NumberInput(attrs={"min": "0", "step": "1"}),
+            "points_pix": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
+            "points_card": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
+            "points_credit": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
+            "points_payoff_bonus": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
+            "referral_points": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
+            "points_cap": forms.NumberInput(attrs={"min": "1", "max": "1000", "step": "1"}),
         }
 
     def clean_cashback_percent(self):
