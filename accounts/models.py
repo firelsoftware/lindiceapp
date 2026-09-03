@@ -210,7 +210,7 @@ CARD_INSTALLMENT_INTEREST_RATES = {
     10: Decimal("5.50"),
 }
 
-PIX_DISCOUNT_PERCENT = Decimal("10.00")
+PIX_DISCOUNT_PERCENT = Decimal("15.00")
 WELCOME_DISCOUNT_PERCENT = Decimal("5.00")
 # Percentual de cashback devolvido ao cliente em cada compra paga.
 CASHBACK_PERCENT = Decimal("5.00")
@@ -486,6 +486,13 @@ class StoreOrder(models.Model):
     cashback_discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     estimated_profit = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default=PENDING_PAYMENT)
+    # Como o cliente pagou de fato. Vem do Mercado Pago na confirmacao, porque
+    # a escolha entre Pix e cartao acontece dentro do checkout deles.
+    PAYMENT_METHOD_CHOICES = [
+        ("pix", "A vista / Pix"),
+        ("card", "Cartao"),
+    ]
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES, blank=True)
     mercado_pago_preference_id = models.CharField(max_length=120, blank=True)
     mercado_pago_payment_id = models.CharField(max_length=120, blank=True)
     mercado_pago_init_point = models.URLField(blank=True)
@@ -508,15 +515,25 @@ class StoreOrder(models.Model):
             self.order_code = build_store_order_code(self.created_at)
             super().save(update_fields=["order_code"])
 
-    def mark_paid(self, payment_id=""):
+    def mark_paid(self, payment_id="", payment_method=""):
         self.status = self.PAID
         self.mercado_pago_payment_id = payment_id or self.mercado_pago_payment_id
+        self.payment_method = payment_method or self.payment_method
         self.paid_at = self.paid_at or timezone.now()
-        self.save(update_fields=["status", "mercado_pago_payment_id", "paid_at", "updated_at"])
+        self.save(update_fields=["status", "mercado_pago_payment_id", "payment_method", "paid_at", "updated_at"])
         redeem_cashback_for_order(self)
-        award_purchase_cashback(self.customer, self.items_total_amount, store_order=self)
-        if self.customer_id:
-            award_referral_bonus(self.customer)
+
+        if StoreSettings.load().points_active:
+            award_purchase_points(self.customer, self.payment_method or "card", store_order=self)
+
+            if self.customer_id:
+                award_referral_points(self.customer)
+        else:
+            award_purchase_cashback(self.customer, self.items_total_amount, store_order=self)
+
+            if self.customer_id:
+                award_referral_bonus(self.customer)
+
         notify_partner_if_bag_sale(self)
 
     def mark_payment_failed(self, payment_id=""):
@@ -611,7 +628,18 @@ class StoreSettings(models.Model):
     cashback_percent = models.DecimalField(max_digits=5, decimal_places=2, default=CASHBACK_PERCENT)
     cashback_max_redeem_percent = models.DecimalField(max_digits=5, decimal_places=2, default=CASHBACK_MAX_REDEEM_PERCENT)
     referral_bonus = models.DecimalField(max_digits=10, decimal_places=2, default=REFERRAL_BONUS)
+    # Desconto do pagamento a vista/Pix. Era fixo em 10% no codigo; virou ajustavel
+    # e subiu para 15%, que e o valor das regras de fidelidade.
+    pix_discount_percent = models.DecimalField(
+        "desconto do pagamento a vista/Pix (%)",
+        max_digits=5,
+        decimal_places=2,
+        default=PIX_DISCOUNT_PERCENT,
+    )
     # Sistema de pontos (ajustavel pelo admin, sem mexer no codigo).
+    # Enquanto estiver desligado, as compras continuam creditando cashback em
+    # dinheiro. Ligar troca o ganho para pontos, e desligar volta atras.
+    points_active = models.BooleanField("usar pontos no lugar do cashback", default=False)
     points_cap = models.PositiveSmallIntegerField("teto de pontos", default=POINTS_CAP)
     points_pix = models.PositiveSmallIntegerField("pontos por compra a vista/Pix", default=POINTS_PIX)
     points_card = models.PositiveSmallIntegerField("pontos por compra no cartao", default=POINTS_CARD)
@@ -717,6 +745,32 @@ def redeem_cashback_for_order(order):
         amount=-money(debit),
         description="Cashback usado como desconto",
         store_order=order,
+    )
+
+
+def redeem_points_for_sale(sale):
+    """Debita os pontos usados na venda, na confirmacao do pagamento (idempotente)."""
+    client = sale.client
+    points = int(sale.points_used or 0)
+
+    if client is None or not getattr(client, "pk", None) or points <= 0:
+        return None
+
+    if PointsTransaction.objects.filter(kind=PointsTransaction.REDEEM, credit_sale=sale).exists():
+        return None
+
+    # Nunca debita mais do que o cliente tem agora.
+    debit = min(points, points_balance(client))
+
+    if debit <= 0:
+        return None
+
+    return PointsTransaction.objects.create(
+        user=client,
+        kind=PointsTransaction.REDEEM,
+        points=-debit,
+        description="Pontos usados como desconto",
+        credit_sale=sale,
     )
 
 
@@ -948,6 +1002,9 @@ class CreditSale(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=PENDING)
     selected_installments = models.PositiveSmallIntegerField(null=True, blank=True)
     selected_payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES, blank=True)
+    # Pontos que o cliente escolheu usar nesta venda, debitados na confirmacao.
+    points_used = models.PositiveSmallIntegerField(default=0)
+    points_discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     selected_monthly_interest_percent = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     selected_installment_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     selected_total_with_interest = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -1021,6 +1078,13 @@ class CreditSale(models.Model):
     def discounted_total_amount(self):
         return money(self.total_amount - self.available_welcome_discount_amount())
 
+    def available_points(self):
+        """Pontos que o cliente pode usar nesta venda (0 se os pontos estao desligados)."""
+        if not self.client_id or not StoreSettings.load().points_active:
+            return 0
+
+        return points_balance_capped(self.client)
+
     def apply_welcome_discount(self, use_welcome_discount=False):
         if not use_welcome_discount:
             return
@@ -1090,15 +1154,23 @@ class CreditSale(models.Model):
 
         return options
 
-    def pix_option(self):
+    def pix_option(self, points=0):
+        """Pagamento a vista. Os pontos entram depois do desconto do Pix, sobre
+        o valor ja abatido, como manda a regra de fidelidade."""
+        settings_loja = StoreSettings.load()
+        percent = settings_loja.pix_discount_percent
         discounted_total = self.discounted_total_amount()
-        discount = money(discounted_total * (PIX_DISCOUNT_PERCENT / Decimal("100")))
+        discount = money(discounted_total * (percent / Decimal("100")))
         total = money(discounted_total - discount)
+        points_discount, points_used = redeem_points_discount(total, points, self.PIX, settings_loja)
 
         return {
             "discount": discount,
-            "discount_percent": PIX_DISCOUNT_PERCENT,
-            "total": total,
+            "discount_percent": percent,
+            "points_discount": points_discount,
+            "points_used": points_used,
+            "points_percent": points_discount_percent(points_used, settings_loja),
+            "total": money(total - points_discount),
         }
 
     def credit_financed_amount(self):
@@ -1119,7 +1191,7 @@ class CreditSale(models.Model):
         remainder = discounted_total - financed_amount
         return money(remainder) if remainder > Decimal("0.00") else Decimal("0.00")
 
-    def choose_payment(self, payment_method, installments=None, use_welcome_discount=False, remainder_payment_method=""):
+    def choose_payment(self, payment_method, installments=None, use_welcome_discount=False, remainder_payment_method="", use_points=False):
         if self.payment_status == self.PAYMENT_PAID:
             raise ValueError("Pagamento ja confirmado.")
 
@@ -1134,9 +1206,14 @@ class CreditSale(models.Model):
         self.remainder_amount = Decimal("0.00")
         self.remainder_payment_method = ""
         self.financed_total_with_interest = Decimal("0.00")
+        # Se o cliente trocar de ideia e escolher outra forma, os pontos voltam.
+        self.points_used = 0
+        self.points_discount_amount = Decimal("0.00")
 
         if payment_method == self.PIX:
-            option = self.pix_option()
+            option = self.pix_option(self.available_points() if use_points else 0)
+            self.points_used = option["points_used"]
+            self.points_discount_amount = option["points_discount"]
             self.selected_payment_method = self.PIX
             self.selected_installments = 1
             self.selected_monthly_interest_percent = Decimal("0.00")
@@ -1196,9 +1273,18 @@ class CreditSale(models.Model):
         self.payment_status = self.PAYMENT_PAID
         self.mercado_pago_payment_id = payment_id or self.mercado_pago_payment_id
         self.save(update_fields=["payment_status", "mercado_pago_payment_id"])
-        award_purchase_cashback(self.client, self.total_amount, credit_sale=self)
-        if self.client_id:
-            award_referral_bonus(self.client)
+
+        if StoreSettings.load().points_active:
+            redeem_points_for_sale(self)
+            award_purchase_points(self.client, self.selected_payment_method or self.CREDIT, credit_sale=self)
+
+            if self.client_id:
+                award_referral_points(self.client)
+        else:
+            award_purchase_cashback(self.client, self.total_amount, credit_sale=self)
+
+            if self.client_id:
+                award_referral_bonus(self.client)
 
     def mark_payment_failed(self, payment_id=""):
         self.payment_status = self.PAYMENT_FAILED

@@ -57,7 +57,7 @@
                 </svg>
                 Pix
             </strong>
-            <span class="payment-option-detail">Desconto de at&eacute; 10% no Pix</span>
+            <span class="payment-option-detail">Desconto de {{ pix_option.discount_percent|floatformat:0 }}% no Pix</span>
             <span class="payment-option-price">R$ {{ pix_option.total|floatformat:2 }}</span>
         </label>
 
@@ -100,6 +100,11 @@
         <h2>Pix</h2>
         <p>Valor com desconto: <strong>R$ {{ pix_option.total|floatformat:2 }}</strong></p>
         <p>Desconto aplicado: <strong>R$ {{ pix_option.discount|floatformat:2 }}</strong></p>
+        {% if pix_option_with_points %}
+            <p>Usando seus {{ pix_option_with_points.points_used }} pontos, você tira mais
+            {{ pix_option_with_points.points_percent|floatformat:0 }}% e fica em
+            <strong>R$ {{ pix_option_with_points.total|floatformat:2 }}</strong>.</p>
+        {% endif %}
     </section>
 
     <section class="selected-payment-panel" data-payment-panel="installments" hidden>
@@ -114,6 +119,13 @@
         <p class="terms-accept">
             {{ form.use_welcome_discount }}
             <label for="{{ form.use_welcome_discount.id_for_label }}">Usar voucher de {{ welcome_discount_percent|floatformat:0 }}% nesta compra</label>
+        </p>
+    {% endif %}
+
+    {% if form.use_points %}
+        <p class="terms-accept">
+            {{ form.use_points }}
+            <label for="{{ form.use_points.id_for_label }}">{{ form.use_points.label }}</label>
         </p>
     {% endif %}
 

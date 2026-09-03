@@ -3,6 +3,38 @@
 {% block content %}
 <h1>Minhas compras</h1>
 
+{% if points_active %}
+<details class="cashback-card">
+    <summary class="cashback-row">
+        <span class="cashback-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8-5.3-2.8-5.3 2.8 1-5.8L3.5 9.7l5.9-.9L12 3.5Z"></path></svg>
+        </span>
+        <span class="cashback-main">
+            <span class="cashback-title">Meus pontos</span>
+            <span class="cashback-note">Você ganha até {{ points_pix }} pontos em cada compra paga. A cada 100 pontos, 10% de desconto no pagamento à vista.</span>
+        </span>
+        <span class="cashback-side">
+            <span class="cashback-side-label">Pontos disponíveis</span>
+            <span class="cashback-value">{{ points_balance }}</span>
+            {% if points_discount %}<span class="cashback-side-label">valem {{ points_discount|floatformat:0 }}% de desconto</span>{% endif %}
+            {% if points_history %}<span class="cashback-more">Ver detalhes <span aria-hidden="true">&rsaquo;</span></span>{% endif %}
+        </span>
+    </summary>
+    {% if points_history %}
+        <div class="cashback-extrato">
+            <p class="cashback-rules">Como funciona: você acumula pontos em cada compra paga — quanto melhor a forma de pagamento, mais pontos. A cada <strong>100 pontos</strong> você tira <strong>10%</strong> na hora de pagar à vista, e esse desconto soma com o desconto do Pix. Indicar um amigo vale <strong>{{ referral_points }} pontos</strong>. O máximo acumulado é de {{ points_cap }} pontos.</p>
+            <ul>
+                {% for tx in points_history %}
+                    <li>
+                        <span>{{ tx.created_at|date:"d/m/Y" }} — {{ tx.description|default:tx.get_kind_display }}</span>
+                        <strong class="{% if tx.points < 0 %}cashback-out{% else %}cashback-in{% endif %}">{% if tx.points >= 0 %}+{% endif %}{{ tx.points }}</strong>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</details>
+{% else %}
 <details class="cashback-card">
     <summary class="cashback-row">
         <span class="cashback-icon" aria-hidden="true">
@@ -32,11 +64,16 @@
         </div>
     {% endif %}
 </details>
+{% endif %}
 
 {% if referral_link %}
 <section class="info-panel referral-panel">
     <h2>Indique e ganhe</h2>
-    <p>Quando seu amigo fizer a primeira compra pelo site ou aplicativo, você ganha <strong>R$ {{ referral_bonus|floatformat:2 }}</strong> de cashback. O amigo pode usar seu link ou digitar seu código no cadastro.</p>
+    {% if points_active %}
+        <p>Quando seu amigo fizer a primeira compra pelo site ou aplicativo, você ganha <strong>{{ referral_points }} pontos</strong>. O amigo pode usar seu link ou digitar seu código no cadastro.</p>
+    {% else %}
+        <p>Quando seu amigo fizer a primeira compra pelo site ou aplicativo, você ganha <strong>R$ {{ referral_bonus|floatformat:2 }}</strong> de cashback. O amigo pode usar seu link ou digitar seu código no cadastro.</p>
+    {% endif %}
 
     <p class="referral-code-label">Seu código de indicação</p>
     <div class="referral-code-box"><span id="referral-code">{{ referral_code }}</span></div>

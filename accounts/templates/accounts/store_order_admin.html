@@ -101,6 +101,11 @@
     <div class="action-row">
         <form method="post">
             {% csrf_token %}
+            <label for="manual-payment-method">Como o cliente pagou?</label>
+            <select id="manual-payment-method" name="payment_method">
+                <option value="pix">À vista / Pix</option>
+                <option value="card">Cartão</option>
+            </select>
             <button type="submit" class="button-secondary" name="action" value="mark_paid">Marcar pago manualmente</button>
         </form>
         <form method="post">

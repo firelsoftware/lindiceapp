@@ -461,6 +461,7 @@ class StoreSettingsForm(forms.ModelForm):
         model = StoreSettings
         fields = (
             "cashback_percent", "cashback_max_redeem_percent", "referral_bonus",
+            "pix_discount_percent", "points_active",
             "points_pix", "points_card", "points_credit",
             "points_payoff_bonus", "referral_points", "points_cap",
         )
@@ -468,6 +469,8 @@ class StoreSettingsForm(forms.ModelForm):
             "cashback_percent": "Cashback por compra (%)",
             "cashback_max_redeem_percent": "Máximo de resgate por compra (%)",
             "referral_bonus": "Bônus de indicação (R$)",
+            "pix_discount_percent": "Desconto no pagamento à vista/Pix (%)",
+            "points_active": "Usar pontos no lugar do cashback",
             "points_pix": "Pontos por compra à vista/Pix",
             "points_card": "Pontos por compra no cartão",
             "points_credit": "Pontos por compra no crediário",
@@ -479,6 +482,7 @@ class StoreSettingsForm(forms.ModelForm):
             "cashback_percent": forms.NumberInput(attrs={"min": "0", "max": "100", "step": "0.5"}),
             "cashback_max_redeem_percent": forms.NumberInput(attrs={"min": "0", "max": "100", "step": "1"}),
             "referral_bonus": forms.NumberInput(attrs={"min": "0", "step": "1"}),
+            "pix_discount_percent": forms.NumberInput(attrs={"min": "0", "max": "100", "step": "0.5"}),
             "points_pix": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
             "points_card": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
             "points_credit": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
@@ -655,10 +659,20 @@ class InstallmentChoiceForm(forms.Form):
         required=True,
     )
     use_welcome_discount = forms.BooleanField(label="Usar voucher de 5% nesta compra", required=False)
+    use_points = forms.BooleanField(label="Usar meus pontos nesta compra", required=False)
 
     def __init__(self, *args, sale, **kwargs):
         super().__init__(*args, **kwargs)
         self.sale = sale
+        # Os pontos so descontam no pagamento a vista, entao a opcao some quando
+        # o cliente nao tem pontos para usar.
+        self.available_points = sale.available_points()
+
+        if not self.available_points:
+            self.fields.pop("use_points")
+        else:
+            self.fields["use_points"].label = f"Usar meus {self.available_points} pontos nesta compra (só à vista/Pix)"
+
         today = timezone.localdate()
         max_due_date = today + timedelta(days=30)
         self.fields["first_due_date"].initial = sale.first_due_date

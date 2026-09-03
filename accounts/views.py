@@ -32,9 +32,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 from . import google_oauth
 from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
-from .models import StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .models import StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance_capped, points_discount_percent, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
-from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, verify_webhook_signature
+from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, payment_method_from_payment, verify_webhook_signature
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
 from .supplier_import import decode_catalog_content, import_supplier_catalog, import_supplier_catalog_content
 from .utils import generate_phone_code
@@ -398,10 +398,15 @@ def build_finalize_whatsapp_link(sale, payment_link):
 
 
 def sale_checkout_context(sale, form, return_route):
+    available_points = sale.available_points()
+
     return {
         "form": form,
         "sale": sale,
         "pix_option": sale.pix_option(),
+        # Previa de quanto ficaria usando os pontos, para o cliente comparar.
+        "pix_option_with_points": sale.pix_option(available_points) if available_points else None,
+        "available_points": available_points,
         "card_payment_enabled": settings.CARD_PAYMENT_ENABLED,
         "card_options": sale.card_options(),
         "credit_options": sale.credit_options() if sale.can_use_credit() else [],
@@ -2183,8 +2188,10 @@ def payment_success(request):
                 payment = {}
 
             if payment.get("status") == "approved":
+                method = payment_method_from_payment(payment)
+
                 for order in orders:
-                    order.mark_paid(str(payment.get("id", payment_id)))
+                    order.mark_paid(str(payment.get("id", payment_id)), method)
 
         return redirect("store_order_detail", public_token=first_order.public_token)
 
@@ -2198,7 +2205,7 @@ def payment_success(request):
                 payment = {}
 
             if payment.get("status") == "approved":
-                order.mark_paid(str(payment.get("id", payment_id)))
+                order.mark_paid(str(payment.get("id", payment_id)), payment_method_from_payment(payment))
 
         return redirect("store_order_detail", public_token=order.public_token)
 
@@ -2247,9 +2254,11 @@ def mercado_pago_webhook(request):
         if not orders.exists():
             return JsonResponse({"ok": False, "error": "cart not found"}, status=404)
 
+        payment_method = payment_method_from_payment(payment)
+
         for order in orders:
             if payment_status == "approved":
-                order.mark_paid(payment_reference)
+                order.mark_paid(payment_reference, payment_method)
             elif payment_status == "rejected":
                 order.mark_payment_failed(payment_reference)
 
@@ -2292,7 +2301,7 @@ def mercado_pago_webhook(request):
             return JsonResponse({"ok": False, "error": "order not found"}, status=404)
 
         if payment_status == "approved":
-            order.mark_paid(payment_reference)
+            order.mark_paid(payment_reference, payment_method_from_payment(payment))
         elif payment_status == "rejected":
             order.mark_payment_failed(payment_reference)
             PaymentAlert.objects.get_or_create(
@@ -2475,6 +2484,13 @@ def dashboard(request):
             "cashback_balance": cashback_balance(request.user),
             "cashback_percent": store_settings.cashback_percent,
             "cashback_history": request.user.cashback_transactions.all()[:10],
+            "points_active": store_settings.points_active,
+            "points_balance": points_balance_capped(request.user),
+            "points_cap": store_settings.points_cap,
+            "points_pix": store_settings.points_pix,
+            "points_discount": points_discount_percent(points_balance_capped(request.user), store_settings),
+            "points_history": request.user.points_transactions.all()[:10],
+            "referral_points": store_settings.referral_points,
             "referral_code": referral_code,
             "referral_link": referral_link,
             "referral_count": request.user.referrals.count(),
@@ -3080,6 +3096,7 @@ def choose_installments(request, sale_id):
                     form.cleaned_data["installments"],
                     form.cleaned_data["use_welcome_discount"],
                     form.cleaned_data["remainder_payment_method"],
+                    form.cleaned_data.get("use_points", False),
                 )
 
             if was_pending:
@@ -3174,6 +3191,7 @@ def public_choose_installments(request, public_token):
                     form.cleaned_data["installments"],
                     form.cleaned_data["use_welcome_discount"],
                     form.cleaned_data["remainder_payment_method"],
+                    form.cleaned_data.get("use_points", False),
                 )
 
             if was_pending and sale.client_id:
@@ -4265,7 +4283,8 @@ def store_order_admin(request, order_code):
             order.save(update_fields=["status", "tracking_code", "shipped_at", "updated_at"])
             messages.success(request, "Pedido marcado como enviado.")
         elif action == "mark_paid":
-            order.mark_paid()
+            manual_method = request.POST.get("payment_method", "").strip()
+            order.mark_paid(payment_method=manual_method if manual_method in {"pix", "card"} else "")
             messages.success(request, "Pedido marcado como pago manualmente.")
         elif action == "cancel":
             order.status = StoreOrder.CANCELED

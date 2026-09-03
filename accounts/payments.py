@@ -1,12 +1,14 @@
 import hashlib
 import hmac
 import json
+import logging
 import urllib.error
 import urllib.request
 
 from django.conf import settings
 
 
+logger = logging.getLogger(__name__)
 MERCADO_PAGO_API = "https://api.mercadopago.com"
 
 
@@ -240,3 +242,30 @@ def create_credit_sale_card_preference(sale, request, public_flow=False):
 
 def get_payment(payment_id):
     return mercado_pago_request(f"/v1/payments/{payment_id}", method="GET")
+
+
+# Formas de pagamento que caem no dinheiro da loja na hora, sem taxa de cartao:
+# Pix, transferencia, saldo do Mercado Pago e boleto. Para a loja valem como a
+# vista. Cartao de credito, debito e pre-pago entram como cartao.
+CASH_PAYMENT_TYPES = {"bank_transfer", "account_money", "ticket", "atm"}
+CARD_PAYMENT_TYPES = {"credit_card", "debit_card", "prepaid_card"}
+
+
+def payment_method_from_payment(payment):
+    """Traduz a forma de pagamento do Mercado Pago para pix, card ou credit.
+
+    Quando o Mercado Pago manda algo que ainda nao conhecemos, devolve "card":
+    e a faixa do meio, entao nada e premiado a mais por engano.
+    """
+    method_id = (payment.get("payment_method_id") or "").strip().lower()
+    type_id = (payment.get("payment_type_id") or "").strip().lower()
+
+    if method_id == "pix" or type_id in CASH_PAYMENT_TYPES:
+        return "pix"
+
+    if type_id in CARD_PAYMENT_TYPES:
+        return "card"
+
+    logger.warning("Forma de pagamento desconhecida do Mercado Pago: %s / %s", method_id, type_id)
+
+    return "card"

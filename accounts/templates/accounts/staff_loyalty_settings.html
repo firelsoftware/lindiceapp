@@ -36,11 +36,25 @@
         {{ form.referral_bonus.errors }}
     </p>
 
+    <p>
+        <label for="{{ form.pix_discount_percent.id_for_label }}">{{ form.pix_discount_percent.label }}</label>
+        {{ form.pix_discount_percent }}
+        <small>Desconto que o cliente ganha ao escolher pagar à vista/Pix.</small>
+        {{ form.pix_discount_percent.errors }}
+    </p>
+
     <h2 style="margin-top:28px">Sistema de pontos</h2>
     <section class="info-panel">
         <p>Os pontos substituem o cashback em dinheiro. O cliente ganha pontos por compra
         (conforme o método de pagamento) e usa em desconto. Teto de {{ form.instance.points_cap }} pontos.</p>
+        <p><strong>Antes de ligar a chave abaixo</strong>, converta os saldos de cashback que os
+        clientes já têm. Enquanto ela estiver desligada, tudo continua funcionando no cashback.</p>
     </section>
+    <p>
+        <label class="reg-checkbox">{{ form.points_active }} <span>{{ form.points_active.label }}</span></label>
+        <small>Ligada, as compras passam a creditar pontos. Desligada, voltam a creditar cashback.</small>
+        {{ form.points_active.errors }}
+    </p>
     <p>
         <label for="{{ form.points_pix.id_for_label }}">{{ form.points_pix.label }}</label>
         {{ form.points_pix }}

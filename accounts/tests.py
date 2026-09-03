@@ -1,17 +1,19 @@
 import json
+from io import StringIO
 from pathlib import Path
 from datetime import datetime, timedelta
 from decimal import Decimal
 from unittest.mock import patch
 
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.management import call_command
 from django.test import Client, RequestFactory, TestCase, override_settings
 from django.utils import timezone
 
-from .forms import CreditSaleForm, ProductForm, RegisterForm
-from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, StoreOrder, SupplierCatalogSource, SupplierProduct, User, add_months
+from .forms import CreditSaleForm, InstallmentChoiceForm, ProductForm, RegisterForm
+from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, SupplierCatalogSource, SupplierProduct, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
-from .payments import create_credit_sale_card_preference
+from .payments import create_credit_sale_card_preference, payment_method_from_payment
 from .store_shipping import shipping_cost_for
 from .supplier_import import parse_csv, row_to_payload
 from .utils import cpf_hash, is_valid_cpf
@@ -401,7 +403,8 @@ class CreditSalePaymentChoiceTests(TestCase):
         self.assertRedirects(response, f"/pagamento/pix/{sale.id}/")
         self.assertEqual(sale.status, CreditSale.ACCEPTED)
         self.assertEqual(sale.selected_payment_method, CreditSale.PIX)
-        self.assertEqual(sale.selected_total_with_interest, Decimal("171.00"))
+        # R$ 200 - 5% de voucher = R$ 190; menos 15% do pagamento a vista = R$ 161,50.
+        self.assertEqual(sale.selected_total_with_interest, Decimal("161.50"))
         self.assertEqual(sale.welcome_discount_amount, Decimal("10.00"))
         user.profile.refresh_from_db()
         self.assertTrue(user.profile.first_purchase_discount_used)
@@ -416,7 +419,7 @@ class CreditSalePaymentChoiceTests(TestCase):
 
         response = self.client.get(f"/pagamento/pix/{sale.id}/")
 
-        self.assertContains(response, "R$ 171,00")
+        self.assertContains(response, "R$ 161,50")
         self.assertContains(response, "d92f4cae-454c-4f33-97b2-6a513b292b24")
 
     def test_store_front_announces_available_welcome_discount(self):
@@ -3215,3 +3218,369 @@ class PromoEmailTests(TestCase):
         self.client.force_login(u)
         resp = self.client.get("/gestao/promocoes/")
         self.assertEqual(resp.status_code, 403)
+
+
+class PointsEarningTests(TestCase):
+    """Ganho de pontos nas compras, com a chave points_active ligada e desligada."""
+
+    def setUp(self):
+        self.loja = StoreSettings.load()
+
+    def approved_client(self, email):
+        user = User.objects.create_user(
+            email=email,
+            password="Teste12345!",
+            full_name="Cliente Pontos",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash=ClientProfile.generate_cpf_placeholder(),
+            cpf_last_digits="",
+            phone="61999999999",
+            phone_verified=True,
+            address="Endereco",
+            registration_status=ClientProfile.APPROVED,
+        )
+
+        return user
+
+    def store_order(self, user):
+        product = SupplierProduct.objects.create(
+            supplier_code=f"PT{user.pk:04d}",
+            name="Sandalia Pontos",
+            wholesale_price=Decimal("50.00"),
+            dropshipping_cost=Decimal("55.00"),
+            suggested_sale_price=Decimal("99.90"),
+            stock_quantity=3,
+            sizes="35,36",
+            is_active=True,
+            is_visible=True,
+        )
+
+        return StoreOrder.objects.create(
+            product=product,
+            customer=user,
+            product_name=product.name,
+            supplier_code=product.supplier_code,
+            selected_size="35",
+            customer_name=user.full_name,
+            customer_email=user.email,
+            customer_phone="61999999999",
+            shipping_address="Rua Teste, 1",
+            unit_price=Decimal("100.00"),
+            supplier_cost=Decimal("55.00"),
+            total_amount=Decimal("100.00"),
+            estimated_profit=Decimal("45.00"),
+        )
+
+    def activate_points(self, active=True):
+        self.loja.points_active = active
+        self.loja.save()
+
+    def test_mercado_pago_payment_methods_are_translated(self):
+        self.assertEqual(payment_method_from_payment({"payment_method_id": "pix", "payment_type_id": "bank_transfer"}), "pix")
+        self.assertEqual(payment_method_from_payment({"payment_method_id": "visa", "payment_type_id": "credit_card"}), "card")
+        self.assertEqual(payment_method_from_payment({"payment_type_id": "debit_card"}), "card")
+        self.assertEqual(payment_method_from_payment({"payment_type_id": "account_money"}), "pix")
+        self.assertEqual(payment_method_from_payment({"payment_type_id": "ticket"}), "pix")
+
+    def test_unknown_payment_method_never_gets_the_best_rate(self):
+        self.assertEqual(payment_method_from_payment({"payment_type_id": "forma_nova"}), "card")
+        self.assertEqual(payment_method_from_payment({}), "card")
+
+    def test_cashback_still_works_while_points_are_off(self):
+        self.activate_points(False)
+        user = self.approved_client("cashback@example.com")
+        self.store_order(user).mark_paid("mp-1", "pix")
+
+        self.assertGreater(cashback_balance(user), Decimal("0.00"))
+        self.assertEqual(points_balance(user), 0)
+
+    def test_payment_method_is_recorded_even_with_points_off(self):
+        self.activate_points(False)
+        user = self.approved_client("guarda-metodo@example.com")
+        order = self.store_order(user)
+        order.mark_paid("mp-2", "pix")
+        order.refresh_from_db()
+
+        self.assertEqual(order.payment_method, "pix")
+
+    def test_points_replace_cashback_when_active(self):
+        self.activate_points(True)
+        user = self.approved_client("pontos@example.com")
+        self.store_order(user).mark_paid("mp-3", "pix")
+
+        self.assertEqual(points_balance(user), self.loja.points_pix)
+        self.assertEqual(cashback_balance(user), Decimal("0.00"))
+
+    def test_card_purchase_earns_the_middle_rate(self):
+        self.activate_points(True)
+        user = self.approved_client("cartao@example.com")
+        self.store_order(user).mark_paid("mp-4", "card")
+
+        self.assertEqual(points_balance(user), self.loja.points_card)
+
+    def test_repeated_webhook_does_not_double_the_points(self):
+        self.activate_points(True)
+        user = self.approved_client("webhook@example.com")
+        order = self.store_order(user)
+        order.mark_paid("mp-5", "pix")
+        order.mark_paid("mp-5", "pix")
+
+        self.assertEqual(points_balance(user), self.loja.points_pix)
+
+    def test_manual_payment_without_method_falls_back_to_card(self):
+        self.activate_points(True)
+        user = self.approved_client("manual@example.com")
+        self.store_order(user).mark_paid()
+
+        self.assertEqual(points_balance(user), self.loja.points_card)
+
+    def test_credit_sale_uses_the_method_the_customer_picked(self):
+        self.activate_points(True)
+        user = self.approved_client("crediario@example.com")
+        sale = CreditSale.objects.create(
+            client=user,
+            description="Carne",
+            total_amount=Decimal("300.00"),
+            first_due_date=timezone.localdate(),
+            selected_payment_method=CreditSale.CREDIT,
+        )
+        sale.mark_paid("mp-6")
+
+        self.assertEqual(points_balance(user), self.loja.points_credit)
+
+    def test_pending_registration_earns_nothing(self):
+        self.activate_points(True)
+        user = User.objects.create_user(
+            email="pendente@example.com",
+            password="Teste12345!",
+            full_name="Cliente Pendente",
+            preferred_name="Pendente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash=ClientProfile.generate_cpf_placeholder(),
+            phone="61999999999",
+            address="Endereco",
+            registration_status=ClientProfile.PENDING,
+        )
+        self.store_order(user).mark_paid("mp-7", "pix")
+
+        self.assertEqual(points_balance(user), 0)
+
+
+class CashbackConversionTests(TestCase):
+    """Conversao do saldo de cashback em pontos: cada real vira 2 pontos."""
+
+    def client_with_balance(self, email, amount):
+        user = User.objects.create_user(
+            email=email,
+            password="Teste12345!",
+            full_name="Cliente Saldo",
+            preferred_name="Saldo",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash=ClientProfile.generate_cpf_placeholder(),
+            phone="61999999999",
+            address="Endereco",
+            registration_status=ClientProfile.APPROVED,
+        )
+        CashbackTransaction.objects.create(
+            user=user,
+            kind=CashbackTransaction.EARN,
+            amount=Decimal(amount),
+            description="Saldo antigo",
+        )
+
+        return user
+
+    def run_conversion(self, *args):
+        output = StringIO()
+        call_command("converter_cashback_em_pontos", *args, stdout=output)
+
+        return output.getvalue()
+
+    def test_dry_run_changes_nothing(self):
+        user = self.client_with_balance("ensaio@example.com", "30.00")
+        report = self.run_conversion("--ensaio")
+
+        self.assertEqual(points_balance(user), 0)
+        self.assertEqual(cashback_balance(user), Decimal("30.00"))
+        self.assertIn("nada foi gravado", report)
+
+    def test_each_real_becomes_two_points(self):
+        user = self.client_with_balance("converte@example.com", "30.00")
+        self.run_conversion()
+
+        self.assertEqual(points_balance(user), 60)
+
+    def test_old_balance_is_cleared_so_nobody_gets_both(self):
+        user = self.client_with_balance("zera@example.com", "30.00")
+        self.run_conversion()
+
+        self.assertEqual(cashback_balance(user), Decimal("0.00"))
+
+    def test_running_twice_does_not_double_the_points(self):
+        user = self.client_with_balance("duasvezes@example.com", "30.00")
+        self.run_conversion()
+        self.run_conversion()
+
+        self.assertEqual(points_balance(user), 60)
+
+    def test_conversion_respects_the_points_cap(self):
+        user = self.client_with_balance("saldao@example.com", "500.00")
+        report = self.run_conversion()
+        cap = StoreSettings.load().points_cap
+
+        self.assertEqual(points_balance(user), cap)
+        self.assertIn("nao couberam no teto", report)
+
+
+class PointsRedemptionTests(TestCase):
+    """Resgate dos pontos no pagamento a vista/Pix."""
+
+    def setUp(self):
+        self.loja = StoreSettings.load()
+        self.loja.points_active = True
+        self.loja.pix_discount_percent = Decimal("15.00")
+        self.loja.save()
+
+    def client_with_points(self, points, email="pontos-resgate@example.com"):
+        user = User.objects.create_user(
+            email=email,
+            password="Teste12345!",
+            full_name="Cliente Resgate",
+            preferred_name="Cliente",
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash=ClientProfile.generate_cpf_placeholder(),
+            phone="61999999999",
+            address="Endereco",
+            registration_status=ClientProfile.APPROVED,
+        )
+
+        if points:
+            PointsTransaction.objects.create(
+                user=user,
+                kind=PointsTransaction.ADJUST,
+                points=points,
+                description="Saldo de teste",
+            )
+
+        return user
+
+    def sale_for(self, user, total="100.00"):
+        return CreditSale.objects.create(
+            client=user,
+            description="Compra",
+            total_amount=Decimal(total),
+            first_due_date=timezone.localdate(),
+        )
+
+    def test_pix_discount_follows_the_store_setting(self):
+        sale = self.sale_for(self.client_with_points(0), "100.00")
+        option = sale.pix_option()
+
+        self.assertEqual(option["discount_percent"], Decimal("15.00"))
+        self.assertEqual(option["total"], Decimal("85.00"))
+
+    def test_points_stack_on_top_of_the_pix_discount(self):
+        # Exemplo da regra: R$ 100 -> 15% -> R$ 85 -> 10% -> R$ 76,50
+        user = self.client_with_points(100)
+        option = self.sale_for(user, "100.00").pix_option(100)
+
+        self.assertEqual(option["points_used"], 100)
+        self.assertEqual(option["points_percent"], Decimal("10.00"))
+        self.assertEqual(option["total"], Decimal("76.50"))
+
+    def test_two_hundred_points_take_twenty_percent(self):
+        user = self.client_with_points(200)
+        option = self.sale_for(user, "100.00").pix_option(200)
+
+        self.assertEqual(option["total"], Decimal("68.00"))
+
+    def test_choosing_pix_with_points_records_what_will_be_spent(self):
+        user = self.client_with_points(100)
+        sale = self.sale_for(user, "100.00")
+        sale.choose_payment(CreditSale.PIX, use_points=True)
+        sale.refresh_from_db()
+
+        self.assertEqual(sale.points_used, 100)
+        self.assertEqual(sale.points_discount_amount, Decimal("8.50"))
+        self.assertEqual(sale.selected_total_with_interest, Decimal("76.50"))
+
+    def test_points_are_only_spent_when_the_payment_is_confirmed(self):
+        user = self.client_with_points(100)
+        sale = self.sale_for(user, "100.00")
+        sale.choose_payment(CreditSale.PIX, use_points=True)
+
+        self.assertEqual(points_balance(user), 100)
+
+        sale.mark_paid("mp-1")
+
+        self.assertEqual(points_balance(user), 100 - 100 + self.loja.points_pix)
+
+    def test_confirming_twice_does_not_spend_the_points_twice(self):
+        user = self.client_with_points(100)
+        sale = self.sale_for(user, "100.00")
+        sale.choose_payment(CreditSale.PIX, use_points=True)
+        sale.mark_paid("mp-2")
+        balance_after_first = points_balance(user)
+        sale.mark_paid("mp-2")
+
+        self.assertEqual(points_balance(user), balance_after_first)
+
+    def test_changing_to_card_gives_the_points_back(self):
+        user = self.client_with_points(100)
+        sale = self.sale_for(user, "100.00")
+        sale.choose_payment(CreditSale.PIX, use_points=True)
+        sale.choose_payment(CreditSale.CARD, installments=1)
+        sale.refresh_from_db()
+
+        self.assertEqual(sale.points_used, 0)
+        self.assertEqual(sale.points_discount_amount, Decimal("0.00"))
+
+    def test_card_payment_never_gets_the_points_discount(self):
+        user = self.client_with_points(200)
+        option = self.sale_for(user, "100.00").pix_option(0)
+
+        self.assertEqual(option["points_used"], 0)
+        self.assertEqual(option["points_discount"], Decimal("0.00"))
+
+    def test_no_points_are_offered_while_the_switch_is_off(self):
+        self.loja.points_active = False
+        self.loja.save()
+        user = self.client_with_points(200)
+
+        self.assertEqual(self.sale_for(user, "100.00").available_points(), 0)
+
+    def test_the_checkout_form_hides_the_option_without_points(self):
+        sale = self.sale_for(self.client_with_points(0), "100.00")
+
+        self.assertNotIn("use_points", InstallmentChoiceForm(sale=sale).fields)
+
+    def test_the_checkout_form_offers_the_points_the_client_has(self):
+        user = self.client_with_points(150)
+        form = InstallmentChoiceForm(sale=self.sale_for(user, "100.00"))
+
+        self.assertIn("use_points", form.fields)
+        self.assertIn("150", form.fields["use_points"].label)
+
+    def test_never_spends_more_points_than_the_client_has(self):
+        user = self.client_with_points(100)
+        sale = self.sale_for(user, "100.00")
+        sale.choose_payment(CreditSale.PIX, use_points=True)
+        # O cliente gasta os pontos em outra compra antes de confirmar esta.
+        PointsTransaction.objects.create(
+            user=user,
+            kind=PointsTransaction.REDEEM,
+            points=-100,
+            description="Gastou em outra compra",
+        )
+        sale.mark_paid("mp-3")
+
+        self.assertGreaterEqual(points_balance(user), 0)
