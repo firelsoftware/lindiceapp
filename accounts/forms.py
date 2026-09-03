@@ -95,13 +95,24 @@ class RegisterForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         self.credit_mode = kwargs.pop("credit_mode", False)
+        self.google_email = (kwargs.pop("google_email", "") or "").strip().lower()
         super().__init__(*args, **kwargs)
-        bound_email = ""
-        if self.is_bound:
+        bound_email = self.google_email
+        if self.is_bound and not bound_email:
             bound_email = (self.data.get(self.add_prefix("email")) or self.data.get("email") or "").strip().lower()
         self.doces_e_mais_owner_mode = bound_email == DOCES_E_MAIS_OWNER_EMAIL
         self.fields["password1"].label = "Senha *"
         self.fields["password2"].label = "Confirmacao de senha *"
+        if self.google_email:
+            # O email ja veio confirmado pelo Google: fica travado no formulario
+            # e a senha vira opcional (quem quiser entra so pelo Google).
+            self.fields["email"].disabled = True
+            self.fields["email"].initial = self.google_email
+            self.fields["password1"].label = "Senha (opcional)"
+            self.fields["password2"].label = "Confirmacao de senha"
+            self.fields["password1"].required = False
+            self.fields["password2"].required = False
+            self.fields["password1"].help_text = "Deixe em branco para entrar sempre pelo Google."
         if self.credit_mode:
             self.fields["cpf"].label = "CPF *"
             self.fields["cpf"].required = True
@@ -167,6 +178,11 @@ class RegisterForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
+
+        if self.google_email and not self.cleaned_data.get("password1"):
+            # Sem senha escolhida, a conta so entra pelo Google. Marcar como
+            # inutilizavel evita que a senha vazia vire um hash valido.
+            user.set_unusable_password()
 
         if commit:
             user.save()

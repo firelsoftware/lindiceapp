@@ -5,6 +5,7 @@ from datetime import timedelta
 import json
 import logging
 import re
+import secrets
 from decimal import Decimal, InvalidOperation
 import unicodedata
 import uuid
@@ -29,6 +30,7 @@ from django.utils.dateparse import parse_date
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
+from . import google_oauth
 from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
 from .models import StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
@@ -431,6 +433,11 @@ class LoginView(auth_views.LoginView):
             messages.success(self.request, "Bem-vindo de volta! A exclusao da sua conta foi cancelada.")
         return response
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["google_login_enabled"] = google_oauth.is_enabled()
+        return context
+
     def get_success_url(self):
         redirect_to = self.get_redirect_url()
 
@@ -438,6 +445,102 @@ class LoginView(auth_views.LoginView):
             return redirect_to
 
         return resolve_url(authenticated_home_route(self.request.user))
+
+
+GOOGLE_STATE_SESSION_KEY = "google_oauth_state"
+GOOGLE_NEXT_SESSION_KEY = "google_oauth_next"
+GOOGLE_REF_SESSION_KEY = "google_oauth_ref"
+GOOGLE_EMAIL_SESSION_KEY = "google_verified_email"
+GOOGLE_NAME_SESSION_KEY = "google_verified_name"
+GOOGLE_FIRST_NAME_SESSION_KEY = "google_verified_first_name"
+
+
+def google_redirect_uri(request):
+    return request.build_absolute_uri(reverse("google_login_callback"))
+
+
+def google_login_start(request):
+    """Manda o cliente para o Google, guardando o estado que valida a volta."""
+    if not google_oauth.is_enabled():
+        messages.error(request, "A entrada pelo Google nao esta disponivel no momento.")
+
+        return redirect("login")
+
+    state = google_oauth.new_state()
+    request.session[GOOGLE_STATE_SESSION_KEY] = state
+    request.session[GOOGLE_NEXT_SESSION_KEY] = safe_next_url(request, request.GET.get("next"))
+    request.session[GOOGLE_REF_SESSION_KEY] = (request.GET.get("ref") or "").strip()
+
+    return redirect(google_oauth.build_authorization_url(google_redirect_uri(request), state))
+
+
+def google_login_callback(request):
+    """Recebe a volta do Google, confere o estado e entra na conta."""
+    expected_state = request.session.pop(GOOGLE_STATE_SESSION_KEY, "")
+    next_url = safe_next_url(request, request.session.pop(GOOGLE_NEXT_SESSION_KEY, ""))
+    ref_code = request.session.pop(GOOGLE_REF_SESSION_KEY, "")
+
+    if request.GET.get("error"):
+        messages.info(request, "Entrada pelo Google cancelada.")
+
+        return redirect("login")
+
+    code = request.GET.get("code", "")
+    state = request.GET.get("state", "")
+
+    if not code or not expected_state or not secrets.compare_digest(state, expected_state):
+        messages.error(request, "Nao conseguimos confirmar a entrada pelo Google. Tente novamente.")
+
+        return redirect("login")
+
+    try:
+        profile_data = google_oauth.get_profile(code, google_redirect_uri(request))
+    except google_oauth.GoogleAuthError:
+        logger.exception("Falha na entrada pelo Google")
+        messages.error(request, "Nao conseguimos falar com o Google agora. Tente novamente em instantes.")
+
+        return redirect("login")
+
+    if not profile_data["email_verified"]:
+        messages.error(request, "Seu email ainda nao foi confirmado no Google.")
+
+        return redirect("login")
+
+    email = profile_data["email"]
+    user = get_user_model().objects.filter(email__iexact=email).first()
+
+    if user is None:
+        # Conta nova: o cadastro continua sendo o do Lindice, ja com o email
+        # confirmado e o nome preenchidos.
+        request.session[GOOGLE_EMAIL_SESSION_KEY] = email
+        request.session[GOOGLE_NAME_SESSION_KEY] = profile_data["full_name"]
+        request.session[GOOGLE_FIRST_NAME_SESSION_KEY] = profile_data["given_name"]
+        messages.info(request, "Falta pouco: confirme seus dados para criar a conta.")
+        destination = f"{reverse('register')}?google=1"
+
+        if next_url:
+            destination = f"{destination}&next={quote(next_url)}"
+
+        if ref_code:
+            destination = f"{destination}&ref={quote(ref_code)}"
+
+        return redirect(destination)
+
+    if not user.is_active:
+        messages.error(request, "Esta conta esta desativada. Fale com a loja.")
+
+        return redirect("login")
+
+    login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+
+    if getattr(user, "deletion_requested_at", None):
+        user.cancel_deletion()
+        messages.success(request, "Bem-vindo de volta! A exclusao da sua conta foi cancelada.")
+
+    if next_url:
+        return redirect(next_url)
+
+    return redirect(authenticated_home_route(user))
 
 
 def csrf_failure(request, reason=""):
@@ -2207,9 +2310,11 @@ def register(request):
     credit_mode = (request.POST.get("intent") or request.GET.get("intent") or "").strip() == "credit"
     next_url = safe_next_url(request, request.POST.get("next") or request.GET.get("next"))
     ref_code = (request.POST.get("ref") or request.GET.get("ref") or "").strip()
+    # Quem chegou pelo Google ja tem email confirmado guardado na sessao.
+    google_email = request.session.get(GOOGLE_EMAIL_SESSION_KEY, "")
 
     if request.method == "POST":
-        form = RegisterForm(request.POST, request.FILES, credit_mode=credit_mode)
+        form = RegisterForm(request.POST, request.FILES, credit_mode=credit_mode, google_email=google_email)
 
         if form.is_valid():
             try:
@@ -2225,7 +2330,13 @@ def register(request):
                 return render(
                     request,
                     "accounts/register.html",
-                    {"form": form, "credit_mode": credit_mode, "next_url": next_url, "ref_code": ref_code},
+                    {
+                        "form": form,
+                        "credit_mode": credit_mode,
+                        "next_url": next_url,
+                        "ref_code": ref_code,
+                        "google_email": google_email,
+                    },
                     status=500,
                 )
 
@@ -2245,6 +2356,9 @@ def register(request):
                 profile.save(update_fields=["phone_verified"])
             login(request, user)
 
+            for session_key in (GOOGLE_EMAIL_SESSION_KEY, GOOGLE_NAME_SESSION_KEY, GOOGLE_FIRST_NAME_SESSION_KEY):
+                request.session.pop(session_key, None)
+
             if not is_doces_e_mais_owner_email(user.email) and credit_mode and settings.PHONE_VERIFICATION_REQUIRED and profile.phone:
                 return redirect("verify_phone")
 
@@ -2253,12 +2367,27 @@ def register(request):
 
             return redirect("dashboard")
     else:
-        form = RegisterForm(credit_mode=credit_mode)
+        initial = {}
+
+        if google_email:
+            initial = {
+                "email": google_email,
+                "full_name": request.session.get(GOOGLE_NAME_SESSION_KEY, ""),
+                "preferred_name": request.session.get(GOOGLE_FIRST_NAME_SESSION_KEY, ""),
+            }
+
+        form = RegisterForm(credit_mode=credit_mode, google_email=google_email, initial=initial)
 
     return render(
         request,
         "accounts/register.html",
-        {"form": form, "credit_mode": credit_mode, "next_url": next_url, "ref_code": ref_code},
+        {
+            "form": form,
+            "credit_mode": credit_mode,
+            "next_url": next_url,
+            "ref_code": ref_code,
+            "google_email": google_email,
+        },
     )
 
 

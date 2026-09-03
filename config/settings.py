@@ -286,6 +286,10 @@ STORE_WHATSAPP_NUMBER = os.environ.get("STORE_WHATSAPP_NUMBER", "5561995524748")
 # ID de medicao do Google Analytics (GA4), formato "G-XXXXXXXXXX". Quando
 # vazio, o script de analytics nao e carregado.
 GOOGLE_ANALYTICS_ID = os.environ.get("GOOGLE_ANALYTICS_ID", "")
+# Login com a conta Google. Enquanto as duas credenciais estiverem vazias o
+# recurso fica desligado e nada muda nas telas de entrar e de cadastro.
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID", "")
+GOOGLE_OAUTH_CLIENT_SECRET = os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET", "")
 ANDROID_APP_PACKAGE_ID = os.environ.get("ANDROID_APP_PACKAGE_ID", "")
 ANDROID_SHA256_CERT_FINGERPRINTS = env_list("ANDROID_SHA256_CERT_FINGERPRINTS")
 PHONE_VERIFICATION_REQUIRED = env_bool("PHONE_VERIFICATION_REQUIRED", default=True)

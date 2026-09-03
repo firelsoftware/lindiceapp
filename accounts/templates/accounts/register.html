@@ -29,6 +29,9 @@
 
         <section class="reg-step" data-reg-step>
             <h1 class="reg-question">Qual o seu e-mail?</h1>
+            {% if google_email %}
+                <p class="reg-hint">Confirmado pela sua conta Google. É por ele que você vai entrar.</p>
+            {% endif %}
             {{ form.email }}
             {{ form.email.errors }}
         </section>
@@ -68,7 +71,10 @@
         {% endif %}
 
         <section class="reg-step" data-reg-step>
-            <h1 class="reg-question">Crie uma senha</h1>
+            <h1 class="reg-question">Crie uma senha{% if google_email %} <span class="reg-optional">(opcional)</span>{% endif %}</h1>
+            {% if google_email %}
+                <p class="reg-hint">Pode deixar em branco e entrar sempre pelo Google. Se preferir ter uma senha também, é só criar aqui.</p>
+            {% endif %}
             {{ form.password1 }}
             {{ form.password1.errors }}
         </section>

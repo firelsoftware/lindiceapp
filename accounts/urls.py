@@ -30,6 +30,8 @@ urlpatterns = [
     path("loja/mercado-pago/webhook/", views.mercado_pago_webhook, name="mercado_pago_webhook"),
     path("cadastro/", views.register, name="register"),
     path("login/", views.LoginView.as_view(), name="login"),
+    path("entrar/google/", views.google_login_start, name="google_login_start"),
+    path("entrar/google/retorno/", views.google_login_callback, name="google_login_callback"),
     path(
         "esqueci-senha/",
         auth_views.PasswordResetView.as_view(

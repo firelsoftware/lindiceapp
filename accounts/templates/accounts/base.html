@@ -2819,6 +2819,51 @@
             justify-self: end;
         }
 
+        .google-login-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin: 0 0 18px;
+            padding: 12px 16px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--ink);
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .google-login-button:hover {
+            border-color: var(--brand-mist);
+            box-shadow: 0 6px 18px rgba(24, 34, 48, 0.08);
+        }
+
+        .google-login-mark {
+            width: 18px;
+            height: 18px;
+            flex: none;
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 0 18px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--line);
+        }
+
         .profile-photo-preview {
             width: 180px;
             height: 180px;
