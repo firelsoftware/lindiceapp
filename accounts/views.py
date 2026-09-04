@@ -30,7 +30,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
-from .models import StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .models import StoreSettings, attach_catalog_sources, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, verify_webhook_signature
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
@@ -186,6 +186,15 @@ def ensure_supplier_catalog_sources():
             "purchase_flow": SupplierCatalogSource.FLOW_WHATSAPP_CONFIRMATION,
             "is_active": True,
         },
+        {
+            "source": SupplierProduct.SOURCE_NOVO_FORNECEDOR,
+            "display_name": "Fornecedor novo",
+            "catalog_format": SupplierCatalogSource.FORMAT_CSV,
+            "supplier_panel_note": "Troque o nome para o do fornecedor, cole a URL do catalogo dele ou envie a planilha do dia. Escolha abaixo se a venda fecha no checkout normal ou por confirmacao no WhatsApp.",
+            "customer_notice": "",
+            "purchase_flow": SupplierCatalogSource.FLOW_STORE_CHECKOUT,
+            "is_active": True,
+        },
     ]
 
     sources = []
@@ -218,7 +227,7 @@ def source_notice_for_customer(product):
     if not product.requires_availability_confirmation():
         return ""
 
-    source_config = SupplierCatalogSource.objects.filter(source=product.source, is_active=True).first()
+    source_config = product.catalog_source()
 
     if source_config and source_config.customer_notice:
         return source_config.customer_notice
@@ -1612,6 +1621,8 @@ def store_front(request):
     querystring = request.GET.copy()
     querystring.pop("page", None)
     base_querystring = querystring.urlencode()
+
+    attach_catalog_sources(page_obj)
 
     for product in page_obj:
         product.gallery = product.gallery_images()
@@ -3925,6 +3936,7 @@ def supplier_products(request):
 
     paginator = Paginator(products, 50)
     page_obj = paginator.get_page(request.GET.get("page"))
+    attach_catalog_sources(page_obj)
 
     return render(
         request,

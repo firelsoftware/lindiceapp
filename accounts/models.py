@@ -5,7 +5,7 @@ import re
 
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db import models, transaction
+from django.db import IntegrityError, models, transaction
 from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -248,11 +248,40 @@ def build_product_code(created_at):
     return f"P{monthly_count}{created_at:%m%y}"
 
 
-def build_store_order_code(created_at):
-    month_start = created_at.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-    monthly_count = StoreOrder.objects.filter(created_at__gte=month_start).exclude(order_code="").count() + 1
+ORDER_CODE_PREFIX = "LJ"
+ORDER_CODE_MAX_ATTEMPTS = 8
 
-    return f"LJ{monthly_count:04d}{created_at:%m%y}"
+
+def next_store_order_sequence(suffix):
+    """Proximo numero da sequencia de pedidos daquele mes.
+
+    O numero sai do maior codigo ja gravado, e nao de uma contagem de linhas:
+    assim ele nao se repete quando a data de um pedido antigo muda nem quando
+    duas compras acontecem ao mesmo tempo.
+    """
+    codes = StoreOrder.objects.filter(
+        order_code__startswith=ORDER_CODE_PREFIX,
+        order_code__endswith=suffix,
+    ).values_list("order_code", flat=True)
+
+    biggest = 0
+
+    for code in codes:
+        middle = code[len(ORDER_CODE_PREFIX):-len(suffix)]
+
+        if middle.isdigit():
+            biggest = max(biggest, int(middle))
+
+    return biggest + 1
+
+
+def build_store_order_code(created_at, sequence=None):
+    suffix = f"{created_at:%m%y}"
+
+    if sequence is None:
+        sequence = next_store_order_sequence(suffix)
+
+    return f"{ORDER_CODE_PREFIX}{sequence:04d}{suffix}"
 
 
 class Supplier(models.Model):
@@ -328,10 +357,12 @@ class ProductCost(models.Model):
 class SupplierProduct(models.Model):
     SOURCE_REVENDA_CALCADOS = "revenda_calcados"
     SOURCE_PARCEIRO_SOB_CONSULTA = "parceiro_sob_consulta"
+    SOURCE_NOVO_FORNECEDOR = "novo_fornecedor"
 
     SOURCE_CHOICES = [
         (SOURCE_REVENDA_CALCADOS, "Revenda de Calcados"),
         (SOURCE_PARCEIRO_SOB_CONSULTA, "Parceiro sob consulta"),
+        (SOURCE_NOVO_FORNECEDOR, "Fornecedor novo"),
     ]
 
     source = models.CharField(max_length=50, choices=SOURCE_CHOICES, default=SOURCE_REVENDA_CALCADOS)
@@ -366,7 +397,22 @@ class SupplierProduct(models.Model):
     def __str__(self):
         return f"{self.supplier_code} - {self.name}"
 
+    def catalog_source(self):
+        """Configuracao da fonte desse produto, buscada uma vez por objeto."""
+        if not hasattr(self, "_catalog_source"):
+            self._catalog_source = SupplierCatalogSource.objects.filter(
+                source=self.source,
+                is_active=True,
+            ).first()
+
+        return self._catalog_source
+
     def requires_availability_confirmation(self):
+        source_config = self.catalog_source()
+
+        if source_config:
+            return source_config.purchase_flow == SupplierCatalogSource.FLOW_WHATSAPP_CONFIRMATION
+
         return self.source == self.SOURCE_PARCEIRO_SOB_CONSULTA
 
     def store_margin(self):
@@ -430,6 +476,23 @@ class SupplierCatalogSource(models.Model):
         return self.display_name
 
 
+def attach_catalog_sources(products):
+    """Carrega a configuracao das fontes de uma vez para uma lista de produtos.
+
+    Sem isso, cada produto listado faria a sua propria consulta para descobrir
+    como a venda dele fecha.
+    """
+    sources = {
+        source.source: source
+        for source in SupplierCatalogSource.objects.filter(is_active=True)
+    }
+
+    for product in products:
+        product._catalog_source = sources.get(product.source)
+
+    return products
+
+
 class StoreOrder(models.Model):
     PENDING_PAYMENT = "pending_payment"
     PAID = "paid"
@@ -485,11 +548,28 @@ class StoreOrder(models.Model):
         ordering = ["-created_at"]
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+        if self.order_code:
+            return super().save(*args, **kwargs)
 
-        if not self.order_code:
-            self.order_code = build_store_order_code(self.created_at)
-            super().save(update_fields=["order_code"])
+        reference = self.created_at or timezone.now()
+        suffix = f"{reference:%m%y}"
+        sequence = next_store_order_sequence(suffix)
+
+        for _ in range(ORDER_CODE_MAX_ATTEMPTS):
+            self.order_code = build_store_order_code(reference, sequence=sequence)
+
+            try:
+                with transaction.atomic():
+                    return super().save(*args, **kwargs)
+            except IntegrityError:
+                if not StoreOrder.objects.filter(order_code=self.order_code).exists():
+                    self.order_code = ""
+                    raise
+
+                sequence = max(next_store_order_sequence(suffix), sequence + 1)
+
+        self.order_code = ""
+        raise IntegrityError("Nao foi possivel gerar um codigo unico para o pedido.")
 
     def mark_paid(self, payment_id=""):
         self.status = self.PAID
