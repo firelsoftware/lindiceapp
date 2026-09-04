@@ -3215,3 +3215,78 @@ class PromoEmailTests(TestCase):
         self.client.force_login(u)
         resp = self.client.get("/gestao/promocoes/")
         self.assertEqual(resp.status_code, 403)
+
+class StoreOrderCodeTests(TestCase):
+    def setUp(self):
+        self.product = SupplierProduct.objects.create(
+            supplier_code="COD001",
+            name="Sandalia Teste",
+            wholesale_price=Decimal("80.00"),
+            dropshipping_cost=Decimal("90.00"),
+            suggested_sale_price=Decimal("150.00"),
+            stock_quantity=10,
+        )
+
+    def create_order(self):
+        return StoreOrder.objects.create(
+            product=self.product,
+            product_name=self.product.name,
+            supplier_code=self.product.supplier_code,
+            selected_size="37",
+            customer_name="Cliente Teste",
+            customer_email="cliente@example.com",
+            customer_phone="61999999999",
+            shipping_address="Rua Teste, 1",
+            unit_price=Decimal("150.00"),
+            supplier_cost=Decimal("90.00"),
+            total_amount=Decimal("150.00"),
+            estimated_profit=Decimal("60.00"),
+        )
+
+    def test_order_code_follows_monthly_sequence(self):
+        first = self.create_order()
+        second = self.create_order()
+
+        suffix = f"{timezone.now():%m%y}"
+        self.assertEqual(first.order_code, f"LJ0001{suffix}")
+        self.assertEqual(second.order_code, f"LJ0002{suffix}")
+
+    def test_code_is_ready_before_the_order_is_visible(self):
+        order = self.create_order()
+
+        self.assertTrue(order.order_code)
+        self.assertEqual(StoreOrder.objects.filter(order_code="").count(), 0)
+
+    def test_backdating_an_old_order_does_not_repeat_the_code(self):
+        """Um pedido antigo que muda de data nao pode liberar o numero dele."""
+        first = self.create_order()
+        StoreOrder.objects.filter(id=first.id).update(
+            created_at=timezone.now() - timedelta(days=40)
+        )
+
+        second = self.create_order()
+
+        self.assertNotEqual(second.order_code, first.order_code)
+        self.assertEqual(StoreOrder.objects.count(), 2)
+
+    def test_code_taken_by_another_order_is_skipped(self):
+        """Simula duas compras ao mesmo tempo: a segunda pega o proximo numero."""
+        taken = self.create_order()
+        suffix = f"{timezone.now():%m%y}"
+
+        with patch("accounts.models.next_store_order_sequence", return_value=1):
+            order = self.create_order()
+
+        self.assertEqual(taken.order_code, f"LJ0001{suffix}")
+        self.assertEqual(order.order_code, f"LJ0002{suffix}")
+
+    def test_saving_again_keeps_the_same_code(self):
+        order = self.create_order()
+        code = order.order_code
+
+        order.status = StoreOrder.PAID
+        order.save(update_fields=["status", "updated_at"])
+        order.refresh_from_db()
+
+        self.assertEqual(order.order_code, code)
+
