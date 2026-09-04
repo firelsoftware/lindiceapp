@@ -9,11 +9,11 @@ from django.test import Client, RequestFactory, TestCase, override_settings
 from django.utils import timezone
 
 from .forms import CreditSaleForm, ProductForm, RegisterForm
-from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, StoreOrder, SupplierCatalogSource, SupplierProduct, User, add_months
+from .models import CASHBACK_PERCENT, attach_catalog_sources, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, Product, StoreOrder, SupplierCatalogSource, SupplierProduct, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference
 from .store_shipping import shipping_cost_for
-from .supplier_import import parse_csv, row_to_payload
+from .supplier_import import import_supplier_catalog_content, parse_csv, row_to_payload
 from .utils import cpf_hash, is_valid_cpf
 
 
@@ -3216,6 +3216,7 @@ class PromoEmailTests(TestCase):
         resp = self.client.get("/gestao/promocoes/")
         self.assertEqual(resp.status_code, 403)
 
+
 class StoreOrderCodeTests(TestCase):
     def setUp(self):
         self.product = SupplierProduct.objects.create(
@@ -3290,3 +3291,90 @@ class StoreOrderCodeTests(TestCase):
 
         self.assertEqual(order.order_code, code)
 
+
+class NewSupplierSourceTests(TestCase):
+    def setUp(self):
+        self.staff = User.objects.create_superuser(
+            email="dono@example.com",
+            password="Teste12345!",
+            full_name="Dono Loja",
+            preferred_name="Dono",
+        )
+
+    def test_panel_offers_a_third_catalog_source(self):
+        self.client.force_login(self.staff)
+        response = self.client.get("/gestao/fornecedor/produtos/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            SupplierCatalogSource.objects.filter(
+                source=SupplierProduct.SOURCE_NOVO_FORNECEDOR
+            ).count(),
+            1,
+        )
+
+    def test_purchase_flow_comes_from_the_source_settings(self):
+        source = SupplierCatalogSource.objects.create(
+            source=SupplierProduct.SOURCE_NOVO_FORNECEDOR,
+            display_name="Fornecedor novo",
+            purchase_flow=SupplierCatalogSource.FLOW_STORE_CHECKOUT,
+        )
+        product = SupplierProduct.objects.create(
+            source=SupplierProduct.SOURCE_NOVO_FORNECEDOR,
+            supplier_code="NOVO001",
+            name="Bolsa Nova",
+            suggested_sale_price=Decimal("200.00"),
+            dropshipping_cost=Decimal("140.00"),
+            stock_quantity=5,
+        )
+
+        self.assertFalse(product.requires_availability_confirmation())
+
+        source.purchase_flow = SupplierCatalogSource.FLOW_WHATSAPP_CONFIRMATION
+        source.save(update_fields=["purchase_flow"])
+
+        self.assertTrue(
+            SupplierProduct.objects.get(id=product.id).requires_availability_confirmation()
+        )
+
+    def test_listing_reads_the_sources_only_once(self):
+        """A vitrine nao pode fazer uma consulta por produto so para saber o fluxo."""
+        SupplierCatalogSource.objects.create(
+            source=SupplierProduct.SOURCE_NOVO_FORNECEDOR,
+            display_name="Fornecedor novo",
+            purchase_flow=SupplierCatalogSource.FLOW_WHATSAPP_CONFIRMATION,
+        )
+        for number in range(3):
+            SupplierProduct.objects.create(
+                source=SupplierProduct.SOURCE_NOVO_FORNECEDOR,
+                supplier_code=f"NOVO{number}",
+                name=f"Bolsa {number}",
+                suggested_sale_price=Decimal("200.00"),
+                dropshipping_cost=Decimal("140.00"),
+                stock_quantity=5,
+            )
+
+        products = list(
+            SupplierProduct.objects.filter(source=SupplierProduct.SOURCE_NOVO_FORNECEDOR)
+        )
+        self.assertEqual(len(products), 3)
+
+        with self.assertNumQueries(1):
+            attach_catalog_sources(products)
+
+        with self.assertNumQueries(0):
+            for product in products:
+                self.assertTrue(product.requires_availability_confirmation())
+
+    def test_catalog_import_fills_the_new_source(self):
+        catalog = "codigo,produto,preco,estoque\nNV1,Bolsa Couro,180.00,4\n"
+        result = import_supplier_catalog_content(
+            catalog,
+            "csv",
+            source=SupplierProduct.SOURCE_NOVO_FORNECEDOR,
+        )
+        product = SupplierProduct.objects.get(supplier_code="NV1")
+
+        self.assertEqual(result["created"], 1)
+        self.assertEqual(product.source, SupplierProduct.SOURCE_NOVO_FORNECEDOR)
+        self.assertEqual(product.name, "Bolsa Couro")
