@@ -4208,28 +4208,42 @@
             width: 44px;
             height: 44px;
             margin: 0;
-            border: 1px solid var(--line);
+            border: 0;
             border-radius: 50%;
-            background: var(--surface);
-            color: var(--ink);
+            color: #fff;
             text-decoration: none;
-            transition: border-color 0.15s, color 0.15s;
+            transition: transform 0.15s, box-shadow 0.15s;
         }
 
         .site-social-link svg {
-            width: 21px;
-            height: 21px;
+            width: 22px;
+            height: 22px;
             flex: none;
         }
 
-        .site-social-instagram:hover {
-            border-color: #c13584;
-            color: #c13584;
+        .site-social-link:hover,
+        .site-social-link:focus-visible {
+            transform: translateY(-2px);
         }
 
-        .site-social-whatsapp:hover {
-            border-color: #25d366;
-            color: #128c4a;
+        /* As cores da propria marca: o degrade do Instagram vai do amarelo ao
+           roxo passando pelo rosa, e o WhatsApp e o verde dele. */
+        .site-social-instagram {
+            background: radial-gradient(circle at 28% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+        }
+
+        .site-social-instagram:hover,
+        .site-social-instagram:focus-visible {
+            box-shadow: 0 6px 16px rgba(214, 36, 159, 0.38);
+        }
+
+        .site-social-whatsapp {
+            background: #25d366;
+        }
+
+        .site-social-whatsapp:hover,
+        .site-social-whatsapp:focus-visible {
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.42);
         }
 
         .floating-whatsapp {
@@ -5230,17 +5244,17 @@
                         {% if store_instagram_url %}
                             <a class="site-social-link site-social-instagram" href="{{ store_instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram da Líndice">
                                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                    <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/>
-                                    <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
-                                    <circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/>
+                                    <rect x="3" y="3" width="18" height="18" rx="5.4" fill="none" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/>
+                                    <circle cx="17.4" cy="6.6" r="1.3" fill="currentColor"/>
                                 </svg>
                             </a>
                         {% endif %}
                         {% if store_whatsapp_url %}
                             <a class="site-social-link site-social-whatsapp" href="{{ store_whatsapp_url }}" target="_blank" rel="noopener" aria-label="WhatsApp da Líndice">
                                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                                    <path d="M12 2.7a9.2 9.2 0 0 0-7.9 13.9L3 21.3l4.8-1.2A9.2 9.2 0 1 0 12 2.7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                                    <path d="M9 8.2c.3-.1.6 0 .8.4l.6 1.2c.1.3.1.5-.1.7l-.4.5c-.2.2-.2.4-.1.6a6 6 0 0 0 2.6 2.6c.2.1.4.1.6-.1l.5-.4c.2-.2.4-.2.7-.1l1.2.6c.4.2.5.5.4.8-.2.7-.9 1.3-1.7 1.4-1.9.2-5.9-2.9-6.5-5.6-.2-.9.4-1.9 1.4-2.6Z" fill="currentColor"/>
+                                    <path d="M12 2.7a9.2 9.2 0 0 0-7.9 13.9L3 21.3l4.8-1.2A9.2 9.2 0 1 0 12 2.7Z" fill="currentColor"/>
+                                    <path d="M9 8.2c.3-.1.6 0 .8.4l.6 1.2c.1.3.1.5-.1.7l-.4.5c-.2.2-.2.4-.1.6a6 6 0 0 0 2.6 2.6c.2.1.4.1.6-.1l.5-.4c.2-.2.4-.2.7-.1l1.2.6c.4.2.5.5.4.8-.2.7-.9 1.3-1.7 1.4-1.9.2-5.9-2.9-6.5-5.6-.2-.9.4-1.9 1.4-2.6Z" fill="#25d366"/>
                                 </svg>
                             </a>
                         {% endif %}
