@@ -40,17 +40,21 @@
     <div class="inline-cards">
         {% for r in reels %}
             <div class="inline-card">
-                <video class="inline-card-thumb" src="{{ r.video.url }}" preload="metadata" muted playsinline
-                       {% if r.poster %}poster="{{ r.poster.url }}"{% endif %}></video>
+                {% if r.is_youtube %}
+                    <img class="inline-card-thumb" src="{{ r.thumbnail_url }}" alt="">
+                {% elif r.video %}
+                    <video class="inline-card-thumb" src="{{ r.video.url }}" preload="metadata" muted playsinline
+                           {% if r.poster %}poster="{{ r.poster.url }}"{% endif %}></video>
+                {% endif %}
                 <p><strong>{{ r.display_title }}</strong></p>
                 {% if r.product %}<p class="store-product-note">{{ r.product.name }}</p>{% endif %}
                 <p class="store-product-note">
-                    Ordem {{ r.position }} ·
+                    {% if r.is_youtube %}YouTube{% else %}arquivo{% endif %} · Ordem {{ r.position }} ·
                     {% if r.is_visible %}na loja{% else %}oculto{% endif %}
                 </p>
                 <div class="action-row">
                     <a class="button button-secondary" href="{% url 'edit_reel' r.id %}">Editar</a>
-                    <a class="button button-secondary" href="{% url 'download_reel' r.id %}">Baixar</a>
+                    {% if r.video %}<a class="button button-secondary" href="{% url 'download_reel' r.id %}">Baixar</a>{% endif %}
                 </div>
                 <form method="post" action="{% url 'edit_reel' r.id %}" onsubmit="return confirm('Remover este vídeo da loja?');">
                     {% csrf_token %}

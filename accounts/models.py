@@ -1776,7 +1776,9 @@ class StoreReel(models.Model):
 
     title = models.CharField("titulo", max_length=120, blank=True)
     description = models.TextField("descricao", blank=True)
-    video = models.FileField("video", upload_to="reels/")
+    # O video pode vir do YouTube (link) ou ser um arquivo enviado pela loja.
+    video_url = models.URLField("link do YouTube", blank=True)
+    video = models.FileField("arquivo de video", upload_to="reels/", blank=True)
     poster = models.FileField("capa do video", upload_to="reels/", blank=True)
     product = models.ForeignKey(
         SupplierProduct,
@@ -1804,3 +1806,38 @@ class StoreReel(models.Model):
             return self.title
 
         return self.product.name if self.product_id else "Líndice"
+
+    def youtube_id(self):
+        """Codigo do video no YouTube, aceitando link normal, curto ou de Shorts."""
+        link = (self.video_url or "").strip()
+
+        if not link:
+            return ""
+
+        for marcador in ("youtu.be/", "watch?v=", "/shorts/", "/embed/"):
+            if marcador in link:
+                codigo = link.split(marcador, 1)[1]
+
+                for separador in ("&", "?", "/", "#"):
+                    codigo = codigo.split(separador, 1)[0]
+
+                return codigo
+
+        return ""
+
+    def embed_url(self):
+        codigo = self.youtube_id()
+
+        return f"https://www.youtube.com/embed/{codigo}?autoplay=1&rel=0&playsinline=1" if codigo else ""
+
+    def thumbnail_url(self):
+        """Capa do video: a enviada pela loja, ou a que o proprio YouTube gera."""
+        if self.poster:
+            return self.poster.url
+
+        codigo = self.youtube_id()
+
+        return f"https://i.ytimg.com/vi/{codigo}/hqdefault.jpg" if codigo else ""
+
+    def is_youtube(self):
+        return bool(self.youtube_id())

@@ -1009,19 +1009,22 @@ class SupplierProductEditForm(forms.ModelForm):
 class StoreReelForm(forms.ModelForm):
     class Meta:
         model = StoreReel
-        fields = ("title", "description", "video", "poster", "product", "position", "is_visible")
+        fields = ("title", "description", "video_url", "video", "poster", "product", "position", "is_visible")
         labels = {
             "title": "Titulo",
             "description": "Descricao",
-            "video": "Video (vertical, MP4)",
+            "video_url": "Link do YouTube",
+            "video": "Ou envie o arquivo (MP4 vertical)",
             "poster": "Capa do video (opcional)",
             "product": "Produto ligado (opcional)",
             "position": "Ordem",
             "is_visible": "Mostrar na loja",
         }
         help_texts = {
+            "video_url": "Cole o link do video ou do Short. E o jeito recomendado: nao gasta espaco nem banda da loja.",
+            "video": "So use se o video nao estiver no YouTube.",
             "product": "Se escolher, o nome do produto vira link no video.",
-            "poster": "Se ficar vazio, o navegador usa o primeiro quadro do video.",
+            "poster": "Com link do YouTube, a capa vem de la sozinha.",
         }
         widgets = {"description": forms.Textarea(attrs={"rows": 3})}
 
@@ -1029,6 +1032,23 @@ class StoreReelForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["product"].queryset = SupplierProduct.objects.filter(is_active=True).order_by("name")
         self.fields["product"].required = False
+        self.fields["video"].required = False
+
+    def clean(self):
+        limpo = super().clean()
+        link = (limpo.get("video_url") or "").strip()
+        arquivo = limpo.get("video")
+
+        if not link and not arquivo and not self.instance.pk:
+            raise ValidationError("Cole o link do YouTube ou envie um arquivo de video.")
+
+        if link:
+            teste = StoreReel(video_url=link)
+
+            if not teste.youtube_id():
+                self.add_error("video_url", "Nao reconheci esse link do YouTube. Cole o endereco do video ou do Short.")
+
+        return limpo
 
 
 class NewSupplierProductForm(forms.ModelForm):
