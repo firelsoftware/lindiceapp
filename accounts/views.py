@@ -1713,6 +1713,7 @@ def store_front(request):
         if not featured_image:
             return None
         return {
+            "product_id": featured.id,
             "title": featured.name,
             "subtitle": featured.category or featured.brand or "",
             "price": f"R$ {featured.suggested_sale_price:.2f}".replace(".", ","),
@@ -4215,10 +4216,14 @@ def edit_reel(request, reel_id):
 
     if request.method == "POST":
         if request.POST.get("acao") == "excluir":
+            titulo = reel.display_title()
             reel.delete()
-            messages.success(request, "Video removido.")
+            messages.success(request, f"Video removido: {titulo}.")
 
-            return redirect("staff_reels")
+            # Excluir a partir da vitrine devolve para a vitrine.
+            volta = safe_next_url(request, request.POST.get("voltar"))
+
+            return redirect(volta or "staff_reels")
 
         form = StoreReelForm(request.POST, request.FILES, instance=reel)
 

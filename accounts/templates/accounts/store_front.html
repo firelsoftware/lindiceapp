@@ -69,6 +69,11 @@
             <div class="watch-strip-scroll" data-strip>
             {% for item in featured_strip %}
                 <article class="watch-card">
+                    {% if request.user.is_staff and item.product_id %}
+                        <div class="cartao-admin">
+                            <a href="{% url 'edit_supplier_product' item.product_id %}" title="Editar este produto" aria-label="Editar produto">✎</a>
+                        </div>
+                    {% endif %}
                     <a class="watch-card-media" href="{{ item.link_url }}">
                         <img src="{{ item.image_url }}" alt="{{ item.title }}" loading="lazy">
                     </a>
@@ -124,8 +129,19 @@
                     {% else %}
                         <div class="reel-info"><span>{{ reel.display_title }}</span></div>
                     {% endif %}
-                    {% if request.user.is_staff and reel.video %}
-                        <a class="reel-download" href="{% url 'download_reel' reel.id %}" title="Baixar vídeo" aria-label="Baixar vídeo">⤓</a>
+                    {% if request.user.is_staff %}
+                        <div class="cartao-admin">
+                            <a href="{% url 'edit_reel' reel.id %}" title="Editar este vídeo" aria-label="Editar vídeo">✎</a>
+                            {% if reel.video %}
+                                <a href="{% url 'download_reel' reel.id %}" title="Baixar vídeo" aria-label="Baixar vídeo">⤓</a>
+                            {% endif %}
+                            <form method="post" action="{% url 'edit_reel' reel.id %}" onsubmit="return confirm('Remover este vídeo da loja?');">
+                                {% csrf_token %}
+                                <input type="hidden" name="acao" value="excluir">
+                                <input type="hidden" name="voltar" value="{{ request.get_full_path }}">
+                                <button type="submit" title="Excluir este vídeo" aria-label="Excluir vídeo">&times;</button>
+                            </form>
+                        </div>
                     {% endif %}
                 </article>
             {% endfor %}
