@@ -230,9 +230,19 @@ USE_SUPABASE_STORAGE = all(
     ]
 )
 
-# O bucket publico so entra em cena se o principal ja estiver funcionando: ele
-# reaproveita as mesmas credenciais.
-USE_SUPABASE_PUBLIC = bool(USE_SUPABASE_STORAGE and SUPABASE_PUBLIC_BUCKET and SUPABASE_PUBLIC_DOMAIN)
+# A troca para o bucket publico tem dois passos de proposito.
+#
+# PODE_COPIAR_PARA_PUBLICO: o bucket existe e da para copiar as fotos para la.
+# Nada muda para o cliente ainda.
+#
+# USE_SUPABASE_PUBLIC: a loja passa a servir as fotos de la. So depois que a
+# copia terminou e alguem conferiu que o bucket responde. Ligar antes disso
+# deixa a vitrine sem foto, porque o arquivo ainda esta so no bucket antigo.
+PODE_COPIAR_PARA_PUBLICO = bool(USE_SUPABASE_STORAGE and SUPABASE_PUBLIC_BUCKET and SUPABASE_PUBLIC_DOMAIN)
+USE_SUPABASE_PUBLIC = bool(
+    PODE_COPIAR_PARA_PUBLICO
+    and os.environ.get("SUPABASE_PUBLIC_ATIVO", "").strip().lower() in ("1", "true", "sim", "on")
+)
 
 STATICFILES_BACKEND = (
     "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -265,7 +275,7 @@ if USE_SUPABASE_STORAGE:
         },
     }
 
-    if SUPABASE_PUBLIC_BUCKET:
+    if PODE_COPIAR_PARA_PUBLICO:
         STORAGES["vitrine"] = {
             "BACKEND": "accounts.storage.SupabasePublicStorage",
             "OPTIONS": {

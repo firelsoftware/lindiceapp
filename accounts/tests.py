@@ -1494,9 +1494,30 @@ class StoreFlowTests(TestCase):
 
         resposta = self.client.get("/gestao/fotos-publicas/")
 
-        self.assertContains(resposta, "Ainda não configurado")
+        self.assertContains(resposta, "Passo 1 de 3")
         self.assertContains(resposta, "SUPABASE_PUBLIC_BUCKET")
         self.assertContains(resposta, "lindice-publico")
+        # O passo 1 precisa deixar claro que nada muda para o cliente ainda.
+        self.assertContains(resposta, "a loja continua exatamente como está")
+
+    def test_setting_the_bucket_alone_does_not_switch_the_store(self):
+        # Foi esse o furo que deixou a vitrine sem foto: preencher o nome do
+        # bucket ja mandava a loja buscar as fotos la, antes de copiar nada.
+        from django.test import override_settings
+
+        with override_settings(
+            PODE_COPIAR_PARA_PUBLICO=True,
+            USE_SUPABASE_PUBLIC=False,
+            SUPABASE_PUBLIC_BUCKET="lindice-publico",
+            SUPABASE_STORAGE_BUCKET="lindice-media",
+        ):
+            self.login_staff(email="loja-passo2@example.com")
+            resposta = self.client.get("/gestao/fotos-publicas/")
+
+        self.assertContains(resposta, "Passo 2 de 3")
+        self.assertContains(resposta, "ainda serve as fotos do bucket antigo")
+        # A instrucao de ligar so aparece depois da conferencia dar certo.
+        self.assertNotContains(resposta, "SUPABASE_PUBLIC_ATIVO")
 
     def test_public_photos_page_is_closed_to_customers(self):
         User.objects.create_user(

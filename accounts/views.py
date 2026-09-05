@@ -36,7 +36,7 @@ from django.views.decorators.csrf import csrf_exempt
 from . import google_oauth
 from .forms import MAX_PRODUCT_PHOTOS_PER_UPLOAD, validate_product_photo, CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, NewSupplierProductForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
 from .models import StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance_capped, points_discount_percent, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, WELCOME_DISCOUNT_PERCENT, add_months, money
-from .bucket_publico import copiar_vitrine, PREFIXOS_DA_VITRINE
+from .bucket_publico import conferir_se_e_publico, copiar_vitrine, PREFIXOS_DA_VITRINE
 from .espaco import atualizar_medicao, resumo_do_espaco, somar_arquivos
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, payment_method_from_payment, verify_webhook_signature
@@ -4127,30 +4127,51 @@ def fotos_publicas(request):
     rodar de novo sem medo: o que ja foi copiado nao vai duas vezes.
     """
     resultado = None
+    conferencia = None
 
     if request.method == "POST":
-        resultado = copiar_vitrine()
+        acao = request.POST.get("acao", "copiar")
 
-        if not resultado["pronto"]:
-            messages.error(request, resultado["recado"])
-        elif resultado["copiadas"]:
-            messages.success(
-                request,
-                f"{resultado['copiadas']} arquivo(s) copiados. "
-                f"{resultado['puladas']} ja estavam la.",
-            )
+        if acao == "conferir":
+            conferencia = conferir_se_e_publico()
+
+            if conferencia[0]:
+                messages.success(request, conferencia[1])
+            else:
+                messages.error(request, conferencia[1])
         else:
-            messages.success(request, "Nada a copiar: tudo ja esta no bucket publico.")
+            resultado = copiar_vitrine()
 
-        for falha in resultado["falhas"]:
-            messages.warning(request, falha)
+            if not resultado["pronto"]:
+                messages.error(request, resultado["recado"])
+            elif resultado["copiadas"]:
+                messages.success(
+                    request,
+                    f"{resultado['copiadas']} arquivo(s) copiados. "
+                    f"{resultado['puladas']} ja estavam la.",
+                )
+            else:
+                messages.success(request, "Nada a copiar: tudo ja esta no bucket publico.")
+
+            for falha in resultado["falhas"]:
+                messages.warning(request, falha)
+
+            # Copiou: confere na hora se o bucket responde mesmo, para ninguem
+            # ligar a troca no escuro e a vitrine ficar sem foto.
+            conferencia = conferir_se_e_publico()
+
+            if not conferencia[0]:
+                messages.warning(request, conferencia[1])
 
     return render(
         request,
         "accounts/fotos_publicas.html",
         {
             "resultado": resultado,
+            "conferencia_ok": conferencia[0] if conferencia else None,
+            "conferencia_recado": conferencia[1] if conferencia else "",
             "ligado": getattr(settings, "USE_SUPABASE_PUBLIC", False),
+            "pode_copiar": getattr(settings, "PODE_COPIAR_PARA_PUBLICO", False),
             "bucket_publico": getattr(settings, "SUPABASE_PUBLIC_BUCKET", ""),
             "bucket_privado": getattr(settings, "SUPABASE_STORAGE_BUCKET", ""),
             "endereco_publico": getattr(settings, "SUPABASE_PUBLIC_DOMAIN", ""),

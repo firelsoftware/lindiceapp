@@ -26,9 +26,61 @@ PREFIXOS_DA_VITRINE = ("supplier_products/", "product_videos/", "reels/")
 
 
 def _cliente():
-    from django.core.files.storage import storages
+    """O cliente S3 do bucket principal, que serve para os dois buckets.
 
-    return storages["vitrine"].connection.meta.client
+    Nao usa o storage da vitrine de proposito: a copia precisa rodar antes de
+    a loja passar a servir as fotos de la.
+    """
+    from django.core.files.storage import default_storage
+
+    return default_storage.connection.meta.client
+
+
+def conferir_se_e_publico():
+    """Abre um arquivo pelo endereco publico, como um cliente faria.
+
+    E a unica prova de que o bucket esta mesmo publico: existir e ter o nome
+    certo nao basta, a chave "Public bucket" pode ter ficado desligada, e ai a
+    loja fica sem foto sem ninguem entender por que.
+
+    Devolve (deu_certo, recado).
+    """
+    import urllib.error
+    import urllib.request
+
+    if not getattr(settings, "PODE_COPIAR_PARA_PUBLICO", False):
+        return False, "O bucket publico ainda nao esta configurado."
+
+    cliente = _cliente()
+    chaves = listar_da_vitrine()
+
+    if not chaves:
+        return False, "Nao ha nenhuma foto de vitrine para conferir."
+
+    chave = chaves[0][0]
+
+    if not ja_esta_no_publico(cliente, chave):
+        return False, "As fotos ainda nao foram copiadas para o bucket publico."
+
+    endereco = f"https://{settings.SUPABASE_PUBLIC_DOMAIN}/{chave}"
+
+    try:
+        with urllib.request.urlopen(endereco, timeout=15) as resposta:
+            if resposta.status == 200:
+                return True, f"O bucket responde: {endereco}"
+
+            return False, f"O bucket respondeu {resposta.status} em vez de 200."
+    except urllib.error.HTTPError as erro:
+        if erro.code in (400, 404):
+            return False, (
+                "O arquivo esta la, mas o bucket nao responde publicamente. "
+                "No Supabase, abra o bucket, va em Edit bucket e ligue a chave "
+                "\"Public bucket\"."
+            )
+
+        return False, f"O bucket respondeu {erro.code}."
+    except Exception as erro:
+        return False, f"Nao consegui abrir o endereco publico: {type(erro).__name__}"
 
 
 def listar_da_vitrine():
@@ -86,7 +138,7 @@ def copiar_vitrine(limite=None):
     Pode rodar quantas vezes quiser: o que ja foi nao vai de novo. Devolve um
     resumo para a tela mostrar.
     """
-    if not getattr(settings, "USE_SUPABASE_PUBLIC", False):
+    if not getattr(settings, "PODE_COPIAR_PARA_PUBLICO", False):
         return {"pronto": False, "recado": "O bucket publico ainda nao esta configurado."}
 
     cliente = _cliente()

@@ -19,25 +19,86 @@
     </p>
     <p class="store-product-note">
         Com um segundo bucket, <strong>público e só com foto de produto</strong>, o link fica
-        fixo. As fotos novas já nascem lá. As que já existem precisam ser copiadas uma vez —
-        é o que o botão abaixo faz.
-    </p>
-    <p class="store-product-note">
-        Só a mídia da loja é copiada: <strong>{{ prefixos|join:", " }}</strong>.
+        fixo. Só a mídia da loja vai para lá: <strong>{{ prefixos|join:", " }}</strong>.
         Documento de cliente continua no bucket privado e não é tocado.
     </p>
 </section>
 
 <section class="info-panel">
-    <h2>Situação</h2>
-    {% if ligado %}
-        <p><span class="badge badge-success">Ligado</span></p>
+    <h2>Onde você está</h2>
+
+    {% if not pode_copiar %}
+        <p><span class="badge">Passo 1 de 3 — falta criar o bucket</span></p>
+        <ol>
+            <li>No Supabase, abra <strong>Storage</strong> e clique em <strong>New bucket</strong>.</li>
+            <li>Nome: <code>lindice-publico</code>. <strong>Ligue a chave "Public bucket"</strong> — é ela que faz tudo funcionar.</li>
+            <li>Na Render, adicione a variável <code>SUPABASE_PUBLIC_BUCKET</code> com o valor <code>lindice-publico</code> e salve.</li>
+        </ol>
+        <p class="store-product-note">
+            Enquanto isso, a loja continua exatamente como está. Nada muda para o cliente.
+        </p>
+
+    {% elif not ligado %}
+        <p><span class="badge badge-success">Passo 2 de 3 — bucket pronto, falta copiar</span></p>
         <p class="store-product-note">Bucket privado: <strong>{{ bucket_privado }}</strong></p>
         <p class="store-product-note">Bucket público: <strong>{{ bucket_publico }}</strong></p>
-        <p class="store-product-note">Endereço das fotos: <code>{{ endereco_publico }}</code></p>
+        <p class="store-product-note">
+            A loja <strong>ainda serve as fotos do bucket antigo</strong>. Copie primeiro,
+            confirme que o bucket responde, e só então ligue a troca.
+        </p>
 
         <form method="post">
             {% csrf_token %}
+            <input type="hidden" name="acao" value="copiar">
+            <div class="action-row">
+                <button type="submit">Copiar as fotos para o bucket público</button>
+            </div>
+        </form>
+
+        {% if resultado and resultado.pronto %}
+            <p class="store-product-note">
+                {{ resultado.total }} arquivo{{ resultado.total|pluralize }} na vitrine ·
+                {{ resultado.copiadas }} copiado{{ resultado.copiadas|pluralize }} agora ·
+                {{ resultado.puladas }} já estava{{ resultado.puladas|pluralize:"m" }} lá ·
+                {{ resultado.faltam }} faltando.
+            </p>
+        {% endif %}
+
+        {% if conferencia_ok %}
+            <p class="reg-ok"><strong>O bucket respondeu.</strong> Pode ligar a troca:</p>
+            <ol>
+                <li>Na Render, adicione a variável <code>SUPABASE_PUBLIC_ATIVO</code> com o valor <code>true</code>.</li>
+                <li>Salve — a Render sobe o app de novo sozinha.</li>
+            </ol>
+        {% elif conferencia_ok is False %}
+            <p class="reg-errors">
+                <strong>Ainda não ligue a troca.</strong> {{ conferencia_recado }}
+            </p>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="acao" value="conferir">
+            <div class="action-row">
+                <button class="button-secondary" type="submit">Só conferir se o bucket responde</button>
+                <a class="button button-secondary" href="{% url 'espaco_usado' %}">Ver o espaço usado</a>
+            </div>
+        </form>
+
+    {% else %}
+        <p><span class="badge badge-success">Passo 3 de 3 — ligado</span></p>
+        <p class="store-product-note">
+            A loja está servindo as fotos de <strong>{{ bucket_publico }}</strong>, com link fixo.
+        </p>
+        <p class="store-product-note">Endereço das fotos: <code>{{ endereco_publico }}</code></p>
+        <p class="store-product-note">
+            Se subir foto por fora ou desconfiar de imagem quebrada, copie de novo: o que já
+            está lá não vai duas vezes.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="acao" value="copiar">
             <div class="action-row">
                 <button type="submit">Copiar as fotos que faltam</button>
                 <a class="button button-secondary" href="{% url 'espaco_usado' %}">Ver o espaço usado</a>
@@ -52,27 +113,6 @@
                 {{ resultado.faltam }} faltando.
             </p>
         {% endif %}
-    {% else %}
-        <p><span class="badge">Ainda não configurado</span></p>
-        <p class="store-product-note">
-            Falta criar o bucket público no Supabase e preencher a variável
-            <code>SUPABASE_PUBLIC_BUCKET</code> na Render. O passo a passo está abaixo.
-        </p>
-        <ol>
-            <li>No Supabase, abra <strong>Storage</strong> e clique em <strong>New bucket</strong>.</li>
-            <li>Nome: <code>lindice-publico</code>. Marque <strong>Public bucket</strong>. Salve.</li>
-            <li>Na Render, no serviço do app, adicione a variável
-                <code>SUPABASE_PUBLIC_BUCKET</code> com o valor <code>lindice-publico</code>.</li>
-            <li>Salve — a Render sobe o app de novo sozinha.</li>
-            <li>Volte nesta tela e clique em "Copiar as fotos que faltam".</li>
-        </ol>
-        <p class="store-product-note">
-            Você não precisa gerar chave nova: o bucket público usa as mesmas credenciais S3
-            que já estão configuradas.
-        </p>
-        <div class="action-row">
-            <a class="button button-secondary" href="{% url 'espaco_usado' %}">Ver o espaço usado</a>
-        </div>
     {% endif %}
 </section>
 {% endblock %}
