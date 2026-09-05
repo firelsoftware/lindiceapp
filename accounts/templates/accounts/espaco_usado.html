@@ -1,0 +1,65 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Espaço usado</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <p class="store-product-note">
+        O plano gratuito do Supabase não avisa quando a cota acaba: o envio simplesmente
+        falha. Aqui você vê antes e decide o que apagar.
+    </p>
+
+    {% if erro %}<p class="reg-errors">{{ erro }}</p>{% endif %}
+
+    {% for linha in linhas %}
+        <div class="espaco-linha espaco-{{ linha.nivel }}">
+            <div class="espaco-topo">
+                <strong>{{ linha.rotulo }}</strong>
+                <span>{{ linha.usado_legivel }} de {{ linha.cota_legivel }}</span>
+            </div>
+            <div class="espaco-barra"><span style="width: {{ linha.largura_css }}%"></span></div>
+            <p class="espaco-recado">
+                {% if linha.nivel == "perigo" %}
+                    Faltam {{ linha.faltam }}% para bater a cota. Apague o que não usa antes de subir mais.
+                {% elif linha.nivel == "atencao" %}
+                    Cuidado: faltam {{ linha.faltam }}% para bater a cota.
+                {% else %}
+                    Sobram {{ linha.livre_legivel }} ({{ linha.faltam }}% livre).
+                {% endif %}
+            </p>
+        </div>
+    {% endfor %}
+
+    <p class="store-product-note">
+        {% if medido_em %}
+            Medido em {{ medido_em|date:"d/m/Y H:i" }} · {{ arquivos_quantidade }} arquivo{{ arquivos_quantidade|pluralize }} no total.
+        {% else %}
+            Ainda não foi medido nenhuma vez.
+        {% endif %}
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="action-row">
+            <button type="submit">Medir agora</button>
+            <a class="button button-secondary" href="{% url 'storage_check' %}">Testar o armazenamento</a>
+            <a class="button button-secondary" href="{% url 'supplier_products' %}">Voltar</a>
+        </div>
+    </form>
+</section>
+
+<section class="info-panel">
+    <h2>Como ganhar espaço</h2>
+    <ul>
+        <li>Apague as fotos que você trocou e não usa mais, na ficha de cada produto.</li>
+        <li>Vídeo pesa muito mais que foto: prefira publicar pelo YouTube, como já é feito nos vídeos da vitrine.</li>
+        <li>Foto de catálogo não precisa vir no tamanho da câmera — cortada e reduzida, fica igual na tela e ocupa uma fração.</li>
+    </ul>
+</section>
+{% endblock %}

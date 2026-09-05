@@ -15,9 +15,10 @@ from django.test.utils import CaptureQueriesContext
 from django.utils import timezone
 
 from .forms import CreditSaleForm, InstallmentChoiceForm, ProductForm, RegisterForm
-from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, User, add_months
+from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, UsoDeEspaco, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference, payment_method_from_payment
+from .espaco import COTA_ARQUIVOS, formatar_bytes
 from .storage import safe_upload_name
 from .views import salvar_fotos_em_lote
 from .store_shipping import shipping_cost_for
@@ -1317,6 +1318,125 @@ class StoreFlowTests(TestCase):
         de_foto = [c for c in consultas.captured_queries if "supplierproductphoto" in c["sql"].lower()]
         # Tres consultas de foto: uma por queryset (vitrine, destaques, faixa).
         self.assertLessEqual(len(de_foto), 5, f"consultas de foto demais: {len(de_foto)}")
+
+    def encher_cota(self, fracao):
+        """Finge que a cota de arquivos ja esta nessa fracao (0 a 1)."""
+        uso = UsoDeEspaco.load()
+        uso.arquivos_bytes = int(COTA_ARQUIVOS * fracao)
+        uso.banco_bytes = 0
+        uso.medido_em = timezone.now()
+        uso.save()
+
+        return uso
+
+    def test_storage_warning_only_shows_for_the_store(self):
+        self.encher_cota(0.85)
+
+        # Cliente e visitante nunca veem quanto espaco a loja gastou.
+        resposta = self.client.get("/loja/")
+        self.assertNotContains(resposta, 'class="aviso-espaco aviso-espaco-', html=False)
+
+        self.login_staff(email="loja-espaco@example.com")
+        resposta = self.client.get("/loja/")
+
+        self.assertContains(resposta, 'class="aviso-espaco aviso-espaco-', html=False)
+        self.assertContains(resposta, "para bater a cota do Supabase")
+
+    def test_storage_warning_says_how_much_is_left(self):
+        self.encher_cota(0.85)
+        self.login_staff(email="loja-quanto@example.com")
+
+        resposta = self.client.get("/loja/")
+
+        # 85% usados: faltam 15 para bater a cota.
+        self.assertContains(resposta, "faltam 15,0%")
+        self.assertContains(resposta, "Cuidado:")
+
+    def test_storage_warning_gets_louder_when_it_is_almost_full(self):
+        self.encher_cota(0.95)
+        self.login_staff(email="loja-perigo@example.com")
+
+        resposta = self.client.get("/loja/")
+
+        self.assertContains(resposta, "aviso-espaco-perigo")
+        self.assertContains(resposta, "Atenção:")
+
+    def test_no_storage_warning_while_there_is_room(self):
+        self.encher_cota(0.20)
+        self.login_staff(email="loja-sobra@example.com")
+
+        resposta = self.client.get("/loja/")
+
+        self.assertNotContains(resposta, 'class="aviso-espaco aviso-espaco-', html=False)
+
+    def test_no_storage_warning_before_the_first_measurement(self):
+        # Sem medicao, o numero seria chute: melhor nao avisar nada.
+        uso = UsoDeEspaco.load()
+        uso.arquivos_bytes = COTA_ARQUIVOS
+        uso.medido_em = None
+        uso.save()
+        self.login_staff(email="loja-semmedida@example.com")
+
+        resposta = self.client.get("/loja/")
+
+        self.assertNotContains(resposta, 'class="aviso-espaco aviso-espaco-', html=False)
+
+    def test_storage_page_measures_again_when_asked(self):
+        self.login_staff(email="loja-medir@example.com")
+
+        resposta = self.client.post("/gestao/espaco/", follow=True)
+
+        self.assertContains(resposta, "Medicao atualizada")
+        self.assertIsNotNone(UsoDeEspaco.load().medido_em)
+
+    def test_storage_page_is_closed_to_customers(self):
+        User.objects.create_user(
+            email="cliente-espaco@example.com",
+            password="Teste12345!",
+            full_name="Cliente Espaco",
+            preferred_name="Cliente",
+        )
+        self.client.login(email="cliente-espaco@example.com", password="Teste12345!")
+
+        resposta = self.client.get("/gestao/espaco/")
+
+        self.assertEqual(resposta.status_code, 302)
+        self.assertIn("/login", resposta["Location"])
+
+    def test_uploaded_photos_count_toward_the_quota(self):
+        # Entre uma medicao completa e outra, o que sobe vai sendo somado,
+        # senao o aviso ficaria velho justo enquanto a loja enche o bucket.
+        produto = self.create_supplier_product(name="Bolsa que ocupa espaco")
+        uso = self.encher_cota(0.10)
+        antes = uso.arquivos_bytes
+
+        salvar_fotos_em_lote(
+            self.requisicao_com_fotos([self.foto_falsa("uma.jpg"), self.foto_falsa("outra.jpg")]),
+            produto,
+        )
+
+        uso.refresh_from_db()
+        self.assertGreater(uso.arquivos_bytes, antes)
+        self.assertEqual(uso.arquivos_quantidade, 2)
+
+    def test_storage_bar_width_uses_a_dot_so_the_css_works(self):
+        # Em pt-BR o Django escreve 59,3 no template e o CSS ignora a virgula,
+        # o que deixava as duas barras cheias.
+        self.encher_cota(0.593)
+        self.login_staff(email="loja-barra@example.com")
+
+        resposta = self.client.get("/gestao/espaco/")
+        conteudo = resposta.content.decode()
+
+        self.assertIn("width: 59.3%", conteudo)
+        self.assertNotIn("width: 59,3%", conteudo)
+
+    def test_size_reading_uses_the_brazilian_comma(self):
+        self.assertEqual(formatar_bytes(0), "0 bytes")
+        self.assertEqual(formatar_bytes(900), "900 bytes")
+        self.assertEqual(formatar_bytes(1536), "1,5 KB")
+        self.assertEqual(formatar_bytes(5 * 1024 * 1024), "5,0 MB")
+        self.assertEqual(formatar_bytes(2 * 1024 ** 3), "2,0 GB")
 
     def test_store_product_detail_for_consultation_source_shows_cart_flow(self):
         SupplierCatalogSource.objects.update_or_create(

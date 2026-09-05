@@ -802,6 +802,37 @@ class PointsTransaction(models.Model):
         return f"{self.user} {self.kind} {self.points:+d} pts"
 
 
+class UsoDeEspaco(models.Model):
+    """Quanto do Supabase ja foi usado, medido de vez em quando (linha unica).
+
+    Varrer o bucket a cada pagina seria caro, entao o numero fica guardado aqui
+    e o site le daqui para avisar quando a cota estiver perto de estourar.
+    """
+
+    arquivos_bytes = models.BigIntegerField(default=0)
+    arquivos_quantidade = models.PositiveIntegerField(default=0)
+    banco_bytes = models.BigIntegerField(default=0)
+    medido_em = models.DateTimeField(null=True, blank=True)
+    erro = models.CharField(max_length=200, blank=True)
+
+    class Meta:
+        verbose_name = "uso de espaco"
+        verbose_name_plural = "uso de espaco"
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls):
+        registro, _ = cls.objects.get_or_create(pk=1)
+
+        return registro
+
+    def __str__(self):
+        return f"Espaco usado ate {self.medido_em or 'nunca medido'}"
+
+
 class StoreSettings(models.Model):
     """Configuracoes ajustaveis do programa de fidelidade (linha unica)."""
     # Campos do cashback antigo (mantidos ate a migracao completa para pontos).

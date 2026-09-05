@@ -109,6 +109,7 @@ TEMPLATES = [
                 "accounts.context_processors.store_cart",
                 "accounts.context_processors.user_extras",
                 "accounts.context_processors.site_analytics",
+                "accounts.context_processors.aviso_de_espaco",
             ],
         },
     },

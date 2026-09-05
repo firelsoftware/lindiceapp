@@ -54,6 +54,28 @@ def site_analytics(request):
     }
 
 
+def aviso_de_espaco(request):
+    """Aviso de cota do Supabase, so para quem e da loja.
+
+    Le a medicao guardada (uma consulta), nunca mede na hora: varrer o bucket
+    a cada pagina seria caro. O cliente nunca ve nada disso.
+    """
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return {}
+
+    from .espaco import resumo_do_espaco
+
+    try:
+        resumo = resumo_do_espaco()
+    except Exception:
+        return {}
+
+    if not resumo["avisar"]:
+        return {}
+
+    return {"aviso_espaco": resumo["pior"]}
+
+
 def user_extras(request):
     if not request.user.is_authenticated:
         return {}

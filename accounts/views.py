@@ -36,6 +36,7 @@ from django.views.decorators.csrf import csrf_exempt
 from . import google_oauth
 from .forms import MAX_PRODUCT_PHOTOS_PER_UPLOAD, validate_product_photo, CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, NewSupplierProductForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
 from .models import StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance_capped, points_discount_percent, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .espaco import atualizar_medicao, resumo_do_espaco, somar_arquivos
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, payment_method_from_payment, verify_webhook_signature
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
@@ -4081,6 +4082,7 @@ def salvar_fotos_em_lote(request, produto, campo="fotos_novas"):
 
     proxima = (produto.photos.aggregate(maior=Max("position"))["maior"] or 0) + 1
     entraram = 0
+    subiram = 0
 
     for arquivo in aceitas:
         try:
@@ -4092,6 +4094,9 @@ def salvar_fotos_em_lote(request, produto, campo="fotos_novas"):
 
         proxima += 1
         entraram += 1
+        subiram += arquivo.size
+
+    somar_arquivos(subiram, entraram)
 
     return entraram, recusas
 
@@ -4147,6 +4152,26 @@ def edit_supplier_product(request, product_id):
             "preco_crediario": credit_price_from_retail(product.suggested_sale_price),
         },
     )
+
+
+@staff_member_required(login_url="login")
+def espaco_usado(request):
+    """Mostra quanto da cota do Supabase ja foi gasto e deixa medir de novo.
+
+    Existe porque o plano gratuito nao avisa: quando a cota estoura, o upload
+    simplesmente falha. Aqui da para ver antes e decidir o que apagar.
+    """
+    if request.method == "POST":
+        uso = atualizar_medicao()
+
+        if uso.erro:
+            messages.error(request, uso.erro)
+        else:
+            messages.success(request, "Medicao atualizada.")
+
+        return redirect("espaco_usado")
+
+    return render(request, "accounts/espaco_usado.html", resumo_do_espaco())
 
 
 @staff_member_required(login_url="login")
