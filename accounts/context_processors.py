@@ -25,8 +25,12 @@ def store_cart(request):
 
 
 def site_analytics(request):
+    whatsapp = "".join(ch for ch in getattr(settings, "STORE_WHATSAPP_NUMBER", "") if ch.isdigit())
+
     return {
         "google_analytics_id": settings.GOOGLE_ANALYTICS_ID,
+        "store_whatsapp_url": f"https://wa.me/{whatsapp}" if whatsapp else "",
+        "store_instagram_url": getattr(settings, "STORE_INSTAGRAM_URL", ""),
     }
 
 

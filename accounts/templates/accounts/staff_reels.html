@@ -1,0 +1,66 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Vídeos da loja</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <h2>{% if reel %}Editar vídeo{% else %}Publicar novo vídeo{% endif %}</h2>
+    <p class="store-product-note">Os vídeos aparecem na vitrine, logo abaixo dos smartwatches em destaque.</p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="reg-errors">{{ form.non_field_errors }}</div>{% endif %}
+        {% for campo in form %}
+            {% if campo.name == "is_visible" %}
+                <p><label class="reg-checkbox">{{ campo }} <span>{{ campo.label }}</span></label></p>
+            {% else %}
+                <p>
+                    <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+                    {{ campo }}
+                    {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
+                    {{ campo.errors }}
+                </p>
+            {% endif %}
+        {% endfor %}
+        <div class="action-row">
+            <button type="submit">{% if reel %}Salvar alterações{% else %}Publicar vídeo{% endif %}</button>
+            {% if reel %}<a class="button button-secondary" href="{% url 'staff_reels' %}">Cancelar</a>{% endif %}
+        </div>
+    </form>
+</section>
+
+<section class="info-panel">
+    <h2>Publicados ({{ reels|length }})</h2>
+    <div class="inline-cards">
+        {% for r in reels %}
+            <div class="inline-card">
+                <video class="inline-card-thumb" src="{{ r.video.url }}" preload="metadata" muted playsinline
+                       {% if r.poster %}poster="{{ r.poster.url }}"{% endif %}></video>
+                <p><strong>{{ r.display_title }}</strong></p>
+                {% if r.product %}<p class="store-product-note">{{ r.product.name }}</p>{% endif %}
+                <p class="store-product-note">
+                    Ordem {{ r.position }} ·
+                    {% if r.is_visible %}na loja{% else %}oculto{% endif %}
+                </p>
+                <div class="action-row">
+                    <a class="button button-secondary" href="{% url 'edit_reel' r.id %}">Editar</a>
+                    <a class="button button-secondary" href="{% url 'download_reel' r.id %}">Baixar</a>
+                </div>
+                <form method="post" action="{% url 'edit_reel' r.id %}" onsubmit="return confirm('Remover este vídeo da loja?');">
+                    {% csrf_token %}
+                    <input type="hidden" name="acao" value="excluir">
+                    <button class="button-secondary" type="submit">Excluir</button>
+                </form>
+            </div>
+        {% empty %}
+            <p>Nenhum vídeo publicado ainda.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

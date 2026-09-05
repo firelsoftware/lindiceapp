@@ -5,23 +5,156 @@
 
 {% if messages %}
     <ul class="messages">
-        {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+        {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
     </ul>
 {% endif %}
 
-<section class="info-panel">
+<section class="info-panel product-edit-head">
     {% with gallery=product.gallery_images %}
         {% if gallery %}
-            <img src="{{ gallery.0 }}" alt="{{ product.name }}" style="max-width:160px; border-radius:10px; margin-bottom:12px;">
+            <img class="product-edit-cover" src="{{ gallery.0 }}" alt="{{ product.name }}">
         {% endif %}
     {% endwith %}
-    <p class="store-product-note">Código interno: {{ product.supplier_code }}</p>
-
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Salvar alterações</button>
-        <a class="button button-secondary" href="{% url 'supplier_products' %}">Cancelar</a>
-    </form>
+    <div>
+        <p class="store-product-note">Código interno: {{ product.supplier_code }}</p>
+        {% if preco_sugerido %}
+            <p class="store-product-note">
+                Pelas regras da loja, o custo de R$ {{ product.wholesale_price|floatformat:2 }}
+                daria <strong>R$ {{ preco_sugerido|floatformat:2 }}</strong> à vista
+                e <strong>R$ {{ preco_crediario|floatformat:2 }}</strong> no crediário.
+            </p>
+        {% endif %}
+        <p><a href="{% url 'store_product_detail' product.id %}" target="_blank" rel="noopener">Ver na loja ↗</a></p>
+    </div>
 </section>
+
+<form method="post" enctype="multipart/form-data" class="product-edit-form">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}<div class="reg-errors">{{ form.non_field_errors }}</div>{% endif %}
+
+    <section class="info-panel">
+        <h2>Dados principais</h2>
+        {% for campo in form %}
+            {% if campo.name in "name,brand,category,sizes,chamada,description" %}
+                <p>
+                    <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+                    {{ campo }}
+                    {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
+                    {{ campo.errors }}
+                </p>
+            {% endif %}
+        {% endfor %}
+    </section>
+
+    <section class="info-panel">
+        <h2>Preços e estoque</h2>
+        <p class="store-product-note">O custo de atacado é só para sua conta: ele nunca aparece na loja.</p>
+        {% for campo in form %}
+            {% if campo.name in "suggested_sale_price,compare_at_price,wholesale_price,stock_quantity" %}
+                <p>
+                    <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+                    {{ campo }}
+                    {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
+                    {{ campo.errors }}
+                </p>
+            {% endif %}
+        {% endfor %}
+    </section>
+
+    <section class="info-panel">
+        <h2>Fotos e vídeo</h2>
+        <p>
+            <label for="{{ form.image_file.id_for_label }}">{{ form.image_file.label }}</label>
+            {{ form.image_file }}
+            {{ form.image_file.errors }}
+        </p>
+        <p>
+            <label for="{{ form.video_url.id_for_label }}">{{ form.video_url.label }}</label>
+            {{ form.video_url }}
+            {{ form.video_url.errors }}
+        </p>
+        <p>
+            <label for="{{ form.video_file.id_for_label }}">{{ form.video_file.label }}</label>
+            {{ form.video_file }}
+            {{ form.video_file.errors }}
+        </p>
+
+        <h3>Outras fotos</h3>
+        {{ fotos.management_form }}
+        <div class="inline-cards">
+            {% for foto in fotos %}
+                <div class="inline-card">
+                    {% for oculto in foto.hidden_fields %}{{ oculto }}{% endfor %}
+                    {% if foto.instance.pk and foto.instance.image %}
+                        <img class="inline-card-thumb" src="{{ foto.instance.image.url }}" alt="">
+                    {% endif %}
+                    <p><label>{{ foto.image.label }}</label>{{ foto.image }}{{ foto.image.errors }}</p>
+                    <p><label>{{ foto.caption.label }}</label>{{ foto.caption }}</p>
+                    <p><label>{{ foto.position.label }}</label>{{ foto.position }}</p>
+                    {% if foto.instance.pk %}
+                        <label class="inline-card-delete">{{ foto.DELETE }} Excluir esta foto</label>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="info-panel">
+        <h2>Cores disponíveis</h2>
+        {{ cores.management_form }}
+        <div class="inline-cards">
+            {% for cor in cores %}
+                <div class="inline-card">
+                    {% for oculto in cor.hidden_fields %}{{ oculto }}{% endfor %}
+                    {% if cor.instance.pk and cor.instance.image %}
+                        <img class="inline-card-thumb" src="{{ cor.instance.image.url }}" alt="">
+                    {% endif %}
+                    <p><label>{{ cor.name.label }}</label>{{ cor.name }}{{ cor.name.errors }}</p>
+                    <p><label>{{ cor.code.label }}</label>{{ cor.code }}</p>
+                    <p><label>{{ cor.image.label }}</label>{{ cor.image }}</p>
+                    <p><label>{{ cor.position.label }}</label>{{ cor.position }}</p>
+                    {% if cor.instance.pk %}
+                        <label class="inline-card-delete">{{ cor.DELETE }} Excluir esta cor</label>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="info-panel">
+        <h2>Recursos e ficha técnica</h2>
+        {% for campo in form %}
+            {% if campo.name in "highlights,tech_specs,weight_grams,height_cm,width_cm,length_cm" %}
+                <p>
+                    <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+                    {{ campo }}
+                    {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
+                    {{ campo.errors }}
+                </p>
+            {% endif %}
+        {% endfor %}
+    </section>
+
+    <section class="info-panel">
+        <h2>Publicação</h2>
+        {% for campo in form %}
+            {% if campo.name in "is_visible,is_active,is_featured" %}
+                <p class="reg-checkbox-row">
+                    <label class="reg-checkbox">{{ campo }} <span>{{ campo.label }}</span></label>
+                    {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
+                </p>
+            {% endif %}
+        {% endfor %}
+        <p>
+            <label for="{{ form.status_note.id_for_label }}">{{ form.status_note.label }}</label>
+            {{ form.status_note }}
+        </p>
+    </section>
+
+    <div class="action-row">
+        <button type="submit">Salvar alterações</button>
+        <a class="button button-secondary" href="{% url 'supplier_products' %}">Voltar</a>
+    </div>
+</form>
 {% endblock %}

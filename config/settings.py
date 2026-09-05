@@ -281,8 +281,13 @@ BOTICARIO_STORE_URL = os.environ.get(
     "https://minhaloja.grupoboticario.com.br/loja-fabriciopereiradasilvaalves-20983763?utm_source=app_divulgar_marca&utm_medium=divulgar_loja_multimarca",
 )
 # Numero de WhatsApp da loja (formato internacional, so digitos) usado no
-# botao "Mais informacoes" dos produtos.
-STORE_WHATSAPP_NUMBER = os.environ.get("STORE_WHATSAPP_NUMBER", "5561995524748")
+# botao "Mais informacoes" dos produtos e no rodape.
+STORE_WHATSAPP_NUMBER = os.environ.get("STORE_WHATSAPP_NUMBER", "5561995135066")
+# Perfil da loja no Instagram, exibido no rodape.
+STORE_INSTAGRAM_URL = os.environ.get(
+    "STORE_INSTAGRAM_URL",
+    "https://www.instagram.com/lindiceoficial",
+)
 # ID de medicao do Google Analytics (GA4), formato "G-XXXXXXXXXX". Quando
 # vazio, o script de analytics nao e carregado.
 GOOGLE_ANALYTICS_ID = os.environ.get("GOOGLE_ANALYTICS_ID", "")

@@ -1,5 +1,6 @@
 import calendar
 import hashlib
+from pathlib import Path
 from django.conf import settings
 from datetime import timedelta
 import json
@@ -19,7 +20,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
 from django.db.models import Case, Count, IntegerField, Q, Sum, Value, When
 from django.db.models.deletion import ProtectedError
-from django.http import HttpResponseForbidden, JsonResponse
+from django.http import FileResponse, Http404, HttpResponseForbidden, JsonResponse
 from django.core import signing
 from django.core.mail import EmailMultiAlternatives
 from django.core.paginator import Paginator
@@ -31,8 +32,8 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from . import google_oauth
-from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, SupplierProductEditForm, UserPasswordChangeForm
-from .models import StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance_capped, points_discount_percent, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
+from .models import StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance_capped, points_discount_percent, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, payment_method_from_payment, verify_webhook_signature
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
@@ -57,7 +58,7 @@ CATEGORY_GROUPS = [
     ]),
     ("Infantil", ["Linha Infantil"]),
     ("Bolsas", ["Bolsas"]),
-    ("Relógios", ["Relógios"]),
+    ("Smartwatches", ["Smartwatches", "Fones de ouvido"]),
 ]
 # Rotulos curtos para as abas de nivel 2.
 CATEGORY_SHORT_LABELS = {
@@ -70,6 +71,15 @@ CATEGORY_SHORT_LABELS = {
 }
 # Grupos onde os filtros de numeracao/tamanho fazem sentido.
 FOOTWEAR_GROUPS = {"Calçados", "Infantil"}
+
+# Palavras que o cliente digita quando quer um smartwatch.
+SEARCH_WATCH_ALIASES = ("relogio", "relogios", "smart watch", "smartwatch")
+
+
+def _sem_acento(texto):
+    normalizado = unicodedata.normalize("NFKD", (texto or "").lower())
+
+    return "".join(ch for ch in normalizado if not unicodedata.combining(ch))
 
 # Fotos de modelo usadas na faixa de inspiracao da loja. Ficam em
 # accounts/static/accounts/img/modelos/<slug>.webp e ja vem com o topo
@@ -1585,12 +1595,19 @@ def store_front(request):
             )
 
     if query:
-        products = products.filter(
+        busca = (
             Q(name__icontains=query)
             | Q(category__icontains=query)
             | Q(brand__icontains=query)
             | Q(description__icontains=query)
         )
+
+        # Quem procura "relogio" esta procurando smartwatch: a palavra some das
+        # abas da loja, mas continua valendo como termo de busca.
+        if any(termo in _sem_acento(query) for termo in SEARCH_WATCH_ALIASES):
+            busca |= Q(category__iexact="Smartwatches")
+
+        products = products.filter(busca)
 
     # Categorias existentes (com produtos visiveis em estoque).
     existing_categories = set(
@@ -1704,6 +1721,16 @@ def store_front(request):
         }
 
     showcase_items = [item for item in (build_showcase_item(p) for p in featured_products) if item]
+    # Faixa propria dos produtos marcados como destaque (os smartwatches), do
+    # mais barato para o mais caro, todos visiveis na mesma rolagem.
+    featured_strip = [
+        item
+        for item in (
+            build_showcase_item(produto)
+            for produto in featured_pool.filter(is_featured=True).order_by("suggested_sale_price")
+        )
+        if item
+    ]
     half = (len(showcase_items) + 1) // 2
     showcase_sections = [
         {"title": "Destaques", "items": showcase_items[:half]},
@@ -1740,6 +1767,8 @@ def store_front(request):
             "paginator": paginator,
             "base_querystring": base_querystring,
             "showcase_sections": showcase_sections,
+            "featured_strip": featured_strip,
+            "store_reels": StoreReel.objects.filter(is_visible=True).select_related("product"),
             "query": query,
             "groups": groups,
             "subcategories": subcategories,
@@ -3924,19 +3953,102 @@ def edit_supplier_product(request, product_id):
     product = get_object_or_404(SupplierProduct, id=product_id)
 
     if request.method == "POST":
-        form = SupplierProductEditForm(request.POST, instance=product)
-        if form.is_valid():
-            form.save()
+        form = SupplierProductEditForm(request.POST, request.FILES, instance=product)
+        fotos = SupplierProductPhotoFormSet(request.POST, request.FILES, instance=product, prefix="fotos")
+        cores = SupplierProductVariantFormSet(request.POST, request.FILES, instance=product, prefix="cores")
+
+        if form.is_valid() and fotos.is_valid() and cores.is_valid():
+            with transaction.atomic():
+                form.save()
+                fotos.save()
+                cores.save()
+
             messages.success(request, "Produto atualizado com sucesso.")
-            return redirect("supplier_products")
+
+            return redirect("edit_supplier_product", product_id=product.id)
+
+        messages.error(request, "Confira os campos destacados abaixo.")
     else:
         form = SupplierProductEditForm(instance=product)
+        fotos = SupplierProductPhotoFormSet(instance=product, prefix="fotos")
+        cores = SupplierProductVariantFormSet(instance=product, prefix="cores")
 
     return render(
         request,
         "accounts/edit_supplier_product.html",
-        {"form": form, "product": product},
+        {
+            "form": form,
+            "fotos": fotos,
+            "cores": cores,
+            "product": product,
+            # Sugestao de preco pelas regras da loja, so como referencia.
+            "preco_sugerido": retail_price_from_wholesale(product.wholesale_price) if product.wholesale_price else None,
+            "preco_crediario": credit_price_from_retail(product.suggested_sale_price),
+        },
     )
+
+
+@staff_member_required(login_url="login")
+def staff_reels(request):
+    """Lista os reels e permite cadastrar um novo."""
+    if request.method == "POST":
+        form = StoreReelForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Video publicado na loja.")
+
+            return redirect("staff_reels")
+
+        messages.error(request, "Confira os campos destacados.")
+    else:
+        form = StoreReelForm()
+
+    return render(
+        request,
+        "accounts/staff_reels.html",
+        {"form": form, "reels": StoreReel.objects.select_related("product")},
+    )
+
+
+@staff_member_required(login_url="login")
+def edit_reel(request, reel_id):
+    reel = get_object_or_404(StoreReel, id=reel_id)
+
+    if request.method == "POST":
+        if request.POST.get("acao") == "excluir":
+            reel.delete()
+            messages.success(request, "Video removido.")
+
+            return redirect("staff_reels")
+
+        form = StoreReelForm(request.POST, request.FILES, instance=reel)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Video atualizado.")
+
+            return redirect("staff_reels")
+
+        messages.error(request, "Confira os campos destacados.")
+    else:
+        form = StoreReelForm(instance=reel)
+
+    return render(request, "accounts/staff_reels.html", {"form": form, "reel": reel, "reels": StoreReel.objects.select_related("product")})
+
+
+@staff_member_required(login_url="login")
+def download_reel(request, reel_id):
+    """Baixa o video do reel. So a loja enxerga esse link."""
+    reel = get_object_or_404(StoreReel, id=reel_id)
+
+    if not reel.video:
+        raise Http404("Video nao encontrado.")
+
+    nome = Path(reel.video.name).name
+    resposta = FileResponse(reel.video.open("rb"), as_attachment=True, filename=nome)
+
+    return resposta
 
 
 @staff_member_required(login_url="login")

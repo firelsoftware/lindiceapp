@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 from django.utils import timezone
 
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, StoreSettings, Supplier, SupplierCatalogSource, SupplierProduct, User
+from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, StoreSettings, Supplier, SupplierCatalogSource, StoreReel, SupplierProduct, SupplierProductPhoto, SupplierProductVariant, User
 from .store_shipping import shipping_choices_with_prices
 from .utils import clean_digits, cpf_hash, is_valid_cpf
 
@@ -916,29 +916,59 @@ class SupplierProductEditForm(forms.ModelForm):
     material = forms.ChoiceField(label="Material (joias)", required=False, choices=MATERIAL_CHOICES)
     medida_cm = forms.CharField(label="Medida em cm (colar/pulseira)", required=False)
 
+    chamada = forms.CharField(
+        label="Chamada curta",
+        required=False,
+        help_text="Frase de efeito que aparece em destaque na ficha do produto.",
+    )
+
     class Meta:
         model = SupplierProduct
         fields = (
-            "name", "brand", "sizes", "suggested_sale_price", "compare_at_price",
-            "stock_quantity", "is_visible", "is_active", "status_note",
+            "name", "brand", "category", "sizes", "description",
+            "suggested_sale_price", "compare_at_price", "wholesale_price",
+            "stock_quantity", "is_visible", "is_active", "is_featured",
+            "image_file", "video_url", "video_file",
+            "highlights", "tech_specs",
+            "weight_grams", "height_cm", "width_cm", "length_cm",
+            "status_note",
         )
         labels = {
             "name": "Nome do produto",
             "brand": "Marca",
+            "category": "Categoria",
             "sizes": "Tamanhos (separados por virgula)",
+            "description": "Descricao",
             "suggested_sale_price": "Preco de venda (R$)",
             "compare_at_price": "Preco 'de' / promocao (opcional)",
+            "wholesale_price": "Custo de atacado (R$)",
             "stock_quantity": "Estoque",
             "is_visible": "Mostrar na loja",
             "is_active": "Ativo",
+            "is_featured": "Destaque no carrossel da pagina inicial",
+            "image_file": "Foto de capa",
+            "video_url": "Link do video (YouTube)",
+            "video_file": "Ou envie um arquivo de video",
+            "highlights": "Principais recursos (um por linha)",
+            "tech_specs": "Ficha tecnica (uma por linha, no formato Tela: AMOLED 39 mm)",
+            "weight_grams": "Peso bruto (g)",
+            "height_cm": "Altura (cm)",
+            "width_cm": "Largura (cm)",
+            "length_cm": "Comprimento (cm)",
             "status_note": "Observacao interna",
         }
         help_texts = {
             "compare_at_price": "Se maior que o preco de venda, a loja mostra como promocao (de/por).",
             "is_visible": "Desmarque para suspender o produto (sai da loja).",
+            "wholesale_price": "So para conta interna: NUNCA aparece na loja.",
+        }
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 4}),
+            "highlights": forms.Textarea(attrs={"rows": 6}),
+            "tech_specs": forms.Textarea(attrs={"rows": 6}),
         }
 
-    EXTRA_KEYS = ("modelo", "cor", "material", "medida_cm")
+    EXTRA_KEYS = ("modelo", "cor", "material", "medida_cm", "chamada")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -968,6 +998,51 @@ class SupplierProductEditForm(forms.ModelForm):
         if commit:
             product.save()
         return product
+
+
+class StoreReelForm(forms.ModelForm):
+    class Meta:
+        model = StoreReel
+        fields = ("title", "description", "video", "poster", "product", "position", "is_visible")
+        labels = {
+            "title": "Titulo",
+            "description": "Descricao",
+            "video": "Video (vertical, MP4)",
+            "poster": "Capa do video (opcional)",
+            "product": "Produto ligado (opcional)",
+            "position": "Ordem",
+            "is_visible": "Mostrar na loja",
+        }
+        help_texts = {
+            "product": "Se escolher, o nome do produto vira link no video.",
+            "poster": "Se ficar vazio, o navegador usa o primeiro quadro do video.",
+        }
+        widgets = {"description": forms.Textarea(attrs={"rows": 3})}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["product"].queryset = SupplierProduct.objects.filter(is_active=True).order_by("name")
+        self.fields["product"].required = False
+
+
+# Fotos extras e cores do produto, editadas na mesma tela do produto.
+SupplierProductPhotoFormSet = forms.models.inlineformset_factory(
+    SupplierProduct,
+    SupplierProductPhoto,
+    fields=("image", "caption", "position"),
+    labels={"image": "Foto", "caption": "Legenda (opcional)", "position": "Ordem"},
+    extra=3,
+    can_delete=True,
+)
+
+SupplierProductVariantFormSet = forms.models.inlineformset_factory(
+    SupplierProduct,
+    SupplierProductVariant,
+    fields=("name", "code", "image", "position"),
+    labels={"name": "Cor", "code": "Codigo", "image": "Foto da cor", "position": "Ordem"},
+    extra=2,
+    can_delete=True,
+)
 
 
 class ProductCostForm(forms.ModelForm):

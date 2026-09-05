@@ -345,10 +345,12 @@ class ProductCost(models.Model):
 class SupplierProduct(models.Model):
     SOURCE_REVENDA_CALCADOS = "revenda_calcados"
     SOURCE_PARCEIRO_SOB_CONSULTA = "parceiro_sob_consulta"
+    SOURCE_WEARZONE = "wearzone"
 
     SOURCE_CHOICES = [
         (SOURCE_REVENDA_CALCADOS, "Revenda de Calcados"),
         (SOURCE_PARCEIRO_SOB_CONSULTA, "Parceiro sob consulta"),
+        (SOURCE_WEARZONE, "Smartwatches e audio"),
     ]
 
     source = models.CharField(max_length=50, choices=SOURCE_CHOICES, default=SOURCE_REVENDA_CALCADOS)
@@ -368,6 +370,19 @@ class SupplierProduct(models.Model):
     sizes = models.CharField(max_length=180, blank=True)
     is_active = models.BooleanField(default=True)
     is_visible = models.BooleanField(default=False)
+    # Aparece no carrossel de destaques da pagina inicial.
+    is_featured = models.BooleanField("destaque na pagina inicial", default=False)
+    # Video de apresentacao: link (YouTube e afins) ou arquivo enviado pela loja.
+    video_url = models.URLField("link do video", blank=True)
+    video_file = models.FileField("arquivo de video", upload_to="product_videos/", blank=True)
+    # Um item por linha, do jeito que aparece na ficha do produto.
+    highlights = models.TextField("principais recursos", blank=True)
+    # Uma linha por caracteristica, no formato "Tela: AMOLED 39 mm".
+    tech_specs = models.TextField("ficha tecnica", blank=True)
+    weight_grams = models.PositiveIntegerField("peso bruto (g)", null=True, blank=True)
+    height_cm = models.DecimalField("altura (cm)", max_digits=6, decimal_places=1, null=True, blank=True)
+    width_cm = models.DecimalField("largura (cm)", max_digits=6, decimal_places=1, null=True, blank=True)
+    length_cm = models.DecimalField("comprimento (cm)", max_digits=6, decimal_places=1, null=True, blank=True)
     status_note = models.TextField(blank=True)
     raw_data = models.JSONField(default=dict, blank=True)
     last_seen_at = models.DateTimeField(null=True, blank=True)
@@ -408,11 +423,128 @@ class SupplierProduct(models.Model):
         elif self.image_url:
             images.append(self.image_url)
 
+        # Fotos enviadas pela loja entram logo depois da capa.
+        for photo in self.photos.all():
+            if photo.image and photo.image.url not in images:
+                images.append(photo.image.url)
+
         for image_url in gallery:
             if image_url and image_url not in images:
                 images.append(image_url)
 
         return images
+
+    def highlight_list(self):
+        """Recursos do produto, um por linha, ja sem marcadores soltos."""
+        linhas = (self.highlights or "").splitlines()
+
+        return [linha.strip().lstrip("*-• ").strip() for linha in linhas if linha.strip()]
+
+    def spec_rows(self):
+        """Ficha tecnica como pares (rotulo, valor), lidos de 'rotulo: valor'."""
+        linhas = []
+
+        for linha in (self.tech_specs or "").splitlines():
+            linha = linha.strip()
+
+            if not linha:
+                continue
+
+            rotulo, _, valor = linha.partition(":")
+            linhas.append((rotulo.strip(), valor.strip()) if valor.strip() else (linha, ""))
+
+        return linhas
+
+    def package_rows(self):
+        """Peso e medidas da embalagem, so o que estiver preenchido."""
+        campos = [
+            ("Peso bruto", f"{self.weight_grams / 1000:.3f} kg".replace(".", ",") if self.weight_grams else ""),
+            ("Altura", f"{self.height_cm} cm".replace(".", ",") if self.height_cm is not None else ""),
+            ("Largura", f"{self.width_cm} cm".replace(".", ",") if self.width_cm is not None else ""),
+            ("Comprimento", f"{self.length_cm} cm".replace(".", ",") if self.length_cm is not None else ""),
+        ]
+
+        return [(rotulo, valor) for rotulo, valor in campos if valor]
+
+    def embedded_video_url(self):
+        """Converte um link de YouTube em endereco de incorporacao."""
+        link = (self.video_url or "").strip()
+
+        if not link:
+            return ""
+
+        for marcador in ("youtu.be/", "watch?v=", "/shorts/"):
+            if marcador in link:
+                codigo = link.split(marcador, 1)[1].split("&", 1)[0].split("?", 1)[0].split("/", 1)[0]
+
+                return f"https://www.youtube.com/embed/{codigo}" if codigo else ""
+
+        return link if "/embed/" in link else ""
+
+
+# Regras de preco dos produtos vindos do atacado (smartwatches, fones, pulseiras).
+# O preco de atacado nunca aparece na loja: serve so para calcular o de venda.
+WHOLESALE_MIN_PRICE = Decimal("150.00")       # nenhum produto sai por menos
+WHOLESALE_MARKUP = Decimal("2.00")            # 100% de lucro sobre o custo
+CREDIT_SURCHARGE_HIGH = Decimal("10.00")      # a partir do limite abaixo
+CREDIT_SURCHARGE_LOW = Decimal("20.00")       # abaixo do limite
+CREDIT_SURCHARGE_THRESHOLD = Decimal("500.00")
+
+
+def retail_price_from_wholesale(wholesale, minimum=None):
+    """Preco de venda: o dobro do atacado, respeitando o piso da loja."""
+    custo = Decimal(wholesale or 0)
+
+    if custo <= 0:
+        return money(Decimal("0.00"))
+
+    piso = WHOLESALE_MIN_PRICE if minimum is None else Decimal(minimum)
+
+    return money(max(custo * WHOLESALE_MARKUP, piso))
+
+
+def credit_price_from_retail(retail):
+    """Preco no crediario: acrescimo maior nos produtos mais baratos."""
+    valor = Decimal(retail or 0)
+
+    if valor <= 0:
+        return money(Decimal("0.00"))
+
+    acrescimo = CREDIT_SURCHARGE_HIGH if valor >= CREDIT_SURCHARGE_THRESHOLD else CREDIT_SURCHARGE_LOW
+
+    return money(valor * (Decimal("1.00") + acrescimo / Decimal("100")))
+
+
+class SupplierProductPhoto(models.Model):
+    """Fotos extras do produto, enviadas pela loja."""
+
+    product = models.ForeignKey(SupplierProduct, on_delete=models.CASCADE, related_name="photos")
+    image = models.FileField(upload_to="supplier_products/")
+    caption = models.CharField(max_length=120, blank=True)
+    position = models.PositiveSmallIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["position", "id"]
+
+    def __str__(self):
+        return f"Foto de {self.product.name}"
+
+
+class SupplierProductVariant(models.Model):
+    """Cores (ou versoes) do mesmo produto, como no catalogo do fornecedor."""
+
+    product = models.ForeignKey(SupplierProduct, on_delete=models.CASCADE, related_name="variants")
+    name = models.CharField("cor", max_length=60)
+    code = models.CharField("codigo", max_length=60, blank=True)
+    image = models.FileField(upload_to="supplier_products/", blank=True)
+    position = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ["position", "id"]
+
+    def __str__(self):
+        return f"{self.product.name} - {self.name}"
 
 
 class SupplierCatalogSource(models.Model):
@@ -1589,3 +1721,38 @@ def _send_push_on_notification(sender, instance, created, **kwargs):
         # Push e best-effort; nunca pode quebrar a criacao da notificacao.
         import logging
         logging.getLogger(__name__).exception("Falha ao enviar push da notificacao")
+
+
+class StoreReel(models.Model):
+    """Video curto, no formato vertical, exibido na vitrine abaixo dos destaques."""
+
+    title = models.CharField("titulo", max_length=120, blank=True)
+    description = models.TextField("descricao", blank=True)
+    video = models.FileField("video", upload_to="reels/")
+    poster = models.FileField("capa do video", upload_to="reels/", blank=True)
+    product = models.ForeignKey(
+        SupplierProduct,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="reels",
+        verbose_name="produto ligado",
+    )
+    position = models.PositiveSmallIntegerField("ordem", default=0)
+    is_visible = models.BooleanField("mostrar na loja", default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["position", "-created_at"]
+        verbose_name = "reel da loja"
+        verbose_name_plural = "reels da loja"
+
+    def __str__(self):
+        return self.title or f"Reel {self.pk}"
+
+    def display_title(self):
+        if self.title:
+            return self.title
+
+        return self.product.name if self.product_id else "Líndice"

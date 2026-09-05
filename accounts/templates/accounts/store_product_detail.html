@@ -43,10 +43,28 @@
                 {% if raw.material %}<p class="detail-note">Material: {{ raw.material }}</p>{% endif %}
                 {% if raw.medida_cm %}<p class="detail-note">Medida: {{ raw.medida_cm }} cm</p>{% endif %}
             {% endwith %}
+            {% if product.raw_data.chamada %}
+                <p class="detail-tagline">{{ product.raw_data.chamada }}</p>
+            {% endif %}
             {% if product.description %}
                 <p class="detail-note">{{ product.description }}</p>
             {% else %}
                 <p class="detail-note">Selecione o tamanho ideal e leve o item para o carrinho antes de finalizar o pagamento.</p>
+            {% endif %}
+            {% if product.variants.all %}
+                <section class="detail-colors">
+                    <h2 class="detail-section-title">Cor</h2>
+                    <ul class="detail-color-list">
+                        {% for cor in product.variants.all %}
+                            <li class="detail-color-item">
+                                {% if cor.image %}<img src="{{ cor.image.url }}" alt="{{ cor.name }}">{% endif %}
+                                <span class="detail-color-name">{{ cor.name }}</span>
+                                {% if cor.code %}<span class="detail-color-code">Cód. {{ cor.code }}</span>{% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <p class="detail-color-hint">Diga a cor preferida nas observações do pedido. Sujeito à disponibilidade.</p>
+                </section>
             {% endif %}
             {% if request.user.is_staff %}
                 <p><a class="button button-secondary" href="{% url 'edit_supplier_product' product.id %}">✎ Editar produto</a></p>
@@ -94,6 +112,56 @@
         <p><a href="{% url 'store_front' %}">Voltar para loja</a></p>
     </div>
 </section>
+
+{% if product.embedded_video_url or product.video_file %}
+    <section class="detail-block">
+        <h2>Veja em movimento</h2>
+        <div class="detail-video">
+            {% if product.embedded_video_url %}
+                <iframe src="{{ product.embedded_video_url }}" title="Vídeo de {{ product.name }}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            {% else %}
+                <video src="{{ product.video_file.url }}" controls preload="metadata"></video>
+            {% endif %}
+        </div>
+    </section>
+{% endif %}
+
+{% if product.highlight_list %}
+    <section class="detail-block">
+        <h2>Descrição do produto</h2>
+        <ul class="detail-feature-list">
+            {% for recurso in product.highlight_list %}
+                <li>{{ recurso }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endif %}
+
+{% if product.spec_rows %}
+    <section class="detail-block">
+        <h2>Especificações</h2>
+        <ul class="detail-spec-list">
+            {% for rotulo, valor in product.spec_rows %}
+                <li><span>{{ rotulo }}</span><strong>{{ valor }}</strong></li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endif %}
+
+{% if product.package_rows %}
+    <section class="detail-block">
+        <h2>Informações do produto</h2>
+        <div class="detail-table-wrap">
+            <table class="detail-table">
+                <tbody>
+                    {% for rotulo, valor in product.package_rows %}
+                        <tr><th scope="row">{{ rotulo }}</th><td>{{ valor }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endif %}
 {% endblock %}
 
 {% block extra_scripts %}

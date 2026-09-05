@@ -58,6 +58,64 @@
     </nav>
 {% endif %}
 
+{% if featured_strip %}
+    <section class="watch-strip">
+        <div class="watch-strip-head">
+            <h2>Smartwatches</h2>
+            <p>Deslize para ver todos os modelos.</p>
+        </div>
+        <div class="watch-strip-scroll">
+            {% for item in featured_strip %}
+                <article class="watch-card">
+                    <a class="watch-card-media" href="{{ item.link_url }}">
+                        <img src="{{ item.image_url }}" alt="{{ item.title }}" loading="lazy">
+                    </a>
+                    <div class="watch-card-body">
+                        <h3><a href="{{ item.link_url }}">{{ item.title }}</a></h3>
+                        <p class="watch-card-price">{{ item.price }}</p>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+{% if store_reels %}
+    <section class="reels-strip">
+        <div class="watch-strip-head">
+            <h2>Na Líndice</h2>
+            <p>Toque para assistir.</p>
+        </div>
+        <div class="reels-scroll">
+            {% for reel in store_reels %}
+                <article class="reel-card" data-reel>
+                    <video
+                        src="{{ reel.video.url }}"
+                        {% if reel.poster %}poster="{{ reel.poster.url }}"{% endif %}
+                        preload="metadata"
+                        muted
+                        loop
+                        playsinline
+                        data-reel-video></video>
+                    <button class="reel-play" type="button" aria-label="Assistir {{ reel.display_title }}" data-reel-play>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/></svg>
+                    </button>
+                    <div class="reel-info">
+                        {% if reel.product %}
+                            <a href="{% url 'store_product_detail' reel.product.id %}">{{ reel.display_title }}</a>
+                        {% else %}
+                            <span>{{ reel.display_title }}</span>
+                        {% endif %}
+                    </div>
+                    {% if request.user.is_staff %}
+                        <a class="reel-download" href="{% url 'download_reel' reel.id %}" title="Baixar vídeo" aria-label="Baixar vídeo">⤓</a>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
 <div class="storefront-showcase-grid">
     {% for section in showcase_sections %}
         <section class="storefront-showcase-panel">
@@ -404,4 +462,53 @@
         });
     }
 })();
+
+<script>
+(function () {
+    // Reels: um toca por vez, sem som, como nas redes.
+    document.addEventListener("DOMContentLoaded", function () {
+        var cartoes = Array.prototype.slice.call(document.querySelectorAll("[data-reel]"));
+
+        function pausarTodos(menos) {
+            cartoes.forEach(function (cartao) {
+                if (cartao === menos) {
+                    return;
+                }
+                var v = cartao.querySelector("[data-reel-video]");
+                if (v && !v.paused) {
+                    v.pause();
+                }
+                cartao.classList.remove("tocando");
+            });
+        }
+
+        cartoes.forEach(function (cartao) {
+            var video = cartao.querySelector("[data-reel-video]");
+            var botao = cartao.querySelector("[data-reel-play]");
+            if (!video || !botao) {
+                return;
+            }
+
+            botao.addEventListener("click", function () {
+                if (video.paused) {
+                    pausarTodos(cartao);
+                    var p = video.play();
+                    if (p && p.catch) {
+                        p.catch(function () {});
+                    }
+                    cartao.classList.add("tocando");
+                } else {
+                    video.pause();
+                    cartao.classList.remove("tocando");
+                }
+            });
+
+            video.addEventListener("pause", function () {
+                cartao.classList.remove("tocando");
+            });
+        });
+    });
+})();
+</script>
+
 {% endblock %}

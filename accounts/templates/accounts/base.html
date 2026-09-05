@@ -3160,6 +3160,464 @@
             margin: 0 8px;
         }
 
+        .reels-strip {
+            max-width: 1100px;
+            margin: 0 auto 22px;
+            padding: 6px 0;
+        }
+
+        .reels-scroll {
+            display: flex;
+            gap: 12px;
+            padding: 4px 16px 14px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .reel-card {
+            position: relative;
+            flex: 0 0 168px;
+            aspect-ratio: 9 / 16;
+            scroll-snap-align: start;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .reel-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .reel-play {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: rgba(0, 0, 0, 0.18);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .reel-play svg {
+            width: 46px;
+            height: 46px;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+        }
+
+        .reel-card.tocando .reel-play {
+            background: transparent;
+        }
+
+        .reel-card.tocando .reel-play svg {
+            display: none;
+        }
+
+        .reel-info {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 26px 12px 10px;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75));
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.3;
+            pointer-events: none;
+        }
+
+        .reel-info a {
+            color: #fff;
+            pointer-events: auto;
+        }
+
+        .reel-download {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .watch-strip {
+            max-width: 1100px;
+            margin: 0 auto 22px;
+            padding: 22px 0 6px;
+        }
+
+        .watch-strip-head {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 0 16px;
+            margin-bottom: 14px;
+        }
+
+        .watch-strip-head h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .watch-strip-head p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .watch-strip-scroll {
+            display: flex;
+            gap: 14px;
+            padding: 4px 16px 14px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .watch-card {
+            flex: 0 0 190px;
+            scroll-snap-align: start;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: var(--surface);
+            overflow: hidden;
+        }
+
+        .watch-card-media {
+            display: block;
+            background: #000;
+        }
+
+        .watch-card-media img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+        }
+
+        .watch-card-body {
+            padding: 12px 14px 14px;
+        }
+
+        .watch-card-body h3 {
+            margin: 0 0 6px;
+            font-size: 14px;
+            line-height: 1.35;
+        }
+
+        .watch-card-body h3 a {
+            color: var(--ink);
+            text-decoration: none;
+        }
+
+        .watch-card-price {
+            margin: 0;
+            color: var(--brand-purple);
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .product-edit-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .product-edit-cover {
+            width: 130px;
+            border-radius: 10px;
+        }
+
+        .product-edit-form .info-panel {
+            margin-bottom: 18px;
+        }
+
+        .product-edit-form h2 {
+            margin: 0 0 14px;
+            font-size: 19px;
+        }
+
+        .product-edit-form h3 {
+            margin: 22px 0 12px;
+            font-size: 15px;
+        }
+
+        .inline-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 14px;
+        }
+
+        .inline-card {
+            padding: 14px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--page);
+        }
+
+        .inline-card p {
+            margin: 0 0 10px;
+        }
+
+        .inline-card label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .inline-card-thumb {
+            width: 100%;
+            max-height: 130px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: #000;
+            margin-bottom: 10px;
+        }
+
+        .inline-card-delete {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--danger);
+        }
+
+        .inline-card-delete input {
+            width: auto;
+        }
+
+        .reg-checkbox-row {
+            margin-bottom: 12px;
+        }
+
+        .detail-tagline {
+            margin: 0 0 12px;
+            color: var(--brand-blue);
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .detail-section-title {
+            margin: 22px 0 10px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .detail-color-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .detail-color-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px 8px 8px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--surface);
+        }
+
+        .detail-color-item img {
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .detail-color-name {
+            font-weight: 600;
+        }
+
+        .detail-color-code {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .detail-color-hint {
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .detail-block {
+            max-width: 960px;
+            margin: 0 auto 22px;
+            padding: 24px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: var(--surface);
+        }
+
+        .detail-block h2 {
+            margin: 0 0 16px;
+            font-size: 20px;
+        }
+
+        .detail-video {
+            position: relative;
+            padding-top: 56.25%;
+            overflow: hidden;
+            border-radius: 10px;
+            background: #000;
+        }
+
+        .detail-video iframe,
+        .detail-video video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .detail-feature-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+
+        .detail-feature-list li {
+            position: relative;
+            padding-left: 26px;
+            line-height: 1.5;
+        }
+
+        .detail-feature-list li::before {
+            content: "";
+            position: absolute;
+            left: 4px;
+            top: 7px;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--brand-blue);
+        }
+
+        .detail-spec-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 2px;
+        }
+
+        .detail-spec-list li {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 11px 4px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .detail-spec-list li:last-child {
+            border-bottom: 0;
+        }
+
+        .detail-spec-list span {
+            color: var(--muted);
+        }
+
+        .detail-table-wrap {
+            overflow-x: auto;
+        }
+
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .detail-table th,
+        .detail-table td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .detail-table th {
+            width: 45%;
+            font-weight: 600;
+        }
+
+        .detail-table tr:nth-child(odd) {
+            background: var(--page);
+        }
+
+        .site-social {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 0 0 16px;
+        }
+
+        .site-social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            padding: 9px 16px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--surface);
+            color: var(--ink);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .site-social-link svg {
+            width: 19px;
+            height: 19px;
+            flex: none;
+        }
+
+        .site-social-instagram:hover {
+            border-color: #c13584;
+            color: #c13584;
+        }
+
+        .site-social-whatsapp:hover {
+            border-color: #25d366;
+            color: #128c4a;
+        }
+
+        @media (max-width: 420px) {
+            .site-social-link span {
+                display: none;
+            }
+
+            .site-social-link {
+                padding: 10px 14px;
+            }
+        }
+
         .linde-assistant {
             position: fixed;
             right: 18px;
@@ -4089,9 +4547,34 @@
     </main>
 
     <footer class="site-footer">
-        <a href="{% url 'store_front' %}">Loja</a>
-        <a href="{% url 'privacy_policy' %}">Privacidade</a>
-        <a href="{% url 'terms_of_use' %}">Termos</a>
+        {% if store_instagram_url or store_whatsapp_url %}
+            <nav class="site-social" aria-label="Redes da loja">
+                {% if store_instagram_url %}
+                    <a class="site-social-link site-social-instagram" href="{{ store_instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram da Líndice">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                            <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                            <circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/>
+                        </svg>
+                        <span>Instagram</span>
+                    </a>
+                {% endif %}
+                {% if store_whatsapp_url %}
+                    <a class="site-social-link site-social-whatsapp" href="{{ store_whatsapp_url }}" target="_blank" rel="noopener" aria-label="WhatsApp da Líndice">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M12 2.7a9.2 9.2 0 0 0-7.9 13.9L3 21.3l4.8-1.2A9.2 9.2 0 1 0 12 2.7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M9 8.2c.3-.1.6 0 .8.4l.6 1.2c.1.3.1.5-.1.7l-.4.5c-.2.2-.2.4-.1.6a6 6 0 0 0 2.6 2.6c.2.1.4.1.6-.1l.5-.4c.2-.2.4-.2.7-.1l1.2.6c.4.2.5.5.4.8-.2.7-.9 1.3-1.7 1.4-1.9.2-5.9-2.9-6.5-5.6-.2-.9.4-1.9 1.4-2.6Z" fill="currentColor"/>
+                        </svg>
+                        <span>WhatsApp</span>
+                    </a>
+                {% endif %}
+            </nav>
+        {% endif %}
+        <nav class="site-footer-links">
+            <a href="{% url 'store_front' %}">Loja</a>
+            <a href="{% url 'privacy_policy' %}">Privacidade</a>
+            <a href="{% url 'terms_of_use' %}">Termos</a>
+        </nav>
     </footer>
 
     {% if request.user.is_authenticated and request.user.is_staff %}
