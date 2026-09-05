@@ -7,6 +7,7 @@ campo interno. As fotos vem de accounts/seed/wearzone/, recortadas do catalogo.
 Rode com --ensaio para ver o que seria feito sem gravar nada.
 """
 
+import logging
 from decimal import Decimal
 from pathlib import Path
 
@@ -20,6 +21,8 @@ from accounts.models import (
     credit_price_from_retail,
     retail_price_from_wholesale,
 )
+
+logger = logging.getLogger(__name__)
 
 PASTA_FOTOS = Path(__file__).resolve().parent.parent.parent / "seed" / "wearzone"
 
@@ -215,6 +218,7 @@ class Command(BaseCommand):
         self.stdout.write(f"{'modelo':34} {'venda':>9} {'crediario':>10}  cores")
 
         criados = atualizados = preservados = 0
+        falhas = []
 
         for item in CATALOGO:
             atacado = Decimal(item["atacado"])
@@ -226,7 +230,8 @@ class Command(BaseCommand):
             if ensaio:
                 continue
 
-            with transaction.atomic():
+            try:
+              with transaction.atomic():
                 existente = SupplierProduct.objects.filter(
                     source=SupplierProduct.SOURCE_WEARZONE, supplier_code=item["codigo"]
                 ).first()
@@ -291,6 +296,12 @@ class Command(BaseCommand):
                         },
                     )
 
+            except Exception as erro:
+                logger.exception("Falha ao importar %s", item["codigo"])
+                falhas.append(f"{item['nome']}: {type(erro).__name__} - {erro}")
+                self.stdout.write(self.style.ERROR(f"    FALHOU: {type(erro).__name__} - {erro}"))
+                continue
+
             criados += 1 if novo else 0
             atualizados += 0 if novo else 1
 
@@ -302,3 +313,9 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.SUCCESS(f"{criados} cadastrados, {atualizados} atualizados, {preservados} mantidos como estavam.")
             )
+
+            if falhas:
+                self.stdout.write(self.style.ERROR(f"{len(falhas)} falharam:"))
+
+                for falha in falhas:
+                    self.stdout.write(self.style.ERROR(f"  - {falha}"))

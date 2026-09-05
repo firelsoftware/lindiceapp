@@ -4031,14 +4031,20 @@ def import_wearzone_catalog(request):
             call_command("importar_wearzone", "--refazer", stdout=saida, stderr=saida)
         else:
             call_command("importar_wearzone", stdout=saida, stderr=saida)
-    except Exception:
+    except Exception as erro:
         logger.exception("Falha ao importar o catalogo Wearzone")
-        messages.error(request, "Nao foi possivel importar o catalogo agora. Tente de novo em instantes.")
+        # Mostrar o motivo de verdade: sem isso a loja fica adivinhando o que houve.
+        messages.error(request, f"A importacao parou: {type(erro).__name__} - {erro}")
 
         return redirect("supplier_products")
 
-    resumo = [linha for linha in saida.getvalue().splitlines() if "cadastrados" in linha]
+    relatorio = saida.getvalue()
+    resumo = [linha for linha in relatorio.splitlines() if "cadastrados" in linha]
     messages.success(request, resumo[-1] if resumo else "Catalogo importado.")
+
+    for linha in relatorio.splitlines():
+        if "FALHOU" in linha or linha.strip().startswith("- "):
+            messages.warning(request, linha.strip())
 
     return redirect(f"{reverse('supplier_products')}?origem={SupplierProduct.SOURCE_WEARZONE}")
 
