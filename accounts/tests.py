@@ -14,9 +14,21 @@ from .forms import CreditSaleForm, InstallmentChoiceForm, ProductForm, RegisterF
 from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, SupplierCatalogSource, SupplierProduct, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference, payment_method_from_payment
+from .storage import safe_upload_name
 from .store_shipping import shipping_cost_for
 from .supplier_import import parse_csv, row_to_payload
 from .utils import cpf_hash, is_valid_cpf
+
+
+class UploadStorageTests(TestCase):
+    def test_safe_upload_name_removes_unsafe_clipboard_filename_characters(self):
+        self.assertEqual(
+            safe_upload_name("supplier_products/{7341ABAB-F472-441B-0345CF15B0}.png"),
+            "supplier_products/7341ABAB-F472-441B-0345CF15B0.png",
+        )
+
+    def test_safe_upload_name_uses_fallback_when_base_is_empty(self):
+        self.assertEqual(safe_upload_name("supplier_products/{}.png"), "supplier_products/arquivo.png")
 
 
 class CPFValidationTests(TestCase):

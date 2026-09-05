@@ -6039,7 +6039,35 @@
                     });
                 }
 
+                function nomeSeguro(arquivo) {
+                    var partes = (arquivo.name || "").split(".");
+                    var extensao = partes.length > 1 ? partes.pop().toLowerCase() : "";
+                    var base = partes.join(".").replace(/[^a-z0-9._-]+/gi, "-").replace(/^[-._]+|[-._]+$/g, "");
+
+                    if (!extensao) {
+                        extensao = (arquivo.type.split("/")[1] || "bin").split("+")[0];
+                    }
+
+                    if (!base || base.toLowerCase() === "image") {
+                        base = "lindice-" + Date.now();
+                    }
+
+                    return base + "." + extensao.replace(/[^a-z0-9]/gi, "");
+                }
+
+                function normalizarArquivo(arquivo) {
+                    var seguro = nomeSeguro(arquivo);
+
+                    if (arquivo.name === seguro) {
+                        return arquivo;
+                    }
+
+                    return new File([arquivo], seguro, { type: arquivo.type });
+                }
+
                 function guardar(campo, arquivo) {
+                    arquivo = normalizarArquivo(arquivo);
+
                     if (!aceita(campo, arquivo)) {
                         avisar(campo, "Esse tipo de arquivo nao serve para este campo.", true);
 
@@ -6165,12 +6193,6 @@
 
                         if (!arquivo) {
                             continue;
-                        }
-
-                        // Print da tela vem sem nome: da um nome com data e hora.
-                        if (!arquivo.name || arquivo.name === "image.png") {
-                            var extensao = (arquivo.type.split("/")[1] || "png").split("+")[0];
-                            arquivo = new File([arquivo], "colado-" + Date.now() + "." + extensao, { type: arquivo.type });
                         }
 
                         evento.preventDefault();

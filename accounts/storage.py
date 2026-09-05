@@ -9,9 +9,26 @@ consultar: grava direto. De quebra, some uma ida e volta de rede por upload.
 """
 
 import os
+import re
 import uuid
 
 from storages.backends.s3 import S3Storage
+
+
+def safe_upload_name(name):
+    """Return an object key that is friendly to S3/Supabase and browsers."""
+    pasta, arquivo = os.path.split(name)
+    base, extensao = os.path.splitext(arquivo)
+    base = re.sub(r"[^A-Za-z0-9._-]+", "-", base).strip(".-_")
+    extensao = re.sub(r"[^A-Za-z0-9.]+", "", extensao.lower())
+
+    if not base:
+        base = "arquivo"
+
+    if not extensao:
+        extensao = ".bin"
+
+    return os.path.join(pasta, f"{base}{extensao}").replace("\\", "/")
 
 
 class SupabaseMediaStorage(S3Storage):
@@ -19,6 +36,7 @@ class SupabaseMediaStorage(S3Storage):
     file_overwrite = True
 
     def get_available_name(self, name, max_length=None):
+        name = safe_upload_name(name)
         pasta, arquivo = os.path.split(name)
         base, extensao = os.path.splitext(arquivo)
         unico = f"{base}-{uuid.uuid4().hex[:10]}{extensao}"
