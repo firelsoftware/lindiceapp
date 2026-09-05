@@ -91,7 +91,9 @@
                 <article class="reel-card" data-reel>
                     {% if reel.is_youtube %}
                         {# So a capa: o video do YouTube so entra depois do clique, para a vitrine nao carregar 12 players de uma vez. #}
+                        {# Sem capa (video recem publicado), o cartao fica escuro com o play. #}
                         <img class="reel-capa" src="{{ reel.thumbnail_url }}" alt="{{ reel.display_title }}" loading="lazy"
+                             onerror="this.classList.add('sem-capa')"
                              data-reel-embed="{{ reel.embed_url }}"
                              data-reel-preview="{{ reel.preview_embed_url }}">
                     {% else %}
