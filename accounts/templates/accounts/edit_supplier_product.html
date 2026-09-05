@@ -50,8 +50,9 @@
     <section class="info-panel">
         <h2>Preços e estoque</h2>
         <p class="store-product-note">O custo de atacado é só para sua conta: ele nunca aparece na loja.</p>
+        <p class="store-product-note">As três regras abaixo valem só para este produto. Deixando em branco, ele segue as regras gerais da loja.</p>
         {% for campo in form %}
-            {% if campo.name in "suggested_sale_price,compare_at_price,wholesale_price,stock_quantity" %}
+            {% if campo.name in "suggested_sale_price,compare_at_price,wholesale_price,stock_quantity,pix_discount_override,card_installments,credit_surcharge_override" %}
                 <p>
                     <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
                     {{ campo }}

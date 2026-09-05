@@ -36,7 +36,30 @@
             {% else %}
                 <p class="store-price">R$ {{ product.suggested_sale_price|floatformat:2 }}</p>
             {% endif %}
-            <p class="detail-sizes">Tamanhos disponiveis: {{ product.sizes|default:"consultar" }}</p>
+            {% if product.sizes and product.sizes != "Único" %}
+                <p class="detail-sizes">Tamanhos disponiveis: {{ product.sizes }}</p>
+            {% endif %}
+            {% with pagamento=product.payment_options %}
+                {% if pagamento %}
+                    <ul class="detail-payments">
+                        <li class="detail-payment detail-payment-pix">
+                            <span class="detail-payment-label">À vista no Pix</span>
+                            <strong>R$ {{ pagamento.pix.total|floatformat:2 }}</strong>
+                            <span class="detail-payment-note">{{ pagamento.pix.percent|floatformat:0 }}% de desconto — você economiza R$ {{ pagamento.pix.economia|floatformat:2 }}</span>
+                        </li>
+                        <li class="detail-payment">
+                            <span class="detail-payment-label">No cartão</span>
+                            <strong>{{ pagamento.card.installments }}x de R$ {{ pagamento.card.parcela|floatformat:2 }}</strong>
+                            <span class="detail-payment-note">sem juros — total de R$ {{ pagamento.card.total|floatformat:2 }}</span>
+                        </li>
+                        <li class="detail-payment">
+                            <span class="detail-payment-label">No crediário</span>
+                            <strong>R$ {{ pagamento.credit.total|floatformat:2 }}</strong>
+                            <span class="detail-payment-note">parcelado direto com a loja</span>
+                        </li>
+                    </ul>
+                {% endif %}
+            {% endwith %}
             {% with raw=product.raw_data %}
                 {% if raw.modelo %}<p class="detail-note">Modelo: {{ raw.modelo }}</p>{% endif %}
                 {% if raw.cor %}<p class="detail-note">Cor: {{ raw.cor }}</p>{% endif %}
@@ -85,20 +108,25 @@
         </section>
 
         <section class="detail-form-card">
-            <h2>Escolha seu tamanho</h2>
+            <h2>{% if product.sizes and product.sizes != "Único" %}Escolha seu tamanho{% else %}Levar para o carrinho{% endif %}</h2>
             {% if product.requires_availability_confirmation %}
                 <p class="size-help">Pagando com cartao ou Pix voce finaliza a compra na hora. No crediario, o fechamento e com nosso atendimento pelo WhatsApp.</p>
             {% endif %}
             <form method="post" action="{% url 'cart_add' product.id %}">
                 {% csrf_token %}
-                <label for="selected-size">Tamanho</label>
-                <select id="selected-size" name="selected_size" required>
-                    <option value="">Selecione</option>
-                    {% for size in size_options %}
-                        <option value="{{ size }}">{{ size }}</option>
-                    {% endfor %}
-                </select>
-                <p class="size-help">Se tiver duvida, escolha o numero mais confortavel para seu uso diario.</p>
+                {% if size_options|length > 1 %}
+                    <label for="selected-size">Tamanho</label>
+                    <select id="selected-size" name="selected_size" required>
+                        <option value="">Selecione</option>
+                        {% for size in size_options %}
+                            <option value="{{ size }}">{{ size }}</option>
+                        {% endfor %}
+                    </select>
+                    <p class="size-help">Se tiver duvida, escolha o numero mais confortavel para seu uso diario.</p>
+                {% else %}
+                    {# Produto de tamanho unico (relogio, fone): nao faz sentido perguntar. #}
+                    <input type="hidden" name="selected_size" value="{{ size_options.0|default:'Único' }}">
+                {% endif %}
                 <button type="submit">Adicionar ao carrinho</button>
             </form>
 

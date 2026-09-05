@@ -1,4 +1,4 @@
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import Decimal, ROUND_CEILING, ROUND_HALF_UP
 import hashlib
 import uuid
 import re
@@ -211,6 +211,18 @@ CARD_INSTALLMENT_INTEREST_RATES = {
 }
 
 PIX_DISCOUNT_PERCENT = Decimal("15.00")
+
+# Regras de preco dos produtos vindos do atacado (smartwatches, fones, pulseiras).
+# O preco de atacado nunca aparece na loja: serve so para calcular o de venda.
+WHOLESALE_MIN_PRICE = Decimal("150.00")       # nenhum produto sai por menos
+WHOLESALE_MARKUP = Decimal("2.00")            # 100% de lucro sobre o custo
+CREDIT_SURCHARGE_HIGH = Decimal("10.00")      # a partir do limite abaixo
+CREDIT_SURCHARGE_LOW = Decimal("20.00")       # abaixo do limite
+CREDIT_SURCHARGE_THRESHOLD = Decimal("500.00")
+
+
+PRICE_ROUNDING_STEP = Decimal("10")       # precos sempre em dezenas cheias
+CARD_MAX_INSTALLMENTS = 4                 # cartao: ate 4x sem juros
 WELCOME_DISCOUNT_PERCENT = Decimal("5.00")
 # Percentual de cashback devolvido ao cliente em cada compra paga.
 CASHBACK_PERCENT = Decimal("5.00")
@@ -372,6 +384,18 @@ class SupplierProduct(models.Model):
     is_visible = models.BooleanField(default=False)
     # Aparece no carrossel de destaques da pagina inicial.
     is_featured = models.BooleanField("destaque na pagina inicial", default=False)
+    # Regras de pagamento deste produto. Em branco, valem as da loja.
+    pix_discount_override = models.DecimalField(
+        "desconto a vista/Pix deste produto (%)",
+        max_digits=5, decimal_places=2, null=True, blank=True,
+    )
+    card_installments = models.PositiveSmallIntegerField(
+        "parcelas sem juros no cartao", default=CARD_MAX_INSTALLMENTS,
+    )
+    credit_surcharge_override = models.DecimalField(
+        "acrescimo do crediario deste produto (%)",
+        max_digits=5, decimal_places=2, null=True, blank=True,
+    )
     # Video de apresentacao: link (YouTube e afins) ou arquivo enviado pela loja.
     video_url = models.URLField("link do video", blank=True)
     video_file = models.FileField("arquivo de video", upload_to="product_videos/", blank=True)
@@ -434,6 +458,28 @@ class SupplierProduct(models.Model):
 
         return images
 
+    def payment_options(self):
+        """As tres formas de pagamento deste produto, ja com as regras aplicadas."""
+        preco = Decimal(self.suggested_sale_price or 0)
+
+        if preco <= 0:
+            return None
+
+        loja = StoreSettings.load()
+        desconto_pix = self.pix_discount_override
+        if desconto_pix is None:
+            desconto_pix = loja.pix_discount_percent
+
+        total_pix = round_price_up(preco * (Decimal("100") - Decimal(desconto_pix)) / Decimal("100"))
+        parcelas = max(1, self.card_installments or CARD_MAX_INSTALLMENTS)
+        credito = credit_price_from_retail(preco, self.credit_surcharge_override)
+
+        return {
+            "pix": {"total": total_pix, "percent": Decimal(desconto_pix), "economia": money(preco - total_pix)},
+            "card": {"total": money(preco), "installments": parcelas, "parcela": money(preco / Decimal(parcelas))},
+            "credit": {"total": credito, "extra": money(credito - preco)},
+        }
+
     def highlight_list(self):
         """Recursos do produto, um por linha, ja sem marcadores soltos."""
         linhas = (self.highlights or "").splitlines()
@@ -482,17 +528,18 @@ class SupplierProduct(models.Model):
         return link if "/embed/" in link else ""
 
 
-# Regras de preco dos produtos vindos do atacado (smartwatches, fones, pulseiras).
-# O preco de atacado nunca aparece na loja: serve so para calcular o de venda.
-WHOLESALE_MIN_PRICE = Decimal("150.00")       # nenhum produto sai por menos
-WHOLESALE_MARKUP = Decimal("2.00")            # 100% de lucro sobre o custo
-CREDIT_SURCHARGE_HIGH = Decimal("10.00")      # a partir do limite abaixo
-CREDIT_SURCHARGE_LOW = Decimal("20.00")       # abaixo do limite
-CREDIT_SURCHARGE_THRESHOLD = Decimal("500.00")
+def round_price_up(value, step=PRICE_ROUNDING_STEP):
+    """Arredonda para cima ate a dezena, para o preco nunca ficar quebrado."""
+    valor = Decimal(value or 0)
+
+    if valor <= 0:
+        return money(Decimal("0.00"))
+
+    return money((valor / step).to_integral_value(rounding=ROUND_CEILING) * step)
 
 
 def retail_price_from_wholesale(wholesale, minimum=None):
-    """Preco de venda: o dobro do atacado, respeitando o piso da loja."""
+    """Preco de venda: o dobro do atacado, com piso da loja e arredondado."""
     custo = Decimal(wholesale or 0)
 
     if custo <= 0:
@@ -500,19 +547,20 @@ def retail_price_from_wholesale(wholesale, minimum=None):
 
     piso = WHOLESALE_MIN_PRICE if minimum is None else Decimal(minimum)
 
-    return money(max(custo * WHOLESALE_MARKUP, piso))
+    return round_price_up(max(custo * WHOLESALE_MARKUP, piso))
 
 
-def credit_price_from_retail(retail):
+def credit_price_from_retail(retail, surcharge=None):
     """Preco no crediario: acrescimo maior nos produtos mais baratos."""
     valor = Decimal(retail or 0)
 
     if valor <= 0:
         return money(Decimal("0.00"))
 
-    acrescimo = CREDIT_SURCHARGE_HIGH if valor >= CREDIT_SURCHARGE_THRESHOLD else CREDIT_SURCHARGE_LOW
+    if surcharge is None:
+        surcharge = CREDIT_SURCHARGE_HIGH if valor >= CREDIT_SURCHARGE_THRESHOLD else CREDIT_SURCHARGE_LOW
 
-    return money(valor * (Decimal("1.00") + acrescimo / Decimal("100")))
+    return round_price_up(valor * (Decimal("1.00") + Decimal(surcharge) / Decimal("100")))
 
 
 class SupplierProductPhoto(models.Model):

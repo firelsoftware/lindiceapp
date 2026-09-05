@@ -928,6 +928,7 @@ class SupplierProductEditForm(forms.ModelForm):
             "name", "brand", "category", "sizes", "description",
             "suggested_sale_price", "compare_at_price", "wholesale_price",
             "stock_quantity", "is_visible", "is_active", "is_featured",
+            "pix_discount_override", "card_installments", "credit_surcharge_override",
             "image_file", "video_url", "video_file",
             "highlights", "tech_specs",
             "weight_grams", "height_cm", "width_cm", "length_cm",
@@ -946,6 +947,9 @@ class SupplierProductEditForm(forms.ModelForm):
             "is_visible": "Mostrar na loja",
             "is_active": "Ativo",
             "is_featured": "Destaque no carrossel da pagina inicial",
+            "pix_discount_override": "Desconto a vista/Pix (%)",
+            "card_installments": "Parcelas sem juros no cartao",
+            "credit_surcharge_override": "Acrescimo do crediario (%)",
             "image_file": "Foto de capa",
             "video_url": "Link do video (YouTube)",
             "video_file": "Ou envie um arquivo de video",
@@ -961,6 +965,8 @@ class SupplierProductEditForm(forms.ModelForm):
             "compare_at_price": "Se maior que o preco de venda, a loja mostra como promocao (de/por).",
             "is_visible": "Desmarque para suspender o produto (sai da loja).",
             "wholesale_price": "So para conta interna: NUNCA aparece na loja.",
+            "pix_discount_override": "Em branco, usa o desconto geral da loja.",
+            "credit_surcharge_override": "Em branco, usa a regra: 10% a partir de R$ 500 e 20% abaixo disso.",
         }
         widgets = {
             "description": forms.Textarea(attrs={"rows": 4}),
