@@ -81,8 +81,22 @@
             {{ form.video_file.errors }}
         </p>
 
-        <h3>Outras fotos</h3>
+        <h3>Mandar várias fotos de uma vez</h3>
+        <div class="lote-fotos" data-lote>
+            <input type="file" name="fotos_novas" accept="image/*" multiple data-lote-campo hidden>
+            <div class="lote-area" data-lote-area tabindex="0">
+                <p class="lote-chamada">Escolher fotos, colar (Ctrl+V) ou arrastar para cá</p>
+                <p class="lote-dica">Pode mandar até 20 de uma vez, até 8 MB cada. Elas entram depois da foto de capa, na ordem em que você colocar.</p>
+            </div>
+            <ul class="lote-lista" data-lote-lista></ul>
+            <p class="lote-resumo" data-lote-resumo></p>
+        </div>
+
+        <h3>Fotos já publicadas</h3>
         {{ fotos.management_form }}
+        {% if not fotos.forms %}
+            <p class="store-product-note">Nenhuma foto extra ainda. Use a área acima.</p>
+        {% endif %}
         <div class="inline-cards">
             {% for foto in fotos %}
                 <div class="inline-card">

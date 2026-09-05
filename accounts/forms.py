@@ -34,6 +34,36 @@ def validate_document_file(uploaded_file):
     return uploaded_file
 
 
+# Fotos de produto: limite proprio, mais folgado que o dos documentos, porque
+# foto de catalogo costuma vir grande direto da camera.
+MAX_PRODUCT_PHOTO_SIZE = 8 * 1024 * 1024
+MAX_PRODUCT_PHOTOS_PER_UPLOAD = 20
+ALLOWED_PRODUCT_PHOTO_CONTENT_TYPES = ("image/jpeg", "image/png", "image/webp", "image/gif", "image/avif")
+
+
+def validate_product_photo(uploaded_file):
+    """Diz se a foto serve. Devolve o motivo em vez de levantar erro.
+
+    Serve para o envio em lote: uma foto ruim no meio de dez nao pode derrubar
+    as outras nove, entao quem chama decide o que fazer com o motivo.
+    """
+    if not uploaded_file:
+        return "Arquivo vazio."
+
+    if uploaded_file.size > MAX_PRODUCT_PHOTO_SIZE:
+        limite = MAX_PRODUCT_PHOTO_SIZE // (1024 * 1024)
+        tamanho = uploaded_file.size / (1024 * 1024)
+
+        return f"tem {tamanho:.1f} MB e o limite e {limite} MB"
+
+    tipo = (getattr(uploaded_file, "content_type", "") or "").lower()
+
+    if tipo and tipo not in ALLOWED_PRODUCT_PHOTO_CONTENT_TYPES:
+        return "nao e uma imagem (JPEG, PNG, WEBP, GIF ou AVIF)"
+
+    return ""
+
+
 SHOE_SIZE_CHOICES = [(str(size), str(size)) for size in range(33, 45)]
 CHILD_SHOE_SIZE_CHOICES = [(str(size), str(size)) for size in range(14, 33)]
 NOT_APPLICABLE_SHOE_SIZE = "Nao se aplica"
@@ -1111,13 +1141,29 @@ class NewSupplierProductForm(forms.ModelForm):
 
 
 # Fotos extras e cores do produto, editadas na mesma tela do produto.
+class SupplierProductPhotoForm(forms.ModelForm):
+    class Meta:
+        model = SupplierProductPhoto
+        fields = ("image", "caption", "position")
+
+    def clean_image(self):
+        foto = self.cleaned_data.get("image")
+        motivo = validate_product_photo(foto) if foto and hasattr(foto, "size") else ""
+
+        if motivo:
+            raise ValidationError(f"Esta foto {motivo}.")
+
+        return foto
+
+
 SupplierProductPhotoFormSet = forms.models.inlineformset_factory(
     SupplierProduct,
     SupplierProductPhoto,
+    form=SupplierProductPhotoForm,
     fields=("image", "caption", "position"),
     labels={"image": "Foto", "caption": "Legenda (opcional)", "position": "Ordem"},
     widgets={"image": forms.ClearableFileInput(attrs={"accept": "image/*"})},
-    extra=3,
+    extra=0,
     can_delete=True,
 )
 

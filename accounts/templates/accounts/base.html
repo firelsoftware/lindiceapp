@@ -3563,6 +3563,111 @@
             font-weight: 600;
         }
 
+        .lote-fotos {
+            margin: 0 0 18px;
+        }
+
+        .lote-area {
+            display: grid;
+            place-items: center;
+            gap: 4px;
+            padding: 26px 18px;
+            border: 2px dashed var(--line);
+            border-radius: 14px;
+            background: rgba(77, 99, 183, 0.04);
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 140ms ease, background 140ms ease;
+        }
+
+        .lote-area:hover,
+        .lote-area:focus,
+        .lote-area.lote-armado {
+            border-color: var(--brand-purple);
+            background: rgba(77, 99, 183, 0.09);
+            outline: none;
+        }
+
+        .lote-chamada {
+            margin: 0;
+            color: var(--ink);
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .lote-dica {
+            margin: 0;
+            max-width: 42ch;
+            color: var(--ink-soft);
+            font-size: 12px;
+            line-height: 1.45;
+        }
+
+        .lote-lista {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 12px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .lote-item {
+            position: relative;
+            width: 84px;
+        }
+
+        .lote-item img {
+            display: block;
+            width: 84px;
+            height: 84px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: #000;
+        }
+
+        .lote-item-nome {
+            display: block;
+            margin-top: 3px;
+            color: var(--ink-soft);
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .lote-tirar {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            display: grid;
+            place-items: center;
+            width: 22px;
+            height: 22px;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.68);
+            color: #fff;
+            font-size: 14px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .lote-tirar:hover {
+            background: var(--danger);
+        }
+
+        .lote-resumo {
+            margin: 10px 0 0;
+            color: var(--ink-soft);
+            font-size: 13px;
+        }
+
+        .lote-resumo.lote-erro {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
         .reel-liga-form {
             margin: 8px 0;
         }
@@ -6061,7 +6166,9 @@
             // Vale para todo campo de arquivo do site: basta clicar na area e Ctrl+V.
             // Arrastar o arquivo para a area tambem funciona.
             document.addEventListener("DOMContentLoaded", function () {
-                var campos = Array.prototype.slice.call(document.querySelectorAll('input[type="file"]'));
+                var campos = Array.prototype.slice.call(
+                    document.querySelectorAll('input[type="file"]:not([data-lote-campo])')
+                );
 
                 if (!campos.length) {
                     return;
@@ -6252,6 +6359,250 @@
 
                         return;
                     }
+                });
+            });
+        })();
+
+        (function () {
+            // Area de varias fotos: escolher, colar ou arrastar quantas quiser.
+            // Diferente do campo comum de arquivo, aqui as fotos ACUMULAM: colar
+            // tres prints seguidos guarda os tres, e da para tirar um da fila
+            // antes de salvar.
+            document.addEventListener("DOMContentLoaded", function () {
+                var caixas = Array.prototype.slice.call(document.querySelectorAll("[data-lote]"));
+
+                if (!caixas.length) {
+                    return;
+                }
+
+                var LIMITE = 20;
+                var TAMANHO_MAXIMO = 8 * 1024 * 1024;
+
+                function legivel(bytes) {
+                    if (bytes >= 1048576) {
+                        return (bytes / 1048576).toFixed(1) + " MB";
+                    }
+
+                    if (bytes >= 1024) {
+                        return Math.round(bytes / 1024) + " KB";
+                    }
+
+                    return bytes + " bytes";
+                }
+
+                function nomeSeguro(arquivo, indice) {
+                    var partes = (arquivo.name || "").split(".");
+                    var extensao = partes.length > 1 ? partes.pop().toLowerCase() : "";
+                    var base = partes.join(".").replace(/[^a-z0-9._-]+/gi, "-").replace(/^[-._]+|[-._]+$/g, "");
+
+                    if (!extensao) {
+                        extensao = (arquivo.type.split("/")[1] || "jpg").split("+")[0];
+                    }
+
+                    if (!base || base.toLowerCase() === "image") {
+                        base = "foto-" + (indice + 1);
+                    }
+
+                    return base + "." + extensao.replace(/[^a-z0-9]/gi, "");
+                }
+
+                caixas.forEach(function (caixa) {
+                    var campo = caixa.querySelector("[data-lote-campo]");
+                    var area = caixa.querySelector("[data-lote-area]");
+                    var lista = caixa.querySelector("[data-lote-lista]");
+                    var resumo = caixa.querySelector("[data-lote-resumo]");
+
+                    if (!campo || !area || !lista) {
+                        return;
+                    }
+
+                    var fila = [];
+
+                    function sincronizar() {
+                        var pacote = new DataTransfer();
+
+                        fila.forEach(function (arquivo) {
+                            pacote.items.add(arquivo);
+                        });
+
+                        campo.files = pacote.files;
+                    }
+
+                    function desenhar() {
+                        lista.innerHTML = "";
+
+                        fila.forEach(function (arquivo, indice) {
+                            var item = document.createElement("li");
+                            item.className = "lote-item";
+
+                            var img = document.createElement("img");
+                            img.src = URL.createObjectURL(arquivo);
+                            img.alt = "";
+                            img.onload = function () {
+                                URL.revokeObjectURL(img.src);
+                            };
+                            item.appendChild(img);
+
+                            var nome = document.createElement("span");
+                            nome.className = "lote-item-nome";
+                            nome.textContent = legivel(arquivo.size);
+                            item.appendChild(nome);
+
+                            var tirar = document.createElement("button");
+                            tirar.type = "button";
+                            tirar.className = "lote-tirar";
+                            tirar.title = "Tirar esta foto da fila";
+                            tirar.setAttribute("aria-label", "Tirar a foto " + (indice + 1) + " da fila");
+                            tirar.textContent = "×";
+                            tirar.addEventListener("click", function () {
+                                fila.splice(indice, 1);
+                                sincronizar();
+                                desenhar();
+                            });
+                            item.appendChild(tirar);
+
+                            lista.appendChild(item);
+                        });
+
+                        caixa.classList.toggle("tem-fotos", fila.length > 0);
+
+                        if (!resumo) {
+                            return;
+                        }
+
+                        if (!fila.length) {
+                            resumo.textContent = "";
+
+                            return;
+                        }
+
+                        var soma = fila.reduce(function (total, arquivo) {
+                            return total + arquivo.size;
+                        }, 0);
+
+                        resumo.textContent =
+                            fila.length +
+                            (fila.length === 1 ? " foto na fila" : " fotos na fila") +
+                            " (" + legivel(soma) + "). Elas sobem quando você salvar.";
+                    }
+
+                    function recusar(texto) {
+                        if (!resumo) {
+                            return;
+                        }
+
+                        resumo.textContent = texto;
+                        resumo.classList.add("lote-erro");
+                        window.setTimeout(function () {
+                            resumo.classList.remove("lote-erro");
+                            desenhar();
+                        }, 4000);
+                    }
+
+                    function juntar(arquivos) {
+                        var recusadas = [];
+
+                        Array.prototype.slice.call(arquivos).forEach(function (arquivo) {
+                            if (arquivo.type.indexOf("image/") !== 0) {
+                                recusadas.push(arquivo.name + " nao e imagem");
+
+                                return;
+                            }
+
+                            if (arquivo.size > TAMANHO_MAXIMO) {
+                                recusadas.push(arquivo.name + " tem " + legivel(arquivo.size) + ", o limite e 8 MB");
+
+                                return;
+                            }
+
+                            if (fila.length >= LIMITE) {
+                                recusadas.push("o limite e " + LIMITE + " fotos por vez");
+
+                                return;
+                            }
+
+                            var seguro = nomeSeguro(arquivo, fila.length);
+                            fila.push(seguro === arquivo.name ? arquivo : new File([arquivo], seguro, { type: arquivo.type }));
+                        });
+
+                        sincronizar();
+                        desenhar();
+
+                        if (recusadas.length) {
+                            recusar(recusadas[0] + ".");
+                        }
+                    }
+
+                    area.addEventListener("click", function () {
+                        campo.click();
+                    });
+
+                    area.addEventListener("keydown", function (evento) {
+                        if (evento.key === "Enter" || evento.key === " ") {
+                            evento.preventDefault();
+                            campo.click();
+                        }
+                    });
+
+                    // O campo escondido guarda a fila inteira, entao o change so
+                    // interessa quando veio da pessoa escolhendo no seletor.
+                    campo.addEventListener("change", function (evento) {
+                        if (evento.isTrusted && campo.files && campo.files.length) {
+                            var novos = Array.prototype.slice.call(campo.files);
+                            sincronizar();
+                            juntar(novos);
+                        }
+                    });
+
+                    area.addEventListener("dragover", function (evento) {
+                        evento.preventDefault();
+                        area.classList.add("lote-armado");
+                    });
+
+                    area.addEventListener("dragleave", function () {
+                        area.classList.remove("lote-armado");
+                    });
+
+                    area.addEventListener("drop", function (evento) {
+                        evento.preventDefault();
+                        area.classList.remove("lote-armado");
+
+                        if (evento.dataTransfer && evento.dataTransfer.files) {
+                            juntar(evento.dataTransfer.files);
+                        }
+                    });
+
+                    document.addEventListener("paste", function (evento) {
+                        if (!evento.clipboardData || !caixa.isConnected) {
+                            return;
+                        }
+
+                        // So a area em foco recebe o que foi colado, para nao
+                        // duplicar quando houver mais de uma na mesma tela.
+                        if (caixas.length > 1 && !caixa.contains(document.activeElement)) {
+                            return;
+                        }
+
+                        var itens = evento.clipboardData.items || [];
+                        var colados = [];
+
+                        for (var i = 0; i < itens.length; i += 1) {
+                            if (itens[i].kind !== "file") {
+                                continue;
+                            }
+
+                            var arquivo = itens[i].getAsFile();
+
+                            if (arquivo) {
+                                colados.push(arquivo);
+                            }
+                        }
+
+                        if (colados.length) {
+                            evento.preventDefault();
+                            juntar(colados);
+                        }
+                    });
                 });
             });
         })();

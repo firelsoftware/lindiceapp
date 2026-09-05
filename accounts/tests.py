@@ -5,16 +5,21 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 from unittest.mock import patch
 
+from django.contrib.messages.storage.fallback import FallbackStorage
+from django.contrib.sessions.backends.db import SessionStore
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
+from django.db import connection
 from django.test import Client, RequestFactory, TestCase, override_settings
+from django.test.utils import CaptureQueriesContext
 from django.utils import timezone
 
 from .forms import CreditSaleForm, InstallmentChoiceForm, ProductForm, RegisterForm
-from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, SupplierCatalogSource, SupplierProduct, User, add_months
+from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference, payment_method_from_payment
 from .storage import safe_upload_name
+from .views import salvar_fotos_em_lote
 from .store_shipping import shipping_cost_for
 from .supplier_import import parse_csv, row_to_payload
 from .utils import cpf_hash, is_valid_cpf
@@ -980,6 +985,14 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, "/static/accounts/catalog-test/botas/1.958-4a.jpg")
         self.assertContains(response, "/static/accounts/catalog-test/botas/1.958-4b.jpg")
 
+    def requisicao_com_fotos(self, arquivos, campo="fotos_novas"):
+        """Uma requisicao so com os arquivos, para testar o lote sem a tela."""
+        pedido = RequestFactory().post("/", {campo: arquivos})
+        pedido.session = SessionStore()
+        pedido._messages = FallbackStorage(pedido)
+
+        return pedido
+
     def login_staff(self, email="loja-vitrine@example.com"):
         User.objects.create_user(
             email=email,
@@ -1177,6 +1190,133 @@ class StoreFlowTests(TestCase):
         )
 
         self.assertRedirects(response, "/gestao/fornecedor/produtos/")
+
+    def foto_falsa(self, nome="foto.jpg", bytes_=None, tipo="image/jpeg"):
+        """Uma imagem minima de verdade, para o upload ter o que gravar."""
+        if bytes_ is None:
+            # JPEG minusculo valido o bastante para o FileField.
+            bytes_ = b"\xff\xd8\xff\xe0\x00\x10JFIF" + b"\x00" * 40 + b"\xff\xd9"
+
+        return SimpleUploadedFile(nome, bytes_, content_type=tipo)
+
+    def test_staff_sends_several_photos_at_once(self):
+        product = self.create_supplier_product(name="Bolsa com galeria")
+        self.login_staff(email="loja-fotos@example.com")
+
+        resposta = self.client.post(
+            f"/gestao/fornecedor/produtos/{product.id}/editar/",
+            {
+                "name": product.name,
+                "brand": product.brand,
+                "category": product.category,
+                "sizes": product.sizes,
+                "suggested_sale_price": product.suggested_sale_price,
+                "wholesale_price": product.wholesale_price or "",
+                "stock_quantity": product.stock_quantity,
+                "card_installments": 4,
+                "is_visible": "on",
+                "is_active": "on",
+                "fotos-TOTAL_FORMS": "0",
+                "fotos-INITIAL_FORMS": "0",
+                "fotos-MIN_NUM_FORMS": "0",
+                "fotos-MAX_NUM_FORMS": "1000",
+                "cores-TOTAL_FORMS": "0",
+                "cores-INITIAL_FORMS": "0",
+                "cores-MIN_NUM_FORMS": "0",
+                "cores-MAX_NUM_FORMS": "1000",
+                "fotos_novas": [
+                    self.foto_falsa("um.jpg"),
+                    self.foto_falsa("dois.jpg"),
+                    self.foto_falsa("tres.jpg"),
+                ],
+            },
+        )
+
+        self.assertEqual(resposta.status_code, 302)
+        self.assertEqual(product.photos.count(), 3)
+        # Entram em ordem, uma depois da outra.
+        self.assertEqual(list(product.photos.values_list("position", flat=True)), [1, 2, 3])
+
+    def test_photo_batch_keeps_the_good_ones_when_one_is_too_big(self):
+        product = self.create_supplier_product(name="Bolsa com foto grande")
+        gigante = self.foto_falsa("gigante.jpg", bytes_=b"x" * (9 * 1024 * 1024))
+
+        entraram, recusas = salvar_fotos_em_lote(
+            self.requisicao_com_fotos([self.foto_falsa("boa.jpg"), gigante]),
+            product,
+        )
+
+        self.assertEqual(entraram, 1)
+        self.assertEqual(len(recusas), 1)
+        self.assertIn("gigante.jpg", recusas[0])
+        self.assertIn("limite", recusas[0])
+        self.assertEqual(product.photos.count(), 1)
+
+    def test_photo_batch_refuses_a_file_that_is_not_an_image(self):
+        product = self.create_supplier_product(name="Bolsa com pdf")
+
+        entraram, recusas = salvar_fotos_em_lote(
+            self.requisicao_com_fotos(
+                [SimpleUploadedFile("contrato.pdf", b"%PDF-1.4", content_type="application/pdf")]
+            ),
+            product,
+        )
+
+        self.assertEqual(entraram, 0)
+        self.assertIn("nao e uma imagem", recusas[0])
+        self.assertEqual(product.photos.count(), 0)
+
+    def test_photo_batch_stops_at_twenty_per_upload(self):
+        product = self.create_supplier_product(name="Bolsa com muitas fotos")
+        fotos = [self.foto_falsa(f"foto-{i}.jpg") for i in range(23)]
+
+        entraram, recusas = salvar_fotos_em_lote(self.requisicao_com_fotos(fotos), product)
+
+        self.assertEqual(entraram, 20)
+        self.assertEqual(product.photos.count(), 20)
+        self.assertTrue(any("ficaram de fora" in recusa for recusa in recusas))
+
+    def test_new_product_can_be_born_with_photos(self):
+        self.login_staff(email="loja-novo@example.com")
+
+        resposta = self.client.post(
+            "/gestao/fornecedor/produtos/novo/",
+            {
+                "name": "Smartwatch recem-nascido",
+                "category": "Smartwatches",
+                "supplier_code": "NOVO-001",
+                "brand": "Wearzone",
+                "wholesale_price": "110",
+                "stock_quantity": "10",
+                "sizes": "Único",
+                "fotos_novas": [self.foto_falsa("capa.jpg"), self.foto_falsa("lado.jpg")],
+            },
+        )
+
+        self.assertEqual(resposta.status_code, 302)
+        novo = SupplierProduct.objects.get(supplier_code="NOVO-001")
+        self.assertEqual(novo.photos.count(), 2)
+
+    def test_storefront_does_not_query_photos_once_per_product(self):
+        # Com foto extra em varios produtos, montar a galeria nao pode virar
+        # uma consulta por produto: foi assim que a vitrine ficou lenta antes.
+        for indice in range(6):
+            produto = self.create_supplier_product(
+                name=f"Bolsa {indice}",
+                supplier_code=f"GAL{indice}",
+                image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+            )
+            SupplierProductPhoto.objects.create(product=produto, image="supplier_products/x.jpg", position=1)
+
+        resposta = self.client.get("/loja/")
+        self.assertEqual(resposta.status_code, 200)
+
+        with CaptureQueriesContext(connection) as consultas:
+            self.client.get("/loja/")
+
+        de_foto = [c for c in consultas.captured_queries if "supplierproductphoto" in c["sql"].lower()]
+        # Tres consultas de foto: uma por queryset (vitrine, destaques, faixa).
+        self.assertLessEqual(len(de_foto), 5, f"consultas de foto demais: {len(de_foto)}")
 
     def test_store_product_detail_for_consultation_source_shows_cart_flow(self):
         SupplierCatalogSource.objects.update_or_create(

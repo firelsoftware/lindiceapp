@@ -24,7 +24,7 @@
         você marcar "Mostrar na loja" na ficha.
     </p>
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% if form.non_field_errors %}<div class="reg-errors">{{ form.non_field_errors }}</div>{% endif %}
         {% for campo in form %}
@@ -35,6 +35,17 @@
                 {{ campo.errors }}
             </p>
         {% endfor %}
+        <h3>Fotos</h3>
+        <div class="lote-fotos" data-lote>
+            <input type="file" name="fotos_novas" accept="image/*" multiple data-lote-campo hidden>
+            <div class="lote-area" data-lote-area tabindex="0">
+                <p class="lote-chamada">Escolher fotos, colar (Ctrl+V) ou arrastar para cá</p>
+                <p class="lote-dica">Opcional. Pode mandar até 20 de uma vez, até 8 MB cada — ou deixar para depois, na ficha.</p>
+            </div>
+            <ul class="lote-lista" data-lote-lista></ul>
+            <p class="lote-resumo" data-lote-resumo></p>
+        </div>
+
         <div class="action-row">
             <button type="submit">Criar e continuar</button>
             <a class="button button-secondary" href="{% url 'supplier_products' %}">Cancelar</a>

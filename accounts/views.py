@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
-from django.db.models import Case, Count, IntegerField, Q, Sum, Value, When
+from django.db.models import Case, Count, IntegerField, Max, Q, Sum, Value, When
 from django.db.models.deletion import ProtectedError
 from django.http import FileResponse, Http404, HttpResponseForbidden, JsonResponse
 from django.core import signing
@@ -34,8 +34,8 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from . import google_oauth
-from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, NewSupplierProductForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
-from .models import StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance_capped, points_discount_percent, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .forms import MAX_PRODUCT_PHOTOS_PER_UPLOAD, validate_product_photo, CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, NewSupplierProductForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
+from .models import StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance_capped, points_discount_percent, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, payment_method_from_payment, verify_webhook_signature
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
@@ -1568,6 +1568,9 @@ def store_front(request):
     )
     products = (
         SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0)
+        # Sem o prefetch, montar a galeria de cada produto faz uma consulta a
+        # mais por produto: 24 produtos na pagina viram 24 consultas so de foto.
+        .prefetch_related("photos")
         .annotate(tennis_priority=tennis_priority)
         .order_by("tennis_priority", "name")
     )
@@ -1704,6 +1707,7 @@ def store_front(request):
     featured_pool = (
         SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0)
         .exclude(image_file="", image_url="")
+        .prefetch_related("photos")
     )
     featured_products = list(featured_pool.order_by("?")[:24])
 
@@ -1827,6 +1831,7 @@ def store_product_detail(request, product_id):
             )
             .exclude(id=product.id)
             .exclude(image_file="", image_url="")
+            .prefetch_related("photos")
             .order_by("suggested_sale_price")[:12]
         )
 
@@ -4044,6 +4049,64 @@ def product_list(request):
     )
 
 
+def salvar_fotos_em_lote(request, produto, campo="fotos_novas"):
+    """Grava de uma vez todas as fotos que vieram no campo de varios arquivos.
+
+    Devolve (quantas entraram, lista de recusas). Uma foto ruim no meio do lote
+    nao derruba as outras: ela e recusada com o motivo e o resto entra.
+    """
+    arquivos = request.FILES.getlist(campo)
+
+    if not arquivos:
+        return 0, []
+
+    recusas = []
+    aceitas = []
+
+    for arquivo in arquivos[:MAX_PRODUCT_PHOTOS_PER_UPLOAD]:
+        motivo = validate_product_photo(arquivo)
+
+        if motivo:
+            recusas.append(f"{arquivo.name} {motivo}")
+            continue
+
+        aceitas.append(arquivo)
+
+    if len(arquivos) > MAX_PRODUCT_PHOTOS_PER_UPLOAD:
+        sobra = len(arquivos) - MAX_PRODUCT_PHOTOS_PER_UPLOAD
+        recusas.append(f"{sobra} foto(s) ficaram de fora: o limite e {MAX_PRODUCT_PHOTOS_PER_UPLOAD} por vez")
+
+    if not aceitas:
+        return 0, recusas
+
+    proxima = (produto.photos.aggregate(maior=Max("position"))["maior"] or 0) + 1
+    entraram = 0
+
+    for arquivo in aceitas:
+        try:
+            SupplierProductPhoto.objects.create(product=produto, image=arquivo, position=proxima)
+        except Exception as erro:
+            logger.exception("Falha ao gravar foto do produto %s", produto.id)
+            recusas.append(f"{arquivo.name} nao subiu ({type(erro).__name__})")
+            continue
+
+        proxima += 1
+        entraram += 1
+
+    return entraram, recusas
+
+
+def avisar_sobre_fotos(request, entraram, recusas):
+    """Conta para a loja o que entrou e o que ficou de fora."""
+    if entraram == 1:
+        messages.success(request, "1 foto adicionada.")
+    elif entraram > 1:
+        messages.success(request, f"{entraram} fotos adicionadas.")
+
+    for recusa in recusas:
+        messages.warning(request, recusa)
+
+
 @staff_member_required(login_url="login")
 def edit_supplier_product(request, product_id):
     product = get_object_or_404(SupplierProduct, id=product_id)
@@ -4058,8 +4121,10 @@ def edit_supplier_product(request, product_id):
                 form.save()
                 fotos.save()
                 cores.save()
+                entraram, recusas = salvar_fotos_em_lote(request, product)
 
             messages.success(request, "Produto atualizado com sucesso.")
+            avisar_sobre_fotos(request, entraram, recusas)
 
             return redirect("edit_supplier_product", product_id=product.id)
 
@@ -4147,15 +4212,17 @@ def storage_check(request):
 def new_supplier_product(request):
     """Cria um produto do zero e leva direto para a ficha completa."""
     if request.method == "POST":
-        form = NewSupplierProductForm(request.POST)
+        form = NewSupplierProductForm(request.POST, request.FILES)
 
         if form.is_valid():
             produto = form.save()
+            entraram, recusas = salvar_fotos_em_lote(request, produto)
             messages.success(
                 request,
-                f"{produto.name} criado. Agora coloque as fotos, as cores e a descricao, "
+                f"{produto.name} criado. Agora confira as cores e a descricao, "
                 "e marque 'Mostrar na loja' quando estiver pronto.",
             )
+            avisar_sobre_fotos(request, entraram, recusas)
 
             return redirect("edit_supplier_product", product_id=produto.id)
 
