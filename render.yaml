@@ -66,6 +66,8 @@ services:
         value: "false"
       - key: SUPABASE_STORAGE_BUCKET
         sync: false
+      - key: SUPABASE_PUBLIC_BUCKET
+        sync: false
       - key: SUPABASE_STORAGE_ENDPOINT_URL
         sync: false
       - key: SUPABASE_STORAGE_REGION
@@ -92,6 +94,8 @@ services:
       - key: DJANGO_ALLOWED_HOSTS
         value: ".onrender.com,app.lindice.com.br"
       - key: SUPABASE_STORAGE_BUCKET
+        sync: false
+      - key: SUPABASE_PUBLIC_BUCKET
         sync: false
       - key: SUPABASE_STORAGE_ENDPOINT_URL
         sync: false

@@ -91,4 +91,26 @@ SUPABASE_S3_SECRET_ACCESS_KEY=...
 
 As credenciais S3 sao de uso exclusivo no servidor. Nao coloque esses valores no GitHub.
 
+### Bucket publico das fotos da loja
+
+O bucket acima e privado porque guarda documento de cliente. Link privado sai
+assinado e vence em uma hora, o que atrapalha foto de produto: o navegador nao
+guarda em cache e nenhum site de fora abre a imagem. Por isso as fotos da loja
+ficam num segundo bucket, publico.
+
+1. No Supabase, em Storage, crie um bucket chamado `lindice-publico` e marque
+   a opcao **Public bucket**.
+2. Na Render, adicione a variavel:
+
+```text
+SUPABASE_PUBLIC_BUCKET=lindice-publico
+```
+
+3. Depois do redeploy, entre em `/gestao/fotos-publicas/` e clique em
+   "Copiar as fotos que faltam". Pode clicar de novo sem medo: o que ja foi
+   copiado nao vai duas vezes.
+
+Nao e preciso gerar chave nova: o bucket publico usa as mesmas credenciais S3.
+Sem a variavel, tudo continua funcionando como antes, no bucket privado.
+
 Depois do redeploy, novos uploads vao para o Supabase Storage. Arquivos antigos que estavam no disco do Render nao migram sozinhos; se uma foto antiga aparecer quebrada, reenvie a foto pelo app.
