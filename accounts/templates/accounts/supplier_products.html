@@ -27,6 +27,26 @@
     </div>
 </div>
 
+<section class="info-panel">
+    <h2>Catálogo Wearzone</h2>
+    <p class="store-product-note">
+        Cadastra os smartwatches e fones que ainda não existem, com foto e preço pelas regras da loja:
+        o dobro do atacado, arredondado, com piso de R$ 150.
+        <strong>Os que já estão cadastrados ficam como estão</strong> — suas edições de preço,
+        descrição e fotos não são mexidas.
+    </p>
+    <form method="post" action="{% url 'import_wearzone_catalog' %}">
+        {% csrf_token %}
+        <label class="reg-checkbox">
+            <input type="checkbox" name="refazer" value="sim">
+            <span>Também refazer preço e descrição pelo catálogo (desfaz o que editei à mão)</span>
+        </label>
+        <div class="action-row">
+            <button type="submit">Importar catálogo Wearzone</button>
+        </div>
+    </form>
+</section>
+
 <form class="toolbar" method="get">
     <div class="toolbar-field">
         <label for="q">Buscar</label>

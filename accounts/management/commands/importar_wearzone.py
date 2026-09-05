@@ -198,7 +198,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("--ensaio", action="store_true", help="Mostra sem gravar.")
-        parser.add_argument("--estoque", type=int, default=5, help="Estoque inicial de cada modelo.")
+        parser.add_argument("--estoque", type=int, default=10, help="Estoque inicial de cada modelo.")
+        parser.add_argument(
+            "--refazer",
+            action="store_true",
+            help="Sobrescreve preco, descricao e recursos dos produtos ja cadastrados.",
+        )
 
     def handle(self, *args, **options):
         ensaio = options["ensaio"]
@@ -209,7 +214,7 @@ class Command(BaseCommand):
 
         self.stdout.write(f"{'modelo':34} {'venda':>9} {'crediario':>10}  cores")
 
-        criados = atualizados = 0
+        criados = atualizados = preservados = 0
 
         for item in CATALOGO:
             atacado = Decimal(item["atacado"])
@@ -222,6 +227,23 @@ class Command(BaseCommand):
                 continue
 
             with transaction.atomic():
+                existente = SupplierProduct.objects.filter(
+                    source=SupplierProduct.SOURCE_WEARZONE, supplier_code=item["codigo"]
+                ).first()
+
+                # Produto ja cadastrado nao tem o que a loja editou a mao
+                # sobrescrito, a nao ser que peca explicitamente com --refazer.
+                if existente and not options["refazer"]:
+                    for cor_posicao, cor_nome in enumerate(item["cores"]):
+                        SupplierProductVariant.objects.get_or_create(
+                            product=existente,
+                            name=cor_nome,
+                            defaults={"code": f"{item['codigo']}-{cor_nome[:2].upper()}", "position": cor_posicao},
+                        )
+
+                    preservados += 1
+                    continue
+
                 produto, novo = SupplierProduct.objects.update_or_create(
                     source=SupplierProduct.SOURCE_WEARZONE,
                     supplier_code=item["codigo"],
@@ -277,4 +299,6 @@ class Command(BaseCommand):
         if ensaio:
             self.stdout.write(self.style.WARNING("ENSAIO: nada foi gravado."))
         else:
-            self.stdout.write(self.style.SUCCESS(f"{criados} cadastrados, {atualizados} atualizados."))
+            self.stdout.write(
+                self.style.SUCCESS(f"{criados} cadastrados, {atualizados} atualizados, {preservados} mantidos como estavam.")
+            )

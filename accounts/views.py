@@ -1,5 +1,6 @@
 import calendar
 import hashlib
+from io import StringIO
 from pathlib import Path
 from django.conf import settings
 from datetime import timedelta
@@ -22,6 +23,7 @@ from django.db.models import Case, Count, IntegerField, Q, Sum, Value, When
 from django.db.models.deletion import ProtectedError
 from django.http import FileResponse, Http404, HttpResponseForbidden, JsonResponse
 from django.core import signing
+from django.core.management import call_command
 from django.core.mail import EmailMultiAlternatives
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render, resolve_url
@@ -3986,6 +3988,36 @@ def edit_supplier_product(request, product_id):
             "preco_crediario": credit_price_from_retail(product.suggested_sale_price),
         },
     )
+
+
+@staff_member_required(login_url="login")
+def import_wearzone_catalog(request):
+    """Cadastra (ou atualiza) os smartwatches e fones com um clique.
+
+    Existe porque o plano da Render nao da terminal: sem isso, nao haveria como
+    rodar o comando em producao.
+    """
+    if request.method != "POST":
+        return redirect("supplier_products")
+
+    saida = StringIO()
+    refazer = request.POST.get("refazer") == "sim"
+
+    try:
+        if refazer:
+            call_command("importar_wearzone", "--refazer", stdout=saida, stderr=saida)
+        else:
+            call_command("importar_wearzone", stdout=saida, stderr=saida)
+    except Exception:
+        logger.exception("Falha ao importar o catalogo Wearzone")
+        messages.error(request, "Nao foi possivel importar o catalogo agora. Tente de novo em instantes.")
+
+        return redirect("supplier_products")
+
+    resumo = [linha for linha in saida.getvalue().splitlines() if "cadastrados" in linha]
+    messages.success(request, resumo[-1] if resumo else "Catalogo importado.")
+
+    return redirect(f"{reverse('supplier_products')}?origem={SupplierProduct.SOURCE_WEARZONE}")
 
 
 @staff_member_required(login_url="login")

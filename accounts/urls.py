@@ -107,6 +107,7 @@ urlpatterns = [
     path("gestao/fornecedor/produtos/<int:product_id>/editar/", views.edit_supplier_product, name="edit_supplier_product"),
     path("gestao/fornecedor/produtos/<int:product_id>/excluir/", views.delete_supplier_product, name="delete_supplier_product"),
     path("gestao/fornecedor/importar/", views.import_supplier_products, name="import_supplier_products"),
+    path("gestao/fornecedor/importar-wearzone/", views.import_wearzone_catalog, name="import_wearzone_catalog"),
     path("gestao/reels/", views.staff_reels, name="staff_reels"),
     path("gestao/reels/<int:reel_id>/editar/", views.edit_reel, name="edit_reel"),
     path("gestao/reels/<int:reel_id>/baixar/", views.download_reel, name="download_reel"),
