@@ -27,10 +27,22 @@ def store_cart(request):
 def site_analytics(request):
     whatsapp = "".join(ch for ch in getattr(settings, "STORE_WHATSAPP_NUMBER", "") if ch.isdigit())
 
+    # Numero em formato de leitura: 5561995135066 -> (61) 99513-5066
+    legivel = ""
+
+    if len(whatsapp) >= 12:
+        ddd, numero = whatsapp[2:4], whatsapp[4:]
+        legivel = f"({ddd}) {numero[:5]}-{numero[5:]}"
+
+    instagram = getattr(settings, "STORE_INSTAGRAM_URL", "")
+    perfil = instagram.rstrip("/").rsplit("/", 1)[-1].split("?")[0] if instagram else ""
+
     return {
         "google_analytics_id": settings.GOOGLE_ANALYTICS_ID,
         "store_whatsapp_url": f"https://wa.me/{whatsapp}" if whatsapp else "",
-        "store_instagram_url": getattr(settings, "STORE_INSTAGRAM_URL", ""),
+        "store_whatsapp_label": legivel,
+        "store_instagram_url": instagram,
+        "store_instagram_handle": f"@{perfil}" if perfil else "",
     }
 
 
