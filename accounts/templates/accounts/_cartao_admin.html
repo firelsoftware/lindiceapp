@@ -1,0 +1,10 @@
+{% if request.user.is_staff and produto_id %}
+    <div class="cartao-admin">
+        <a href="{% url 'edit_supplier_product' produto_id %}" title="Editar este produto" aria-label="Editar produto">✎</a>
+        <form method="post" action="{% url 'delete_supplier_product' produto_id %}" data-confirmar="Excluir &quot;{{ produto_nome|default:'este produto' }}&quot; do catálogo? Essa acao nao pode ser desfeita.">
+            {% csrf_token %}
+            <input type="hidden" name="voltar" value="{{ request.get_full_path }}">
+            <button type="submit" title="Excluir este produto" aria-label="Excluir produto">&times;</button>
+        </form>
+    </div>
+{% endif %}

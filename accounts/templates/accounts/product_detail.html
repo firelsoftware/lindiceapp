@@ -28,9 +28,9 @@
 
 <div class="action-row">
     <a class="button" href="{% url 'add_product_cost' product.id %}">Lancar custo extra</a>
-    <form method="post" action="{% url 'delete_product' product.id %}">
+    <form method="post" action="{% url 'delete_product' product.id %}" data-confirmar="Excluir &quot;{{ product.name }}&quot;? Essa acao nao pode ser desfeita.">
         {% csrf_token %}
-        <button type="submit" class="button button-secondary" onclick="return confirm('Excluir este produto?');">Excluir produto</button>
+        <button type="submit" class="button button-secondary">Excluir produto</button>
     </form>
 </div>
 

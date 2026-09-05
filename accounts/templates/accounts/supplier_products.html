@@ -184,10 +184,10 @@
                             {% endif %}
                         </div>
                     </form>
-                    <form method="post" action="{% url 'delete_supplier_product' product.id %}" style="margin-top: 10px;">
+                    <form method="post" action="{% url 'delete_supplier_product' product.id %}" style="margin-top: 10px;" data-confirmar="Excluir &quot;{{ product.name }}&quot; do catálogo? Essa acao nao pode ser desfeita.">
                         {% csrf_token %}
                         <div class="action-row action-row-end">
-                            <button type="submit" class="button button-secondary" onclick="return confirm('Excluir este produto do catalogo?');">Excluir</button>
+                            <button type="submit" class="button button-secondary">Excluir</button>
                         </div>
                     </form>
                 </td>

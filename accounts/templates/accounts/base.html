@@ -2148,6 +2148,7 @@
         }
 
         .store-product {
+            position: relative;
             display: flex;
             flex-direction: column;
             min-height: 100%;
@@ -3159,7 +3160,13 @@
             padding: 4px 16px 14px;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .reels-scroll::-webkit-scrollbar {
+            display: none;
         }
 
         .reel-card {
@@ -3281,6 +3288,12 @@
 
         .watch-card {
             position: relative;
+        }
+
+        .store-product .cartao-admin,
+        .storefront-carousel-card .cartao-admin {
+            top: 10px;
+            right: 10px;
         }
 
         .watch-card .cartao-admin a {
@@ -3453,6 +3466,252 @@
             color: var(--brand-purple);
             font-size: 17px;
             font-weight: 700;
+        }
+
+        .watch-strip,
+        .reels-strip {
+            max-width: 1100px;
+            margin: 0 auto 24px;
+        }
+
+        .watch-strip-head {
+            padding: 0 16px;
+        }
+
+        .watch-strip-head h2 {
+            margin: 0 0 2px;
+            font-size: 20px;
+        }
+
+        .watch-strip-head p {
+            margin: 0 0 10px;
+            color: var(--ink-soft);
+            font-size: 13px;
+        }
+
+        .ficha-busca {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 1100px;
+            margin: 0 auto 12px;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--surface);
+        }
+
+        .ficha-busca .store-search-icon {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 auto;
+            fill: none;
+            stroke: var(--ink-soft);
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+
+        .ficha-busca input {
+            flex: 1;
+            min-width: 0;
+            padding: 6px 2px;
+            border: 0;
+            background: none;
+            color: var(--ink);
+            font-size: 15px;
+        }
+
+        .ficha-busca input:focus {
+            outline: none;
+        }
+
+        .ficha-busca button {
+            flex: 0 0 auto;
+            padding: 8px 18px;
+            border: 0;
+            border-radius: 999px;
+            background: var(--brand-purple);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .ficha-caminho {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-width: 1100px;
+            margin: 0 auto 14px;
+            padding: 0 6px;
+            color: var(--ink-soft);
+            font-size: 13px;
+        }
+
+        .ficha-caminho a {
+            color: var(--brand-blue);
+            text-decoration: none;
+        }
+
+        .ficha-caminho a:hover {
+            text-decoration: underline;
+        }
+
+        .ficha-caminho-atual {
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        .reel-liga-form {
+            margin: 8px 0;
+        }
+
+        .reel-liga-form label {
+            display: block;
+            margin-bottom: 2px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .reel-liga-form small {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--ink-soft);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .reel-liga-form select {
+            width: 100%;
+            margin-bottom: 6px;
+        }
+
+        .reel-produto-ficha {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: rgba(77, 99, 183, 0.05);
+        }
+
+        .reel-produto-topo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .reel-produto-foto {
+            width: 44px;
+            height: 44px;
+            flex: 0 0 auto;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .reel-produto-topo p {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.35;
+        }
+
+        .reel-produto-linha {
+            display: block;
+            margin: 0 0 8px;
+        }
+
+        .reel-produto-linha > span {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--ink-soft);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .reel-produto-linha form {
+            display: flex;
+            gap: 5px;
+            margin: 0;
+        }
+
+        .reel-produto-linha input[name="valor"] {
+            flex: 1;
+            min-width: 0;
+            padding: 5px 8px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--ink);
+            font-size: 13px;
+        }
+
+        .reel-produto-linha button {
+            flex: 0 0 auto;
+            margin: 0;
+            padding: 5px 9px;
+            font-size: 12px;
+        }
+
+        .barra-loja {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-width: 1100px;
+            margin: 0 auto 14px;
+            padding: 10px 16px;
+            border: 1px dashed var(--line);
+            border-radius: 12px;
+            color: var(--ink-soft);
+            font-size: 13px;
+        }
+
+        .barra-loja-acoes {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .barra-loja-acoes form {
+            margin: 0;
+        }
+
+        .texto-editavel {
+            margin-top: 10px;
+        }
+
+        .texto-editar {
+            padding: 6px 14px;
+            border: 1px dashed var(--line);
+            border-radius: 999px;
+            background: none;
+            color: var(--ink-soft);
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .texto-editar:hover {
+            border-color: var(--brand-purple);
+            border-style: solid;
+            color: var(--brand-purple);
+        }
+
+        .texto-form textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--surface);
+            color: var(--ink);
+            font: inherit;
+            resize: vertical;
+        }
+
+        .texto-form .action-row {
+            margin-top: 8px;
         }
 
         .product-edit-head {
@@ -5921,6 +6180,26 @@
                     }
                 });
             });
+        })();
+
+        (function () {
+            // Toda exclusao pede confirmacao antes de ir para o servidor.
+            // O aviso vem no proprio formulario, em data-confirmar, para dizer
+            // exatamente o que sera apagado.
+            document.addEventListener("submit", function (evento) {
+                var formulario = evento.target;
+
+                if (!formulario || !formulario.matches("[data-confirmar]")) {
+                    return;
+                }
+
+                var aviso = formulario.getAttribute("data-confirmar") || "Confirma a exclusao?";
+
+                if (!window.confirm(aviso)) {
+                    evento.preventDefault();
+                    evento.stopPropagation();
+                }
+            }, true);
         })();
 
         {% block extra_scripts %}{% endblock %}

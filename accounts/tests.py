@@ -968,6 +968,204 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, "/static/accounts/catalog-test/botas/1.958-4a.jpg")
         self.assertContains(response, "/static/accounts/catalog-test/botas/1.958-4b.jpg")
 
+    def login_staff(self, email="loja-vitrine@example.com"):
+        User.objects.create_user(
+            email=email,
+            password="Teste12345!",
+            full_name="Loja Vitrine",
+            preferred_name="Loja",
+            is_staff=True,
+        )
+        self.client.login(email=email, password="Teste12345!")
+
+    def test_store_product_detail_shows_search_breadcrumb_and_related(self):
+        product = self.create_supplier_product(
+            name="Bota principal",
+            category="Botas",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+        vizinho = self.create_supplier_product(
+            name="Bota vizinha",
+            category="Botas",
+            supplier_code="REL001",
+            image_url="/static/accounts/catalog-test/botas/1.958-4b.jpg",
+        )
+
+        response = self.client.get(f"/loja/produto/{product.id}/")
+
+        self.assertContains(response, 'class="ficha-busca"', html=False)
+        self.assertContains(response, 'class="ficha-caminho"', html=False)
+        self.assertContains(response, "Produtos relacionados")
+        self.assertContains(response, vizinho.name)
+
+    def test_store_product_detail_offers_text_edit_only_to_staff(self):
+        product = self.create_supplier_product(name="Bota com texto", description="Descricao antiga")
+
+        response = self.client.get(f"/loja/produto/{product.id}/")
+        self.assertNotContains(response, 'class="texto-editavel"', html=False)
+
+        User.objects.create_user(
+            email="loja-texto@example.com",
+            password="Teste12345!",
+            full_name="Loja Texto",
+            preferred_name="Loja",
+            is_staff=True,
+        )
+        self.client.login(email="loja-texto@example.com", password="Teste12345!")
+
+        response = self.client.get(f"/loja/produto/{product.id}/")
+        self.assertContains(response, 'class="texto-editavel"', html=False)
+        self.assertContains(response, "Editar descrição")
+        self.assertContains(response, "Editar recursos")
+        self.assertContains(response, "Editar ficha técnica")
+
+    def test_staff_edits_product_description_from_the_store_page(self):
+        product = self.create_supplier_product(description="Descricao antiga")
+        User.objects.create_user(
+            email="loja-edita@example.com",
+            password="Teste12345!",
+            full_name="Loja Edita",
+            preferred_name="Loja",
+            is_staff=True,
+        )
+        self.client.login(email="loja-edita@example.com", password="Teste12345!")
+
+        response = self.client.post(
+            f"/loja/produto/{product.id}/campo/",
+            {"campo": "description", "valor": "Descricao nova, feita na propria loja"},
+        )
+
+        self.assertRedirects(response, f"/loja/produto/{product.id}/")
+        product.refresh_from_db()
+        self.assertEqual(product.description, "Descricao nova, feita na propria loja")
+
+    def test_customer_cannot_edit_product_text_from_the_store_page(self):
+        product = self.create_supplier_product(description="Descricao antiga")
+        User.objects.create_user(
+            email="cliente-texto@example.com",
+            password="Teste12345!",
+            full_name="Cliente Texto",
+            preferred_name="Cliente",
+        )
+        self.client.login(email="cliente-texto@example.com", password="Teste12345!")
+
+        response = self.client.post(
+            f"/loja/produto/{product.id}/campo/",
+            {"campo": "description", "valor": "Nao pode"},
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/login", response["Location"])
+        product.refresh_from_db()
+        self.assertEqual(product.description, "Descricao antiga")
+
+    def test_store_page_edit_refuses_field_outside_the_list(self):
+        # O custo de atacado nunca entra na edicao rapida: so pelo painel.
+        product = self.create_supplier_product(wholesale_price=Decimal("85.00"))
+        self.login_staff(email="loja-campo@example.com")
+
+        response = self.client.post(
+            f"/loja/produto/{product.id}/campo/",
+            {"campo": "wholesale_price", "valor": "1,00"},
+            follow=True,
+        )
+
+        self.assertContains(response, "Campo invalido")
+        product.refresh_from_db()
+        self.assertEqual(product.wholesale_price, Decimal("85.00"))
+
+    def test_staff_edits_price_and_stock_from_the_reels_panel(self):
+        product = self.create_supplier_product(
+            name="Smartwatch do video",
+            suggested_sale_price=Decimal("220.00"),
+            stock_quantity=10,
+        )
+        self.login_staff(email="loja-reels@example.com")
+
+        response = self.client.post(
+            f"/loja/produto/{product.id}/campo/",
+            {"campo": "suggested_sale_price", "valor": "289,90", "voltar": "/gestao/reels/"},
+        )
+
+        self.assertRedirects(response, "/gestao/reels/")
+        product.refresh_from_db()
+        self.assertEqual(product.suggested_sale_price, Decimal("289.90"))
+
+        self.client.post(
+            f"/loja/produto/{product.id}/campo/",
+            {"campo": "stock_quantity", "valor": "4"},
+        )
+        product.refresh_from_db()
+        self.assertEqual(product.stock_quantity, 4)
+
+    def test_quick_edit_refuses_price_that_is_not_a_number(self):
+        product = self.create_supplier_product(suggested_sale_price=Decimal("220.00"))
+        self.login_staff(email="loja-preco@example.com")
+
+        response = self.client.post(
+            f"/loja/produto/{product.id}/campo/",
+            {"campo": "suggested_sale_price", "valor": "duzentos"},
+            follow=True,
+        )
+
+        self.assertContains(response, "precisa ser um valor")
+        product.refresh_from_db()
+        self.assertEqual(product.suggested_sale_price, Decimal("220.00"))
+
+    def test_quick_edit_refuses_empty_name(self):
+        product = self.create_supplier_product(name="Nome que fica")
+        self.login_staff(email="loja-nome@example.com")
+
+        response = self.client.post(
+            f"/loja/produto/{product.id}/campo/",
+            {"campo": "name", "valor": "   "},
+            follow=True,
+        )
+
+        self.assertContains(response, "nao pode ficar em branco")
+        product.refresh_from_db()
+        self.assertEqual(product.name, "Nome que fica")
+
+    def test_store_front_cards_show_edit_and_delete_only_to_staff(self):
+        self.create_supplier_product(
+            name="Bolsa da vitrine",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        response = self.client.get("/loja/")
+        self.assertNotContains(response, 'class="cartao-admin"', html=False)
+
+        self.login_staff()
+        response = self.client.get("/loja/")
+
+        self.assertContains(response, 'class="cartao-admin"', html=False)
+        # O botao de excluir avisa antes, e nomeia o que sera apagado.
+        self.assertContains(response, "data-confirmar")
+        self.assertContains(response, "Bolsa da vitrine")
+
+    def test_staff_deletes_product_from_the_store_and_comes_back_to_the_store(self):
+        product = self.create_supplier_product(name="Bolsa a excluir")
+        self.login_staff()
+
+        response = self.client.post(
+            f"/gestao/fornecedor/produtos/{product.id}/excluir/",
+            {"voltar": "/loja/"},
+        )
+
+        self.assertRedirects(response, "/loja/")
+        self.assertFalse(SupplierProduct.objects.filter(id=product.id).exists())
+
+    def test_product_delete_ignores_link_to_another_site(self):
+        product = self.create_supplier_product(name="Bolsa segura")
+        self.login_staff()
+
+        response = self.client.post(
+            f"/gestao/fornecedor/produtos/{product.id}/excluir/",
+            {"voltar": "https://exemplo-invasor.com/"},
+        )
+
+        self.assertRedirects(response, "/gestao/fornecedor/produtos/")
+
     def test_store_product_detail_for_consultation_source_shows_cart_flow(self):
         SupplierCatalogSource.objects.update_or_create(
             source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,

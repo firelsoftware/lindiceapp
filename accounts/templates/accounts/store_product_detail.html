@@ -1,6 +1,43 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
+<form class="ficha-busca" method="get" action="{% url 'store_front' %}">
+    <svg class="store-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+    <label class="sr-only" for="busca-ficha">Pesquisar</label>
+    <input id="busca-ficha" name="q" placeholder="Pesquisar em todos os produtos">
+    <button type="submit">Buscar</button>
+</form>
+
+<nav class="ficha-caminho" aria-label="Onde voce esta">
+    <a href="{% url 'store_front' %}">Loja</a>
+    {% if product.category %}
+        <span aria-hidden="true">›</span>
+        <a href="{% url 'store_front' %}?categoria={{ product.category|urlencode }}">{{ product.category }}</a>
+    {% endif %}
+    <span aria-hidden="true">›</span>
+    <span class="ficha-caminho-atual">{{ product.name }}</span>
+</nav>
+
+{% if request.user.is_staff %}
+    <div class="barra-loja">
+        <span>Você está vendo como a loja: pode editar os textos aqui mesmo.</span>
+        <div class="barra-loja-acoes">
+            <a class="button button-secondary" href="{% url 'edit_supplier_product' product.id %}">Abrir no painel</a>
+            <form method="post" action="{% url 'delete_supplier_product' product.id %}" data-confirmar="Excluir &quot;{{ product.name }}&quot; do catálogo? Essa acao nao pode ser desfeita.">
+                {% csrf_token %}
+                <input type="hidden" name="voltar" value="{% url 'store_front' %}">
+                <button class="button button-secondary" type="submit">Excluir produto</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+    </ul>
+{% endif %}
+
 <section class="store-detail">
     <div class="store-detail-media">
         {% if gallery_images|length > 1 %}
@@ -69,7 +106,21 @@
             {% if product.raw_data.chamada %}
                 <p class="detail-tagline">{{ product.raw_data.chamada }}</p>
             {% endif %}
-            {% if product.description %}
+            {% if request.user.is_staff %}
+                <div class="texto-editavel" data-editavel>
+                    <p class="detail-note" data-texto>{{ product.description|default:"Sem descricao ainda." }}</p>
+                    <button class="texto-editar" type="button" data-abrir-edicao>✎ Editar descrição</button>
+                    <form class="texto-form" method="post" action="{% url 'salvar_campo_produto' product.id %}" hidden data-form-edicao>
+                        {% csrf_token %}
+                        <input type="hidden" name="campo" value="description">
+                        <textarea name="valor" rows="5">{{ product.description }}</textarea>
+                        <div class="action-row">
+                            <button type="submit">Salvar</button>
+                            <button class="button-secondary" type="button" data-cancelar-edicao>Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            {% elif product.description %}
                 <p class="detail-note">{{ product.description }}</p>
             {% else %}
                 <p class="detail-note">Selecione o tamanho ideal e leve o item para o carrinho antes de finalizar o pagamento.</p>
@@ -154,7 +205,7 @@
     </section>
 {% endif %}
 
-{% if product.highlight_list %}
+{% if product.highlight_list or request.user.is_staff %}
     <section class="detail-block">
         <h2>Descrição do produto</h2>
         <ul class="detail-feature-list">
@@ -162,10 +213,24 @@
                 <li>{{ recurso }}</li>
             {% endfor %}
         </ul>
+        {% if request.user.is_staff %}
+            <div class="texto-editavel" data-editavel>
+                <button class="texto-editar" type="button" data-abrir-edicao>✎ Editar recursos</button>
+                <form class="texto-form" method="post" action="{% url 'salvar_campo_produto' product.id %}" hidden data-form-edicao>
+                    {% csrf_token %}
+                    <input type="hidden" name="campo" value="highlights">
+                    <textarea name="valor" rows="7" placeholder="Um recurso por linha">{{ product.highlights }}</textarea>
+                    <div class="action-row">
+                        <button type="submit">Salvar</button>
+                        <button class="button-secondary" type="button" data-cancelar-edicao>Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
     </section>
 {% endif %}
 
-{% if product.spec_rows %}
+{% if product.spec_rows or request.user.is_staff %}
     <section class="detail-block">
         <h2>Especificações</h2>
         <ul class="detail-spec-list">
@@ -173,6 +238,41 @@
                 <li><span>{{ rotulo }}</span><strong>{{ valor }}</strong></li>
             {% endfor %}
         </ul>
+        {% if request.user.is_staff %}
+            <div class="texto-editavel" data-editavel>
+                <button class="texto-editar" type="button" data-abrir-edicao>✎ Editar ficha técnica</button>
+                <form class="texto-form" method="post" action="{% url 'salvar_campo_produto' product.id %}" hidden data-form-edicao>
+                    {% csrf_token %}
+                    <input type="hidden" name="campo" value="tech_specs">
+                    <textarea name="valor" rows="7" placeholder="Uma por linha, no formato  Tela: AMOLED 39 mm">{{ product.tech_specs }}</textarea>
+                    <div class="action-row">
+                        <button type="submit">Salvar</button>
+                        <button class="button-secondary" type="button" data-cancelar-edicao>Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+    </section>
+{% endif %}
+
+{% if relacionados %}
+    <section class="detail-block">
+        <h2>Produtos relacionados</h2>
+        <div class="watch-strip-scroll">
+            {% for outro in relacionados %}
+                <article class="watch-card">
+                    <a class="watch-card-media" href="{% url 'store_product_detail' outro.id %}">
+                        {% with fotos=outro.gallery_images %}
+                            {% if fotos %}<img src="{{ fotos.0 }}" alt="{{ outro.name }}" loading="lazy">{% endif %}
+                        {% endwith %}
+                    </a>
+                    <div class="watch-card-body">
+                        <h3><a href="{% url 'store_product_detail' outro.id %}">{{ outro.name }}</a></h3>
+                        <p class="watch-card-price">R$ {{ outro.suggested_sale_price|floatformat:2 }}</p>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
     </section>
 {% endif %}
 
@@ -262,6 +362,46 @@
 
         positionSlides(0);
         startAutoPlay();
+    });
+})();
+
+(function () {
+    // Abre e fecha os campos de texto que a loja edita na propria ficha.
+    document.querySelectorAll("[data-editavel]").forEach(function (bloco) {
+        var abrir = bloco.querySelector("[data-abrir-edicao]");
+        var form = bloco.querySelector("[data-form-edicao]");
+        var cancelar = bloco.querySelector("[data-cancelar-edicao]");
+        var texto = bloco.querySelector("[data-texto]");
+
+        if (!abrir || !form) {
+            return;
+        }
+
+        abrir.addEventListener("click", function () {
+            form.hidden = false;
+            abrir.hidden = true;
+
+            if (texto) {
+                texto.hidden = true;
+            }
+
+            var campo = form.querySelector("textarea");
+
+            if (campo) {
+                campo.focus();
+            }
+        });
+
+        if (cancelar) {
+            cancelar.addEventListener("click", function () {
+                form.hidden = true;
+                abrir.hidden = false;
+
+                if (texto) {
+                    texto.hidden = false;
+                }
+            });
+        }
     });
 })();
 {% endblock %}

@@ -1813,6 +1813,23 @@ def store_product_detail(request, product_id):
 
     gallery = product.gallery_images()
 
+    # Outros modelos da mesma categoria, para o cliente continuar olhando sem
+    # ter que voltar para a vitrine.
+    relacionados = []
+
+    if product.category:
+        relacionados = (
+            SupplierProduct.objects.filter(
+                is_active=True,
+                is_visible=True,
+                stock_quantity__gt=0,
+                category=product.category,
+            )
+            .exclude(id=product.id)
+            .exclude(image_file="", image_url="")
+            .order_by("suggested_sale_price")[:12]
+        )
+
     return render(
         request,
         "accounts/store_product_detail.html",
@@ -1822,8 +1839,84 @@ def store_product_detail(request, product_id):
             "gallery_images": gallery,
             "customer_notice": source_notice_for_customer(product),
             "whatsapp_url": store_whatsapp_url(request, product),
+            "relacionados": relacionados,
         },
     )
+
+
+# Campos que a loja pode corrigir sem abrir o painel inteiro.
+CAMPOS_RAPIDOS_PRODUTO = {
+    "description": ("Descricao", "texto"),
+    "highlights": ("Recursos", "texto"),
+    "tech_specs": ("Ficha tecnica", "texto"),
+    "name": ("Nome", "linha"),
+    "suggested_sale_price": ("Preco", "dinheiro"),
+    "stock_quantity": ("Estoque", "inteiro"),
+}
+
+
+@staff_member_required(login_url="login")
+def salvar_campo_produto(request, product_id):
+    """Salva um campo editado fora do painel: na ficha da loja ou na lista de videos."""
+    produto = get_object_or_404(SupplierProduct, id=product_id)
+    ficha = reverse("store_product_detail", args=[produto.id])
+    destino = safe_next_url(request, request.POST.get("voltar")) or ficha
+
+    if request.method != "POST":
+        return redirect(ficha)
+
+    campo = request.POST.get("campo", "")
+    valor = (request.POST.get("valor") or "").strip()
+
+    if campo not in CAMPOS_RAPIDOS_PRODUTO:
+        messages.error(request, "Campo invalido.")
+
+        return redirect(destino)
+
+    rotulo, tipo = CAMPOS_RAPIDOS_PRODUTO[campo]
+
+    if tipo == "linha":
+        valor = " ".join(valor.split())
+
+        if not valor:
+            messages.error(request, f"{rotulo} nao pode ficar em branco.")
+
+            return redirect(destino)
+    elif tipo == "dinheiro":
+        # Com virgula, o ponto e separador de milhar (1.234,56).
+        # Sem virgula, o ponto e a propria casa decimal (220.00).
+        if "," in valor:
+            valor = valor.replace(".", "").replace(",", ".")
+
+        try:
+            valor = Decimal(valor)
+        except (InvalidOperation, AttributeError):
+            messages.error(request, f"{rotulo} precisa ser um valor como 220,00.")
+
+            return redirect(destino)
+
+        if valor <= 0:
+            messages.error(request, f"{rotulo} precisa ser maior que zero.")
+
+            return redirect(destino)
+    elif tipo == "inteiro":
+        try:
+            valor = int(valor)
+        except ValueError:
+            messages.error(request, f"{rotulo} precisa ser um numero inteiro.")
+
+            return redirect(destino)
+
+        if valor < 0:
+            messages.error(request, f"{rotulo} nao pode ser negativo.")
+
+            return redirect(destino)
+
+    setattr(produto, campo, valor)
+    produto.save(update_fields=[campo, "updated_at"])
+    messages.success(request, f"{rotulo} de {produto.name} atualizado.")
+
+    return redirect(destino)
 
 
 def cart_add(request, product_id):
@@ -4489,16 +4582,18 @@ def delete_supplier_product(request, product_id):
 
     product = get_object_or_404(SupplierProduct, id=product_id)
     product_label = f"{product.supplier_code} - {product.name}"
+    # Excluindo pelo cartao da loja, volta para a loja; pelo painel, volta ao painel.
+    destino = safe_next_url(request, request.POST.get("voltar")) or "supplier_products"
 
     try:
         product.delete()
     except ProtectedError:
         messages.error(request, f"{product_label} ja tem pedido vinculado. Inative ou oculte para manter o historico.")
-        return redirect("supplier_products")
+        return redirect(destino)
 
     messages.success(request, f"{product_label} foi excluido do catalogo.")
 
-    return redirect("supplier_products")
+    return redirect(destino)
 
 
 @staff_member_required(login_url="login")

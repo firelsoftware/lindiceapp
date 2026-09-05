@@ -17,6 +17,7 @@ urlpatterns = [
     path("doces-e-mais/financas/", views.doces_e_mais_finances, name="doces_e_mais_finances"),
     path("loja/", views.store_front, name="store_front"),
     path("loja/produto/<int:product_id>/", views.store_product_detail, name="store_product_detail"),
+    path("loja/produto/<int:product_id>/campo/", views.salvar_campo_produto, name="salvar_campo_produto"),
     path("loja/produto/<int:product_id>/comprar/", views.store_checkout, name="store_checkout"),
     path("loja/carrinho/", views.cart_detail, name="cart_detail"),
     path("loja/carrinho/boticario/", views.cart_boticario_redirect, name="cart_boticario_redirect"),

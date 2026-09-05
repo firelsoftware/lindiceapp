@@ -69,11 +69,7 @@
             <div class="watch-strip-scroll" data-strip>
             {% for item in featured_strip %}
                 <article class="watch-card">
-                    {% if request.user.is_staff and item.product_id %}
-                        <div class="cartao-admin">
-                            <a href="{% url 'edit_supplier_product' item.product_id %}" title="Editar este produto" aria-label="Editar produto">✎</a>
-                        </div>
-                    {% endif %}
+                    {% include "accounts/_cartao_admin.html" with produto_id=item.product_id produto_nome=item.title %}
                     <a class="watch-card-media" href="{{ item.link_url }}">
                         <img src="{{ item.image_url }}" alt="{{ item.title }}" loading="lazy">
                     </a>
@@ -95,7 +91,9 @@
             <h2>Na Líndice</h2>
             <p>Toque para assistir.</p>
         </div>
-        <div class="reels-scroll">
+        <div class="watch-strip-viewport">
+            <button class="watch-strip-nav watch-strip-prev" type="button" aria-label="Vídeos anteriores" data-strip-prev>&lsaquo;</button>
+            <div class="reels-scroll" data-strip>
             {% for reel in store_reels %}
                 <article class="reel-card" data-reel>
                     {% if reel.is_youtube %}
@@ -135,7 +133,7 @@
                             {% if reel.video %}
                                 <a href="{% url 'download_reel' reel.id %}" title="Baixar vídeo" aria-label="Baixar vídeo">⤓</a>
                             {% endif %}
-                            <form method="post" action="{% url 'edit_reel' reel.id %}" onsubmit="return confirm('Remover este vídeo da loja?');">
+                            <form method="post" action="{% url 'edit_reel' reel.id %}" data-confirmar="Remover o vídeo &quot;{{ reel.display_title }}&quot; da loja? Essa acao nao pode ser desfeita.">
                                 {% csrf_token %}
                                 <input type="hidden" name="acao" value="excluir">
                                 <input type="hidden" name="voltar" value="{{ request.get_full_path }}">
@@ -145,6 +143,8 @@
                     {% endif %}
                 </article>
             {% endfor %}
+            </div>
+            <button class="watch-strip-nav watch-strip-next" type="button" aria-label="Próximos vídeos" data-strip-next>&rsaquo;</button>
         </div>
     </section>
 {% endif %}
@@ -157,6 +157,7 @@
                     <div class="storefront-carousel-track" data-carousel-track>
                         {% for item in section.items %}
                             <article class="storefront-carousel-card{% if forloop.first %} active{% endif %}" data-carousel-slide>
+                                {% include "accounts/_cartao_admin.html" with produto_id=item.product_id produto_nome=item.title %}
                                 {% if item.link_url %}
                                     <a class="storefront-carousel-media" href="{{ item.link_url }}">
                                         {% if item.image_url %}
@@ -251,6 +252,7 @@
 <div class="store-grid">
     {% for product in products %}
         <article class="store-product">
+            {% include "accounts/_cartao_admin.html" with produto_id=product.id produto_nome=product.name %}
             {% if product.gallery|length > 1 %}
                 <div class="product-gallery product-gallery-card" data-carousel>
                     <div class="product-gallery-track" data-carousel-track>
@@ -503,91 +505,95 @@
 })();
 
 (function () {
-    // Faixa de smartwatches: anda sozinha e tem seta dos dois lados.
-    // Para de andar quando alguem passa o mouse, toca ou usa as setas, para nao
-    // puxar a vitrine embaixo do dedo de quem esta olhando um modelo.
+    // Faixas de smartwatches e de videos: andam sozinhas e tem seta dos dois lados.
+    // Param de andar quando alguem passa o mouse, toca, usa as setas ou deixa um
+    // video tocando, para nao puxar a vitrine embaixo do dedo de quem esta olhando.
     document.addEventListener("DOMContentLoaded", function () {
-        var faixa = document.querySelector("[data-strip]");
+        document.querySelectorAll("[data-strip]").forEach(function (faixa) {
+            var area = faixa.closest(".watch-strip-viewport") || document;
+            var anterior = area.querySelector("[data-strip-prev]");
+            var proxima = area.querySelector("[data-strip-next]");
+            var relogio = null;
+            var pausada = false;
 
-        if (!faixa) {
-            return;
-        }
+            function passo() {
+                var cartao = faixa.firstElementChild;
 
-        var anterior = document.querySelector("[data-strip-prev]");
-        var proxima = document.querySelector("[data-strip-next]");
-        var relogio = null;
-        var pausada = false;
-
-        function passo() {
-            var cartao = faixa.querySelector(".watch-card");
-
-            if (!cartao) {
-                return faixa.clientWidth;
-            }
-
-            var estilo = window.getComputedStyle(faixa);
-
-            return cartao.getBoundingClientRect().width + (parseFloat(estilo.columnGap) || 14);
-        }
-
-        function fim() {
-            return faixa.scrollWidth - faixa.clientWidth - 4;
-        }
-
-        function andar(direcao) {
-            var destino = faixa.scrollLeft + direcao * passo();
-
-            if (direcao > 0 && faixa.scrollLeft >= fim()) {
-                destino = 0;
-            } else if (direcao < 0 && faixa.scrollLeft <= 4) {
-                destino = fim();
-            }
-
-            faixa.scrollTo({ left: destino, behavior: "smooth" });
-        }
-
-        function ligarSozinho() {
-            window.clearInterval(relogio);
-
-            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-                return;
-            }
-
-            relogio = window.setInterval(function () {
-                if (!pausada && document.visibilityState === "visible") {
-                    andar(1);
+                if (!cartao) {
+                    return faixa.clientWidth;
                 }
-            }, 3200);
-        }
 
-        function segurar() {
-            pausada = true;
-        }
+                var estilo = window.getComputedStyle(faixa);
 
-        function soltar() {
-            pausada = false;
-        }
+                return cartao.getBoundingClientRect().width + (parseFloat(estilo.columnGap) || 14);
+            }
 
-        if (anterior) {
-            anterior.addEventListener("click", function () {
-                andar(-1);
-                segurar();
-            });
-        }
+            function fim() {
+                return faixa.scrollWidth - faixa.clientWidth - 4;
+            }
 
-        if (proxima) {
-            proxima.addEventListener("click", function () {
-                andar(1);
-                segurar();
-            });
-        }
+            function andar(direcao) {
+                var destino = faixa.scrollLeft + direcao * passo();
 
-        faixa.addEventListener("mouseenter", segurar);
-        faixa.addEventListener("mouseleave", soltar);
-        faixa.addEventListener("touchstart", segurar, { passive: true });
-        faixa.addEventListener("focusin", segurar);
+                if (direcao > 0 && faixa.scrollLeft >= fim()) {
+                    destino = 0;
+                } else if (direcao < 0 && faixa.scrollLeft <= 4) {
+                    destino = fim();
+                }
 
-        ligarSozinho();
+                faixa.scrollTo({ left: destino, behavior: "smooth" });
+            }
+
+            function ligarSozinho() {
+                window.clearInterval(relogio);
+
+                if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                    return;
+                }
+
+                relogio = window.setInterval(function () {
+                    if (pausada || document.visibilityState !== "visible") {
+                        return;
+                    }
+
+                    // Video rodando dentro da faixa segura o carrossel no lugar.
+                    if (faixa.querySelector(".tocando")) {
+                        return;
+                    }
+
+                    andar(1);
+                }, 3200);
+            }
+
+            function segurar() {
+                pausada = true;
+            }
+
+            function soltar() {
+                pausada = false;
+            }
+
+            if (anterior) {
+                anterior.addEventListener("click", function () {
+                    andar(-1);
+                    segurar();
+                });
+            }
+
+            if (proxima) {
+                proxima.addEventListener("click", function () {
+                    andar(1);
+                    segurar();
+                });
+            }
+
+            faixa.addEventListener("mouseenter", segurar);
+            faixa.addEventListener("mouseleave", soltar);
+            faixa.addEventListener("touchstart", segurar, { passive: true });
+            faixa.addEventListener("focusin", segurar);
+
+            ligarSozinho();
+        });
     });
 })();
 

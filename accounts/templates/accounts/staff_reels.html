@@ -54,6 +54,7 @@
 
 <section class="info-panel">
     <h2>Publicados ({{ reels|length }})</h2>
+    <p class="store-product-note">Ligue cada vídeo ao seu produto: os dados do produto aparecem aqui e você pode corrigir nome, preço e estoque sem sair desta tela.</p>
     <div class="inline-cards">
         {% for r in reels %}
             <div class="inline-card">
@@ -66,15 +67,65 @@
                 <p><strong>{{ r.display_title }}</strong></p>
                 <form method="post" action="{% url 'ligar_reel_produto' r.id %}" class="reel-liga-form">
                     {% csrf_token %}
-                    <label for="produto-{{ r.id }}">Relógio deste vídeo</label>
+                    <label for="produto-{{ r.id }}">Qual produto aparece neste vídeo</label>
+                    <small>Escolhendo o produto, o vídeo ganha o botão "Ver o modelo" na loja e leva o cliente direto para a ficha.</small>
                     <select id="produto-{{ r.id }}" name="product">
-                        <option value="">— sem produto —</option>
+                        <option value="">— nenhum, é só um vídeo —</option>
                         {% for p in produtos %}
                             <option value="{{ p.id }}" {% if r.product_id == p.id %}selected{% endif %}>{{ p.name }}</option>
                         {% endfor %}
                     </select>
-                    <button class="button-secondary" type="submit">Ligar</button>
+                    <button class="button-secondary" type="submit">Salvar produto</button>
                 </form>
+                {% if r.product %}
+                    <div class="reel-produto-ficha">
+                        <div class="reel-produto-topo">
+                            {% with fotos=r.product.gallery_images %}
+                                {% if fotos %}<img class="reel-produto-foto" src="{{ fotos.0 }}" alt="{{ r.product.name }}">{% endif %}
+                            {% endwith %}
+                            <p>
+                                {{ r.product.category|default:"Sem categoria" }}<br>
+                                {% if r.product.is_visible and r.product.is_active %}na loja{% else %}fora da loja{% endif %}
+                            </p>
+                        </div>
+                        <div class="reel-produto-dados">
+                            <div class="reel-produto-linha">
+                                <span>Nome</span>
+                                <form method="post" action="{% url 'salvar_campo_produto' r.product.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="campo" value="name">
+                                    <input type="hidden" name="voltar" value="{{ request.get_full_path }}">
+                                    <input name="valor" value="{{ r.product.name }}" aria-label="Nome do produto">
+                                    <button class="button-secondary" type="submit">Salvar</button>
+                                </form>
+                            </div>
+                            <div class="reel-produto-linha">
+                                <span>Preço</span>
+                                <form method="post" action="{% url 'salvar_campo_produto' r.product.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="campo" value="suggested_sale_price">
+                                    <input type="hidden" name="voltar" value="{{ request.get_full_path }}">
+                                    <input name="valor" value="{{ r.product.suggested_sale_price|floatformat:2 }}" inputmode="decimal" aria-label="Preço do produto">
+                                    <button class="button-secondary" type="submit">Salvar</button>
+                                </form>
+                            </div>
+                            <div class="reel-produto-linha">
+                                <span>Estoque</span>
+                                <form method="post" action="{% url 'salvar_campo_produto' r.product.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="campo" value="stock_quantity">
+                                    <input type="hidden" name="voltar" value="{{ request.get_full_path }}">
+                                    <input name="valor" value="{{ r.product.stock_quantity }}" inputmode="numeric" aria-label="Estoque do produto">
+                                    <button class="button-secondary" type="submit">Salvar</button>
+                                </form>
+                            </div>
+                            <div class="action-row">
+                                <a class="button button-secondary" href="{% url 'edit_supplier_product' r.product.id %}">Abrir no painel</a>
+                                <a class="button button-secondary" href="{% url 'store_product_detail' r.product.id %}">Ver na loja</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
                 <p class="store-product-note">
                     {% if r.is_youtube %}YouTube{% else %}arquivo{% endif %} · Ordem {{ r.position }} ·
                     {% if r.is_visible %}na loja{% else %}oculto{% endif %}
@@ -83,7 +134,7 @@
                     <a class="button button-secondary" href="{% url 'edit_reel' r.id %}">Editar</a>
                     {% if r.video %}<a class="button button-secondary" href="{% url 'download_reel' r.id %}">Baixar</a>{% endif %}
                 </div>
-                <form method="post" action="{% url 'edit_reel' r.id %}" onsubmit="return confirm('Remover este vídeo da loja?');">
+                <form method="post" action="{% url 'edit_reel' r.id %}" data-confirmar="Remover o vídeo &quot;{{ r.display_title }}&quot; da loja? Essa acao nao pode ser desfeita.">
                     {% csrf_token %}
                     <input type="hidden" name="acao" value="excluir">
                     <button class="button-secondary" type="submit">Excluir</button>
