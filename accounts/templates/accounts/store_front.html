@@ -412,6 +412,12 @@
     }
 
     function rebuildSizes() {
+        // O filtro de numeracao so existe nos grupos de calcado. Em Smartwatches
+        // e Fones ele nao esta na pagina, entao nao ha o que reconstruir.
+        if (!sizeField) {
+            return;
+        }
+
         var currentGroup = sizeGroupField ? sizeGroupField.value : "";
         var options = [];
 
@@ -463,7 +469,6 @@
     }
 })();
 
-<script>
 (function () {
     // Reels: um toca por vez, sem som, como nas redes.
     document.addEventListener("DOMContentLoaded", function () {
@@ -509,6 +514,4 @@
         });
     });
 })();
-</script>
-
 {% endblock %}
