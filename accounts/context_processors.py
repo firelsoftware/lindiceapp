@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 from django.conf import settings
 
 from .notifications import generate_due_notifications
@@ -26,6 +28,7 @@ def store_cart(request):
 
 def site_analytics(request):
     whatsapp = "".join(ch for ch in getattr(settings, "STORE_WHATSAPP_NUMBER", "") if ch.isdigit())
+    firelsoft_whatsapp = "".join(ch for ch in getattr(settings, "FIRELSOFT_WHATSAPP_NUMBER", "") if ch.isdigit())
 
     # Numero em formato de leitura: 5561995135066 -> (61) 99513-5066
     legivel = ""
@@ -43,6 +46,11 @@ def site_analytics(request):
         "store_whatsapp_label": legivel,
         "store_instagram_url": instagram,
         "store_instagram_handle": f"@{perfil}" if perfil else "",
+        "firelsoft_whatsapp_url": (
+            f"https://wa.me/{firelsoft_whatsapp}?text={quote('Olá! Vim pelo app da Lindice e queria tirar uma dúvida.')}"
+            if firelsoft_whatsapp
+            else ""
+        ),
     }
 
 

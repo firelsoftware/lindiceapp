@@ -284,6 +284,7 @@ BOTICARIO_STORE_URL = os.environ.get(
 # Numero de WhatsApp da loja (formato internacional, so digitos) usado no
 # botao "Mais informacoes" dos produtos e no rodape.
 STORE_WHATSAPP_NUMBER = os.environ.get("STORE_WHATSAPP_NUMBER", "5561995135066")
+FIRELSOFT_WHATSAPP_NUMBER = os.environ.get("FIRELSOFT_WHATSAPP_NUMBER", "5561992655947")
 # Perfil da loja no Instagram, exibido no rodape.
 STORE_INSTAGRAM_URL = os.environ.get(
     "STORE_INSTAGRAM_URL",
