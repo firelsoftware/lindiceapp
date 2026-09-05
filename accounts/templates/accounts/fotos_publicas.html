@@ -58,7 +58,8 @@
         {% if resultado and resultado.pronto %}
             <p class="store-product-note">
                 {{ resultado.total }} arquivo{{ resultado.total|pluralize }} na vitrine ·
-                {{ resultado.copiadas }} copiado{{ resultado.copiadas|pluralize }} agora ·
+                {{ resultado.copiadas }} copiado{{ resultado.copiadas|pluralize }} agora
+                {% if resultado.corrigidas %}(sendo {{ resultado.corrigidas }} com o cache corrigido){% endif %} ·
                 {{ resultado.puladas }} já estava{{ resultado.puladas|pluralize:"m" }} lá ·
                 {{ resultado.faltam }} faltando.
             </p>
@@ -93,7 +94,7 @@
         <p class="store-product-note">Endereço das fotos: <code>{{ endereco_publico }}</code></p>
         <p class="store-product-note">
             Se subir foto por fora ou desconfiar de imagem quebrada, copie de novo: o que já
-            está lá não vai duas vezes.
+            está lá e com o cache certo não vai duas vezes.
         </p>
 
         <form method="post">
@@ -108,7 +109,8 @@
         {% if resultado and resultado.pronto %}
             <p class="store-product-note">
                 {{ resultado.total }} arquivo{{ resultado.total|pluralize }} na vitrine ·
-                {{ resultado.copiadas }} copiado{{ resultado.copiadas|pluralize }} agora ·
+                {{ resultado.copiadas }} copiado{{ resultado.copiadas|pluralize }} agora
+                {% if resultado.corrigidas %}(sendo {{ resultado.corrigidas }} com o cache corrigido){% endif %} ·
                 {{ resultado.puladas }} já estava{{ resultado.puladas|pluralize:"m" }} lá ·
                 {{ resultado.faltam }} faltando.
             </p>

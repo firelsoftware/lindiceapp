@@ -97,15 +97,32 @@ def listar_da_vitrine():
     return chaves
 
 
-def ja_esta_no_publico(cliente, chave):
+# Um dia de cache no navegador. O nome do arquivo ja carrega um sufixo unico,
+# entao foto trocada vira endereco novo e ninguem fica vendo a antiga.
+CACHE_DA_VITRINE = "public, max-age=86400"
+
+
+def situacao_no_publico(cliente, chave):
+    """Diz se o arquivo ja esta la e se o cache dele esta certo.
+
+    Devolve (existe, cache_ok).
+    """
     from botocore.exceptions import ClientError
 
     try:
-        cliente.head_object(Bucket=settings.SUPABASE_PUBLIC_BUCKET, Key=chave)
-
-        return True
+        cabecalhos = cliente.head_object(Bucket=settings.SUPABASE_PUBLIC_BUCKET, Key=chave)
     except ClientError:
-        return False
+        return False, False
+
+    cache = (cabecalhos.get("CacheControl") or "").lower()
+
+    return True, "max-age" in cache and "no-cache" not in cache
+
+
+def ja_esta_no_publico(cliente, chave):
+    existe, _ = situacao_no_publico(cliente, chave)
+
+    return existe
 
 
 def copiar_uma(cliente, chave):
@@ -120,6 +137,11 @@ def copiar_uma(cliente, chave):
             Bucket=settings.SUPABASE_PUBLIC_BUCKET,
             Key=chave,
             CopySource=origem,
+            # Sem REPLACE o Cache-Control nao vai junto e o Supabase responde
+            # no-cache, tirando o unico motivo de existir deste bucket.
+            MetadataDirective="REPLACE",
+            CacheControl=CACHE_DA_VITRINE,
+            ContentType=tipo_do_arquivo(chave),
         )
 
         return "copiado"
@@ -127,9 +149,22 @@ def copiar_uma(cliente, chave):
         logger.info("Copia direta falhou em %s, baixando e subindo", chave)
 
     corpo = cliente.get_object(**origem)["Body"].read()
-    cliente.put_object(Bucket=settings.SUPABASE_PUBLIC_BUCKET, Key=chave, Body=corpo)
+    cliente.put_object(
+        Bucket=settings.SUPABASE_PUBLIC_BUCKET,
+        Key=chave,
+        Body=corpo,
+        CacheControl=CACHE_DA_VITRINE,
+        ContentType=tipo_do_arquivo(chave),
+    )
 
     return "reenviado"
+
+
+def tipo_do_arquivo(chave):
+    """O content-type pela extensao, para a imagem nao chegar como binario."""
+    import mimetypes
+
+    return mimetypes.guess_type(chave)[0] or "application/octet-stream"
 
 
 def copiar_vitrine(limite=None):
@@ -144,6 +179,7 @@ def copiar_vitrine(limite=None):
     cliente = _cliente()
     chaves = listar_da_vitrine()
     copiadas = 0
+    corrigidas = 0
     puladas = 0
     bytes_copiados = 0
     falhas = []
@@ -152,9 +188,15 @@ def copiar_vitrine(limite=None):
         if limite is not None and copiadas >= limite:
             break
 
-        if ja_esta_no_publico(cliente, chave):
+        existe, cache_ok = situacao_no_publico(cliente, chave)
+
+        if existe and cache_ok:
             puladas += 1
             continue
+
+        if existe:
+            # Copia antiga, sem o cabecalho de cache: refaz por cima.
+            corrigidas += 1
 
         try:
             copiar_uma(cliente, chave)
@@ -170,6 +212,7 @@ def copiar_vitrine(limite=None):
         "pronto": True,
         "total": len(chaves),
         "copiadas": copiadas,
+        "corrigidas": corrigidas,
         "puladas": puladas,
         "bytes_copiados": bytes_copiados,
         "faltam": max(len(chaves) - copiadas - puladas, 0),
