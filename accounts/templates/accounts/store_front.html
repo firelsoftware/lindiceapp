@@ -64,7 +64,9 @@
             <h2>Smartwatches</h2>
             <p>Deslize para ver todos os modelos.</p>
         </div>
-        <div class="watch-strip-scroll">
+        <div class="watch-strip-viewport">
+            <button class="watch-strip-nav watch-strip-prev" type="button" aria-label="Modelos anteriores" data-strip-prev>&lsaquo;</button>
+            <div class="watch-strip-scroll" data-strip>
             {% for item in featured_strip %}
                 <article class="watch-card">
                     <a class="watch-card-media" href="{{ item.link_url }}">
@@ -76,6 +78,8 @@
                     </div>
                 </article>
             {% endfor %}
+            </div>
+            <button class="watch-strip-nav watch-strip-next" type="button" aria-label="Proximos modelos" data-strip-next>&rsaquo;</button>
         </div>
     </section>
 {% endif %}
@@ -476,6 +480,95 @@
             submitSoon(0);
         });
     }
+})();
+
+(function () {
+    // Faixa de smartwatches: anda sozinha e tem seta dos dois lados.
+    // Para de andar quando alguem passa o mouse, toca ou usa as setas, para nao
+    // puxar a vitrine embaixo do dedo de quem esta olhando um modelo.
+    document.addEventListener("DOMContentLoaded", function () {
+        var faixa = document.querySelector("[data-strip]");
+
+        if (!faixa) {
+            return;
+        }
+
+        var anterior = document.querySelector("[data-strip-prev]");
+        var proxima = document.querySelector("[data-strip-next]");
+        var relogio = null;
+        var pausada = false;
+
+        function passo() {
+            var cartao = faixa.querySelector(".watch-card");
+
+            if (!cartao) {
+                return faixa.clientWidth;
+            }
+
+            var estilo = window.getComputedStyle(faixa);
+
+            return cartao.getBoundingClientRect().width + (parseFloat(estilo.columnGap) || 14);
+        }
+
+        function fim() {
+            return faixa.scrollWidth - faixa.clientWidth - 4;
+        }
+
+        function andar(direcao) {
+            var destino = faixa.scrollLeft + direcao * passo();
+
+            if (direcao > 0 && faixa.scrollLeft >= fim()) {
+                destino = 0;
+            } else if (direcao < 0 && faixa.scrollLeft <= 4) {
+                destino = fim();
+            }
+
+            faixa.scrollTo({ left: destino, behavior: "smooth" });
+        }
+
+        function ligarSozinho() {
+            window.clearInterval(relogio);
+
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                return;
+            }
+
+            relogio = window.setInterval(function () {
+                if (!pausada && document.visibilityState === "visible") {
+                    andar(1);
+                }
+            }, 3200);
+        }
+
+        function segurar() {
+            pausada = true;
+        }
+
+        function soltar() {
+            pausada = false;
+        }
+
+        if (anterior) {
+            anterior.addEventListener("click", function () {
+                andar(-1);
+                segurar();
+            });
+        }
+
+        if (proxima) {
+            proxima.addEventListener("click", function () {
+                andar(1);
+                segurar();
+            });
+        }
+
+        faixa.addEventListener("mouseenter", segurar);
+        faixa.addEventListener("mouseleave", soltar);
+        faixa.addEventListener("touchstart", segurar, { passive: true });
+        faixa.addEventListener("focusin", segurar);
+
+        ligarSozinho();
+    });
 })();
 
 (function () {

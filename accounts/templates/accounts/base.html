@@ -3281,13 +3281,65 @@
             font-size: 14px;
         }
 
+        .watch-strip-viewport {
+            position: relative;
+        }
+
+        .watch-strip-nav {
+            position: absolute;
+            top: 50%;
+            z-index: 2;
+            display: grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            margin: 0;
+            padding: 0 0 3px;
+            transform: translateY(-50%);
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            background: var(--surface);
+            color: var(--ink);
+            font-size: 26px;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(24, 34, 48, 0.14);
+        }
+
+        .watch-strip-nav:hover {
+            border-color: var(--brand-blue);
+            color: var(--brand-blue);
+        }
+
+        .watch-strip-prev {
+            left: 4px;
+        }
+
+        .watch-strip-next {
+            right: 4px;
+        }
+
         .watch-strip-scroll {
             display: flex;
             gap: 14px;
             padding: 4px 16px 14px;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .watch-strip-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        @media (max-width: 620px) {
+            .watch-strip-nav {
+                width: 34px;
+                height: 34px;
+                font-size: 22px;
+            }
         }
 
         .watch-card {
