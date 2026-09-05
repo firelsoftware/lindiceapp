@@ -92,7 +92,8 @@
                     {% if reel.is_youtube %}
                         {# So a capa: o video do YouTube so entra depois do clique, para a vitrine nao carregar 12 players de uma vez. #}
                         <img class="reel-capa" src="{{ reel.thumbnail_url }}" alt="{{ reel.display_title }}" loading="lazy"
-                             data-reel-embed="{{ reel.embed_url }}">
+                             data-reel-embed="{{ reel.embed_url }}"
+                             data-reel-preview="{{ reel.preview_embed_url }}">
                     {% else %}
                         <video
                             src="{{ reel.video.url }}"
@@ -476,82 +477,134 @@
 })();
 
 (function () {
-    // Reels: um toca por vez. Video do YouTube so carrega quando alguem clica.
+    // Reels: comeca a rodar sozinho quando o mouse passa por cima (no computador)
+    // ou quando o cartao aparece na tela (no celular, onde nao existe mouse).
+    // Sempre mudo e um de cada vez. O clique abre o video com som.
     document.addEventListener("DOMContentLoaded", function () {
         var cartoes = Array.prototype.slice.call(document.querySelectorAll("[data-reel]"));
 
-        function pausarTodos(menos) {
-            cartoes.forEach(function (cartao) {
-                if (cartao === menos) {
-                    return;
-                }
-
-                var v = cartao.querySelector("[data-reel-video]");
-
-                if (v && !v.paused) {
-                    v.pause();
-                }
-
-                var frame = cartao.querySelector("iframe");
-
-                if (frame) {
-                    frame.remove();
-                    var capa = cartao.querySelector("[data-reel-embed]");
-
-                    if (capa) {
-                        capa.hidden = false;
-                    }
-                }
-
-                cartao.classList.remove("tocando");
-            });
+        if (!cartoes.length) {
+            return;
         }
 
-        cartoes.forEach(function (cartao) {
-            var botao = cartao.querySelector("[data-reel-play]");
+        var conexao = navigator.connection || {};
+        // Passar o mouse e um gesto proposital: vale sempre.
+        // Ja tocar sozinho na rolagem e movimento que ninguem pediu, entao
+        // respeita quem desligou animacoes ou esta economizando dados.
+        var podeTocarNaRolagem =
+            !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+            !conexao.saveData;
+        var tocando = null;
 
-            if (!botao) {
+        function limparCartao(cartao) {
+            if (!cartao) {
                 return;
             }
 
-            botao.addEventListener("click", function () {
-                var capa = cartao.querySelector("[data-reel-embed]");
+            var frame = cartao.querySelector("iframe");
 
-                if (capa) {
-                    pausarTodos(cartao);
-                    var frame = document.createElement("iframe");
-                    frame.src = capa.getAttribute("data-reel-embed");
-                    frame.title = capa.alt || "Video";
-                    frame.allow = "autoplay; encrypted-media; picture-in-picture";
-                    frame.setAttribute("allowfullscreen", "");
-                    frame.loading = "lazy";
-                    capa.hidden = true;
-                    cartao.insertBefore(frame, cartao.firstChild);
-                    cartao.classList.add("tocando");
+            if (frame) {
+                frame.remove();
+            }
 
-                    return;
-                }
+            var capa = cartao.querySelector("[data-reel-preview]");
 
-                var video = cartao.querySelector("[data-reel-video]");
+            if (capa) {
+                capa.hidden = false;
+            }
 
-                if (!video) {
-                    return;
-                }
+            var video = cartao.querySelector("[data-reel-video]");
 
-                if (video.paused) {
-                    pausarTodos(cartao);
-                    var p = video.play();
+            if (video && !video.paused) {
+                video.pause();
+                video.currentTime = 0;
+            }
 
-                    if (p && p.catch) {
-                        p.catch(function () {});
-                    }
+            cartao.classList.remove("tocando");
+        }
 
-                    cartao.classList.add("tocando");
-                } else {
-                    video.pause();
-                    cartao.classList.remove("tocando");
+        function pausarOutros(menos) {
+            cartoes.forEach(function (cartao) {
+                if (cartao !== menos) {
+                    limparCartao(cartao);
                 }
             });
+        }
+
+        function abrir(cartao, comSom) {
+            // So ignora se o cartao estiver mesmo rodando. Se algo pausou por
+            // fora, passar o mouse de novo tem que voltar a tocar.
+            if (tocando === cartao && cartao.classList.contains("tocando") && !comSom) {
+                return;
+            }
+
+            pausarOutros(cartao);
+            tocando = cartao;
+
+            var capa = cartao.querySelector("[data-reel-preview]");
+
+            if (capa) {
+                var jaTem = cartao.querySelector("iframe");
+
+                if (jaTem && !comSom) {
+                    return;
+                }
+
+                if (jaTem) {
+                    jaTem.remove();
+                }
+
+                var frame = document.createElement("iframe");
+                frame.src = capa.getAttribute(comSom ? "data-reel-embed" : "data-reel-preview");
+                frame.title = capa.alt || "Video";
+                frame.allow = "autoplay; encrypted-media; picture-in-picture";
+                frame.setAttribute("allowfullscreen", "");
+                capa.hidden = true;
+                cartao.insertBefore(frame, cartao.firstChild);
+                cartao.classList.add("tocando");
+
+                return;
+            }
+
+            var video = cartao.querySelector("[data-reel-video]");
+
+            if (!video) {
+                return;
+            }
+
+            if (comSom) {
+                video.muted = false;
+            }
+
+            var promessa = video.play();
+
+            if (promessa && promessa.catch) {
+                promessa.catch(function () {});
+            }
+
+            cartao.classList.add("tocando");
+        }
+
+        cartoes.forEach(function (cartao) {
+            cartao.addEventListener("mouseenter", function () {
+                abrir(cartao, false);
+            });
+
+            cartao.addEventListener("mouseleave", function () {
+                limparCartao(cartao);
+
+                if (tocando === cartao) {
+                    tocando = null;
+                }
+            });
+
+            var botao = cartao.querySelector("[data-reel-play]");
+
+            if (botao) {
+                botao.addEventListener("click", function () {
+                    abrir(cartao, true);
+                });
+            }
 
             var video = cartao.querySelector("[data-reel-video]");
 
@@ -561,6 +614,37 @@
                 });
             }
         });
+
+        // No celular nao ha mouse: toca o cartao que estiver mais visivel.
+        var semMouse = window.matchMedia("(hover: none)").matches;
+
+        if (podeTocarNaRolagem && semMouse && "IntersectionObserver" in window) {
+            var vigia = new IntersectionObserver(
+                function (entradas) {
+                    var melhor = null;
+                    var maior = 0;
+
+                    entradas.forEach(function (entrada) {
+                        if (entrada.intersectionRatio > maior) {
+                            maior = entrada.intersectionRatio;
+                            melhor = entrada.target;
+                        }
+                    });
+
+                    if (melhor && maior >= 0.6) {
+                        abrir(melhor, false);
+                    } else if (maior < 0.35 && tocando) {
+                        limparCartao(tocando);
+                        tocando = null;
+                    }
+                },
+                { threshold: [0, 0.35, 0.6, 0.9] }
+            );
+
+            cartoes.forEach(function (cartao) {
+                vigia.observe(cartao);
+            });
+        }
     });
 })();
 {% endblock %}

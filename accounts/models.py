@@ -1826,9 +1826,24 @@ class StoreReel(models.Model):
         return ""
 
     def embed_url(self):
+        """Player completo, com som e controles: usado quando alguem clica."""
         codigo = self.youtube_id()
 
         return f"https://www.youtube.com/embed/{codigo}?autoplay=1&rel=0&playsinline=1" if codigo else ""
+
+    def preview_embed_url(self):
+        """Previa muda e em repeticao, para quando o cartao so passa pelo mouse
+        ou aparece na tela. Sem som e sem controles, feito uma vitrine."""
+        codigo = self.youtube_id()
+
+        if not codigo:
+            return ""
+
+        return (
+            f"https://www.youtube.com/embed/{codigo}"
+            f"?autoplay=1&mute=1&controls=0&loop=1&playlist={codigo}"
+            "&playsinline=1&rel=0&modestbranding=1&disablekb=1"
+        )
 
     def thumbnail_url(self):
         """Capa do video: a enviada pela loja, ou a que o proprio YouTube gera."""
