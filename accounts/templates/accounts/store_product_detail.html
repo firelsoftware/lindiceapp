@@ -146,7 +146,7 @@
         <h2>Veja em movimento</h2>
         <div class="detail-video">
             {% if product.embedded_video_url %}
-                <iframe src="{{ product.embedded_video_url }}" title="Vídeo de {{ product.name }}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe src="{{ product.embedded_video_url }}" title="Vídeo de {{ product.name }}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             {% else %}
                 <video src="{{ product.video_file.url }}" controls preload="metadata"></video>
             {% endif %}

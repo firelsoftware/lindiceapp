@@ -3281,6 +3281,49 @@
             font-size: 14px;
         }
 
+        .colar-area {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 5px 0 0;
+            padding: 6px 10px;
+            border: 1px dashed var(--line);
+            border-radius: 7px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.3;
+            cursor: pointer;
+        }
+
+        .colar-area:hover,
+        .colar-area.armado {
+            border-color: var(--brand-blue);
+            color: var(--brand-blue);
+        }
+
+        .colar-area.tem-arquivo {
+            border-color: var(--success);
+            border-style: solid;
+            color: var(--success);
+        }
+
+        .colar-previa:empty {
+            display: none;
+        }
+
+        .colar-previa img {
+            display: block;
+            width: 34px;
+            height: 34px;
+            object-fit: cover;
+            border-radius: 5px;
+            background: #000;
+        }
+
+        .colar-erro {
+            color: var(--danger);
+        }
+
         .watch-strip-viewport {
             position: relative;
         }
@@ -5674,6 +5717,184 @@
             }
         })();
         {% endif %}
+
+        (function () {
+            // Colar imagem direto no campo de arquivo, sem precisar salvar em pasta.
+            // Vale para todo campo de arquivo do site: basta clicar na area e Ctrl+V.
+            // Arrastar o arquivo para a area tambem funciona.
+            document.addEventListener("DOMContentLoaded", function () {
+                var campos = Array.prototype.slice.call(document.querySelectorAll('input[type="file"]'));
+
+                if (!campos.length) {
+                    return;
+                }
+
+                var armado = campos.length === 1 ? campos[0] : null;
+
+                function aceita(campo, arquivo) {
+                    var permitido = (campo.getAttribute("accept") || "").trim();
+
+                    if (!permitido) {
+                        return true;
+                    }
+
+                    return permitido.split(",").some(function (regra) {
+                        regra = regra.trim().toLowerCase();
+
+                        if (regra.endsWith("/*")) {
+                            return arquivo.type.startsWith(regra.slice(0, -1));
+                        }
+
+                        if (regra.startsWith(".")) {
+                            return arquivo.name.toLowerCase().endsWith(regra);
+                        }
+
+                        return arquivo.type.toLowerCase() === regra;
+                    });
+                }
+
+                function guardar(campo, arquivo) {
+                    if (!aceita(campo, arquivo)) {
+                        avisar(campo, "Esse tipo de arquivo nao serve para este campo.", true);
+
+                        return;
+                    }
+
+                    var pacote = new DataTransfer();
+                    pacote.items.add(arquivo);
+                    campo.files = pacote.files;
+                    campo.dispatchEvent(new Event("change", { bubbles: true }));
+                    mostrar(campo, arquivo);
+                }
+
+                function avisar(campo, texto, erro) {
+                    var area = campo.parentNode.querySelector("[data-colar]");
+
+                    if (!area) {
+                        return;
+                    }
+
+                    var recado = area.querySelector(".colar-recado");
+                    recado.textContent = texto;
+                    recado.classList.toggle("colar-erro", !!erro);
+                }
+
+                function mostrar(campo, arquivo) {
+                    var area = campo.parentNode.querySelector("[data-colar]");
+
+                    if (!area) {
+                        return;
+                    }
+
+                    var previa = area.querySelector(".colar-previa");
+                    previa.innerHTML = "";
+
+                    if (arquivo.type.indexOf("image/") === 0) {
+                        var img = document.createElement("img");
+                        img.src = URL.createObjectURL(arquivo);
+                        img.onload = function () {
+                            URL.revokeObjectURL(img.src);
+                        };
+                        previa.appendChild(img);
+                    }
+
+                    var tamanho;
+
+                    if (arquivo.size >= 1048576) {
+                        tamanho = (arquivo.size / 1048576).toFixed(1) + " MB";
+                    } else if (arquivo.size >= 1024) {
+                        tamanho = Math.round(arquivo.size / 1024) + " KB";
+                    } else {
+                        tamanho = arquivo.size + " bytes";
+                    }
+                    avisar(campo, "Pronto: " + arquivo.name + " (" + tamanho + ")", false);
+                    area.classList.add("tem-arquivo");
+                }
+
+                campos.forEach(function (campo) {
+                    var area = document.createElement("div");
+                    area.className = "colar-area";
+                    area.setAttribute("data-colar", "");
+                    area.setAttribute("tabindex", "0");
+                    area.innerHTML =
+                        '<span class="colar-previa"></span>' +
+                        '<span class="colar-recado">Clique e cole (Ctrl+V) ou arraste</span>';
+                    campo.parentNode.insertBefore(area, campo.nextSibling);
+
+                    function armar() {
+                        armado = campo;
+                        campos.forEach(function (outro) {
+                            var caixa = outro.parentNode.querySelector("[data-colar]");
+
+                            if (caixa) {
+                                caixa.classList.toggle("armado", outro === campo);
+                            }
+                        });
+                    }
+
+                    area.addEventListener("click", armar);
+                    area.addEventListener("focus", armar);
+                    campo.addEventListener("focus", armar);
+
+                    area.addEventListener("dragover", function (evento) {
+                        evento.preventDefault();
+                        area.classList.add("armado");
+                    });
+
+                    area.addEventListener("dragleave", function () {
+                        area.classList.remove("armado");
+                    });
+
+                    area.addEventListener("drop", function (evento) {
+                        evento.preventDefault();
+                        armar();
+
+                        if (evento.dataTransfer.files && evento.dataTransfer.files.length) {
+                            guardar(campo, evento.dataTransfer.files[0]);
+                        }
+                    });
+
+                    campo.addEventListener("change", function () {
+                        if (campo.files && campo.files.length) {
+                            mostrar(campo, campo.files[0]);
+                        }
+                    });
+                });
+
+                document.addEventListener("paste", function (evento) {
+                    var alvo = armado || (campos.length === 1 ? campos[0] : null);
+
+                    if (!alvo || !evento.clipboardData) {
+                        return;
+                    }
+
+                    var itens = evento.clipboardData.items || [];
+
+                    for (var i = 0; i < itens.length; i += 1) {
+                        if (itens[i].kind !== "file") {
+                            continue;
+                        }
+
+                        var arquivo = itens[i].getAsFile();
+
+                        if (!arquivo) {
+                            continue;
+                        }
+
+                        // Print da tela vem sem nome: da um nome com data e hora.
+                        if (!arquivo.name || arquivo.name === "image.png") {
+                            var extensao = (arquivo.type.split("/")[1] || "png").split("+")[0];
+                            arquivo = new File([arquivo], "colado-" + Date.now() + "." + extensao, { type: arquivo.type });
+                        }
+
+                        evento.preventDefault();
+                        guardar(alvo, arquivo);
+
+                        return;
+                    }
+                });
+            });
+        })();
 
         {% block extra_scripts %}{% endblock %}
     </script>

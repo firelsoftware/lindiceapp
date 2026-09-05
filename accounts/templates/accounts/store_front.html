@@ -654,6 +654,9 @@
                 frame.title = capa.alt || "Video";
                 frame.allow = "autoplay; encrypted-media; picture-in-picture";
                 frame.setAttribute("allowfullscreen", "");
+                // O site esconde a origem por padrao, e sem ela o YouTube recusa
+                // o video com erro 153. Aqui mandamos so o dominio, sem o caminho.
+                frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
                 capa.hidden = true;
                 cartao.insertBefore(frame, cartao.firstChild);
                 cartao.classList.add("tocando");

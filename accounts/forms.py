@@ -972,6 +972,8 @@ class SupplierProductEditForm(forms.ModelForm):
             "description": forms.Textarea(attrs={"rows": 4}),
             "highlights": forms.Textarea(attrs={"rows": 6}),
             "tech_specs": forms.Textarea(attrs={"rows": 6}),
+            "image_file": forms.ClearableFileInput(attrs={"accept": "image/*"}),
+            "video_file": forms.ClearableFileInput(attrs={"accept": "video/*"}),
         }
 
     EXTRA_KEYS = ("modelo", "cor", "material", "medida_cm", "chamada")
@@ -1026,7 +1028,11 @@ class StoreReelForm(forms.ModelForm):
             "product": "Se escolher, o nome do produto vira link no video.",
             "poster": "Com link do YouTube, a capa vem de la sozinha.",
         }
-        widgets = {"description": forms.Textarea(attrs={"rows": 3})}
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 3}),
+            "video": forms.ClearableFileInput(attrs={"accept": "video/*"}),
+            "poster": forms.ClearableFileInput(attrs={"accept": "image/*"}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -1110,6 +1116,7 @@ SupplierProductPhotoFormSet = forms.models.inlineformset_factory(
     SupplierProductPhoto,
     fields=("image", "caption", "position"),
     labels={"image": "Foto", "caption": "Legenda (opcional)", "position": "Ordem"},
+    widgets={"image": forms.ClearableFileInput(attrs={"accept": "image/*"})},
     extra=3,
     can_delete=True,
 )
@@ -1119,6 +1126,7 @@ SupplierProductVariantFormSet = forms.models.inlineformset_factory(
     SupplierProductVariant,
     fields=("name", "code", "image", "position"),
     labels={"name": "Cor", "code": "Codigo", "image": "Foto da cor", "position": "Ordem"},
+    widgets={"image": forms.ClearableFileInput(attrs={"accept": "image/*"})},
     extra=2,
     can_delete=True,
 )
