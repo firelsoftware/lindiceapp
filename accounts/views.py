@@ -3991,6 +3991,65 @@ def edit_supplier_product(request, product_id):
 
 
 @staff_member_required(login_url="login")
+def storage_check(request):
+    """Testa o armazenamento de arquivos e diz exatamente o que falhou.
+
+    Escreve um arquivo minusculo, le de volta e apaga. Sem isso, um erro de
+    permissao aparece so no meio de uma importacao, sem dizer a causa.
+    """
+    from django.core.files.base import ContentFile
+    from django.core.files.storage import default_storage
+
+    etapas = []
+    caminho = ""
+
+    def anota(passo, ok, detalhe=""):
+        etapas.append({"passo": passo, "ok": ok, "detalhe": detalhe})
+
+    usando_s3 = getattr(settings, "USE_SUPABASE_STORAGE", False)
+    anota(
+        "Backend em uso",
+        True,
+        "Supabase Storage (S3)" if usando_s3 else "Disco do servidor (as variaveis do Supabase nao estao todas preenchidas)",
+    )
+
+    if usando_s3:
+        anota("Bucket", True, settings.SUPABASE_STORAGE_BUCKET)
+        anota("Endpoint", True, settings.SUPABASE_STORAGE_ENDPOINT_URL)
+        anota("Regiao", True, settings.SUPABASE_STORAGE_REGION)
+        chave = settings.SUPABASE_S3_ACCESS_KEY_ID
+        anota("Access key", True, f"{chave[:4]}...{chave[-4:]} ({len(chave)} caracteres)" if chave else "vazia")
+
+    try:
+        caminho = default_storage.save("teste-conexao/ping.txt", ContentFile(b"ping"))
+        anota("Gravar arquivo", True, caminho)
+    except Exception as erro:
+        anota("Gravar arquivo", False, f"{type(erro).__name__}: {erro}")
+
+        return render(request, "accounts/storage_check.html", {"etapas": etapas})
+
+    try:
+        with default_storage.open(caminho) as arquivo:
+            conteudo = arquivo.read()
+        anota("Ler de volta", conteudo == b"ping", f"{len(conteudo)} bytes")
+    except Exception as erro:
+        anota("Ler de volta", False, f"{type(erro).__name__}: {erro}")
+
+    try:
+        anota("Gerar link", True, default_storage.url(caminho)[:90] + "...")
+    except Exception as erro:
+        anota("Gerar link", False, f"{type(erro).__name__}: {erro}")
+
+    try:
+        default_storage.delete(caminho)
+        anota("Apagar arquivo", True, "removido")
+    except Exception as erro:
+        anota("Apagar arquivo", False, f"{type(erro).__name__}: {erro}")
+
+    return render(request, "accounts/storage_check.html", {"etapas": etapas})
+
+
+@staff_member_required(login_url="login")
 def new_supplier_product(request):
     """Cria um produto do zero e leva direto para a ficha completa."""
     if request.method == "POST":

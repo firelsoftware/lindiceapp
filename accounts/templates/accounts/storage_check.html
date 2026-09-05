@@ -1,0 +1,30 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Teste do armazenamento</h1>
+
+<section class="info-panel">
+    <p class="store-product-note">
+        Grava um arquivo pequeno, lê de volta e apaga. Se a importação de produtos
+        ou o envio de vídeo falhar, é aqui que aparece o motivo.
+    </p>
+
+    <div class="detail-table-wrap">
+        <table class="detail-table">
+            <tbody>
+                {% for etapa in etapas %}
+                    <tr>
+                        <th scope="row">{% if etapa.ok %}✓{% else %}✗{% endif %} {{ etapa.passo }}</th>
+                        <td>{{ etapa.detalhe }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="action-row" style="margin-top:18px">
+        <a class="button" href="{% url 'storage_check' %}">Testar de novo</a>
+        <a class="button button-secondary" href="{% url 'supplier_products' %}">Voltar aos produtos</a>
+    </div>
+</section>
+{% endblock %}

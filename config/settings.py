@@ -184,11 +184,13 @@ VAPID_PUBLIC_KEY = os.environ.get("VAPID_PUBLIC_KEY", "")
 VAPID_PRIVATE_KEY = os.environ.get("VAPID_PRIVATE_KEY", "")
 VAPID_ADMIN_EMAIL = os.environ.get("VAPID_ADMIN_EMAIL", "mailto:firelsoftware@gmail.com")
 
-SUPABASE_STORAGE_BUCKET = os.environ.get("SUPABASE_STORAGE_BUCKET", "")
-SUPABASE_STORAGE_ENDPOINT_URL = os.environ.get("SUPABASE_STORAGE_ENDPOINT_URL", "")
-SUPABASE_S3_ACCESS_KEY_ID = os.environ.get("SUPABASE_S3_ACCESS_KEY_ID", "")
-SUPABASE_S3_SECRET_ACCESS_KEY = os.environ.get("SUPABASE_S3_SECRET_ACCESS_KEY", "")
-SUPABASE_STORAGE_REGION = os.environ.get("SUPABASE_STORAGE_REGION", "")
+# .strip() aqui nao e frescura: um espaco colado sem querer no painel faz o
+# Supabase responder 403 em tudo, e o erro nao diz que a culpa e do espaco.
+SUPABASE_STORAGE_BUCKET = os.environ.get("SUPABASE_STORAGE_BUCKET", "").strip()
+SUPABASE_STORAGE_ENDPOINT_URL = os.environ.get("SUPABASE_STORAGE_ENDPOINT_URL", "").strip().rstrip("/")
+SUPABASE_S3_ACCESS_KEY_ID = os.environ.get("SUPABASE_S3_ACCESS_KEY_ID", "").strip()
+SUPABASE_S3_SECRET_ACCESS_KEY = os.environ.get("SUPABASE_S3_SECRET_ACCESS_KEY", "").strip()
+SUPABASE_STORAGE_REGION = os.environ.get("SUPABASE_STORAGE_REGION", "").strip()
 
 USE_SUPABASE_STORAGE = all(
     [
@@ -209,7 +211,7 @@ STATICFILES_BACKEND = (
 if USE_SUPABASE_STORAGE:
     STORAGES = {
         "default": {
-            "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": "accounts.storage.SupabaseMediaStorage",
             "OPTIONS": {
                 "bucket_name": SUPABASE_STORAGE_BUCKET,
                 "endpoint_url": SUPABASE_STORAGE_ENDPOINT_URL,
@@ -219,7 +221,6 @@ if USE_SUPABASE_STORAGE:
                 "addressing_style": "path",
                 "signature_version": "s3v4",
                 "default_acl": None,
-                "file_overwrite": False,
                 "querystring_auth": True,
                 "querystring_expire": 3600,
                 "object_parameters": {
