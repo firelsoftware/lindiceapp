@@ -49,8 +49,8 @@
                         </li>
                         <li class="detail-payment">
                             <span class="detail-payment-label">No cartão</span>
-                            <strong>{{ pagamento.card.installments }}x de R$ {{ pagamento.card.parcela|floatformat:2 }}</strong>
-                            <span class="detail-payment-note">sem juros — total de R$ {{ pagamento.card.total|floatformat:2 }}</span>
+                            <strong>R$ {{ pagamento.card.total|floatformat:2 }}</strong>
+                            <span class="detail-payment-note">parcelamento e condições no checkout</span>
                         </li>
                         <li class="detail-payment">
                             <span class="detail-payment-label">No crediário</span>
