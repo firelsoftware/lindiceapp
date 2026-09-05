@@ -18,12 +18,14 @@ from .forms import CreditSaleForm, InstallmentChoiceForm, ProductForm, RegisterF
 from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, UsoDeEspaco, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference, payment_method_from_payment
+from .bucket_publico import copiar_vitrine, PREFIXOS_DA_VITRINE
 from .espaco import COTA_ARQUIVOS, formatar_bytes
 from .storage import safe_upload_name
 from .views import salvar_fotos_em_lote
 from .store_shipping import shipping_cost_for
 from .supplier_import import parse_csv, row_to_payload
 from .utils import cpf_hash, is_valid_cpf
+from config.settings import _dominio_publico
 
 
 class UploadStorageTests(TestCase):
@@ -1437,6 +1439,84 @@ class StoreFlowTests(TestCase):
         self.assertEqual(formatar_bytes(1536), "1,5 KB")
         self.assertEqual(formatar_bytes(5 * 1024 * 1024), "5,0 MB")
         self.assertEqual(formatar_bytes(2 * 1024 ** 3), "2,0 GB")
+
+    def test_public_bucket_only_carries_store_media(self):
+        # A regra que nao pode quebrar nunca: documento de cliente (CPF, RG,
+        # comprovante) fica no bucket privado. So midia de vitrine vai para o
+        # bucket publico.
+        proibidos = ("identity_documents/", "residence_proofs/", "profile_photos/")
+
+        for prefixo in PREFIXOS_DA_VITRINE:
+            self.assertNotIn(prefixo, proibidos)
+
+        for prefixo in proibidos:
+            self.assertNotIn(prefixo, PREFIXOS_DA_VITRINE)
+
+    def test_document_fields_never_use_the_public_storage(self):
+        from django.core.files.storage import default_storage
+
+        for campo in ("identity_document", "identity_document_back", "residence_proof", "profile_photo"):
+            armazenamento = ClientProfile._meta.get_field(campo).storage
+            self.assertIs(
+                armazenamento,
+                default_storage,
+                f"{campo} nao pode sair do armazenamento privado",
+            )
+
+    def test_store_media_fields_use_the_showcase_storage(self):
+        # Sem o bucket publico configurado, o de sempre continua valendo: da
+        # para subir o codigo antes de mexer no Supabase.
+        from django.core.files.storage import default_storage
+
+        for modelo, campo in (
+            (SupplierProduct, "image_file"),
+            (SupplierProduct, "video_file"),
+            (SupplierProductPhoto, "image"),
+        ):
+            self.assertIs(modelo._meta.get_field(campo).storage, default_storage)
+
+    def test_public_address_comes_from_the_endpoint_already_configured(self):
+        endereco = _dominio_publico(
+            "https://exemplo.storage.supabase.co/storage/v1/s3",
+            "lindice-publico",
+        )
+
+        self.assertEqual(
+            endereco,
+            "exemplo.storage.supabase.co/storage/v1/object/public/lindice-publico",
+        )
+        # Sem bucket, nao ha endereco: o site continua no caminho antigo.
+        self.assertEqual(_dominio_publico("https://exemplo.storage.supabase.co/storage/v1/s3", ""), "")
+        self.assertEqual(_dominio_publico("", "lindice-publico"), "")
+
+    def test_public_photos_page_explains_what_to_do_when_it_is_not_set_up(self):
+        self.login_staff(email="loja-publico@example.com")
+
+        resposta = self.client.get("/gestao/fotos-publicas/")
+
+        self.assertContains(resposta, "Ainda não configurado")
+        self.assertContains(resposta, "SUPABASE_PUBLIC_BUCKET")
+        self.assertContains(resposta, "lindice-publico")
+
+    def test_public_photos_page_is_closed_to_customers(self):
+        User.objects.create_user(
+            email="cliente-publico@example.com",
+            password="Teste12345!",
+            full_name="Cliente Publico",
+            preferred_name="Cliente",
+        )
+        self.client.login(email="cliente-publico@example.com", password="Teste12345!")
+
+        resposta = self.client.get("/gestao/fotos-publicas/")
+
+        self.assertEqual(resposta.status_code, 302)
+        self.assertIn("/login", resposta["Location"])
+
+    def test_copy_refuses_to_run_before_the_bucket_exists(self):
+        resultado = copiar_vitrine()
+
+        self.assertFalse(resultado["pronto"])
+        self.assertIn("nao esta configurado", resultado["recado"])
 
     def test_store_product_detail_for_consultation_source_shows_cart_flow(self):
         SupplierCatalogSource.objects.update_or_create(

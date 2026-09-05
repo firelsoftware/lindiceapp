@@ -193,6 +193,33 @@ SUPABASE_S3_ACCESS_KEY_ID = os.environ.get("SUPABASE_S3_ACCESS_KEY_ID", "").stri
 SUPABASE_S3_SECRET_ACCESS_KEY = os.environ.get("SUPABASE_S3_SECRET_ACCESS_KEY", "").strip()
 SUPABASE_STORAGE_REGION = os.environ.get("SUPABASE_STORAGE_REGION", "").strip()
 
+# Bucket publico, so para as fotos que aparecem na loja. Fica separado do
+# bucket principal, que e privado porque guarda documento de cliente.
+SUPABASE_PUBLIC_BUCKET = os.environ.get("SUPABASE_PUBLIC_BUCKET", "").strip()
+
+
+def _dominio_publico(endpoint, bucket):
+    """Monta o endereco publico do bucket a partir do endpoint S3 ja usado.
+
+    O endpoint termina em /storage/v1/s3; o link publico do Supabase mora em
+    /storage/v1/object/public/<bucket>. Derivando daqui, nao ha um endereco
+    novo para alguem digitar errado nas variaveis de ambiente.
+    """
+    if not endpoint or not bucket:
+        return ""
+
+    base = endpoint.rstrip("/")
+
+    if base.endswith("/s3"):
+        base = base[: -len("/s3")]
+
+    sem_esquema = base.split("://", 1)[-1]
+
+    return f"{sem_esquema}/object/public/{bucket}"
+
+
+SUPABASE_PUBLIC_DOMAIN = _dominio_publico(SUPABASE_STORAGE_ENDPOINT_URL, SUPABASE_PUBLIC_BUCKET)
+
 USE_SUPABASE_STORAGE = all(
     [
         SUPABASE_STORAGE_BUCKET,
@@ -202,6 +229,10 @@ USE_SUPABASE_STORAGE = all(
         SUPABASE_STORAGE_REGION,
     ]
 )
+
+# O bucket publico so entra em cena se o principal ja estiver funcionando: ele
+# reaproveita as mesmas credenciais.
+USE_SUPABASE_PUBLIC = bool(USE_SUPABASE_STORAGE and SUPABASE_PUBLIC_BUCKET and SUPABASE_PUBLIC_DOMAIN)
 
 STATICFILES_BACKEND = (
     "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -233,6 +264,17 @@ if USE_SUPABASE_STORAGE:
             "BACKEND": STATICFILES_BACKEND,
         },
     }
+
+    if SUPABASE_PUBLIC_BUCKET:
+        STORAGES["vitrine"] = {
+            "BACKEND": "accounts.storage.SupabasePublicStorage",
+            "OPTIONS": {
+                **STORAGES["default"]["OPTIONS"],
+                "bucket_name": SUPABASE_PUBLIC_BUCKET,
+                "custom_domain": SUPABASE_PUBLIC_DOMAIN,
+                "querystring_auth": False,
+            },
+        }
 elif not DEBUG:
     STORAGES = {
         "default": {

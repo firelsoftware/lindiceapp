@@ -6,6 +6,8 @@ import re
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models, transaction
+
+from .storage import midia_da_vitrine
 from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -372,7 +374,7 @@ class SupplierProduct(models.Model):
     category = models.CharField(max_length=120, blank=True)
     brand = models.CharField(max_length=120, blank=True)
     image_url = models.URLField(blank=True)
-    image_file = models.FileField(upload_to="supplier_products/", blank=True)
+    image_file = models.FileField(storage=midia_da_vitrine, upload_to="supplier_products/", blank=True)
     product_url = models.URLField(blank=True)
     wholesale_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     dropshipping_cost = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
@@ -398,7 +400,7 @@ class SupplierProduct(models.Model):
     )
     # Video de apresentacao: link (YouTube e afins) ou arquivo enviado pela loja.
     video_url = models.URLField("link do video", blank=True)
-    video_file = models.FileField("arquivo de video", upload_to="product_videos/", blank=True)
+    video_file = models.FileField("arquivo de video", storage=midia_da_vitrine, upload_to="product_videos/", blank=True)
     # Um item por linha, do jeito que aparece na ficha do produto.
     highlights = models.TextField("principais recursos", blank=True)
     # Uma linha por caracteristica, no formato "Tela: AMOLED 39 mm".
@@ -567,7 +569,7 @@ class SupplierProductPhoto(models.Model):
     """Fotos extras do produto, enviadas pela loja."""
 
     product = models.ForeignKey(SupplierProduct, on_delete=models.CASCADE, related_name="photos")
-    image = models.FileField(upload_to="supplier_products/")
+    image = models.FileField(storage=midia_da_vitrine, upload_to="supplier_products/")
     caption = models.CharField(max_length=120, blank=True)
     position = models.PositiveSmallIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -585,7 +587,7 @@ class SupplierProductVariant(models.Model):
     product = models.ForeignKey(SupplierProduct, on_delete=models.CASCADE, related_name="variants")
     name = models.CharField("cor", max_length=60)
     code = models.CharField("codigo", max_length=60, blank=True)
-    image = models.FileField(upload_to="supplier_products/", blank=True)
+    image = models.FileField(storage=midia_da_vitrine, upload_to="supplier_products/", blank=True)
     position = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
@@ -1809,8 +1811,8 @@ class StoreReel(models.Model):
     description = models.TextField("descricao", blank=True)
     # O video pode vir do YouTube (link) ou ser um arquivo enviado pela loja.
     video_url = models.URLField("link do YouTube", blank=True)
-    video = models.FileField("arquivo de video", upload_to="reels/", blank=True)
-    poster = models.FileField("capa do video", upload_to="reels/", blank=True)
+    video = models.FileField("arquivo de video", storage=midia_da_vitrine, upload_to="reels/", blank=True)
+    poster = models.FileField("capa do video", storage=midia_da_vitrine, upload_to="reels/", blank=True)
     product = models.ForeignKey(
         SupplierProduct,
         on_delete=models.SET_NULL,

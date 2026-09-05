@@ -48,6 +48,7 @@
         {% csrf_token %}
         <div class="action-row">
             <button type="submit">Medir agora</button>
+            <a class="button button-secondary" href="{% url 'fotos_publicas' %}">Fotos no bucket público</a>
             <a class="button button-secondary" href="{% url 'storage_check' %}">Testar o armazenamento</a>
             <a class="button button-secondary" href="{% url 'supplier_products' %}">Voltar</a>
         </div>

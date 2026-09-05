@@ -104,6 +104,7 @@ urlpatterns = [
     path("gestao/fornecedores/<int:supplier_id>/", views.supplier_detail, name="supplier_detail"),
     path("gestao/fornecedor/produtos/", views.supplier_products, name="supplier_products"),
     path("gestao/espaco/", views.espaco_usado, name="espaco_usado"),
+    path("gestao/fotos-publicas/", views.fotos_publicas, name="fotos_publicas"),
     path("gestao/fornecedor/produtos/novo/", views.new_supplier_product, name="new_supplier_product"),
     path("gestao/armazenamento/", views.storage_check, name="storage_check"),
     path("gestao/fornecedor/fontes/<str:source_key>/", views.update_supplier_catalog_source, name="update_supplier_catalog_source"),

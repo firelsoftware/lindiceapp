@@ -1,0 +1,78 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Fotos no bucket público</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <h2>Por que existe esta tela</h2>
+    <p class="store-product-note">
+        O bucket principal é <strong>privado</strong>, porque guarda documento de cliente —
+        CPF, RG e comprovante de residência. Isso obriga todo link a vir assinado e a vencer
+        em uma hora, o que atrapalha justo a foto de produto: o navegador não consegue guardar
+        em cache e nenhum site de fora abre a imagem.
+    </p>
+    <p class="store-product-note">
+        Com um segundo bucket, <strong>público e só com foto de produto</strong>, o link fica
+        fixo. As fotos novas já nascem lá. As que já existem precisam ser copiadas uma vez —
+        é o que o botão abaixo faz.
+    </p>
+    <p class="store-product-note">
+        Só a mídia da loja é copiada: <strong>{{ prefixos|join:", " }}</strong>.
+        Documento de cliente continua no bucket privado e não é tocado.
+    </p>
+</section>
+
+<section class="info-panel">
+    <h2>Situação</h2>
+    {% if ligado %}
+        <p><span class="badge badge-success">Ligado</span></p>
+        <p class="store-product-note">Bucket privado: <strong>{{ bucket_privado }}</strong></p>
+        <p class="store-product-note">Bucket público: <strong>{{ bucket_publico }}</strong></p>
+        <p class="store-product-note">Endereço das fotos: <code>{{ endereco_publico }}</code></p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="action-row">
+                <button type="submit">Copiar as fotos que faltam</button>
+                <a class="button button-secondary" href="{% url 'espaco_usado' %}">Ver o espaço usado</a>
+            </div>
+        </form>
+
+        {% if resultado and resultado.pronto %}
+            <p class="store-product-note">
+                {{ resultado.total }} arquivo{{ resultado.total|pluralize }} na vitrine ·
+                {{ resultado.copiadas }} copiado{{ resultado.copiadas|pluralize }} agora ·
+                {{ resultado.puladas }} já estava{{ resultado.puladas|pluralize:"m" }} lá ·
+                {{ resultado.faltam }} faltando.
+            </p>
+        {% endif %}
+    {% else %}
+        <p><span class="badge">Ainda não configurado</span></p>
+        <p class="store-product-note">
+            Falta criar o bucket público no Supabase e preencher a variável
+            <code>SUPABASE_PUBLIC_BUCKET</code> na Render. O passo a passo está abaixo.
+        </p>
+        <ol>
+            <li>No Supabase, abra <strong>Storage</strong> e clique em <strong>New bucket</strong>.</li>
+            <li>Nome: <code>lindice-publico</code>. Marque <strong>Public bucket</strong>. Salve.</li>
+            <li>Na Render, no serviço do app, adicione a variável
+                <code>SUPABASE_PUBLIC_BUCKET</code> com o valor <code>lindice-publico</code>.</li>
+            <li>Salve — a Render sobe o app de novo sozinha.</li>
+            <li>Volte nesta tela e clique em "Copiar as fotos que faltam".</li>
+        </ol>
+        <p class="store-product-note">
+            Você não precisa gerar chave nova: o bucket público usa as mesmas credenciais S3
+            que já estão configuradas.
+        </p>
+        <div class="action-row">
+            <a class="button button-secondary" href="{% url 'espaco_usado' %}">Ver o espaço usado</a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
