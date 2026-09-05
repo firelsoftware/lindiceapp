@@ -3240,6 +3240,70 @@
             pointer-events: auto;
         }
 
+        .reel-full {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            z-index: 3;
+            display: grid;
+            place-items: center;
+            width: 30px;
+            height: 30px;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .reel-full svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .reel-full:hover {
+            background: rgba(0, 0, 0, 0.78);
+        }
+
+        .reel-produto {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 3;
+            display: grid;
+            gap: 2px;
+            padding: 26px 12px 10px;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.82));
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .reel-produto-nome {
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .reel-produto-cta {
+            font-size: 12px;
+            font-weight: 600;
+            color: #9fd0ff;
+        }
+
+        .reel-produto:hover .reel-produto-cta {
+            text-decoration: underline;
+        }
+
+        .reel-card:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            aspect-ratio: auto;
+            border-radius: 0;
+        }
+
         .reel-download {
             position: absolute;
             top: 8px;

@@ -4127,8 +4127,41 @@ def staff_reels(request):
     return render(
         request,
         "accounts/staff_reels.html",
-        {"form": form, "reels": StoreReel.objects.select_related("product")},
+        {
+            "form": form,
+            "reels": StoreReel.objects.select_related("product"),
+            "produtos": SupplierProduct.objects.filter(is_active=True).order_by("name"),
+        },
     )
+
+
+@staff_member_required(login_url="login")
+def ligar_reel_produto(request, reel_id):
+    """Liga (ou desliga) o video a um produto, direto pela lista."""
+    reel = get_object_or_404(StoreReel, id=reel_id)
+
+    if request.method != "POST":
+        return redirect("staff_reels")
+
+    escolhido = (request.POST.get("product") or "").strip()
+
+    if escolhido:
+        produto = SupplierProduct.objects.filter(id=escolhido, is_active=True).first()
+
+        if not produto:
+            messages.error(request, "Produto nao encontrado.")
+
+            return redirect("staff_reels")
+
+        reel.product = produto
+        reel.save(update_fields=["product"])
+        messages.success(request, f"Video ligado a {produto.name}.")
+    else:
+        reel.product = None
+        reel.save(update_fields=["product"])
+        messages.success(request, "Video desligado do produto.")
+
+    return redirect("staff_reels")
 
 
 @staff_member_required(login_url="login")
@@ -4199,7 +4232,16 @@ def edit_reel(request, reel_id):
     else:
         form = StoreReelForm(instance=reel)
 
-    return render(request, "accounts/staff_reels.html", {"form": form, "reel": reel, "reels": StoreReel.objects.select_related("product")})
+    return render(
+        request,
+        "accounts/staff_reels.html",
+        {
+            "form": form,
+            "reel": reel,
+            "reels": StoreReel.objects.select_related("product"),
+            "produtos": SupplierProduct.objects.filter(is_active=True).order_by("name"),
+        },
+    )
 
 
 @staff_member_required(login_url="login")

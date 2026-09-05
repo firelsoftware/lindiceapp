@@ -113,13 +113,17 @@
                     <button class="reel-play" type="button" aria-label="Assistir {{ reel.display_title }}" data-reel-play>
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/></svg>
                     </button>
-                    <div class="reel-info">
-                        {% if reel.product %}
-                            <a href="{% url 'store_product_detail' reel.product.id %}">{{ reel.display_title }}</a>
-                        {% else %}
-                            <span>{{ reel.display_title }}</span>
-                        {% endif %}
-                    </div>
+                    <button class="reel-full" type="button" title="Tela cheia" aria-label="Ver em tela cheia" data-reel-full>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    </button>
+                    {% if reel.product %}
+                        <a class="reel-produto" href="{% url 'store_product_detail' reel.product.id %}">
+                            <span class="reel-produto-nome">{{ reel.product.name }}</span>
+                            <span class="reel-produto-cta">Ver o modelo &rsaquo;</span>
+                        </a>
+                    {% else %}
+                        <div class="reel-info"><span>{{ reel.display_title }}</span></div>
+                    {% endif %}
                     {% if request.user.is_staff and reel.video %}
                         <a class="reel-download" href="{% url 'download_reel' reel.id %}" title="Baixar vídeo" aria-label="Baixar vídeo">⤓</a>
                     {% endif %}
@@ -701,6 +705,28 @@
             if (botao) {
                 botao.addEventListener("click", function () {
                     abrir(cartao, true);
+                });
+            }
+
+            var telaCheia = cartao.querySelector("[data-reel-full]");
+
+            if (telaCheia) {
+                telaCheia.addEventListener("click", function (evento) {
+                    evento.stopPropagation();
+                    abrir(cartao, true);
+
+                    var pedir =
+                        cartao.requestFullscreen ||
+                        cartao.webkitRequestFullscreen ||
+                        cartao.msRequestFullscreen;
+
+                    if (pedir) {
+                        try {
+                            pedir.call(cartao);
+                        } catch (erro) {
+                            // alguns navegadores recusam sem gesto direto; o video segue tocando
+                        }
+                    }
                 });
             }
 

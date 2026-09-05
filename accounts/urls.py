@@ -112,6 +112,7 @@ urlpatterns = [
     path("gestao/fornecedor/importar-wearzone/", views.import_wearzone_catalog, name="import_wearzone_catalog"),
     path("gestao/reels/", views.staff_reels, name="staff_reels"),
     path("gestao/reels/em-lote/", views.add_reels_em_lote, name="add_reels_em_lote"),
+    path("gestao/reels/<int:reel_id>/produto/", views.ligar_reel_produto, name="ligar_reel_produto"),
     path("gestao/reels/<int:reel_id>/editar/", views.edit_reel, name="edit_reel"),
     path("gestao/reels/<int:reel_id>/baixar/", views.download_reel, name="download_reel"),
     path("gestao/produtos/novo/", views.create_product, name="create_product"),
