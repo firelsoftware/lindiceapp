@@ -4132,6 +4132,51 @@ def staff_reels(request):
 
 
 @staff_member_required(login_url="login")
+def add_reels_em_lote(request):
+    """Cadastra varios videos do YouTube de uma vez, um link por linha."""
+    if request.method != "POST":
+        return redirect("staff_reels")
+
+    linhas = [linha.strip() for linha in (request.POST.get("links") or "").splitlines() if linha.strip()]
+
+    if not linhas:
+        messages.error(request, "Cole ao menos um link.")
+
+        return redirect("staff_reels")
+
+    posicao = StoreReel.objects.count()
+    criados = repetidos = recusados = 0
+
+    for linha in linhas:
+        codigo = StoreReel(video_url=linha).youtube_id()
+
+        if not codigo:
+            recusados += 1
+            messages.warning(request, f"Nao reconheci como YouTube: {linha[:60]}")
+            continue
+
+        if StoreReel.objects.filter(video_url__contains=codigo).exists():
+            repetidos += 1
+            continue
+
+        StoreReel.objects.create(video_url=linha, position=posicao, is_visible=True)
+        posicao += 1
+        criados += 1
+
+    partes = [f"{criados} video(s) publicado(s)"]
+
+    if repetidos:
+        partes.append(f"{repetidos} ja estavam na loja")
+
+    if recusados:
+        partes.append(f"{recusados} link(s) nao reconhecido(s)")
+
+    messages.success(request, ", ".join(partes) + ".")
+
+    return redirect("staff_reels")
+
+
+@staff_member_required(login_url="login")
 def edit_reel(request, reel_id):
     reel = get_object_or_404(StoreReel, id=reel_id)
 

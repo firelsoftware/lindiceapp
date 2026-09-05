@@ -9,6 +9,23 @@
     </ul>
 {% endif %}
 
+{% if not reel %}
+<section class="info-panel">
+    <h2>Colar vários links de uma vez</h2>
+    <p class="store-product-note">
+        Cole os endereços do YouTube, <strong>um por linha</strong>. Os que já estiverem
+        na loja são ignorados, então pode colar a lista inteira sem medo de repetir.
+    </p>
+    <form method="post" action="{% url 'add_reels_em_lote' %}">
+        {% csrf_token %}
+        <textarea name="links" rows="6" placeholder="https://youtube.com/shorts/xxxxxxxxxxx&#10;https://youtube.com/shorts/yyyyyyyyyyy"></textarea>
+        <div class="action-row">
+            <button type="submit">Publicar todos</button>
+        </div>
+    </form>
+</section>
+{% endif %}
+
 <section class="info-panel">
     <h2>{% if reel %}Editar vídeo{% else %}Publicar novo vídeo{% endif %}</h2>
     <p class="store-product-note">Os vídeos aparecem na vitrine, logo abaixo dos smartwatches em destaque.</p>
