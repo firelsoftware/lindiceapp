@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 from django.utils import timezone
 
-from .models import ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, StoreSettings, Supplier, SupplierCatalogSource, StoreReel, SupplierProduct, SupplierProductPhoto, SupplierProductVariant, User
+from .models import retail_price_from_wholesale, ClientProfile, CreditSale, CreditSaleProduct, Debt, PersonalDebt, Product, ProductCost, StoreOrder, StoreSettings, Supplier, SupplierCatalogSource, StoreReel, SupplierProduct, SupplierProductPhoto, SupplierProductVariant, User
 from .store_shipping import shipping_choices_with_prices
 from .utils import clean_digits, cpf_hash, is_valid_cpf
 
@@ -1029,6 +1029,59 @@ class StoreReelForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["product"].queryset = SupplierProduct.objects.filter(is_active=True).order_by("name")
         self.fields["product"].required = False
+
+
+class NewSupplierProductForm(forms.ModelForm):
+    """Cadastro rapido de um produto novo. O preco sai das regras da loja."""
+
+    class Meta:
+        model = SupplierProduct
+        fields = ("name", "category", "supplier_code", "brand", "wholesale_price", "stock_quantity", "sizes")
+        labels = {
+            "name": "Nome do produto",
+            "category": "Categoria",
+            "supplier_code": "Codigo do produto",
+            "brand": "Marca",
+            "wholesale_price": "Custo de atacado (R$)",
+            "stock_quantity": "Estoque",
+            "sizes": "Tamanhos",
+        }
+        help_texts = {
+            "supplier_code": "Como o produto e identificado no fornecedor. Precisa ser unico.",
+            "wholesale_price": "So para conta interna. A loja calcula o preco de venda a partir dele.",
+            "sizes": "Deixe 'Único' para relogios e fones.",
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["brand"].initial = "Wearzone"
+        self.fields["category"].initial = "Smartwatches"
+        self.fields["sizes"].initial = "Único"
+        self.fields["stock_quantity"].initial = 10
+
+    def clean_supplier_code(self):
+        codigo = (self.cleaned_data["supplier_code"] or "").strip()
+
+        if SupplierProduct.objects.filter(
+            source=SupplierProduct.SOURCE_WEARZONE, supplier_code=codigo
+        ).exists():
+            raise ValidationError("Ja existe um produto com este codigo.")
+
+        return codigo
+
+    def save(self, commit=True):
+        produto = super().save(commit=False)
+        produto.source = SupplierProduct.SOURCE_WEARZONE
+        produto.suggested_sale_price = retail_price_from_wholesale(produto.wholesale_price)
+        produto.is_active = True
+        # Nasce fora da loja: a loja publica depois de por foto e descricao.
+        produto.is_visible = False
+        produto.is_featured = produto.category == "Smartwatches"
+
+        if commit:
+            produto.save()
+
+        return produto
 
 
 # Fotos extras e cores do produto, editadas na mesma tela do produto.

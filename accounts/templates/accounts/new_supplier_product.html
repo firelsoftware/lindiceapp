@@ -1,0 +1,44 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Novo produto</h1>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+    </ul>
+{% endif %}
+
+<section class="info-panel">
+    <p class="store-product-note">
+        Preencha o básico aqui. Ao salvar, você cai direto na ficha completa para colocar
+        fotos, vídeo, cores, recursos e ficha técnica — o mesmo formato dos smartwatches
+        que já estão na loja.
+    </p>
+    <p class="store-product-note">
+        O <strong>preço de venda é calculado sozinho</strong> a partir do custo: o dobro,
+        arredondado para cima, com piso de R$ 150. Você pode mudar depois.
+    </p>
+    <p class="store-product-note">
+        O produto nasce <strong>fora da loja</strong>. Ele só aparece para o cliente quando
+        você marcar "Mostrar na loja" na ficha.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="reg-errors">{{ form.non_field_errors }}</div>{% endif %}
+        {% for campo in form %}
+            <p>
+                <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+                {{ campo }}
+                {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
+                {{ campo.errors }}
+            </p>
+        {% endfor %}
+        <div class="action-row">
+            <button type="submit">Criar e continuar</button>
+            <a class="button button-secondary" href="{% url 'supplier_products' %}">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

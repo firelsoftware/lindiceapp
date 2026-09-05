@@ -34,7 +34,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from . import google_oauth
-from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
+from .forms import CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, NewSupplierProductForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
 from .models import StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance_capped, points_discount_percent, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, payment_method_from_payment, verify_webhook_signature
@@ -3988,6 +3988,29 @@ def edit_supplier_product(request, product_id):
             "preco_crediario": credit_price_from_retail(product.suggested_sale_price),
         },
     )
+
+
+@staff_member_required(login_url="login")
+def new_supplier_product(request):
+    """Cria um produto do zero e leva direto para a ficha completa."""
+    if request.method == "POST":
+        form = NewSupplierProductForm(request.POST)
+
+        if form.is_valid():
+            produto = form.save()
+            messages.success(
+                request,
+                f"{produto.name} criado. Agora coloque as fotos, as cores e a descricao, "
+                "e marque 'Mostrar na loja' quando estiver pronto.",
+            )
+
+            return redirect("edit_supplier_product", product_id=produto.id)
+
+        messages.error(request, "Confira os campos destacados.")
+    else:
+        form = NewSupplierProductForm()
+
+    return render(request, "accounts/new_supplier_product.html", {"form": form})
 
 
 @staff_member_required(login_url="login")
