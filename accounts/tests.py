@@ -4155,3 +4155,152 @@ class PointsRedemptionTests(TestCase):
         sale.mark_paid("mp-3")
 
         self.assertGreaterEqual(points_balance(user), 0)
+
+
+@override_settings(GOOGLE_OAUTH_CLIENT_ID="cliente-teste", GOOGLE_OAUTH_CLIENT_SECRET="segredo-teste")
+class GoogleOAuthTests(TestCase):
+    def setUp(self):
+        self.profile = dict(sub="google-1", email="cliente@example.com", email_verified=True,
+                            full_name="Cliente Teste", given_name="Cliente")
+        self.mock_profile = self.enterContext(patch("accounts.google_oauth.get_profile", return_value=self.profile))
+
+    def create_user(self, **kwargs):
+        values = dict(email=self.profile["email"], password="Teste12345!",
+                      full_name="Cliente Teste", preferred_name="Cliente")
+        values.update(kwargs)
+        return User.objects.create_user(**values)
+
+    def start(self, **params):
+        response = self.client.get("/entrar/google/", params)
+        self.assertEqual(response.status_code, 302)
+        return self.client.session["google_oauth_state"]
+
+    def callback(self, **params):
+        return self.client.get("/entrar/google/retorno/", params)
+
+    def complete(self, **params):
+        return self.callback(state=self.start(**params), code="codigo-teste")
+
+    def assert_logged_out(self):
+        self.assertNotIn("_auth_user_id", self.client.session)
+
+    def test_state_invalido_ausente_ou_sem_sessao_recusa(self):
+        self.create_user()
+        for mode in ("divergente", "ausente", "sem-sessao"):
+            with self.subTest(mode=mode):
+                self.client = Client()
+                state = self.start() if mode != "sem-sessao" else "inventado"
+                params = {"code": "codigo", "state": state if mode == "sem-sessao" else "errado"}
+                if mode == "ausente":
+                    params.pop("state")
+                self.assertRedirects(self.callback(**params), "/login/", fetch_redirect_response=False)
+                self.assert_logged_out()
+                self.mock_profile.assert_not_called()
+
+    def test_cancelamento_tem_mensagem_calma(self):
+        response = self.callback(state=self.start(), error="access_denied")
+        self.assertRedirects(response, "/login/", fetch_redirect_response=False)
+        self.assertEqual([str(m) for m in response.wsgi_request._messages], ["Entrada pelo Google cancelada."])
+        self.assert_logged_out()
+        self.mock_profile.assert_not_called()
+
+    def test_email_nao_verificado_recusa(self):
+        self.create_user()
+        self.profile["email_verified"] = False
+        self.assertRedirects(self.complete(), "/login/", fetch_redirect_response=False)
+        self.assert_logged_out()
+
+    def test_email_existente_vincula_por_email_independente_do_sub(self):
+        user = self.create_user()
+        self.create_user(email="outra@example.com")
+        for sub in ("google-1", "google-2"):
+            with self.subTest(sub=sub):
+                self.client = Client()
+                self.profile.update(sub=sub, email="CLIENTE@example.com")
+                self.complete(next="/painel/")
+                self.assertEqual(self.client.session["_auth_user_id"], str(user.pk))
+                self.assertEqual(User.objects.count(), 2)
+                user.refresh_from_db()
+                self.assertTrue(user.check_password("Teste12345!"))
+
+    def test_inativo_nao_entra(self):
+        self.create_user(is_active=False)
+        self.assertRedirects(self.complete(), "/login/", fetch_redirect_response=False)
+        self.assert_logged_out()
+
+    def test_cadastro_abandonado_nao_cria_usuario_ou_perfil(self):
+        response = self.complete()
+        self.assertRedirects(response, "/cadastro/?google=1", fetch_redirect_response=False)
+        page = self.client.get(response.url)
+        form = page.context["form"]
+        self.assertEqual(form["email"].value(), self.profile["email"])
+        self.assertEqual(form["full_name"].value(), "Cliente Teste")
+        self.assertEqual(form["preferred_name"].value(), "Cliente")
+        self.assertFalse(form.fields["password1"].required)
+        self.assertFalse(User.objects.exists())
+        self.assertFalse(ClientProfile.objects.exists())
+        self.assert_logged_out()
+
+    def test_cadastro_sem_senha_preserva_next_ref_e_email_confirmado(self):
+        from urllib.parse import parse_qs, urlsplit
+        referrer = self.create_user(email="indicador@example.com")
+        ClientProfile.objects.create(user=referrer, cpf_hash="indicador", referral_code="ABC123")
+        response = self.complete(next="/painel/?origem=loja", ref="ABC123")
+        params = parse_qs(urlsplit(response.url).query)
+        self.assertEqual(params["next"], ["/painel/?origem=loja"])
+        self.assertEqual(params["ref"], ["ABC123"])
+        page = self.client.get(response.url)
+        self.assertContains(page, 'name="next" value="/painel/?origem=loja"')
+        self.assertContains(page, 'name="ref" value="ABC123"')
+        result = self.client.post(response.url, dict(full_name="Cliente Teste", preferred_name="Cliente",
+                                  email="adulterado@example.com", password1="", password2="",
+                                  next=params["next"][0], ref=params["ref"][0]))
+        self.assertRedirects(result, "/painel/?origem=loja", fetch_redirect_response=False)
+        user = User.objects.get(email=self.profile["email"])
+        self.assertFalse(user.has_usable_password())
+        self.assertEqual(user.profile.referred_by_id, referrer.pk)
+        self.assertEqual(self.client.session["_auth_user_id"], str(user.pk))
+        self.assertNotIn("google_verified_email", self.client.session)
+        self.client.logout()
+        self.assertRedirects(self.complete(next="/painel/"), "/painel/", fetch_redirect_response=False)
+        self.assertEqual(self.client.session["_auth_user_id"], str(user.pk))
+
+    def test_retorno_nao_pode_ser_reutilizado(self):
+        state = self.start()
+        self.callback(state=state, code="codigo")
+        self.callback(state=state, code="codigo")
+        self.mock_profile.assert_called_once()
+        self.assert_logged_out()
+
+    def test_next_externo_nao_e_usado(self):
+        response = self.complete(next="https://exemplo.invalid/roubar")
+        self.assertRedirects(response, "/cadastro/?google=1", fetch_redirect_response=False)
+
+    def test_login_cancela_exclusao_pendente(self):
+        user = self.create_user(deletion_requested_at=timezone.now())
+        self.complete()
+        user.refresh_from_db()
+        self.assertIsNone(user.deletion_requested_at)
+        self.assertEqual(self.client.session["_auth_user_id"], str(user.pk))
+
+    def test_proxy_https_e_parametros_da_autorizacao(self):
+        from urllib.parse import parse_qs, urlsplit
+        response = self.client.get("/entrar/google/", HTTP_X_FORWARDED_PROTO="https", HTTP_HOST="testserver")
+        params = parse_qs(urlsplit(response.url).query)
+        self.assertEqual(params["redirect_uri"], ["https://testserver/entrar/google/retorno/"])
+        self.assertEqual(params["state"], [self.client.session["google_oauth_state"]])
+        self.assertEqual(params["scope"], ["openid email profile"])
+        self.assertEqual(params["response_type"], ["code"])
+        self.assertNotIn("segredo-teste", response.url)
+
+    def test_botao_preserva_indicacao_e_destino(self):
+        response = self.client.get("/login/", {"next": "/painel/", "ref": "ABC123"})
+        self.assertContains(response, 'class="google-login-button"')
+        self.assertContains(response, 'href="/entrar/google/?next=/painel/&amp;ref=ABC123"')
+
+    @override_settings(GOOGLE_OAUTH_CLIENT_ID="", GOOGLE_OAUTH_CLIENT_SECRET="")
+    def test_desabilitado_nao_mostra_botao_nem_inicia_fluxo(self):
+        self.assertNotContains(self.client.get("/login/"), 'class="google-login-button"')
+        self.assertRedirects(self.client.get("/entrar/google/"), "/login/", fetch_redirect_response=False)
+        self.assertNotIn("google_oauth_state", self.client.session)
+        self.mock_profile.assert_not_called()

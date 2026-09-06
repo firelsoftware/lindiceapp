@@ -114,3 +114,60 @@ Nao e preciso gerar chave nova: o bucket publico usa as mesmas credenciais S3.
 Sem a variavel, tudo continua funcionando como antes, no bucket privado.
 
 Depois do redeploy, novos uploads vao para o Supabase Storage. Arquivos antigos que estavam no disco do Render nao migram sozinhos; se uma foto antiga aparecer quebrada, reenvie a foto pelo app.
+
+
+## Entrada pela conta Google
+
+A entrada pelo Google so aparece quando `GOOGLE_OAUTH_CLIENT_ID` e
+`GOOGLE_OAUTH_CLIENT_SECRET` estao preenchidos. Sem elas, o login por senha
+continua funcionando normalmente. O Blueprint declara as duas variaveis com
+`sync: false` no app e no cron; os valores sao preenchidos no painel da Render.
+
+1. Acesse https://console.cloud.google.com/ e crie um projeto ou selecione um existente.
+2. Em **APIs e Servicos > Tela de consentimento OAuth** (ou **Google Auth Platform**),
+   configure o publico como **Externo**. Preencha o nome do app, email de suporte
+   e contato do desenvolvedor. Em **Publico-alvo / Audience**, publique o app
+   para producao; revise as exigencias de verificacao mostradas pelo Google.
+3. Em **Credenciais > Criar credenciais > ID do cliente OAuth** (ou **Clientes / Clients**),
+   escolha **Aplicativo da Web**.
+4. Adicione este endereco em **URIs de redirecionamento autorizados**, exatamente
+   como esta, incluindo a barra final:
+
+   `https://app.lindice.com.br/entrar/google/retorno/`
+
+5. Copie o **Client ID** e o **Client secret** diretamente para o painel da Render:
+   servico **lindice-app > Environment**, nas variaveis `GOOGLE_OAUTH_CLIENT_ID`
+   e `GOOGLE_OAUTH_CLIENT_SECRET`. Salve e aguarde o deploy. Se configurar pelo
+   Blueprint, preencha tambem as entradas solicitadas para o cron.
+6. Nunca envie os valores por chat nem grave segredos em arquivos do repositorio.
+
+Para desenvolvimento local, cadastre tambem
+`http://127.0.0.1:8000/entrar/google/retorno/` no mesmo cliente e use esse host
+no navegador. Preencha as variaveis apenas no ambiente local, fora do Git.
+
+### Comportamento e verificacao
+
+O email confirmado pelo Google identifica a conta existente, inclusive quando
+ela foi criada com senha. Dois perfis Google que retornem o mesmo email
+confirmado entram na mesma conta; o identificador `sub` nao cria outra conta.
+A senha existente e preservada. Contas inativas nao entram. Para email novo,
+o usuario confirma os dados no cadastro e pode deixar a senha em branco.
+Abandonar essa tela nao cria usuario nem perfil no banco.
+
+Depois de ativar as variaveis na Render:
+
+- Abra `/login/` em uma janela anonima e confirme que o botao aparece.
+- Clique no botao e confira na URL de autorizacao o parametro `redirect_uri`:
+  deve ser `https://app.lindice.com.br/entrar/google/retorno/`, sem porta adicional.
+  `SECURE_PROXY_SSL_HEADER` ja reconhece `X-Forwarded-Proto: https` no Django.
+- Entre com uma conta nova e confirme nome e email preenchidos no cadastro.
+  Conclua sem senha e confira o destino solicitado.
+- Saia e entre novamente com a mesma conta: deve autenticar diretamente,
+  sem repetir o cadastro, seguindo o destino normal da conta (loja ou painel).
+- Teste um link com `next` e `ref` e confira a indicacao no cadastro concluido.
+
+Essas verificacoes reais dependem das credenciais e de uma conta Google do dono;
+os testes automatizados simulam o perfil e nao acessam o Google.
+Rode em serie: `venv/Scripts/python.exe manage.py test accounts`.
+
+Referencia: [OAuth para aplicativos Web do Google](https://developers.google.com/identity/protocols/oauth2/web-server).

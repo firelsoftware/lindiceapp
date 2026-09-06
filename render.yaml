@@ -16,6 +16,10 @@ services:
     envVars:
       - key: DATABASE_URL
         sync: false
+      - key: GOOGLE_OAUTH_CLIENT_ID
+        sync: false
+      - key: GOOGLE_OAUTH_CLIENT_SECRET
+        sync: false
       - key: SECRET_KEY
         generateValue: true
       - key: DJANGO_DEBUG
@@ -86,6 +90,10 @@ services:
     startCommand: "python manage.py purge_deleted_accounts"
     envVars:
       - key: DATABASE_URL
+        sync: false
+      - key: GOOGLE_OAUTH_CLIENT_ID
+        sync: false
+      - key: GOOGLE_OAUTH_CLIENT_SECRET
         sync: false
       - key: SECRET_KEY
         generateValue: true
