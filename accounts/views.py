@@ -152,6 +152,7 @@ def ensure_supplier_catalog_sources():
         {
             "source": SupplierProduct.SOURCE_REVENDA_CALCADOS,
             "display_name": "Revenda de Calcados",
+            "price_multiplier": Decimal("1.60"),
             "catalog_format": getattr(settings, "SHOE_SUPPLIER_CATALOG_FORMAT", SupplierCatalogSource.FORMAT_CSV),
             "supplier_panel_note": "Cole aqui a URL atual do catalogo da Revenda. Se preferir, voce ainda pode enviar o arquivo baixado do dia.",
             "customer_notice": "",

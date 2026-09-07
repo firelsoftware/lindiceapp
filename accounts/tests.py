@@ -2666,6 +2666,26 @@ class StoreFlowTests(TestCase):
         parceiro = SupplierCatalogSource.objects.get(source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA)
         self.assertEqual(parceiro.price_multiplier, Decimal("1.40"))
 
+    def test_revenda_starts_at_the_margin_the_store_chose(self):
+        # A loja escolheu 1,60 para a Revenda de Calcados, e o numero ja vem
+        # pronto pela migracao 0067: nao depende de alguem abrir a tela.
+        fonte = SupplierCatalogSource.objects.filter(
+            source=SupplierProduct.SOURCE_REVENDA_CALCADOS
+        ).first()
+
+        self.assertIsNotNone(fonte, "a fonte da Revenda precisa existir")
+        self.assertEqual(fonte.price_multiplier, Decimal("1.60"))
+
+        import_supplier_catalog_content(
+            self.revenda_csv_content(), "csv", source=SupplierProduct.SOURCE_REVENDA_CALCADOS
+        )
+
+        # 197,89 x 1,60
+        self.assertEqual(
+            SupplierProduct.objects.get(supplier_code="67096B").suggested_sale_price,
+            Decimal("316.62"),
+        )
+
     def test_supplier_panel_imports_uploaded_revenda_csv(self):
         staff = User.objects.create_superuser(
             email="admin-upload-csv@example.com",
