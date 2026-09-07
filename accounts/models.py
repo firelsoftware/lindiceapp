@@ -642,6 +642,17 @@ class SupplierCatalogSource(models.Model):
     supplier_panel_note = models.TextField(blank=True)
     customer_notice = models.TextField(blank=True)
     purchase_flow = models.CharField(max_length=30, choices=FLOW_CHOICES, default=FLOW_STORE_CHECKOUT)
+    # Quanto multiplicar o custo para chegar no preco de venda. Era fixo em 1,40
+    # no codigo e valia igual para todo fornecedor; agora cada um tem o seu, e a
+    # loja muda pela tela sem precisar de deploy.
+    price_multiplier = models.DecimalField(
+        "margem sobre o custo",
+        max_digits=5,
+        decimal_places=2,
+        default=Decimal("1.40"),
+        validators=[MinValueValidator(Decimal("1.00")), MaxValueValidator(Decimal("9.99"))],
+        help_text="1,40 quer dizer custo x 1,40. Vale para as proximas importacoes deste fornecedor.",
+    )
     is_active = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -13,7 +13,20 @@ from .models import SupplierProduct
 
 
 MIN_STOCK_PER_SIZE = 3
+# Margem padrao, usada so quando o fornecedor ainda nao tem a dele salva.
 STORE_PRICE_MULTIPLIER = Decimal("1.40")
+
+
+def multiplicador_da_fonte(source):
+    """A margem cadastrada deste fornecedor, ou a padrao."""
+    from .models import SupplierCatalogSource
+
+    config = SupplierCatalogSource.objects.filter(source=source).first()
+
+    if config and config.price_multiplier:
+        return Decimal(config.price_multiplier)
+
+    return STORE_PRICE_MULTIPLIER
 
 
 ALIASES = {
@@ -180,11 +193,12 @@ def first_image_url(value):
     return str(value or "").split(",", 1)[0].strip()
 
 
-def row_to_payload(row, row_number):
+def row_to_payload(row, row_number, price_multiplier=None):
     supplier_code = find_value(row, "supplier_code") or build_fallback_code(row, row_number)
     wholesale_price = parse_money(find_value(row, "wholesale_price"))
     dropshipping_cost = parse_money(find_value(row, "dropshipping_cost")) or wholesale_price * Decimal("1.10")
     stock_quantity, sizes = parse_stock_and_sizes(find_value(row, "stock_quantity"), find_value(row, "sizes"))
+    multiplicador = Decimal(price_multiplier) if price_multiplier else STORE_PRICE_MULTIPLIER
 
     return {
         "supplier_code": supplier_code[:120],
@@ -196,7 +210,7 @@ def row_to_payload(row, row_number):
         "product_url": find_value(row, "product_url"),
         "wholesale_price": wholesale_price,
         "dropshipping_cost": dropshipping_cost,
-        "suggested_sale_price": (dropshipping_cost * STORE_PRICE_MULTIPLIER).quantize(Decimal("0.01")),
+        "suggested_sale_price": (dropshipping_cost * multiplicador).quantize(Decimal("0.01")),
         "stock_quantity": stock_quantity,
         "sizes": sizes,
         "raw_data": row,
@@ -222,9 +236,10 @@ def import_supplier_catalog_content(
         raise ValueError("O catalogo nao trouxe produtos para importar.")
 
     payloads = {}
+    multiplicador = multiplicador_da_fonte(source)
 
     for row_number, row in enumerate(rows, start=1):
-        payload = row_to_payload(row, row_number)
+        payload = row_to_payload(row, row_number, multiplicador)
         supplier_code = payload.pop("supplier_code")
         payloads[supplier_code] = payload
 

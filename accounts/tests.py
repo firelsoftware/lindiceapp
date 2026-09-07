@@ -29,7 +29,7 @@ from .espaco import COTA_ARQUIVOS, formatar_bytes
 from .storage import safe_upload_name
 from .views import salvar_fotos_em_lote
 from .store_shipping import shipping_cost_for
-from .supplier_import import parse_csv, row_to_payload
+from .supplier_import import import_supplier_catalog_content, parse_csv, row_to_payload
 from .utils import cpf_hash, is_valid_cpf
 from config.settings import _dominio_publico
 
@@ -2616,6 +2616,56 @@ class StoreFlowTests(TestCase):
         self.assertEqual(payload["stock_quantity"], 11)
         self.assertEqual(payload["sizes"], "35,37")
 
+    def test_price_multiplier_comes_from_the_supplier_settings(self):
+        # A margem era fixa em 1,40 no codigo e valia igual para todo
+        # fornecedor. Agora cada um tem a sua, mudada na tela.
+        rows = parse_csv(self.revenda_csv_content())
+
+        # Sem fonte cadastrada, segue o padrao.
+        self.assertEqual(row_to_payload(rows[0], 1)["suggested_sale_price"], Decimal("277.05"))
+
+        # Com margem propria, o preco acompanha: 197,89 x 1,60.
+        self.assertEqual(
+            row_to_payload(rows[0], 1, Decimal("1.60"))["suggested_sale_price"],
+            Decimal("316.62"),
+        )
+
+    def test_import_uses_the_margin_saved_for_that_supplier(self):
+        SupplierCatalogSource.objects.update_or_create(
+            source=SupplierProduct.SOURCE_REVENDA_CALCADOS,
+            defaults={"display_name": "Revenda de Calcados", "price_multiplier": Decimal("1.80")},
+        )
+
+        import_supplier_catalog_content(
+            self.revenda_csv_content(), "csv", source=SupplierProduct.SOURCE_REVENDA_CALCADOS
+        )
+
+        produto = SupplierProduct.objects.get(supplier_code="67096B")
+        self.assertEqual(produto.dropshipping_cost, Decimal("197.89"))
+        # 197,89 x 1,80
+        self.assertEqual(produto.suggested_sale_price, Decimal("356.20"))
+
+    def test_margin_of_one_supplier_does_not_change_another(self):
+        SupplierCatalogSource.objects.update_or_create(
+            source=SupplierProduct.SOURCE_REVENDA_CALCADOS,
+            defaults={"display_name": "Revenda", "price_multiplier": Decimal("2.00")},
+        )
+        SupplierCatalogSource.objects.update_or_create(
+            source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
+            defaults={"display_name": "Parceiro", "price_multiplier": Decimal("1.40")},
+        )
+
+        import_supplier_catalog_content(
+            self.revenda_csv_content(), "csv", source=SupplierProduct.SOURCE_REVENDA_CALCADOS
+        )
+
+        self.assertEqual(
+            SupplierProduct.objects.get(supplier_code="67096B").suggested_sale_price,
+            Decimal("395.78"),
+        )
+        parceiro = SupplierCatalogSource.objects.get(source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA)
+        self.assertEqual(parceiro.price_multiplier, Decimal("1.40"))
+
     def test_supplier_panel_imports_uploaded_revenda_csv(self):
         staff = User.objects.create_superuser(
             email="admin-upload-csv@example.com",
@@ -2700,6 +2750,7 @@ class StoreFlowTests(TestCase):
                 "display_name": "Catalogo sob consulta",
                 "catalog_url": "https://example.com/catalogo.csv",
                 "catalog_format": SupplierCatalogSource.FORMAT_CSV,
+                "price_multiplier": "1.60",
                 "purchase_flow": SupplierCatalogSource.FLOW_WHATSAPP_CONFIRMATION,
                 "supplier_panel_note": "Atualizo essa URL manualmente.",
                 "customer_notice": "Em breve vamos entrar em contato para confirmar disponibilidade e finalizar pelo WhatsApp.",
@@ -2712,6 +2763,7 @@ class StoreFlowTests(TestCase):
         self.assertRedirects(response, "/gestao/fornecedor/produtos/")
         self.assertEqual(source.display_name, "Catalogo sob consulta")
         self.assertEqual(source.catalog_url, "https://example.com/catalogo.csv")
+        self.assertEqual(source.price_multiplier, Decimal("1.60"))
         self.assertContains(response, "Catalogo sob consulta foi atualizado.")
 
     def test_supplier_import_route_redirects_get_to_supplier_products(self):

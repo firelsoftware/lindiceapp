@@ -629,6 +629,7 @@ class SupplierCatalogSourceForm(forms.ModelForm):
             "display_name",
             "catalog_url",
             "catalog_format",
+            "price_multiplier",
             "purchase_flow",
             "supplier_panel_note",
             "customer_notice",
@@ -638,6 +639,7 @@ class SupplierCatalogSourceForm(forms.ModelForm):
             "display_name": "Nome da fonte",
             "catalog_url": "URL do catalogo",
             "catalog_format": "Formato",
+            "price_multiplier": "Margem sobre o custo",
             "purchase_flow": "Como esse fornecedor fecha a venda",
             "supplier_panel_note": "Observacao interna",
             "customer_notice": "Mensagem para o cliente",
@@ -646,6 +648,10 @@ class SupplierCatalogSourceForm(forms.ModelForm):
         help_texts = {
             "catalog_url": "Cole aqui a URL atual do CSV ou XML. Voce pode trocar quando quiser.",
             "customer_notice": "Esse texto aparece para o cliente quando a compra depender de confirmacao manual.",
+            "price_multiplier": (
+                "1,40 quer dizer custo x 1,40. Vale da proxima importacao em diante; "
+                "nao mexe no preco dos produtos que ja estao na loja."
+            ),
         }
         widgets = {
             "supplier_panel_note": forms.Textarea(attrs={"rows": 3}),
