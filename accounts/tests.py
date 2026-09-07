@@ -14,6 +14,12 @@ from django.test import Client, RequestFactory, TestCase, override_settings
 from django.test.utils import CaptureQueriesContext
 from django.utils import timezone
 
+import os
+from django.urls import reverse
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 from .forms import CreditSaleForm, InstallmentChoiceForm, ProductForm, RegisterForm
 from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, UsoDeEspaco, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
@@ -123,6 +129,23 @@ class RegistrationFlowTests(TestCase):
         data.update(overrides)
 
         return data
+
+    def test_registration_rejects_duplicate_email_case_insensitively(self):
+        User.objects.create_user(
+            email="cliente-existente@example.com",
+            password="Teste12345!",
+            full_name="Cliente Existente",
+            preferred_name="Cliente",
+        )
+
+        response = self.client.post(
+            "/cadastro/",
+            data=self.registration_payload(email="CLIENTE-EXISTENTE@EXAMPLE.COM"),
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Ja existe um cadastro com este email.")
+        self.assertEqual(User.objects.count(), 1)
 
     @override_settings(PHONE_VERIFICATION_REQUIRED=False)
     def test_basic_registration_creates_account_without_credit_documents(self):

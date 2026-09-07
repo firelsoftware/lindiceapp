@@ -162,7 +162,7 @@ class RegisterForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data["email"].lower()
 
-        if User.objects.filter(email=email).exists():
+        if User.objects.filter(email__iexact=email).exists():
             raise ValidationError("Ja existe um cadastro com este email.")
 
         return email
