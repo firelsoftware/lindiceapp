@@ -22,6 +22,42 @@
 </section>
 
 <section class="info-panel">
+    <h2>Importar catálogo</h2>
+    <p class="store-product-note">
+        Baixe a planilha do dia no site do fornecedor e envie aqui, em CSV ou XML.
+        Os produtos entram na loja com o preço já calculado pelas regras.
+    </p>
+        <form method="post" action="{% url 'import_supplier_products' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>
+                <label for="catalogo-fonte">Fonte</label>
+                <select id="catalogo-fonte" name="source">
+                    {% for source_value, source_label in source_choices %}
+                        <option value="{{ source_value }}">{{ source_label }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+            <p>
+                <label for="catalogo-arquivo">CSV ou XML do dia</label>
+                <input id="catalogo-arquivo" name="catalog_file" type="file"
+                       accept=".csv,.xml,text/csv,text/xml,application/xml">
+            </p>
+            <div class="action-row">
+                <button type="submit">Importar arquivo</button>
+            </div>
+        </form>
+        {% if catalog_url_configured %}
+            <form method="post" action="{% url 'import_supplier_products' %}">
+                {% csrf_token %}
+                <input type="hidden" name="source" value="revenda_calcados">
+                <div class="action-row">
+                    <button class="button-secondary" type="submit">Atualizar pelo link salvo do fornecedor</button>
+                </div>
+            </form>
+    {% endif %}
+</section>
+
+<section class="info-panel">
     <div class="section-title">
         <h2>Produtos deste fornecedor</h2>
         <a class="button" href="{% url 'create_product' %}?fornecedor={{ supplier.id }}">+ Cadastrar produto</a>

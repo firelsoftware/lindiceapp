@@ -21,7 +21,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 from .forms import CreditSaleForm, InstallmentChoiceForm, ProductForm, RegisterForm
-from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, UsoDeEspaco, User, add_months
+from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, UsoDeEspaco, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference, payment_method_from_payment
 from .bucket_publico import copiar_vitrine, PREFIXOS_DA_VITRINE
@@ -2173,6 +2173,41 @@ class StoreFlowTests(TestCase):
 
         self.assertContains(response, "Dropshipping Revenda de Calcados")
         self.assertContains(response, "https://example.com/dropshipping")
+
+    def test_supplier_page_offers_the_catalog_import(self):
+        # A importacao de catalogo ja morou nesta tela, mudou de lugar numa
+        # reorganizacao e ninguem percebeu por meses, porque nada testava a
+        # pagina do fornecedor.
+        fornecedor = Supplier.objects.create(name="Fornecedor Teste")
+        staff = User.objects.create_superuser(
+            email="admin-catalogo@example.com",
+            password="Teste12345!",
+            full_name="Admin Catalogo",
+            preferred_name="Admin",
+        )
+        self.client.force_login(staff)
+
+        response = self.client.get(f"/gestao/fornecedores/{fornecedor.id}/")
+
+        self.assertContains(response, "Importar catálogo")
+        self.assertContains(response, 'name="catalog_file"', html=False)
+        self.assertContains(response, "/gestao/fornecedor/importar/")
+        self.assertContains(response, "Produtos deste fornecedor")
+
+    def test_supplier_page_is_closed_to_customers(self):
+        fornecedor = Supplier.objects.create(name="Fornecedor Fechado")
+        User.objects.create_user(
+            email="cliente-fornecedor@example.com",
+            password="Teste12345!",
+            full_name="Cliente",
+            preferred_name="Cliente",
+        )
+        self.client.login(email="cliente-fornecedor@example.com", password="Teste12345!")
+
+        response = self.client.get(f"/gestao/fornecedores/{fornecedor.id}/")
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/login", response["Location"])
 
     def test_create_credit_sale_form_shows_brand_and_size_fields_without_due_date(self):
         staff = User.objects.create_superuser(

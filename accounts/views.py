@@ -4526,10 +4526,20 @@ def supplier_detail(request, supplier_id):
         form = SupplierForm(instance=supplier)
 
     products = supplier.products.order_by("-created_at")
+
     return render(
         request,
         "accounts/supplier_detail.html",
-        {"supplier": supplier, "form": form, "products": products},
+        {
+            "supplier": supplier,
+            "form": form,
+            "products": products,
+            # A importacao de catalogo vive na lista de fornecedores, mas e aqui
+            # que se procura por ela: repetida nos dois lugares, o mesmo
+            # formulario, sem tela nova para manter.
+            "source_choices": SupplierProduct.SOURCE_CHOICES,
+            "catalog_url_configured": bool(settings.SHOE_SUPPLIER_CATALOG_URL),
+        },
     )
 
 
