@@ -10,6 +10,10 @@
     <p>Observacao: {{ profile.admin_notes }}</p>
 {% endif %}
 
+<section class="info-panel"><h2>Contrato do crediário</h2>
+<p>Clientes novos pagam R$ 20 de entrada apenas na primeira compra no crediário. As próximas não exigem entrada.</p>
+<p>Após a aprovação, será necessário assinar o contrato pelo gov.br com conta prata ou ouro.</p>
+<a class="button" href="{% url 'credit_contract' %}">Consultar contrato</a></section>
 <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}
     <button type="submit">Sair</button>

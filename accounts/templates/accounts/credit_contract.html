@@ -1,0 +1,32 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+<h1>Meu contrato de crediário</h1>
+{% for message in messages %}<p role="status">{{ message }}</p>{% endfor %}
+<section class="info-panel">
+<p>Clientes novos pagam R$ 20 de entrada apenas na primeira compra no crediário. Nas compras seguintes, não haverá entrada.</p>
+<p>Você verá o limite e o saldo disponível no painel. O valor da compra volta ao saldo conforme as parcelas pagas forem confirmadas.</p>
+<p>Após a aprovação, assine o contrato pelo gov.br com conta prata ou ouro.</p>
+</section>
+{% if agreement %}
+<h2>Contrato {{ agreement.id }}</h2>
+<p>Status: <strong>{{ agreement.get_status_display }}</strong></p>
+<p>Limite na emissão: R$ {{ agreement.snapshot.limit }} · Emitido em {{ agreement.snapshot.date }}</p>
+<div class="info-panel"><p style="white-space:pre-wrap;overflow-wrap:anywhere">{{ agreement.snapshot.terms }}</p></div>
+<p><a class="button" href="{% url 'credit_contract_pdf' agreement.id %}">Baixar contrato em PDF para assinatura</a></p>
+{% if agreement.signed_document %}<p><a href="{% url 'credit_signed_file' agreement.id %}">Baixar PDF enviado</a></p>{% endif %}
+{% if agreement.status == 'issued' %}
+<p><a href="https://assinador.iti.br/" target="_blank" rel="noopener noreferrer">Abrir assinador gov.br</a></p>
+<p>Envie o PDF assinado. O envio ficará em conferência antes da liberação do crediário.</p>
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+<input type="hidden" name="action" value="upload"><input type="hidden" name="agreement_id" value="{{ agreement.id }}">
+{{ signed_form.as_p }}<button type="submit">Enviar PDF assinado</button></form>
+{% endif %}
+{% endif %}
+{% if can_issue %}
+{% if not agreement or agreement.status == 'rejected' %}
+<form method="post">{% csrf_token %}<input type="hidden" name="action" value="issue">
+{{ identity_form.as_p }}<button type="submit">Gerar contrato com meus dados</button></form>
+{% endif %}
+{% else %}<p>O PDF será liberado após a aprovação do cadastro e do limite.</p>{% endif %}
+<p><a href="{% url 'dashboard' %}">Voltar ao painel</a></p>
+{% endblock %}

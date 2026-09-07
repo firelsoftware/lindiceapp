@@ -1,0 +1,9 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+<h1>Contrato de crediário</h1>
+<p>Seus dados serão usados automaticamente nos novos contratos. Apenas administradores podem editar esta página.</p>
+{% for message in messages %}<p role="status">{{ message }}</p>{% endfor %}
+<form method="post">{% csrf_token %}{{ form.as_p }}<button type="submit">Salvar modelo e dados do vendedor</button></form>
+<p>Alterações valem para novas emissões. Contratos já emitidos ou assinados mantêm o texto e os dados originais.</p>
+<a href="{% url 'management_dashboard' %}">Voltar à gestão</a>
+{% endblock %}

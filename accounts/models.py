@@ -149,6 +149,7 @@ class ClientProfile(models.Model):
     finger_sizes = models.JSONField(default=dict, blank=True)
     extra_data = models.JSONField(default=dict, blank=True)
     pre_approved_credit_limit = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    credit_contract_required = models.BooleanField(default=True)
     first_purchase_discount_used = models.BooleanField(default=False)
     welcome_discount_expires_at = models.DateField(null=True, blank=True)
     referral_code = models.CharField(max_length=12, unique=True, null=True, blank=True)
@@ -177,6 +178,28 @@ class ClientProfile(models.Model):
     @staticmethod
     def generate_cpf_placeholder():
         return hashlib.sha256(uuid.uuid4().hex.encode()).hexdigest()
+
+    def credit_used(self):
+        """Quanto do limite esta comprometido: soma o principal em aberto.
+
+        A conta olha a divida, nao a venda. Amarrar no status da venda deixava
+        um buraco: bastava marcar a venda como cancelada na administracao para
+        o limite voltar inteiro enquanto as parcelas seguiam abertas e sendo
+        cobradas. So parcela de crediario tem principal_amount diferente de
+        zero, entao somar as dividas abertas ja da o numero certo.
+        """
+        return money(
+            self.user.debts.filter(paid=False, canceled=False).aggregate(
+                total=Sum("principal_amount")
+            )["total"]
+            or Decimal("0.00")
+        )
+
+    def credit_available(self):
+        return max(Decimal("0.00"), money(self.pre_approved_credit_limit - self.credit_used()))
+
+    def credit_contract_ready(self):
+        return not self.credit_contract_required or self.credit_agreements.filter(status="verified").exists()
 
     def has_cpf(self):
         return bool(self.cpf_last_digits)
@@ -1222,6 +1245,12 @@ class CreditSale(models.Model):
     selected_installment_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     selected_total_with_interest = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     financed_total_with_interest = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    entry_waived = models.BooleanField(default=False)
+    credit_agreement = models.ForeignKey('CreditAgreement', null=True, blank=True, on_delete=models.PROTECT, related_name='sales')
+    entry_waived_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="credit_entry_waivers")
+    entry_waived_at = models.DateTimeField(null=True, blank=True)
+    entry_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    principal_financed = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     remainder_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     remainder_payment_method = models.CharField(max_length=20, choices=REMAINDER_PAYMENT_CHOICES, blank=True)
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_PENDING)
@@ -1387,24 +1416,83 @@ class CreditSale(models.Model):
         }
 
     def credit_financed_amount(self):
+        """Quanto desta compra entra no carne.
+
+        Compra maior que o saldo nao e recusada: parcela o que cabe no saldo e
+        o que sobra vira "acima do limite", pago a vista junto com a entrada.
+        Recusar a compra inteira so faria a loja perder a venda.
+        """
         if not self.client_id:
             return Decimal("0.00")
 
-        credit_limit = self.client.profile.pre_approved_credit_limit
-        discounted_total = self.discounted_total_amount()
+        if self.status == self.ACCEPTED and self.selected_payment_method == self.CREDIT:
+            return self.principal_financed
 
-        if credit_limit <= Decimal("0.00"):
-            return money(discounted_total)
+        a_parcelar = money(max(Decimal("0.00"), self.discounted_total_amount() - self.credit_entry_amount()))
+        perfil = self.client.profile
 
-        return money(min(discounted_total, credit_limit))
+        # Limite zero e "a loja ainda nao definiu limite", nao "sem crediario".
+        # Era assim antes; tratar como zero disponivel deixaria sem comprar todo
+        # cliente aprovado que nunca teve um limite digitado.
+        if perfil.pre_approved_credit_limit <= Decimal("0.00"):
+            return a_parcelar
+
+        return money(min(a_parcelar, perfil.credit_available()))
+
+    def credit_above_limit_amount(self):
+        """O pedaco da compra que nao coube no saldo e sai a vista."""
+        if self.status == self.ACCEPTED and self.selected_payment_method == self.CREDIT:
+            return money(
+                max(
+                    Decimal("0.00"),
+                    self.discounted_total_amount() - self.entry_amount - self.principal_financed,
+                )
+            )
+
+        a_parcelar = money(max(Decimal("0.00"), self.discounted_total_amount() - self.credit_entry_amount()))
+
+        return money(max(Decimal("0.00"), a_parcelar - self.credit_financed_amount()))
+
+
+    def credit_entry_amount(self):
+        if self.status == self.ACCEPTED and self.selected_payment_method == self.CREDIT:
+            return self.entry_amount
+        if not self.client_id or self.entry_waived:
+            return Decimal("0.00")
+        previous = self.client.credit_sales.filter(status=self.ACCEPTED, selected_payment_method=self.CREDIT).exclude(pk=self.pk)
+        if previous.exists():
+            return Decimal("0.00")
+        return min(Decimal("20.00"), self.discounted_total_amount())
 
     def credit_remainder_amount(self):
-        discounted_total = self.discounted_total_amount()
-        financed_amount = self.credit_financed_amount()
-        remainder = discounted_total - financed_amount
-        return money(remainder) if remainder > Decimal("0.00") else Decimal("0.00")
+        """Tudo que o cliente paga fora do carne: a entrada mais o que passou do limite."""
+        return money(self.credit_entry_amount() + self.credit_above_limit_amount())
 
+    @transaction.atomic
     def choose_payment(self, payment_method, installments=None, use_welcome_discount=False, remainder_payment_method="", use_points=False):
+        # Serialize decisions per customer, including two simultaneous checkouts.
+        if self.client_id:
+            ClientProfile.objects.select_for_update().get(user_id=self.client_id)
+        current = CreditSale.objects.select_for_update().get(pk=self.pk)
+        if current.status == self.CANCELED or current.payment_status == self.PAYMENT_PAID:
+            raise ValueError("Esta compra não pode mais ser alterada.")
+        if current.status == self.ACCEPTED and current.selected_payment_method == self.CREDIT:
+            raise ValueError("Crediário já confirmado. Para alterar, fale com a loja.")
+        self.entry_waived = current.entry_waived
+        self.status = current.status
+        if payment_method not in {self.PIX, self.CARD, self.CREDIT}:
+            raise ValueError("Forma de pagamento inválida.")
+        if payment_method == self.CREDIT:
+            if not self.can_use_credit():
+                raise ValueError("Seu cadastro precisa estar aprovado para usar o crediário.")
+            if not self.client.profile.credit_contract_ready():
+                raise ValueError("Assine o contrato pelo gov.br e aguarde a conferência da loja.")
+            if self.client.debts.filter(paid=False, canceled=False).filter(
+                models.Q(due_date__lt=timezone.localdate()) | models.Q(is_credit_entry=True)
+            ).exists():
+                raise ValueError("Há pagamento pendente. Fale com a loja para regularizar o crediário.")
+            if self.credit_financed_amount() <= 0:
+                raise ValueError("Saldo insuficiente ou compra sem valor a parcelar. Consulte seu limite ou pague à vista.")
         if self.payment_status == self.PAYMENT_PAID:
             raise ValueError("Pagamento ja confirmado.")
 
@@ -1454,6 +1542,10 @@ class CreditSale(models.Model):
         if selected_option is None:
             raise ValueError("Opcao de pagamento invalida.")
 
+        if payment_method == self.CREDIT:
+            self.entry_amount = self.credit_entry_amount()
+            self.principal_financed = self.credit_financed_amount()
+            self.credit_agreement = self.client.profile.credit_agreements.filter(status='verified').order_by('-id').first()
         self.selected_payment_method = payment_method
         self.selected_installments = installments
         self.selected_monthly_interest_percent = selected_option["monthly_rate"]
@@ -1470,12 +1562,17 @@ class CreditSale(models.Model):
         if payment_method != self.CREDIT:
             return
 
+        # A entrada sai no fechamento, junto com o Pix ou o cartao (ela entra em
+        # remainder_amount). Criar divida aqui tambem cobraria o mesmo dinheiro
+        # duas vezes: uma no caixa e outra no carne.
+        principal_part = money(self.principal_financed / Decimal(installments))
         for number in range(1, installments + 1):
             Debt.objects.create(
                 client=self.client,
                 credit_sale=self,
                 description=f"{self.description} - Parcela {number} de {installments}",
-                amount=selected_option["installment_amount"],
+                amount=(selected_option["total"] - selected_option["installment_amount"] * (installments - 1)) if number == installments else selected_option["installment_amount"],
+                principal_amount=(self.principal_financed - principal_part * (installments - 1)) if number == installments else principal_part,
                 due_date=add_months(self.first_due_date, number - 1),
             )
 
@@ -1586,6 +1683,8 @@ class PaymentAlert(models.Model):
 
 
 class Debt(models.Model):
+    principal_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    is_credit_entry = models.BooleanField(default=False)
     client = models.ForeignKey(User, on_delete=models.CASCADE, related_name="debts")
     credit_sale = models.ForeignKey(
         CreditSale,
@@ -1889,3 +1988,43 @@ class StoreReel(models.Model):
 
     def is_youtube(self):
         return bool(self.youtube_id())
+
+
+class CreditAgreementSettings(models.Model):
+    """Dados do vendedor que entram no contrato (linha unica).
+
+    Nome, CPF e telefone ficam em branco de proposito: sao dado pessoal e nao
+    podem morar no codigo, que vai para o repositorio e para o historico. A
+    loja preenche uma vez na tela de configuracao e eles ficam so no banco.
+    """
+
+    from .credit_defaults import DEFAULT_CREDIT_TERMS
+
+    seller_name = models.CharField(max_length=150, blank=True)
+    seller_cpf = models.CharField(max_length=14, blank=True)
+    seller_phone = models.CharField(max_length=30, blank=True)
+    terms = models.TextField(default=DEFAULT_CREDIT_TERMS)
+    updated_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="credit_contract_settings_updates")
+    updated_at = models.DateTimeField(auto_now=True)
+
+    @classmethod
+    def load(cls):
+        return cls.objects.get_or_create(pk=1)[0]
+
+    def esta_completo(self):
+        """Contrato sem nome e CPF do vendedor nao vale nada. Melhor nao emitir."""
+        return bool(self.seller_name.strip() and self.seller_cpf.strip())
+
+
+class CreditAgreement(models.Model):
+    ISSUED = "issued"
+    SUBMITTED = "submitted"
+    VERIFIED = "verified"
+    REJECTED = "rejected"
+    profile = models.ForeignKey(ClientProfile, on_delete=models.CASCADE, related_name="credit_agreements")
+    snapshot = models.JSONField(default=dict)
+    status = models.CharField(max_length=16, default=ISSUED, choices=[(ISSUED, "Aguardando assinatura"), (SUBMITTED, "Em conferência"), (VERIFIED, "Conferido"), (REJECTED, "Novo envio necessário")])
+    signed_document = models.FileField(upload_to="credit_contracts/", blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+    reviewed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name="reviewed_credit_agreements")

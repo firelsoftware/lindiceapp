@@ -3,6 +3,12 @@
 {% block content %}
 <h1>Finalizar compra</h1>
 
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+    </ul>
+{% endif %}
+
 <p>Venda: <strong>{{ sale.description }}</strong></p>
 <p>Cliente: <strong>{{ sale.customer_name }}</strong>{% if sale.customer_email %} · {{ sale.customer_email }}{% endif %}</p>
 <p>Valor original: <strong>R$ {{ sale.total_amount|floatformat:2 }}</strong></p>
@@ -91,8 +97,30 @@
 
     {% if credit_requires_registration %}
         <section class="info-panel">
-            <h2>Crediario</h2>
-            <p>Para seguir no crediario, o cliente precisa concluir cadastro com CPF e documentos.</p>
+            <h2>Crediário</h2>
+            <p>Para usar o crediário, é preciso concluir o cadastro com CPF e documentos.</p>
+        </section>
+    {% else %}
+        <section class="info-panel">
+            <h2>Crediário</h2>
+            {% with perfil=request.user.profile %}
+                {% if request.user.is_authenticated and not perfil.credit_contract_ready %}
+                    <p><a href="{% url 'credit_contract' %}">Consultar o contrato e enviar a assinatura do gov.br</a> — sem isso o crediário fica indisponível.</p>
+                {% endif %}
+                {% if sale.credit_entry_amount %}
+                    <p>Entrada nesta compra: <strong>R$ {{ sale.credit_entry_amount|floatformat:2 }}</strong>, paga no fechamento junto com o Pix ou o cartão.</p>
+                {% endif %}
+                {% if sale.credit_above_limit_amount %}
+                    <p>Do valor da compra, <strong>R$ {{ sale.credit_financed_amount|floatformat:2 }}</strong> cabem no seu limite e vão para o carnê.
+                    Os outros <strong>R$ {{ sale.credit_above_limit_amount|floatformat:2 }}</strong> são pagos no fechamento.</p>
+                {% endif %}
+                {% if not credit_options %}
+                    <p>Sem parcelamento disponível para esta compra.
+                    {% if perfil.pre_approved_credit_limit %}Seu saldo hoje é de <strong>R$ {{ perfil.credit_available|floatformat:2 }}</strong>.{% endif %}
+                    Confira o painel ou fale com a loja.</p>
+                {% endif %}
+                <p>O limite volta a ficar disponível conforme a loja confirma os pagamentos.</p>
+            {% endwith %}
         </section>
     {% endif %}
 
@@ -183,10 +211,10 @@
             <p><strong>Antes de confirmar, lembre-se: atraso no crediario gera multa de {{ credit_late_fee_percent|floatformat:0 }}% e juros de {{ credit_monthly_interest_percent|floatformat:0 }}% ao mes.</strong></p>
             {% if credit_remainder_amount > 0 %}
                 <section class="info-panel">
-                    <h3>Complemento fora do crediario</h3>
+                    <h3>Entrada da compra</h3>
                     <p>Limite do crediario usado nesta compra: <strong>R$ {{ credit_financed_amount|floatformat:2 }}</strong></p>
-                    <p>Restante para pagar por fora: <strong>R$ {{ credit_remainder_amount|floatformat:2 }}</strong></p>
-                    <label for="{{ form.remainder_payment_method.id_for_label }}">Como pagar o restante</label>
+                    <p>Entrada a pagar: <strong>R$ {{ credit_remainder_amount|floatformat:2 }}</strong></p>
+                    <label for="{{ form.remainder_payment_method.id_for_label }}">Como pagar a entrada</label>
                     {{ form.remainder_payment_method }}
                     {% if form.remainder_payment_method.errors %}
                         <div class="errorlist">{{ form.remainder_payment_method.errors }}</div>

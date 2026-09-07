@@ -579,6 +579,7 @@ def build_purchase_groups(user):
                     "installments": sale.selected_installments,
                     "payment_method": sale.get_selected_payment_method_display() if sale.selected_payment_method else "",
                     "sale_id": sale.id,
+                    "credit_agreement_id": sale.credit_agreement_id,
                     "payment_status": sale.get_payment_status_display(),
                     "remainder_amount": sale.remainder_amount,
                     "remainder_payment_method": sale.get_remainder_payment_method_display() if sale.remainder_payment_method else "",
@@ -3184,16 +3185,20 @@ def choose_installments(request, sale_id):
         if form.is_valid():
             was_pending = sale.status == CreditSale.PENDING
 
-            with transaction.atomic():
-                if form.cleaned_data["first_due_date"]:
-                    sale.first_due_date = form.cleaned_data["first_due_date"]
-                sale.choose_payment(
-                    form.cleaned_data["payment_method"],
-                    form.cleaned_data["installments"],
-                    form.cleaned_data["use_welcome_discount"],
-                    form.cleaned_data["remainder_payment_method"],
-                    form.cleaned_data.get("use_points", False),
-                )
+            try:
+                with transaction.atomic():
+                    if form.cleaned_data["first_due_date"]:
+                        sale.first_due_date = form.cleaned_data["first_due_date"]
+                    sale.choose_payment(
+                        form.cleaned_data["payment_method"],
+                        form.cleaned_data["installments"],
+                        form.cleaned_data["use_welcome_discount"],
+                        form.cleaned_data["remainder_payment_method"],
+                        form.cleaned_data.get("use_points", False),
+                    )
+            except ValueError as exc:
+                messages.error(request, str(exc))
+                return redirect("choose_installments", sale_id=sale.pk) if request.user.is_authenticated and sale.client_id == request.user.pk else redirect("public_choose_installments", public_token=sale.public_token)
 
             if was_pending:
                 create_sale_confirmed_notifications(sale)
@@ -3279,16 +3284,20 @@ def public_choose_installments(request, public_token):
         if form.is_valid():
             was_pending = sale.status == CreditSale.PENDING
 
-            with transaction.atomic():
-                if form.cleaned_data["first_due_date"]:
-                    sale.first_due_date = form.cleaned_data["first_due_date"]
-                sale.choose_payment(
-                    form.cleaned_data["payment_method"],
-                    form.cleaned_data["installments"],
-                    form.cleaned_data["use_welcome_discount"],
-                    form.cleaned_data["remainder_payment_method"],
-                    form.cleaned_data.get("use_points", False),
-                )
+            try:
+                with transaction.atomic():
+                    if form.cleaned_data["first_due_date"]:
+                        sale.first_due_date = form.cleaned_data["first_due_date"]
+                    sale.choose_payment(
+                        form.cleaned_data["payment_method"],
+                        form.cleaned_data["installments"],
+                        form.cleaned_data["use_welcome_discount"],
+                        form.cleaned_data["remainder_payment_method"],
+                        form.cleaned_data.get("use_points", False),
+                    )
+            except ValueError as exc:
+                messages.error(request, str(exc))
+                return redirect("choose_installments", sale_id=sale.pk) if request.user.is_authenticated and sale.client_id == request.user.pk else redirect("public_choose_installments", public_token=sale.public_token)
 
             if was_pending and sale.client_id:
                 create_sale_confirmed_notifications(sale)

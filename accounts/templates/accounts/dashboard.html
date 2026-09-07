@@ -2,6 +2,13 @@
 
 {% block content %}
 <h1>Minhas compras</h1>
+<section class="info-panel">
+<h2>Meu crediário</h2>
+<p>Limite total: <strong>R$ {{ request.user.profile.pre_approved_credit_limit|floatformat:2 }}</strong></p>
+<p>Utilizado: <strong>R$ {{ request.user.profile.credit_used|floatformat:2 }}</strong> · Disponível: <strong>R$ {{ request.user.profile.credit_available|floatformat:2 }}</strong></p>
+<p>O valor correspondente à compra volta ao seu saldo após a confirmação de cada parcela paga. Juros e multas não aumentam o limite.</p>
+<a class="button" href="{% url 'credit_contract' %}">Meu contrato de crediário</a>
+</section>
 
 {% if points_active %}
 <details class="cashback-card">
@@ -115,7 +122,8 @@
         {% if group.payment_method == "Cartao" and group.mercado_pago_init_point and group.payment_status != "Pago" %}
             <p><a class="button" href="{{ group.mercado_pago_init_point }}">Pagar com Mercado Pago</a></p>
         {% endif %}
-        {% if group.sale_id and group.payment_status != "Pago" %}
+        {% if group.credit_agreement_id %}<p><a href="{% url 'credit_purchase_pdf' group.sale_id %}">Baixar resumo da compra e contrato em PDF</a></p>{% endif %}
+        {% if group.sale_id and group.payment_status != "Pago" and group.payment_method != "Crediario" %}
             <p><a class="button button-secondary" href="{% url 'choose_installments' group.sale_id %}">Escolher outra forma de pagamento</a></p>
         {% endif %}
         {% if group.remainder_amount %}

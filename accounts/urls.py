@@ -1,9 +1,16 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
 
-from . import views
+from . import views, credit_views
 
 urlpatterns = [
+    path("crediario/compra/<int:sale_id>/pdf/", credit_views.purchase_pdf, name="credit_purchase_pdf"),
+    path("crediario/contrato/", credit_views.my_contract, name="credit_contract"),
+    path("crediario/contrato/<int:agreement_id>/pdf/", credit_views.contract_pdf, name="credit_contract_pdf"),
+    path("crediario/contrato/<int:agreement_id>/assinado/", credit_views.signed_file, name="credit_signed_file"),
+    path("gestao/crediario/contrato/", credit_views.contract_settings, name="credit_contract_settings"),
+    path("gestao/crediario/cliente/<int:profile_id>/", credit_views.review_contract, name="credit_contract_review"),
+    path("gestao/crediario/venda/<int:sale_id>/entrada/", credit_views.waive_entry, name="credit_entry_waive"),
     path("", views.home, name="home"),
     path(".well-known/assetlinks.json", views.assetlinks, name="assetlinks"),
     path("service-worker.js", views.service_worker, name="service_worker"),

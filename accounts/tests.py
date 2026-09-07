@@ -406,6 +406,9 @@ class CreditSalePaymentChoiceTests(TestCase):
             "residence_proof": SimpleUploadedFile("comprovante.pdf", b"pdf"),
             "registration_status": ClientProfile.APPROVED,
             "welcome_discount_expires_at": timezone.localdate() + timedelta(days=90),
+            # Cliente antigo, de antes do contrato: a migracao 0064 dispensa
+            # quem ja comprava no crediario, e e esse o caso destes testes.
+            "credit_contract_required": False,
         }
         profile_data.update(profile_overrides)
         ClientProfile.objects.create(
@@ -499,6 +502,7 @@ class CreditSalePaymentChoiceTests(TestCase):
                 "payment_method": CreditSale.CREDIT,
                 "installments": "2",
                 "first_due_date": self.credit_due_date_input(),
+                "remainder_payment_method": CreditSale.REMAINDER_PIX,
                 "accept_terms": "on",
             },
             follow=True,
@@ -639,6 +643,7 @@ class CreditSalePaymentChoiceTests(TestCase):
                 "payment_method": CreditSale.CREDIT,
                 "installments": "2",
                 "first_due_date": self.credit_due_date_input(),
+                "remainder_payment_method": CreditSale.REMAINDER_PIX,
                 "accept_terms": "on",
             },
         )
@@ -648,15 +653,20 @@ class CreditSalePaymentChoiceTests(TestCase):
         self.assertEqual(sale.selected_payment_method, CreditSale.CREDIT)
         self.assertEqual(Debt.objects.filter(credit_sale=sale).count(), 2)
 
-    def test_changing_credit_choice_replaces_existing_debts(self):
+    def test_confirmed_credit_purchase_cannot_be_changed_again(self):
+        # Trocar o parcelamento de uma compra ja confirmada mexeria no limite
+        # ja comprometido e nas parcelas ja criadas. Agora precisa passar pela
+        # loja, e o cliente recebe o recado dizendo isso.
         user = self.create_client()
         sale = self.create_sale(user)
         sale.refresh_from_db()
 
-        sale.choose_payment(CreditSale.CREDIT, 2)
-        sale.choose_payment(CreditSale.CREDIT, 1)
+        sale.choose_payment(CreditSale.CREDIT, 2, remainder_payment_method=CreditSale.REMAINDER_PIX)
 
-        self.assertEqual(Debt.objects.filter(credit_sale=sale).count(), 1)
+        with self.assertRaisesMessage(ValueError, "Crediário já confirmado"):
+            sale.choose_payment(CreditSale.CREDIT, 1, remainder_payment_method=CreditSale.REMAINDER_PIX)
+
+        self.assertEqual(Debt.objects.filter(credit_sale=sale).count(), 2)
 
     def test_welcome_discount_is_used_once_and_does_not_change_previous_debt(self):
         user = self.create_client()
@@ -664,12 +674,19 @@ class CreditSalePaymentChoiceTests(TestCase):
             client=user,
             description="Debito anterior",
             amount=Decimal("80.00"),
-            due_date="2026-06-05",
+            # Em dia de proposito: debito vencido barra crediario novo, e nao e
+            # isso que este teste mede.
+            due_date=timezone.localdate() + timedelta(days=15),
         )
-        first_sale = self.create_sale(user, first_due_date=datetime(2026, 6, 10).date())
-        second_sale = self.create_sale(user, description="Segunda compra", first_due_date=datetime(2026, 7, 10).date())
+        first_sale = self.create_sale(user, first_due_date=timezone.localdate() + timedelta(days=20))
+        second_sale = self.create_sale(
+            user, description="Segunda compra", first_due_date=timezone.localdate() + timedelta(days=50)
+        )
 
-        first_sale.choose_payment(CreditSale.CREDIT, 1, use_welcome_discount=True)
+        first_sale.choose_payment(
+            CreditSale.CREDIT, 1, use_welcome_discount=True,
+            remainder_payment_method=CreditSale.REMAINDER_PIX,
+        )
         second_sale.choose_payment(CreditSale.CREDIT, 1)
         previous_debt.refresh_from_db()
         first_sale.refresh_from_db()
@@ -692,6 +709,7 @@ class CreditSalePaymentChoiceTests(TestCase):
                 "payment_method": CreditSale.CREDIT,
                 "installments": "2",
                 "first_due_date": self.credit_due_date_input(),
+                "remainder_payment_method": CreditSale.REMAINDER_PIX,
                 "accept_terms": "on",
             },
         )
