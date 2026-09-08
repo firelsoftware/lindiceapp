@@ -101,6 +101,7 @@ urlpatterns = [
     path("gestao/", views.management_dashboard, name="management_dashboard"),
     path("gestao/clientes/", views.clients_list, name="clients_list"),
     path("gestao/cadastros/<int:profile_id>/", views.review_client_profile, name="review_client_profile"),
+    path("gestao/cadastros/<int:profile_id>/pontos/", views.lancar_pontos, name="lancar_pontos"),
     path("gestao/debitos/novo/", views.create_manual_debt, name="create_manual_debt"),
     path("gestao/debitos/<int:debt_id>/pagamento/", views.update_debt_payment, name="update_debt_payment"),
     path("gestao/vendas/nova/", views.create_credit_sale, name="create_credit_sale"),

@@ -256,6 +256,66 @@
     </table>
 </section>
 
+<section class="info-panel">
+    <h2>Pontos</h2>
+
+    <p class="pontos-saldo">
+        <strong>{{ pontos_saldo }}</strong> ponto{{ pontos_saldo|pluralize }}
+        {% if pontos_saldo >= pontos_teto %}
+            <span class="badge">no teto de {{ pontos_teto }}</span>
+        {% else %}
+            <span class="store-product-note">de um teto de {{ pontos_teto }}</span>
+        {% endif %}
+    </p>
+
+    {% if not pontos_ligados %}
+        <p class="store-product-note">
+            O programa de pontos ainda está desligado, então o cliente não vê esse saldo.
+            Você pode lançar mesmo assim: os pontos ficam guardados e aparecem quando você ligar
+            em <a href="{% url 'staff_loyalty_settings' %}">Configurações da loja</a>.
+        </p>
+    {% endif %}
+
+    <form method="post" action="{% url 'lancar_pontos' profile.id %}" class="pontos-form">
+        {% csrf_token %}
+        <p>
+            <label for="{{ pontos_form.pontos.id_for_label }}">{{ pontos_form.pontos.label }}</label>
+            {{ pontos_form.pontos }}
+            <small>{{ pontos_form.pontos.help_text }}</small>
+        </p>
+        <p>
+            <label for="{{ pontos_form.motivo.id_for_label }}">{{ pontos_form.motivo.label }}</label>
+            {{ pontos_form.motivo }}
+            <small>{{ pontos_form.motivo.help_text }}</small>
+        </p>
+        <div class="action-row">
+            <button type="submit">Lançar pontos</button>
+        </div>
+    </form>
+
+    {% if pontos_historico %}
+        <h3>Últimos lançamentos</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Quando</th><th>Pontos</th><th>Motivo</th></tr>
+                </thead>
+                <tbody>
+                    {% for lancamento in pontos_historico %}
+                        <tr>
+                            <td>{{ lancamento.created_at|date:"d/m/Y H:i" }}</td>
+                            <td class="pontos-valor {% if lancamento.points < 0 %}pontos-menos{% else %}pontos-mais{% endif %}">
+                                {% if lancamento.points > 0 %}+{% endif %}{{ lancamento.points }}
+                            </td>
+                            <td>{{ lancamento.description|default:lancamento.get_kind_display }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</section>
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

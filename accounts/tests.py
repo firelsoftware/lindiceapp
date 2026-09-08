@@ -2174,6 +2174,145 @@ class StoreFlowTests(TestCase):
         self.assertContains(response, "Dropshipping Revenda de Calcados")
         self.assertContains(response, "https://example.com/dropshipping")
 
+    def cliente_com_ficha(self, email="cliente-pontos@example.com"):
+        user = User.objects.create_user(
+            email=email,
+            password="Teste12345!",
+            full_name="Cliente Pontos",
+            preferred_name="Cliente",
+        )
+
+        return ClientProfile.objects.create(
+            user=user,
+            cpf_hash=ClientProfile.generate_cpf_placeholder(),
+            cpf_last_digits="4725",
+            phone="61999999999",
+            registration_status=ClientProfile.APPROVED,
+        )
+
+    def loja_logada(self, email="admin-pontos@example.com"):
+        staff = User.objects.create_superuser(
+            email=email,
+            password="Teste12345!",
+            full_name="Admin Pontos",
+            preferred_name="Admin",
+        )
+        self.client.force_login(staff)
+
+        return staff
+
+    def test_store_gives_points_by_hand_with_a_reason(self):
+        profile = self.cliente_com_ficha()
+        self.loja_logada()
+
+        resposta = self.client.post(
+            f"/gestao/cadastros/{profile.id}/pontos/",
+            {"pontos": "50", "motivo": "Indicou a vizinha"},
+            follow=True,
+        )
+
+        self.assertContains(resposta, "50 ponto(s) para Cliente Pontos")
+        self.assertEqual(points_balance(profile.user), 50)
+
+        lancamento = PointsTransaction.objects.get(user=profile.user)
+        self.assertEqual(lancamento.kind, PointsTransaction.ADJUST)
+        # O motivo e quem lancou ficam registrados: mexer em ponto e mexer em
+        # dinheiro, e depois ninguem lembra por que aquele saldo esta ali.
+        self.assertIn("Indicou a vizinha", lancamento.description)
+        self.assertIn("Admin", lancamento.description)
+
+    def test_store_can_take_points_back(self):
+        profile = self.cliente_com_ficha()
+        PointsTransaction.objects.create(
+            user=profile.user, kind=PointsTransaction.ADJUST, points=80, description="Antes"
+        )
+        self.loja_logada()
+
+        self.client.post(
+            f"/gestao/cadastros/{profile.id}/pontos/",
+            {"pontos": "-30", "motivo": "Lancado por engano"},
+        )
+
+        self.assertEqual(points_balance(profile.user), 50)
+
+    def test_cannot_take_more_points_than_the_client_has(self):
+        profile = self.cliente_com_ficha()
+        PointsTransaction.objects.create(
+            user=profile.user, kind=PointsTransaction.ADJUST, points=20, description="Antes"
+        )
+        self.loja_logada()
+
+        resposta = self.client.post(
+            f"/gestao/cadastros/{profile.id}/pontos/",
+            {"pontos": "-50", "motivo": "Tentativa"},
+            follow=True,
+        )
+
+        self.assertContains(resposta, "nao da para tirar 50")
+        self.assertEqual(points_balance(profile.user), 20)
+
+    def test_points_entry_requires_a_reason(self):
+        profile = self.cliente_com_ficha()
+        self.loja_logada()
+
+        # Em branco: o proprio Django barra como campo obrigatorio.
+        resposta = self.client.post(
+            f"/gestao/cadastros/{profile.id}/pontos/",
+            {"pontos": "10", "motivo": "   "},
+            follow=True,
+        )
+        self.assertContains(resposta, "obrigat")
+        self.assertEqual(points_balance(profile.user), 0)
+
+        # Curto demais para explicar coisa nenhuma: recusa dizendo por que.
+        resposta = self.client.post(
+            f"/gestao/cadastros/{profile.id}/pontos/",
+            {"pontos": "10", "motivo": "x"},
+            follow=True,
+        )
+        self.assertContains(resposta, "Escreva o motivo")
+        self.assertEqual(points_balance(profile.user), 0)
+
+    def test_zero_points_is_refused(self):
+        profile = self.cliente_com_ficha()
+        self.loja_logada()
+
+        resposta = self.client.post(
+            f"/gestao/cadastros/{profile.id}/pontos/",
+            {"pontos": "0", "motivo": "Nada"},
+            follow=True,
+        )
+
+        self.assertContains(resposta, "Diga quantos pontos")
+        self.assertFalse(PointsTransaction.objects.exists())
+
+    def test_customer_cannot_give_points_to_themselves(self):
+        profile = self.cliente_com_ficha()
+        self.client.login(email=profile.user.email, password="Teste12345!")
+
+        resposta = self.client.post(
+            f"/gestao/cadastros/{profile.id}/pontos/",
+            {"pontos": "500", "motivo": "Eu mereco"},
+        )
+
+        self.assertEqual(resposta.status_code, 302)
+        self.assertIn("/login", resposta["Location"])
+        self.assertEqual(points_balance(profile.user), 0)
+
+    def test_points_panel_shows_balance_and_history_on_the_client_page(self):
+        profile = self.cliente_com_ficha()
+        PointsTransaction.objects.create(
+            user=profile.user, kind=PointsTransaction.ADJUST, points=40, description="Ajudou na troca"
+        )
+        self.loja_logada()
+
+        resposta = self.client.get(f"/gestao/cadastros/{profile.id}/")
+
+        self.assertContains(resposta, "Lançar pontos")
+        self.assertContains(resposta, "Ajudou na troca")
+        # Com o programa desligado, a tela avisa que o cliente ainda nao ve.
+        self.assertContains(resposta, "ainda está desligado")
+
     def test_supplier_page_offers_the_catalog_import(self):
         # A importacao de catalogo ja morou nesta tela, mudou de lugar numa
         # reorganizacao e ninguem percebeu por meses, porque nada testava a

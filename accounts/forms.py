@@ -622,6 +622,45 @@ class PersonalDebtForm(forms.ModelForm):
         return amount
 
 
+class LancamentoDePontosForm(forms.Form):
+    """Pontos dados (ou tirados) a mao pela loja.
+
+    Existe porque nem todo motivo cabe numa regra: cliente que indicou alguem
+    fora do sistema, que ajudou numa troca, que merece um agrado. A loja decide
+    e o lancamento fica registrado com o motivo e quem lancou.
+    """
+
+    LIMITE = 500
+
+    pontos = forms.IntegerField(
+        label="Pontos",
+        min_value=-LIMITE,
+        max_value=LIMITE,
+        help_text=f"Positivo para dar, negativo para tirar. Ate {LIMITE} de uma vez.",
+    )
+    motivo = forms.CharField(
+        label="Motivo",
+        max_length=180,
+        help_text="Fica no historico do cliente e aparece para ele.",
+    )
+
+    def clean_pontos(self):
+        pontos = self.cleaned_data["pontos"]
+
+        if pontos == 0:
+            raise ValidationError("Diga quantos pontos, para mais ou para menos.")
+
+        return pontos
+
+    def clean_motivo(self):
+        motivo = " ".join((self.cleaned_data["motivo"] or "").split())
+
+        if len(motivo) < 3:
+            raise ValidationError("Escreva o motivo: ele fica no historico do cliente.")
+
+        return motivo
+
+
 class SupplierCatalogSourceForm(forms.ModelForm):
     class Meta:
         model = SupplierCatalogSource

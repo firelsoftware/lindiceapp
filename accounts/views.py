@@ -34,8 +34,8 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from . import google_oauth
-from .forms import MAX_PRODUCT_PHOTOS_PER_UPLOAD, validate_product_photo, CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, NewSupplierProductForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
-from .models import StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance_capped, points_discount_percent, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .forms import LancamentoDePontosForm, MAX_PRODUCT_PHOTOS_PER_UPLOAD, validate_product_photo, CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, NewSupplierProductForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
+from .models import StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance, points_balance_capped, points_discount_percent, PointsTransaction, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .bucket_publico import conferir_se_e_publico, copiar_vitrine, PREFIXOS_DA_VITRINE
 from .espaco import atualizar_medicao, resumo_do_espaco, somar_arquivos
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
@@ -3703,6 +3703,56 @@ def notifications_mark_all_read(request):
 
 
 @staff_member_required(login_url="login")
+def lancar_pontos(request, profile_id):
+    """Da ou tira pontos de um cliente, a mao.
+
+    Nem todo motivo cabe numa regra automatica: a loja ve quem merece e lanca,
+    com o motivo registrado. Fica no historico do cliente como qualquer outro
+    ganho, e o resgate funciona igual.
+    """
+    profile = get_object_or_404(ClientProfile, id=profile_id)
+    volta = redirect("review_client_profile", profile_id=profile.id)
+
+    if request.method != "POST":
+        return volta
+
+    form = LancamentoDePontosForm(request.POST)
+
+    if not form.is_valid():
+        for erros in form.errors.values():
+            for erro in erros:
+                messages.error(request, erro)
+
+        return volta
+
+    pontos = form.cleaned_data["pontos"]
+    motivo = form.cleaned_data["motivo"]
+    saldo = points_balance(profile.user)
+
+    if pontos < 0 and saldo + pontos < 0:
+        messages.error(
+            request,
+            f"{profile.user.full_name} tem {saldo} ponto(s): nao da para tirar {abs(pontos)}.",
+        )
+
+        return volta
+
+    PointsTransaction.objects.create(
+        user=profile.user,
+        kind=PointsTransaction.ADJUST,
+        points=pontos,
+        description=f"{motivo} (lancado por {request.user.preferred_name or request.user.full_name})"[:180],
+    )
+
+    if pontos > 0:
+        messages.success(request, f"{pontos} ponto(s) para {profile.user.full_name}. Saldo agora: {points_balance(profile.user)}.")
+    else:
+        messages.success(request, f"{abs(pontos)} ponto(s) retirados. Saldo agora: {points_balance(profile.user)}.")
+
+    return volta
+
+
+@staff_member_required(login_url="login")
 def review_client_profile(request, profile_id):
     profile = get_object_or_404(ClientProfile, id=profile_id)
     financial_summary = build_client_financial_summary(profile)
@@ -3798,6 +3848,11 @@ def review_client_profile(request, profile_id):
             "form": form,
             "profile": profile,
             "partner_config": partner_profile_config(profile.user),
+            "pontos_form": LancamentoDePontosForm(),
+            "pontos_saldo": points_balance(profile.user),
+            "pontos_teto": StoreSettings.load().points_cap,
+            "pontos_ligados": StoreSettings.load().points_active,
+            "pontos_historico": profile.user.points_transactions.order_by("-created_at")[:10],
         },
     )
 
