@@ -25,10 +25,10 @@
     <meta property="og:image" content="{% block og_imagem %}{% static 'accounts/lindice-icon-512.png' %}{% endblock %}">
     <meta property="og:type" content="{% block og_tipo %}website{% endblock %}">
     <meta property="og:site_name" content="Líndice">
-    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:url" content="{{ endereco_canonico }}">
     <meta property="og:locale" content="pt_BR">
     <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}">
-    <link rel="canonical" href="{% block canonica %}{{ request.build_absolute_uri }}{% endblock %}">
+    <link rel="canonical" href="{% block canonica %}{{ endereco_canonico }}{% endblock %}">
     <title>{% block titulo %}Líndice{% endblock %}</title>
     {% block dados_estruturados %}{% endblock %}
     <link rel="icon" type="image/svg+xml" href="{% static 'accounts/lindice-icon.svg' %}?v=20260623">

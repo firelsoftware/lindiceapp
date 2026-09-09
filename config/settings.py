@@ -312,6 +312,11 @@ MERCADO_PAGO_WEBHOOK_SECRET = os.environ.get("MERCADO_PAGO_WEBHOOK_SECRET", "")
 MERCADO_PAGO_ACCOUNT_URL = os.environ.get("MERCADO_PAGO_ACCOUNT_URL", "")
 CARD_PAYMENT_ENABLED = env_bool("CARD_PAYMENT_ENABLED", default=True)
 PUBLIC_SITE_URL = os.environ.get("PUBLIC_SITE_URL", "")
+# O endereco que o buscador deve guardar. O site atende em mais de um dominio
+# (app.lindice.com.br, e o www quando entrar): sem escolher um, o Google trata
+# cada um como uma copia do site inteiro e divide a forca entre eles. Em branco,
+# cada pagina continua se apresentando pelo endereco por onde a visita chegou.
+SITE_CANONICO = os.environ.get("SITE_CANONICO", "").strip().rstrip("/")
 STORE_CONTACT_EMAIL = os.environ.get("STORE_CONTACT_EMAIL", "lindicecalcados@gmail.com")
 
 # Envio de e-mail. Se EMAIL_HOST nao estiver configurado, cai no backend de

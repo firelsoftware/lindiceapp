@@ -38,6 +38,7 @@ from .forms import LancamentoDePontosForm, MAX_PRODUCT_PHOTOS_PER_UPLOAD, valida
 from .models import CapaDoSite, StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance, points_balance_capped, points_discount_percent, PointsTransaction, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .bucket_publico import conferir_se_e_publico, copiar_vitrine, PREFIXOS_DA_VITRINE
 from .espaco import atualizar_medicao, resumo_do_espaco, somar_arquivos
+from .seo import endereco_publico
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import MercadoPagoNotConfigured, MercadoPagoRequestError, create_cart_checkout_preference, create_checkout_preference, create_credit_sale_card_preference, get_payment, payment_method_from_payment, verify_webhook_signature
 from .store_shipping import SHIPPING_COSTS, shipping_cost_for
@@ -1945,7 +1946,7 @@ def store_product_detail(request, product_id):
     product.pagamentos_seo = product.payment_options()
     # O WhatsApp e o Facebook exigem endereco completo na foto: com caminho
     # relativo eles nao mostram previa nenhuma.
-    foto_para_compartilhar = request.build_absolute_uri(gallery[0]) if gallery else ""
+    foto_para_compartilhar = endereco_publico(request, gallery[0]) if gallery else ""
 
     # Outros modelos da mesma categoria, para o cliente continuar olhando sem
     # ter que voltar para a vitrine.
@@ -2004,8 +2005,8 @@ def ficha_do_produto_para_busca(request, produto, galeria):
         "@context": "https://schema.org",
         "@type": "Product",
         "name": produto.name,
-        "url": request.build_absolute_uri(),
-        "image": [request.build_absolute_uri(foto) for foto in galeria[:6]],
+        "url": endereco_publico(request),
+        "image": [endereco_publico(request, foto) for foto in galeria[:6]],
         "sku": produto.supplier_code or str(produto.id),
     }
 
@@ -2014,7 +2015,7 @@ def ficha_do_produto_para_busca(request, produto, galeria):
     if produto.suggested_sale_price and produto.suggested_sale_price > 0:
         ficha["offers"] = {
             "@type": "Offer",
-            "url": request.build_absolute_uri(),
+            "url": endereco_publico(request),
             "priceCurrency": "BRL",
             "price": f"{produto.suggested_sale_price:.2f}",
             "availability": (

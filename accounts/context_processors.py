@@ -2,6 +2,8 @@ from urllib.parse import quote
 
 from django.conf import settings
 
+from .seo import endereco_publico
+
 from .notifications import generate_due_notifications
 
 
@@ -46,6 +48,7 @@ def site_analytics(request):
         "store_whatsapp_label": legivel,
         "store_instagram_url": instagram,
         "store_instagram_handle": f"@{perfil}" if perfil else "",
+        "endereco_canonico": endereco_publico(request),
         "firelsoft_whatsapp_url": (
             f"https://wa.me/{firelsoft_whatsapp}?text={quote('Olá! Vim pelo app da Lindice e queria tirar uma dúvida.')}"
             if firelsoft_whatsapp

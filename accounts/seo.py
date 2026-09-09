@@ -8,9 +8,25 @@ Sem robots.txt, o buscador tambem gasta tempo em tela de gestao e de cliente,
 que nao deveria nem visitar.
 """
 
+from django.conf import settings
 from django.http import HttpResponse
 from django.urls import reverse
 from django.utils import timezone
+
+
+def endereco_publico(request, caminho=None):
+    """O endereco desta pagina no dominio que a loja escolheu mostrar.
+
+    O site atende em mais de um dominio. Sem escolher um, o buscador trata cada
+    um como uma copia do site inteiro e divide a forca entre eles. Com a escolha
+    em branco, vale o dominio por onde a visita chegou.
+    """
+    caminho = request.get_full_path() if caminho is None else caminho
+
+    if settings.SITE_CANONICO:
+        return f"{settings.SITE_CANONICO}{caminho}"
+
+    return request.build_absolute_uri(caminho)
 
 
 # Caminhos que buscador nenhum tem o que fazer: area da loja, area do cliente,
@@ -37,7 +53,7 @@ def robots(request):
     linhas = ["User-agent: *"]
     linhas += [f"Disallow: {caminho}" for caminho in FORA_DA_BUSCA]
     linhas.append("")
-    linhas.append(f"Sitemap: {request.build_absolute_uri(reverse('sitemap'))}")
+    linhas.append(f"Sitemap: {endereco_publico(request, reverse('sitemap'))}")
 
     return HttpResponse("\n".join(linhas) + "\n", content_type="text/plain")
 
@@ -61,8 +77,8 @@ def sitemap(request):
     partes = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-        _url(request.build_absolute_uri(reverse("home")), None, "1.0", "daily"),
-        _url(request.build_absolute_uri(reverse("store_front")), None, "0.9", "daily"),
+        _url(endereco_publico(request, reverse("home")), None, "1.0", "daily"),
+        _url(endereco_publico(request, reverse("store_front")), None, "0.9", "daily"),
     ]
 
     a_venda = (
@@ -74,12 +90,12 @@ def sitemap(request):
     # Uma entrada por categoria que tem produto: e por elas que a busca costuma
     # chegar ("bota feminina", "tenis premium").
     for categoria in sorted({p.category for p in a_venda if p.category}):
-        endereco = request.build_absolute_uri(f"{reverse('store_front')}?categoria={categoria}")
+        endereco = endereco_publico(request, f"{reverse('store_front')}?categoria={categoria}")
         partes.append(_url(endereco.replace(" ", "%20"), None, "0.8", "weekly"))
 
     for produto in a_venda[:LIMITE_DE_PRODUTOS]:
-        endereco = request.build_absolute_uri(
-            reverse("store_product_detail", args=[produto.id])
+        endereco = endereco_publico(
+            request, reverse("store_product_detail", args=[produto.id])
         )
         partes.append(_url(endereco, produto.updated_at, "0.7", "weekly"))
 

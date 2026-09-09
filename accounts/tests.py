@@ -2440,6 +2440,30 @@ class StoreFlowTests(TestCase):
         self.assertContains(resposta, f"/loja/produto/{produto.id}/")
         self.assertContains(resposta, "categoria=")
 
+    def test_search_sees_one_address_even_with_many_domains(self):
+        # O site atende em app.lindice.com.br e vai atender no www. Sem
+        # escolher um, o Google guarda os dois e trata como sites diferentes,
+        # dividindo a forca entre copias da mesma loja.
+        produto = self.create_supplier_product(name="Bota de um endereco so")
+
+        with self.settings(SITE_CANONICO="https://www.lindice.com.br"):
+            ficha = self.client.get(f"/loja/produto/{produto.id}/").content.decode()
+            mapa = self.client.get("/sitemap.xml").content.decode()
+            robo = self.client.get("/robots.txt").content.decode()
+
+        alvo = f'<link rel="canonical" href="https://www.lindice.com.br/loja/produto/{produto.id}/">'
+        self.assertIn(alvo, ficha)
+        self.assertIn('"url": "https://www.lindice.com.br/loja/produto/', ficha)
+        self.assertIn("https://www.lindice.com.br/loja/", mapa)
+        self.assertNotIn("http://testserver", mapa)
+        self.assertIn("Sitemap: https://www.lindice.com.br/sitemap.xml", robo)
+
+    def test_without_a_chosen_domain_each_page_keeps_the_address_of_the_visit(self):
+        # Em branco, nada muda: e o que vale hoje, e o que vale em dev.
+        resposta = self.client.get("/loja/")
+
+        self.assertContains(resposta, '<link rel="canonical" href="http://testserver/loja/">', html=False)
+
     def test_robots_keeps_the_crawler_out_of_the_management_area(self):
         resposta = self.client.get("/robots.txt")
 
