@@ -235,7 +235,7 @@ CARD_INSTALLMENT_INTEREST_RATES = {
     10: Decimal("5.50"),
 }
 
-PIX_DISCOUNT_PERCENT = Decimal("15.00")
+PIX_DISCOUNT_PERCENT = Decimal("10.00")
 
 # Regras de preco dos produtos vindos do atacado (smartwatches, fones, pulseiras).
 # O preco de atacado nunca aparece na loja: serve so para calcular o de venda.
@@ -509,7 +509,11 @@ class SupplierProduct(models.Model):
         if desconto_pix is None:
             desconto_pix = loja.pix_discount_percent
 
-        total_pix = round_price_up(preco * (Decimal("100") - Decimal(desconto_pix)) / Decimal("100"))
+        # Sem arredondar: o desconto do Pix e o numero que chama a cliente para a
+        # loja. Arredondar para cima comia quase metade dele - "15% de desconto"
+        # entregava 9% - e o valor mudava na hora de pagar, que e onde a
+        # promessa vira mentira.
+        total_pix = money(preco * (Decimal("100") - Decimal(desconto_pix)) / Decimal("100"))
         parcelas = max(1, self.card_installments or CARD_MAX_INSTALLMENTS)
         credito = credit_price_from_retail(preco, self.credit_surcharge_override)
 

@@ -1021,20 +1021,6 @@ def build_cart_items(request):
     return items
 
 
-# Pares de categoria que a pagina inicial mostra como atalho. O nome curto e o
-# que aparece no botao; o valor e a categoria como esta gravada no produto.
-ATALHOS_DA_HOME = [
-    ("Tênis", "Tenis Premium e Original"),
-    ("Botas", "Botas Femininas"),
-    ("Saltos", "Saltos Anabelas Chinelos"),
-    ("Rasteiras", "Rasteiras Papetes Flatforms"),
-    ("Scarpins", "Ortopedicos Scarpin Mocassim Sapatilha"),
-    ("Bolsas", "Bolsas e Relogios"),
-    ("Infantil", "Linha Infantil"),
-    ("Smartwatches", "Smartwatches"),
-]
-
-
 def home(request):
     """Primeira tela de quem chega pelo endereco do site.
 
@@ -1058,6 +1044,23 @@ CANDIDATOS_POR_PRATELEIRA = 48
 # Teto de linhas. O catalogo de hoje tem menos categorias que isso; o limite so
 # existe para a pagina nao crescer sozinha se o catalogo dobrar.
 LIMITE_DE_PRATELEIRAS = 12
+
+
+def grupo_de_cada_categoria():
+    """Categoria -> grupo, e a ordem em que ela aparece dentro do grupo.
+
+    Sai de CATEGORY_GROUPS, o mesmo mapa que a loja usa nas abas. A pagina
+    inicial tinha uma lista propria, que envelheceu: falava de "Botas
+    Femininas" e "Tenis Premium e Original", nomes que o catalogo de hoje nao
+    usa mais. Duas listas para a mesma coisa e uma delas errada.
+    """
+    mapa = {}
+
+    for posicao_do_grupo, (grupo, categorias) in enumerate(CATEGORY_GROUPS):
+        for posicao, categoria in enumerate(categorias):
+            mapa[categoria] = (grupo, posicao_do_grupo, posicao)
+
+    return mapa
 
 
 def preparar_cartoes(produtos, loja):
@@ -1090,15 +1093,18 @@ def prateleiras_da_home(a_venda, loja):
         for linha in a_venda.exclude(category="").values("category").annotate(quantos=Count("id")).order_by()
     }
 
-    nomes = {categoria: nome for nome, categoria in ATALHOS_DA_HOME}
-    ordem = {categoria: posicao for posicao, (_, categoria) in enumerate(ATALHOS_DA_HOME)}
+    mapa = grupo_de_cada_categoria()
+    fim_da_fila = len(CATEGORY_GROUPS)
 
-    # Primeiro as categorias na ordem que a loja ja tinha escolhido nos
-    # atalhos; o que sobrar entra depois, da maior para a menor.
-    categorias = sorted(
-        quantidade,
-        key=lambda categoria: (ordem.get(categoria, len(ordem)), -quantidade[categoria], categoria),
-    )[:LIMITE_DE_PRATELEIRAS]
+    # As linhas saem na ordem das abas da loja: primeiro o grupo, depois a
+    # posicao da categoria dentro dele. Categoria que ainda nao esta no mapa vai
+    # para o fim, ordenada pelo tamanho.
+    def lugar(categoria):
+        grupo, posicao_do_grupo, posicao = mapa.get(categoria, ("", fim_da_fila, 0))
+
+        return (posicao_do_grupo, posicao, -quantidade[categoria], categoria)
+
+    categorias = sorted(quantidade, key=lugar)[:LIMITE_DE_PRATELEIRAS]
 
     prateleiras = []
 
@@ -1139,9 +1145,13 @@ def prateleiras_da_home(a_venda, loja):
         if not produtos:
             continue
 
+        grupo = mapa.get(categoria, ("", 0, 0))[0]
         prateleiras.append(
             {
-                "nome": nomes.get(categoria, categoria),
+                "nome": CATEGORY_SHORT_LABELS.get(categoria, categoria),
+                # O grupo aparece por cima do titulo: bota, anabela e tenis sao
+                # tipos diferentes, mas a cliente pensa neles como calcado.
+                "grupo": grupo if grupo != categoria else "",
                 "categoria": categoria,
                 "produtos": preparar_cartoes(produtos, loja),
                 "total": quantidade[categoria],
@@ -1178,12 +1188,24 @@ def pagina_inicial(request):
     )
     destaques = preparar_cartoes(escolhidos + completam, loja)
 
-    # So mostra o atalho da categoria que tem produto de verdade agora.
+    # Promocao abre a pagina: e o que a loja acabou de decidir que quer vender.
+    promocoes = preparar_cartoes(
+        list(
+            a_venda.filter(compare_at_price__gt=F("suggested_sale_price"))
+            .exclude(image_file="", image_url="")
+            .prefetch_related("photos")
+            .order_by("-updated_at")[:PRODUTOS_POR_PRATELEIRA]
+        ),
+        loja,
+    )
+
+    # Atalho de grupo, nao de categoria: "Calçados" leva a bota, a anabela e o
+    # tenis de uma vez, que e como a cliente procura.
     existentes = set(a_venda.values_list("category", flat=True))
     atalhos = [
-        {"nome": nome, "categoria": categoria}
-        for nome, categoria in ATALHOS_DA_HOME
-        if categoria in existentes
+        {"nome": grupo, "grupo": grupo}
+        for grupo, categorias in CATEGORY_GROUPS
+        if existentes.intersection(categorias)
     ]
 
     return render(
@@ -1192,6 +1214,7 @@ def pagina_inicial(request):
         {
             "capas": CapaDoSite.objects.filter(visivel=True),
             "destaques": destaques,
+            "promocoes": promocoes,
             "prateleiras": prateleiras_da_home(a_venda, loja),
             "atalhos": atalhos,
             "total_produtos": a_venda.count(),
@@ -2015,6 +2038,76 @@ def ficha_do_produto_para_busca(request, produto, galeria):
         ficha["category"] = produto.category
 
     return json.dumps(ficha, ensure_ascii=False)
+
+
+def valor_em_dinheiro(texto):
+    """Le um preco escrito por gente. Devolve None quando nao da para ler.
+
+    Com virgula, o ponto e separador de milhar (1.234,56). Sem virgula, o ponto
+    e a propria casa decimal (220.00).
+    """
+    valor = (texto or "").strip().replace("R$", "").strip()
+
+    if "," in valor:
+        valor = valor.replace(".", "").replace(",", ".")
+
+    try:
+        return Decimal(valor)
+    except (InvalidOperation, AttributeError):
+        return None
+
+
+@staff_member_required(login_url="login")
+def promover_produto(request, product_id):
+    """Poe ou tira o produto da promocao, sem sair da ficha.
+
+    Promocao aqui e uma coisa so: preco menor, o preco antigo cortado na tela e
+    lugar na primeira linha da pagina inicial. Antes era baixar o preco numa
+    tela e lembrar de destacar o produto em outra.
+    """
+    produto = get_object_or_404(SupplierProduct, id=product_id)
+    ficha = reverse("store_product_detail", args=[produto.id])
+
+    if request.method != "POST":
+        return redirect(ficha)
+
+    if request.POST.get("acao") == "tirar":
+        if produto.compare_at_price:
+            produto.suggested_sale_price = produto.compare_at_price
+
+        produto.compare_at_price = None
+        produto.save(update_fields=["suggested_sale_price", "compare_at_price", "updated_at"])
+        messages.success(request, f"{produto.name} voltou ao preco normal.")
+
+        return redirect(ficha)
+
+    novo_preco = valor_em_dinheiro(request.POST.get("preco"))
+
+    if novo_preco is None or novo_preco <= 0:
+        messages.error(request, "O preco da promocao precisa ser um valor como 89,90.")
+
+        return redirect(ficha)
+
+    # O preco cheio e o que estava valendo, a nao ser que o produto ja esteja em
+    # promocao - ai o "de" continua sendo o preco original, nao o promocional.
+    preco_cheio = produto.compare_at_price or produto.suggested_sale_price
+
+    if novo_preco >= preco_cheio:
+        messages.error(
+            request, f"A promocao precisa ser menor que R$ {preco_cheio:.2f}, que e o preco de hoje."
+        )
+
+        return redirect(ficha)
+
+    produto.compare_at_price = preco_cheio
+    produto.suggested_sale_price = money(novo_preco)
+    produto.save(update_fields=["suggested_sale_price", "compare_at_price", "updated_at"])
+    messages.success(
+        request,
+        f"{produto.name} entrou em promocao e ja abre a pagina inicial.",
+    )
+
+    return redirect(ficha)
 
 
 @staff_member_required(login_url="login")
@@ -4531,7 +4624,16 @@ def new_supplier_product(request):
 
             return redirect("edit_supplier_product", product_id=produto.id)
 
-        messages.error(request, "Confira os campos destacados.")
+        # Dizer o nome do campo: "confira os campos destacados" faz a loja
+        # procurar numa tela que ela ja preencheu inteira.
+        rotulos = [
+            str(form.fields[campo].label or campo) for campo in form.errors if campo in form.fields
+        ]
+
+        if rotulos:
+            messages.error(request, "Confira: " + ", ".join(rotulos) + ".")
+        else:
+            messages.error(request, "Confira os campos em vermelho.")
     else:
         form = NewSupplierProductForm()
 

@@ -24,16 +24,20 @@
         você marcar "Mostrar na loja" na ficha.
     </p>
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" data-guiar-erros>
         {% csrf_token %}
         {% if form.non_field_errors %}<div class="reg-errors">{{ form.non_field_errors }}</div>{% endif %}
         {% for campo in form %}
-            <p>
+            <div class="campo-do-formulario">
                 <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
                 {{ campo }}
                 {% if campo.help_text %}<small>{{ campo.help_text }}</small>{% endif %}
-                {{ campo.errors }}
-            </p>
+                {% if campo.errors %}
+                    <ul class="errorlist" data-campo="{{ campo.id_for_label }}">
+                        {% for erro in campo.errors %}<li>{{ erro }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
         {% endfor %}
         <h3>Fotos</h3>
         <div class="lote-fotos" data-lote>
@@ -64,11 +68,15 @@
             return;
         }
 
-        var caixa = escrito.closest("p") || escrito.parentNode;
+        var caixa = escrito.closest(".campo-do-formulario") || escrito.parentNode;
         var primeiraVez = true;
 
+        // Campo escondido que voltou com erro tem que aparecer, senao a tela
+        // aponta para um lugar que ninguem consegue ver.
+        var comErro = caixa.querySelector(".errorlist") !== null;
+
         function mostrar() {
-            var escrevendo = lista.value === "__novo__";
+            var escrevendo = lista.value === "__novo__" || comErro;
             caixa.style.display = escrevendo ? "" : "none";
 
             if (escrevendo && !primeiraVez) {

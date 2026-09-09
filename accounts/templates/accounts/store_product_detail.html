@@ -44,6 +44,26 @@
                 <button class="button button-secondary" type="submit">Excluir produto</button>
             </form>
         </div>
+
+        {# Baixar o preco e destacar o produto viraram um botao so. #}
+        <form class="barra-loja-promo" method="post" action="{% url 'promover_produto' product.id %}">
+            {% csrf_token %}
+            {% if product.on_promo %}
+                <span class="barra-loja-promo-agora">
+                    Em promoção: de R$ {{ product.compare_at_price|floatformat:2 }}
+                    por R$ {{ product.suggested_sale_price|floatformat:2 }}
+                    ({{ product.discount_percent }}% off)
+                </span>
+                <button class="button button-secondary" type="submit" name="acao" value="tirar">
+                    Voltar ao preço normal
+                </button>
+            {% else %}
+                <label for="preco-promocao">Promoção por R$</label>
+                <input id="preco-promocao" type="text" name="preco" inputmode="decimal"
+                       placeholder="menor que {{ product.suggested_sale_price|floatformat:2 }}">
+                <button class="button" type="submit" name="acao" value="por">Colocar em promoção</button>
+            {% endif %}
+        </form>
     </div>
 {% endif %}
 

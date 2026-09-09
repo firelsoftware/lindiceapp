@@ -1182,6 +1182,34 @@
             padding: 0;
         }
 
+        .errorlist {
+            margin: 6px 0 0;
+        }
+
+        .errorlist li {
+            padding: 8px 12px;
+            border-left: 4px solid #c0392b;
+            border-radius: 0 8px 8px 0;
+            background: #fdecea;
+            color: #922b21;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .errorlist li + li {
+            margin-top: 6px;
+        }
+
+        .campo-do-formulario {
+            margin: 0 0 18px;
+        }
+
+        .campo-com-erro,
+        .campo-com-erro:focus {
+            border-color: #c0392b;
+            box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.18);
+        }
+
         .messages li {
             padding: 12px 14px;
             border: 1px solid var(--line);
@@ -4019,6 +4047,52 @@
             scroll-snap-align: start;
         }
 
+        .home-secao-grupo {
+            display: block;
+            margin-bottom: 2px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .home-produto-promo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 0 6px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .barra-loja-promo {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--line);
+        }
+
+        .barra-loja-promo label {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .barra-loja-promo input {
+            width: 190px;
+        }
+
+        .barra-loja-promo button {
+            width: auto;
+        }
+
+        .barra-loja-promo-agora {
+            font-weight: 600;
+        }
+
         .home-prateleira-mais {
             display: block;
             margin-top: 14px;
@@ -5156,6 +5230,16 @@
             line-height: 1.35;
         }
 
+        @media (hover: hover) and (pointer: fine) {
+            .power-mais {
+                display: none;
+            }
+
+            .power-botao {
+                padding: 0 22px;
+            }
+        }
+
         @media (max-width: 620px) {
             .power {
                 bottom: 168px;
@@ -6233,6 +6317,13 @@
     {% if request.user.is_staff %}
         <div class="power" data-power>
             <div class="power-menu" data-power-menu hidden>
+                <a href="{% url 'create_credit_sale' %}">
+                    <span class="power-menu-icone" aria-hidden="true">🧾</span>
+                    <span>
+                        <strong>Lançar venda</strong>
+                        <small>Puxe o cliente e monte a compra</small>
+                    </span>
+                </a>
                 <a href="{% url 'new_supplier_product' %}">
                     <span class="power-menu-icone" aria-hidden="true">🛍️</span>
                     <span>
@@ -7731,13 +7822,36 @@
                     botao.setAttribute("aria-expanded", "false");
                 }
 
+                function abrir() {
+                    menu.hidden = false;
+                    caixa.classList.add("aberto");
+                    botao.setAttribute("aria-expanded", "true");
+                }
+
                 botao.addEventListener("click", function (evento) {
                     evento.stopPropagation();
-                    var abrindo = menu.hidden;
-                    menu.hidden = !abrindo;
-                    caixa.classList.toggle("aberto", abrindo);
-                    botao.setAttribute("aria-expanded", abrindo ? "true" : "false");
+
+                    if (menu.hidden) {
+                        abrir();
+                    } else {
+                        fechar();
+                    }
                 });
+
+                if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+                    var saindo = null;
+
+                    caixa.addEventListener("mouseenter", function () {
+                        clearTimeout(saindo);
+                        abrir();
+                    });
+
+                    // Uma folga curta: o mouse passa por fora da caixa ao
+                    // descer do botao para o menu, e o menu sumia no caminho.
+                    caixa.addEventListener("mouseleave", function () {
+                        saindo = setTimeout(fechar, 260);
+                    });
+                }
 
                 // Clicar fora ou apertar Esc fecha, como todo menu.
                 document.addEventListener("click", function (evento) {
@@ -7811,5 +7925,95 @@
         })();
     </script>
     {% endif %}
+
+<script>
+// Formulario longo que volta com erro vira caca ao tesouro: o aviso fica no
+// topo e o campo, tres rolagens abaixo. Aqui a tela leva ate o campo errado,
+// um de cada vez. Depois de arrumar, ela espera tres segundos parada - para
+// nao puxar a tela no meio da digitacao - e vai para o proximo.
+(function () {
+    var form = document.querySelector("form[data-guiar-erros]");
+
+    if (!form) {
+        return;
+    }
+
+    var ESPERA = 3000;
+    var pendentes = [];
+    var relogio = null;
+    var atual = null;
+
+    // A lista de erro diz de qual campo ela e. Procurar pelo elemento em volta
+    // nao funciona: o navegador tira a lista de dentro do bloco do campo.
+    Array.prototype.forEach.call(form.querySelectorAll(".errorlist[data-campo]"), function (lista) {
+        var campo = document.getElementById(lista.getAttribute("data-campo"));
+
+        if (campo && pendentes.indexOf(campo) === -1) {
+            campo.classList.add("campo-com-erro");
+            pendentes.push(campo);
+        }
+    });
+
+    if (!pendentes.length) {
+        return;
+    }
+
+    function preenchido(campo) {
+        return (campo.value || "").trim() !== "";
+    }
+
+    function irPara(campo) {
+        atual = campo;
+        campo.scrollIntoView({block: "center", behavior: "smooth"});
+
+        try {
+            campo.focus({preventScroll: true});
+        } catch (erro) {
+            campo.focus();
+        }
+    }
+
+    function proximo() {
+        var depois = pendentes.slice(pendentes.indexOf(atual) + 1);
+        var antes = pendentes.slice(0, Math.max(0, pendentes.indexOf(atual)));
+
+        return depois.concat(antes).filter(function (campo) {
+            return !preenchido(campo);
+        })[0];
+    }
+
+    function agendar(campo) {
+        clearTimeout(relogio);
+        relogio = setTimeout(function () {
+            // Campo ainda em branco: a tela fica onde esta, senao ela foge de
+            // quem parou para pensar.
+            if (!preenchido(campo)) {
+                return;
+            }
+
+            campo.classList.remove("campo-com-erro");
+            var alvo = proximo();
+
+            if (alvo) {
+                irPara(alvo);
+            }
+        }, ESPERA);
+    }
+
+    Array.prototype.forEach.call(pendentes, function (campo) {
+        campo.addEventListener("input", function () {
+            agendar(campo);
+        });
+        campo.addEventListener("change", function () {
+            agendar(campo);
+        });
+        campo.addEventListener("focus", function () {
+            atual = campo;
+        });
+    });
+
+    irPara(pendentes[0]);
+})();
+</script>
 </body>
 </html>

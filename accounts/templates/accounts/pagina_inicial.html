@@ -93,9 +93,23 @@
 {% if atalhos %}
     <nav class="atalhos" aria-label="Categorias">
         {% for atalho in atalhos %}
-            <a href="{% url 'store_front' %}?categoria={{ atalho.categoria|urlencode }}">{{ atalho.nome }}</a>
+            <a href="{% url 'store_front' %}?grupo={{ atalho.grupo|urlencode }}">{{ atalho.nome }}</a>
         {% endfor %}
     </nav>
+{% endif %}
+
+{% if promocoes %}
+    <section class="home-secao home-secao-fina">
+        <div class="home-secao-topo">
+            <h2>Promoções</h2>
+        </div>
+
+        <div class="home-prateleira">
+            {% for produto in promocoes %}
+                {% include "accounts/_cartao_da_home.html" %}
+            {% endfor %}
+        </div>
+    </section>
 {% endif %}
 
 {% if destaques %}
@@ -121,7 +135,10 @@
 {% for prateleira in prateleiras %}
     <section class="home-secao home-secao-fina">
         <div class="home-secao-topo">
-            <h2>{{ prateleira.nome }}</h2>
+            <h2>
+                {% if prateleira.grupo %}<span class="home-secao-grupo">{{ prateleira.grupo }}</span>{% endif %}
+                {{ prateleira.nome }}
+            </h2>
             <a href="{% url 'store_front' %}?categoria={{ prateleira.categoria|urlencode }}">Ver todos &rsaquo;</a>
         </div>
 

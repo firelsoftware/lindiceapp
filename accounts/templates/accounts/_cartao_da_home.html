@@ -12,6 +12,12 @@
                 {% for numero in produto.numeros %}<span>{{ numero }}</span>{% endfor %}
             </p>
         {% endif %}
+        {% if produto.on_promo %}
+            <p class="home-produto-promo">
+                <s>R$ {{ produto.compare_at_price|floatformat:2 }}</s>
+                <span class="home-produto-off">-{{ produto.discount_percent }}%</span>
+            </p>
+        {% endif %}
         {% if produto.pagamentos %}
             <p class="home-produto-crediario">
                 {{ produto.pagamentos.credit.installments }}x de

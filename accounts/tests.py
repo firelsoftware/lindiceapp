@@ -450,8 +450,8 @@ class CreditSalePaymentChoiceTests(TestCase):
         self.assertRedirects(response, f"/pagamento/pix/{sale.id}/")
         self.assertEqual(sale.status, CreditSale.ACCEPTED)
         self.assertEqual(sale.selected_payment_method, CreditSale.PIX)
-        # R$ 200 - 5% de voucher = R$ 190; menos 15% do pagamento a vista = R$ 161,50.
-        self.assertEqual(sale.selected_total_with_interest, Decimal("161.50"))
+        # R$ 200 - 5% de voucher = R$ 190; menos 10% do pagamento a vista = R$ 171,00.
+        self.assertEqual(sale.selected_total_with_interest, Decimal("171.00"))
         self.assertEqual(sale.welcome_discount_amount, Decimal("10.00"))
         user.profile.refresh_from_db()
         self.assertTrue(user.profile.first_purchase_discount_used)
@@ -466,7 +466,7 @@ class CreditSalePaymentChoiceTests(TestCase):
 
         response = self.client.get(f"/pagamento/pix/{sale.id}/")
 
-        self.assertContains(response, "R$ 161,50")
+        self.assertContains(response, "R$ 171,00")
         self.assertContains(response, "d92f4cae-454c-4f33-97b2-6a513b292b24")
 
     def test_store_front_announces_available_welcome_discount(self):
@@ -2348,19 +2348,20 @@ class StoreFlowTests(TestCase):
         # Nenhuma parcela do crediario abaixo do minimo de R$ 70.
         self.assertGreaterEqual(pagamentos["credit"]["parcela"], Decimal("70.00"))
 
-    def test_homepage_only_offers_categories_that_have_products(self):
+    def test_homepage_only_offers_families_that_have_products(self):
         self.create_supplier_product(
             name="So bota",
-            category="Botas Femininas",
+            category="Botas",
             image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
         )
 
         resposta = self.client.get("/")
 
-        self.assertContains(resposta, ">Botas<", html=False)
+        # O atalho e do grupo: "Calçados" leva a bota, a anabela e o tenis.
+        self.assertContains(resposta, "?grupo=Cal%C3%A7ados", html=False)
         # Sem smartwatch cadastrado, o atalho nao aparece: botao que leva a
         # lista vazia so frustra quem clica.
-        self.assertNotContains(resposta, ">Smartwatches<", html=False)
+        self.assertNotContains(resposta, "?grupo=Smartwatches", html=False)
 
     def test_each_product_page_introduces_itself_to_search(self):
         # As 1552 fichas tinham o mesmo titulo e a mesma descricao: para o
@@ -2483,7 +2484,7 @@ class StoreFlowTests(TestCase):
             self.create_supplier_product(
                 supplier_code=f"REL{indice}",
                 name=f"Relogio destacado {indice}",
-                category="Bolsas e Relogios",
+                category="Smartwatches",
                 suggested_sale_price=Decimal("900.00"),
                 posicao_na_home=indice + 1,
                 image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
@@ -2491,7 +2492,7 @@ class StoreFlowTests(TestCase):
         bota = self.create_supplier_product(
             supplier_code="BOT1",
             name="Bota que nao pode sumir",
-            category="Botas Femininas",
+            category="Botas",
             suggested_sale_price=Decimal("120.00"),
             image_url="/static/accounts/catalog-test/botas/1.958-4b.jpg",
         )
@@ -2502,8 +2503,29 @@ class StoreFlowTests(TestCase):
         self.assertIn('class="home-prateleira"', pagina)
         # Cada linha tem o botao que leva para a categoria inteira na loja.
         self.assertIn("Ver 1 produto em Botas", pagina)
-        self.assertIn("Ver 9 produtos em Bolsas", pagina)
-        self.assertIn("categoria=Botas%20Femininas", pagina)
+        self.assertIn("Ver 9 produtos em Smartwatches", pagina)
+        self.assertIn("categoria=Botas", pagina)
+
+    def test_homepage_shows_the_family_each_row_belongs_to(self):
+        # Bota, anabela e tenis sao linhas diferentes, mas a cliente pensa em
+        # todas como calcado: o grupo aparece por cima do titulo, e o atalho do
+        # topo leva ao grupo inteiro, nao a uma categoria so.
+        self.create_supplier_product(
+            supplier_code="BOT2", name="Bota do grupo", category="Botas",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+        self.create_supplier_product(
+            supplier_code="ANA1", name="Anabela do grupo", category="Anabela",
+            image_url="/static/accounts/catalog-test/botas/1.958-4b.jpg",
+        )
+
+        pagina = self.client.get("/").content.decode()
+
+        self.assertIn('class="home-secao-grupo">Calçados<', pagina)
+        self.assertIn("?grupo=Cal%C3%A7ados", pagina)
+        # As duas linhas continuam existindo, cada uma com seu produto.
+        self.assertIn("Bota do grupo", pagina)
+        self.assertIn("Anabela do grupo", pagina)
 
     def test_video_comes_right_after_the_cover(self):
         # Quem chega de fora nao conhece a loja: o video e a primeira prova de
@@ -2582,6 +2604,93 @@ class StoreFlowTests(TestCase):
         produto = SupplierProduct.objects.get(supplier_code="NOVO1")
         self.assertEqual(produto.sizes, "34,35,36,37")
 
+    def test_pix_delivers_the_discount_it_advertises(self):
+        # A loja anunciava "15% de desconto" e entregava 9%: o valor era
+        # arredondado para cima depois da conta, e o preco ainda mudava na hora
+        # de pagar. O numero que chama a cliente tem que ser o numero cobrado.
+        produto = self.create_supplier_product(
+            name="Sapato com preco quebrado", suggested_sale_price=Decimal("76.85")
+        )
+
+        pix = produto.payment_options()["pix"]
+        economia = produto.suggested_sale_price - pix["total"]
+
+        self.assertAlmostEqual(
+            float(economia / produto.suggested_sale_price * 100), float(pix["percent"]), places=1
+        )
+
+    def test_credit_keeps_rounding_up(self):
+        # No crediario o arredondamento fica: a loja nao anuncia porcentagem,
+        # so o valor do carne, entao numero redondo ajuda e nao promete nada.
+        produto = self.create_supplier_product(
+            name="Bota do carne", suggested_sale_price=Decimal("76.85")
+        )
+
+        self.assertEqual(produto.payment_options()["credit"]["total"], Decimal("100.00"))
+
+    def promover(self, produto, **campos):
+        dados = {"acao": "por", "preco": "149,90"}
+        dados.update(campos)
+
+        return self.client.post(f"/loja/produto/{produto.id}/promocao/", dados)
+
+    def test_store_puts_a_product_on_sale_from_its_own_page(self):
+        produto = self.create_supplier_product(
+            name="Bota em promocao",
+            suggested_sale_price=Decimal("200.00"),
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+        self.login_staff(email="loja-promocao@example.com")
+
+        self.promover(produto)
+
+        produto.refresh_from_db()
+        self.assertEqual(produto.compare_at_price, Decimal("200.00"))
+        self.assertEqual(produto.suggested_sale_price, Decimal("149.90"))
+        self.assertTrue(produto.on_promo())
+
+        # E a promocao abre a primeira tela sozinha, sem escolher posicao a mao.
+        self.client.logout()
+        pagina = self.client.get("/").content.decode()
+        self.assertIn("Promoções", pagina)
+        self.assertLess(pagina.index("Promoções"), pagina.index("Mais desejados"))
+        self.assertIn("Bota em promocao", pagina)
+
+    def test_taking_the_sale_off_gives_the_old_price_back(self):
+        produto = self.create_supplier_product(
+            name="Bota que sai da promocao", suggested_sale_price=Decimal("200.00")
+        )
+        self.login_staff(email="loja-sem-promocao@example.com")
+        self.promover(produto)
+
+        self.promover(produto, acao="tirar")
+
+        produto.refresh_from_db()
+        self.assertEqual(produto.suggested_sale_price, Decimal("200.00"))
+        self.assertIsNone(produto.compare_at_price)
+
+    def test_sale_price_has_to_be_lower_than_the_price_of_today(self):
+        produto = self.create_supplier_product(
+            name="Bota cara demais", suggested_sale_price=Decimal("200.00")
+        )
+        self.login_staff(email="loja-promocao-torta@example.com")
+
+        self.promover(produto, preco="250,00")
+
+        produto.refresh_from_db()
+        self.assertEqual(produto.suggested_sale_price, Decimal("200.00"))
+        self.assertFalse(produto.on_promo())
+
+    def test_only_the_store_can_put_a_product_on_sale(self):
+        produto = self.create_supplier_product(
+            name="Bota do cliente", suggested_sale_price=Decimal("200.00")
+        )
+
+        self.promover(produto)
+
+        produto.refresh_from_db()
+        self.assertFalse(produto.on_promo())
+
     def test_size_range_refuses_a_backwards_pair(self):
         self.login_staff(email="loja-numeracao-torta@example.com")
 
@@ -2645,6 +2754,7 @@ class StoreFlowTests(TestCase):
         resposta = self.client.get("/loja/")
 
         self.assertContains(resposta, 'class="power-botao"', html=False)
+        self.assertContains(resposta, "Lançar venda")
         self.assertContains(resposta, "Produto novo")
         self.assertContains(resposta, "Vídeo novo")
         self.assertContains(resposta, "Importar catálogo")
