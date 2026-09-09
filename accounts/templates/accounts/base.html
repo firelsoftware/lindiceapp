@@ -62,7 +62,12 @@
 
         body {
             margin: 0;
+            /* clip corta igual ao hidden, mas nao vira area de rolagem - e era
+               isso que impedia o cabecalho de grudar no topo, apesar de ele
+               estar marcado como sticky desde sempre. O hidden fica antes,
+               para navegador antigo que nao conhece clip. */
             overflow-x: hidden;
+            overflow-x: clip;
             max-width: 100%;
             font-family: Arial, Helvetica, sans-serif;
             background:
@@ -547,9 +552,90 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
+            gap: 14px;
             max-width: 960px;
             margin: 0 auto;
+        }
+
+        /* A busca mora no cabecalho, que e fixo: ela acompanha a rolagem em
+           qualquer pagina. Quem usa busca e quem ja sabe o que quer. */
+        .topbar-busca {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1 1 240px;
+            min-width: 0;
+            max-width: 420px;
+            margin: 0;
+            padding: 4px 4px 4px 12px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--page);
+        }
+
+        .topbar-busca:focus-within {
+            border-color: var(--brand-blue);
+            background: var(--surface);
+        }
+
+        .topbar-busca-lupa {
+            width: 17px;
+            height: 17px;
+            flex: 0 0 auto;
+            fill: none;
+            stroke: var(--muted);
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+
+        .topbar-busca input {
+            flex: 1;
+            min-width: 0;
+            padding: 8px 2px;
+            border: 0;
+            background: none;
+            color: var(--ink);
+            font-size: 15px;
+        }
+
+        .topbar-busca input:focus {
+            outline: none;
+        }
+
+        .topbar-busca button {
+            flex: 0 0 auto;
+            width: auto;
+            min-height: 0;
+            margin: 0;
+            padding: 8px 16px;
+            border: 0;
+            border-radius: 999px;
+            background: var(--brand-blue);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        @media (max-width: 760px) {
+            /* Na tela estreita a busca ganha a linha de baixo inteira: espremida
+               ao lado do logo, nao caberia nem o campo nem os botoes. */
+            .topbar-inner {
+                flex-wrap: wrap;
+                gap: 8px 12px;
+            }
+
+            .topbar-busca {
+                order: 3;
+                flex: 1 0 100%;
+                max-width: none;
+            }
+
+            .topbar-busca button {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
         }
 
         .topbar-inner .brand {
@@ -3866,6 +3952,70 @@
             color: var(--brand-blue);
         }
 
+        /* O crediario e o motivo de a loja existir e estava explicado so no meio
+           da pagina, depois de a cliente ja ter julgado oito precos cheios. */
+        .faixa-crediario {
+            margin: 26px auto 0;
+            padding: 0 5%;
+            max-width: 1100px;
+        }
+
+        .faixa-crediario-dentro {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 22px 26px;
+            border-radius: 18px;
+            background: linear-gradient(120deg, #4d63b7 0%, #3d51a0 62%, #7a2d84 100%);
+            color: #fff;
+            box-shadow: 0 18px 44px rgba(77, 99, 183, 0.28);
+        }
+
+        .faixa-crediario h2 {
+            margin: 0 0 4px;
+            color: #fff;
+            font-size: 20px;
+            line-height: 1.25;
+        }
+
+        .faixa-crediario p {
+            margin: 0;
+            max-width: 56ch;
+            color: #e6ecf5;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .faixa-crediario-botao {
+            flex: 0 0 auto;
+            margin: 0;
+            background: #fff;
+            color: var(--brand-blue);
+            font-weight: 700;
+        }
+
+        .faixa-crediario-botao:hover {
+            background: #f2f5ff;
+            color: var(--brand-blue);
+        }
+
+        @media (max-width: 620px) {
+            .faixa-crediario-dentro {
+                padding: 20px;
+            }
+
+            .faixa-crediario h2 {
+                font-size: 18px;
+            }
+
+            .faixa-crediario-botao {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
         .home-secao {
             max-width: 1100px;
             margin: 0 auto;
@@ -3937,23 +4087,67 @@
             text-decoration: none;
         }
 
-        .home-produto-preco {
+        .home-produto-numeros {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 0 0 10px;
+        }
+
+        .home-produto-numeros span {
+            padding: 1px 7px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            color: var(--muted);
+            font-size: 11px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* A parcela do crediario e a informacao que decide a compra aqui, entao
+           ela vem primeiro e em destaque. O preco cheio vira referencia. */
+        .home-produto-crediario {
             margin: 0;
             color: var(--brand-purple);
-            font-size: 20px;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .home-produto-crediario strong {
+            font-size: 19px;
             font-weight: 700;
         }
 
-        .home-produto-parcela,
-        .home-produto-pix {
-            margin: 2px 0 0;
+        .home-produto-crediario span {
+            display: block;
             color: var(--muted);
-            font-size: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .home-produto-preco {
+            margin: 6px 0 0;
+            color: var(--ink);
+            font-size: 13px;
+            font-weight: 600;
         }
 
         .home-produto-pix {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 3px 0 0;
             color: var(--success);
+            font-size: 12px;
             font-weight: 600;
+        }
+
+        .home-produto-off {
+            padding: 1px 6px;
+            border-radius: 999px;
+            background: rgba(15, 118, 110, 0.12);
+            font-size: 11px;
+            font-weight: 700;
         }
 
         .home-crediario {
@@ -5782,6 +5976,14 @@
                 </span>
             </a>
 
+            <form class="topbar-busca" method="get" action="{% url 'store_front' %}" role="search">
+                <label class="sr-only" for="busca-topo">Buscar produto</label>
+                <svg class="topbar-busca-lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+                <input id="busca-topo" name="q" value="{{ request.GET.q|default:'' }}"
+                       placeholder="O que você procura hoje?" autocomplete="off">
+                <button type="submit">Buscar</button>
+            </form>
+
             <div class="topbar-actions">
                 <a class="finances-tab" href="{% if request.user.is_staff %}{% url 'staff_finances' %}{% else %}{% url 'customer_finances' %}{% endif %}" aria-label="Minhas finanças">
                     <svg class="finances-tab-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2.5"></rect><path d="M3 10h18"></path><circle cx="16.5" cy="14.5" r="1.2"></circle></svg>
@@ -7447,6 +7649,13 @@
                         return;
                     }
 
+                    // No celular nao gira sozinho. A unica pausa era o mouse
+                    // entrando, evento que nao existe em toque: a foto trocava
+                    // embaixo do dedo, e cada slide e um link inteiro.
+                    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+                        return;
+                    }
+
                     relogio = window.setInterval(function () {
                         if (!parada && document.visibilityState === "visible") {
                             mostrar(atual + 1);
@@ -7456,6 +7665,13 @@
 
                 function segurar() {
                     parada = true;
+                }
+
+                function parar() {
+                    // Quem mexeu nos controles assumiu o comando: o carrossel
+                    // nao volta a girar sozinho nesta visita.
+                    window.clearInterval(relogio);
+                    relogio = null;
                 }
 
                 function soltar() {
@@ -7468,21 +7684,21 @@
                 if (antes) {
                     antes.addEventListener("click", function () {
                         mostrar(atual - 1);
-                        ligar();
+                        parar();
                     });
                 }
 
                 if (depois) {
                     depois.addEventListener("click", function () {
                         mostrar(atual + 1);
-                        ligar();
+                        parar();
                     });
                 }
 
                 pontos.forEach(function (ponto, i) {
                     ponto.addEventListener("click", function () {
                         mostrar(i);
-                        ligar();
+                        parar();
                     });
                 });
 

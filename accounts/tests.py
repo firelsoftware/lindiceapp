@@ -2337,10 +2337,16 @@ class StoreFlowTests(TestCase):
 
         resposta = self.client.get("/")
 
-        # 400 em 4x sem juros, e 15% de desconto no Pix arredondado para cima.
-        self.assertContains(resposta, "4x de")
-        self.assertContains(resposta, "R$ 100,00")
+        # O cartao anuncia o CREDIARIO, que e o diferencial da loja, e nao a
+        # condicao do cartao de credito, que qualquer concorrente tambem tem.
+        self.assertContains(resposta, "no crediário, sem cartão")
         self.assertContains(resposta, "no Pix")
+
+        produto = SupplierProduct.objects.get(name="Bota com preco")
+        pagamentos = produto.payment_options()
+        self.assertContains(resposta, f"{pagamentos['credit']['installments']}x de")
+        # Nenhuma parcela do crediario abaixo do minimo de R$ 70.
+        self.assertGreaterEqual(pagamentos["credit"]["parcela"], Decimal("70.00"))
 
     def test_homepage_only_offers_categories_that_have_products(self):
         self.create_supplier_product(
@@ -2355,6 +2361,32 @@ class StoreFlowTests(TestCase):
         # Sem smartwatch cadastrado, o atalho nao aparece: botao que leva a
         # lista vazia so frustra quem clica.
         self.assertNotContains(resposta, ">Smartwatches<", html=False)
+
+    def test_search_lives_in_the_fixed_header_on_every_page(self):
+        # Antes a unica busca da home era a do heroi: sumia assim que a cliente
+        # rolava, e nao existia nas outras paginas.
+        for pagina in ("/", "/loja/"):
+            resposta = self.client.get(pagina)
+            self.assertContains(resposta, 'class="topbar-busca"', html=False)
+            self.assertContains(resposta, 'name="q"', html=False)
+
+        # E ela leva mesmo para a loja, com o termo pesquisado.
+        self.create_supplier_product(name="Bota procurada no topo")
+        resultado = self.client.get("/loja/?q=Bota procurada no topo")
+        self.assertContains(resultado, "Bota procurada no topo")
+
+    def test_credit_band_comes_before_the_products(self):
+        # O crediario era explicado so no meio da pagina, depois de a cliente
+        # ja ter julgado oito precos cheios.
+        self.create_supplier_product(
+            name="Bota qualquer",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        pagina = self.client.get("/").content.decode()
+
+        self.assertIn("faixa-crediario", pagina)
+        self.assertLess(pagina.index("faixa-crediario"), pagina.index("Mais desejados"))
 
     def test_power_button_is_only_for_the_store(self):
         # Atalho de lancar coisa nova de qualquer tela. Cliente nao pode nem
