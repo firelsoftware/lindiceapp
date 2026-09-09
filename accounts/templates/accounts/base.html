@@ -5144,7 +5144,9 @@
         .power {
             position: fixed;
             right: 18px;
-            bottom: 106px;
+            /* O avatar da Linde tem 94px de altura e comeca a 18px do rodape:
+               ele termina em 112px. Daqui para cima, com folga. */
+            bottom: 136px;
             z-index: 36;
             display: flex;
             flex-direction: column;
@@ -5250,7 +5252,8 @@
 
         @media (max-width: 620px) {
             .power {
-                bottom: 102px;
+                /* No celular a Linde comeca a 12px, entao ela termina em 106. */
+                bottom: 130px;
             }
 
             .power-nome {
