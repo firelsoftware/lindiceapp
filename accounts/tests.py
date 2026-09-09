@@ -2325,7 +2325,6 @@ class StoreFlowTests(TestCase):
         self.assertTemplateUsed(resposta, "accounts/pagina_inicial.html")
         # O produto e o preco sao os de verdade, nao exemplo.
         self.assertContains(resposta, produto.name)
-        self.assertContains(resposta, "Crediário Líndice")
         self.assertContains(resposta, "Como funciona o crediário")
 
     def test_homepage_shows_the_real_installment_and_pix_price(self):
@@ -2375,9 +2374,10 @@ class StoreFlowTests(TestCase):
         resultado = self.client.get("/loja/?q=Bota procurada no topo")
         self.assertContains(resultado, "Bota procurada no topo")
 
-    def test_credit_band_comes_before_the_products(self):
-        # O crediario era explicado so no meio da pagina, depois de a cliente
-        # ja ter julgado oito precos cheios.
+    def test_credit_invitation_comes_after_the_products(self):
+        # Quem chega pela busca do Google esta atras de um produto, nao de uma
+        # proposta de credito: o crediario e argumento de fechamento e fica no
+        # fim da pagina, perto do rodape.
         self.create_supplier_product(
             name="Bota qualquer",
             image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
@@ -2385,8 +2385,8 @@ class StoreFlowTests(TestCase):
 
         pagina = self.client.get("/").content.decode()
 
-        self.assertIn("faixa-crediario", pagina)
-        self.assertLess(pagina.index("faixa-crediario"), pagina.index("Mais desejados"))
+        self.assertNotIn("faixa-crediario", pagina)
+        self.assertLess(pagina.index("Mais desejados"), pagina.index("Pedir meu crediário"))
 
     def test_power_button_is_only_for_the_store(self):
         # Atalho de lancar coisa nova de qualquer tela. Cliente nao pode nem
