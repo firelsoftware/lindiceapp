@@ -1175,6 +1175,14 @@
             max-width: 100%;
         }
 
+        /* O navegador esconde quem tem "hidden" com display:none, mas qualquer
+           classe nossa que declare display ganha dessa regra e o elemento fica
+           na tela. Foi o que aconteceu com o menu do Power, que nascia aberto e
+           nunca fechava, e com a linha de cashback do carrinho. */
+        [hidden] {
+            display: none !important;
+        }
+
         .errorlist,
         .messages {
             list-style: none;
@@ -5136,7 +5144,7 @@
         .power {
             position: fixed;
             right: 18px;
-            bottom: 172px;
+            bottom: 106px;
             z-index: 36;
             display: flex;
             flex-direction: column;
@@ -5230,7 +5238,7 @@
             line-height: 1.35;
         }
 
-        @media (hover: hover) and (pointer: fine) {
+        @media (hover: hover) {
             .power-mais {
                 display: none;
             }
@@ -5242,7 +5250,7 @@
 
         @media (max-width: 620px) {
             .power {
-                bottom: 168px;
+                bottom: 102px;
             }
 
             .power-nome {
@@ -6362,7 +6370,7 @@
         </div>
     {% endif %}
 
-    {% if firelsoft_whatsapp_url %}
+    {% if firelsoft_whatsapp_url and not request.user.is_staff %}
         <a class="floating-whatsapp" href="{{ firelsoft_whatsapp_url }}" target="_blank" rel="noopener" aria-label="Tirar duvidas pelo WhatsApp da FirelSoft">
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M12 2.7a9.2 9.2 0 0 0-7.9 13.9L3 21.3l4.8-1.2A9.2 9.2 0 1 0 12 2.7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
@@ -7820,25 +7828,24 @@
                     menu.hidden = true;
                     caixa.classList.remove("aberto");
                     botao.setAttribute("aria-expanded", "false");
+                    botao.setAttribute("aria-label", "Lançar coisa nova");
                 }
 
                 function abrir() {
                     menu.hidden = false;
                     caixa.classList.add("aberto");
                     botao.setAttribute("aria-expanded", "true");
+                    botao.setAttribute("aria-label", "Fechar o Power");
                 }
 
-                botao.addEventListener("click", function (evento) {
-                    evento.stopPropagation();
+                // "pointer: fine" deixava de fora o notebook com tela
+                // sensivel ao toque: o Windows chama o ponteiro de grosso mesmo
+                // com mouse na mao, e o menu so abria no clique. Quem manda e
+                // "hover", que responde a pergunta certa: da para passar o
+                // mouse por cima?
+                var temMouse = window.matchMedia("(hover: hover)").matches;
 
-                    if (menu.hidden) {
-                        abrir();
-                    } else {
-                        fechar();
-                    }
-                });
-
-                if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+                if (temMouse) {
                     var saindo = null;
 
                     caixa.addEventListener("mouseenter", function () {
@@ -7852,6 +7859,22 @@
                         saindo = setTimeout(fechar, 260);
                     });
                 }
+
+                botao.addEventListener("click", function (evento) {
+                    evento.stopPropagation();
+
+                    // Com mouse, quem abre e fecha e o proprio mouse: o clique
+                    // so atrapalharia, fechando o menu que acabou de abrir.
+                    if (temMouse) {
+                        return;
+                    }
+
+                    if (menu.hidden) {
+                        abrir();
+                    } else {
+                        fechar();
+                    }
+                });
 
                 // Clicar fora ou apertar Esc fecha, como todo menu.
                 document.addEventListener("click", function (evento) {

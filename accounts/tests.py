@@ -2744,6 +2744,17 @@ class StoreFlowTests(TestCase):
 
         self.assertLess(pagina.index("Chegou bota nova"), pagina.index("Mais desejados"))
 
+    def test_support_whatsapp_is_only_for_the_customer(self):
+        with self.settings(FIRELSOFT_WHATSAPP_URL="https://wa.me/5561999999999"):
+            # A marcacao, nao o nome: "floating-whatsapp" tambem esta no CSS,
+            # que vai em toda pagina.
+            cliente = self.client.get("/loja/")
+            self.assertContains(cliente, 'class="floating-whatsapp"', html=False)
+
+            self.login_staff(email="loja-sem-whats@example.com")
+            loja = self.client.get("/loja/")
+            self.assertNotContains(loja, 'class="floating-whatsapp"', html=False)
+
     def test_power_button_is_only_for_the_store(self):
         # Atalho de lancar coisa nova de qualquer tela. Cliente nao pode nem
         # ver os caminhos de gestao.
@@ -2754,6 +2765,11 @@ class StoreFlowTests(TestCase):
         resposta = self.client.get("/loja/")
 
         self.assertContains(resposta, 'class="power-botao"', html=False)
+        # O menu nasce fechado - e continua fechado na tela. Ele tinha o
+        # atributo "hidden", mas a classe declarava display e ganhava da regra
+        # do navegador: o menu ficava aberto o tempo todo.
+        self.assertContains(resposta, "data-power-menu hidden", html=False)
+        self.assertContains(resposta, "[hidden] {", html=False)
         self.assertContains(resposta, "Lançar venda")
         self.assertContains(resposta, "Produto novo")
         self.assertContains(resposta, "Vídeo novo")
