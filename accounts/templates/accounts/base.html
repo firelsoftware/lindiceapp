@@ -3562,6 +3562,178 @@
             padding: 0;
         }
 
+        .capa-carrossel {
+            position: relative;
+            display: grid;
+            align-items: center;
+            min-height: 72vh;
+            overflow: hidden;
+            background: #182230;
+        }
+
+        .capa-slide {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            align-items: center;
+            padding: 48px 5% 96px;
+            background-image:
+                linear-gradient(90deg, rgba(24, 34, 48, 0.86) 0%, rgba(24, 34, 48, 0.5) 45%, rgba(24, 34, 48, 0.12) 100%),
+                var(--capa-foto, none);
+            background-size: cover;
+            background-position: center right;
+            color: #fff;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 620ms ease;
+        }
+
+        .capa-slide.ativa {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .capa-slide .capa-texto {
+            display: block;
+            max-width: 560px;
+        }
+
+        .capa-titulo {
+            display: block;
+            margin-bottom: 10px;
+            color: #fff;
+            font-size: clamp(26px, 4.4vw, 42px);
+            font-weight: 700;
+            line-height: 1.15;
+            text-wrap: balance;
+        }
+
+        .capa-chamada {
+            display: block;
+            max-width: 46ch;
+            color: #e6ecf5;
+            font-size: clamp(14px, 1.6vw, 17px);
+            line-height: 1.5;
+        }
+
+        /* A busca fica por cima dos slides: ela nao troca junto com a foto. */
+        .capa-frente {
+            position: relative;
+            z-index: 3;
+            align-self: end;
+            /* Sem width: 100% aqui. Com ele, mais a margem lateral, a caixa
+               ficava maior que a tela e o botao de buscar saia pela direita. */
+            max-width: 560px;
+            margin: 0 5%;
+            padding-bottom: 30px;
+            pointer-events: none;
+        }
+
+        .capa-frente > * {
+            pointer-events: auto;
+        }
+
+        .capa-seta {
+            position: absolute;
+            top: 50%;
+            z-index: 4;
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            margin: 0;
+            padding: 0 0 3px;
+            transform: translateY(-50%);
+            border: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--ink);
+            font-size: 26px;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .capa-seta:hover {
+            background: #fff;
+        }
+
+        .capa-seta-antes {
+            left: 14px;
+        }
+
+        .capa-seta-depois {
+            right: 14px;
+        }
+
+        /* No fluxo, logo abaixo da linha dos numeros: posicionado por cima eles
+           encostavam no texto conforme a tela mudava de tamanho. */
+        .capa-pontos {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .capa-ponto {
+            width: 9px;
+            height: 9px;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.45);
+            cursor: pointer;
+            transition: background 200ms ease, width 200ms ease;
+        }
+
+        .capa-ponto.ativo {
+            width: 26px;
+            border-radius: 999px;
+            background: #fff;
+        }
+
+        .capa-carrossel .capa-cartao {
+            position: absolute;
+            right: 5%;
+            bottom: 46px;
+            z-index: 4;
+            width: 350px;
+            margin: 0;
+        }
+
+        @media (max-width: 759px) {
+            .capa-carrossel {
+                min-height: 78vh;
+            }
+
+            .capa-slide {
+                /* Texto no topo: centralizado, ele caia bem atras da caixa de
+                   busca, que fica na parte de baixo. */
+                align-items: start;
+                padding: 34px 5% 250px;
+                background-image:
+                    linear-gradient(180deg, rgba(24, 34, 48, 0.45) 0%, rgba(24, 34, 48, 0.9) 62%),
+                    var(--capa-foto-celular, var(--capa-foto, none));
+                background-position: center top;
+            }
+
+            .capa-carrossel .capa-cartao {
+                position: static;
+                width: auto;
+                margin: 0 5% 8px;
+            }
+
+            .capa-frente {
+                padding-bottom: 20px;
+            }
+
+            .capa-seta {
+                display: none;
+            }
+
+
+        }
+
         .capa {
             position: relative;
             display: grid;
@@ -7091,6 +7263,99 @@
                         }
                     });
                 });
+            });
+        })();
+
+        (function () {
+            // Carrossel da primeira tela: troca sozinho, com seta e pontinhos.
+            // Para de girar quando alguem passa o mouse ou usa os controles,
+            // para nao trocar a foto embaixo do dedo de quem esta olhando.
+            document.addEventListener("DOMContentLoaded", function () {
+                var caixa = document.querySelector("[data-capa]");
+
+                if (!caixa) {
+                    return;
+                }
+
+                var slides = Array.prototype.slice.call(caixa.querySelectorAll("[data-capa-slide]"));
+                var pontos = Array.prototype.slice.call(caixa.querySelectorAll("[data-capa-ponto]"));
+
+                if (slides.length < 2) {
+                    return;
+                }
+
+                var atual = 0;
+                var relogio = null;
+                var parada = false;
+
+                function mostrar(indice) {
+                    atual = (indice + slides.length) % slides.length;
+
+                    slides.forEach(function (slide, i) {
+                        var ativa = i === atual;
+                        slide.classList.toggle("ativa", ativa);
+                        slide.setAttribute("aria-hidden", ativa ? "false" : "true");
+                        slide.setAttribute("tabindex", ativa ? "0" : "-1");
+                    });
+
+                    pontos.forEach(function (ponto, i) {
+                        ponto.classList.toggle("ativo", i === atual);
+                    });
+                }
+
+                function ligar() {
+                    window.clearInterval(relogio);
+
+                    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                        return;
+                    }
+
+                    relogio = window.setInterval(function () {
+                        if (!parada && document.visibilityState === "visible") {
+                            mostrar(atual + 1);
+                        }
+                    }, 5200);
+                }
+
+                function segurar() {
+                    parada = true;
+                }
+
+                function soltar() {
+                    parada = false;
+                }
+
+                var antes = caixa.querySelector("[data-capa-antes]");
+                var depois = caixa.querySelector("[data-capa-depois]");
+
+                if (antes) {
+                    antes.addEventListener("click", function () {
+                        mostrar(atual - 1);
+                        ligar();
+                    });
+                }
+
+                if (depois) {
+                    depois.addEventListener("click", function () {
+                        mostrar(atual + 1);
+                        ligar();
+                    });
+                }
+
+                pontos.forEach(function (ponto, i) {
+                    ponto.addEventListener("click", function () {
+                        mostrar(i);
+                        ligar();
+                    });
+                });
+
+                caixa.addEventListener("mouseenter", segurar);
+                caixa.addEventListener("mouseleave", soltar);
+                caixa.addEventListener("touchstart", segurar, { passive: true });
+                caixa.addEventListener("focusin", segurar);
+
+                mostrar(0);
+                ligar();
             });
         })();
 

@@ -886,22 +886,6 @@ class StoreSettings(models.Model):
     # Sistema de pontos (ajustavel pelo admin, sem mexer no codigo).
     # Enquanto estiver desligado, as compras continuam creditando cashback em
     # dinheiro. Ligar troca o ganho para pontos, e desligar volta atras.
-    # Foto grande da primeira tela do site. Fica em branco ate a loja subir a
-    # dela; sem foto, a pagina usa um fundo proprio e continua bonita.
-    hero_image = models.FileField(
-        "foto da primeira tela",
-        storage=midia_da_vitrine,
-        upload_to="site/",
-        blank=True,
-        help_text="Foto larga (16:9). O texto entra do lado esquerdo, entao deixe esse lado calmo.",
-    )
-    hero_image_mobile = models.FileField(
-        "foto da primeira tela no celular",
-        storage=midia_da_vitrine,
-        upload_to="site/",
-        blank=True,
-        help_text="Mesma cena em pe (4:5). Opcional: sem ela, o celular usa a foto larga.",
-    )
     points_active = models.BooleanField("usar pontos no lugar do cashback", default=False)
     points_cap = models.PositiveSmallIntegerField("teto de pontos", default=POINTS_CAP)
     points_pix = models.PositiveSmallIntegerField("pontos por compra a vista/Pix", default=POINTS_PIX)
@@ -1928,6 +1912,58 @@ def _send_push_on_notification(sender, instance, created, **kwargs):
         # Push e best-effort; nunca pode quebrar a criacao da notificacao.
         import logging
         logging.getLogger(__name__).exception("Falha ao enviar push da notificacao")
+
+
+class CapaDoSite(models.Model):
+    """Cada foto que gira na primeira tela do site.
+
+    Sem nenhuma cadastrada, a pagina usa um fundo com as cores da marca e
+    continua funcionando - a capa nunca fica quebrada esperando imagem.
+    """
+
+    titulo = models.CharField("título", max_length=80)
+    chamada = models.CharField("linha de apoio", max_length=160, blank=True)
+    imagem = models.FileField(
+        "foto larga",
+        storage=midia_da_vitrine,
+        upload_to="capa/",
+        help_text="16:9, com o lado esquerdo calmo: e onde entra o texto.",
+    )
+    imagem_celular = models.FileField(
+        "foto em pé",
+        storage=midia_da_vitrine,
+        upload_to="capa/",
+        blank=True,
+        help_text="4:5. Sem ela, o celular corta a foto larga.",
+    )
+    categoria = models.CharField(
+        "categoria",
+        max_length=120,
+        blank=True,
+        help_text="Ao clicar, o cliente cai na loja filtrada por esta categoria.",
+    )
+    posicao = models.PositiveSmallIntegerField("ordem", default=0)
+    visivel = models.BooleanField("mostrar no site", default=True)
+
+    class Meta:
+        ordering = ["posicao", "id"]
+        verbose_name = "capa do site"
+        verbose_name_plural = "capas do site"
+
+    def __str__(self):
+        return self.titulo
+
+    def link(self):
+        """Para onde o clique leva: a categoria dela, ou a loja inteira."""
+        from django.urls import reverse
+        from urllib.parse import quote
+
+        loja = reverse("store_front")
+
+        if not self.categoria:
+            return loja
+
+        return f"{loja}?categoria={quote(self.categoria)}"
 
 
 class StoreReel(models.Model):

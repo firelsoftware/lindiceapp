@@ -4,30 +4,81 @@
 {% block body_class %}pagina-inicial{% endblock %}
 
 {% block content %}
-<section class="capa{% if not hero_image %} capa-sem-foto{% endif %}"
-         {% if hero_image %}style="--capa-foto: url('{{ hero_image }}'); --capa-foto-celular: url('{{ hero_image_mobile|default:hero_image }}');"{% endif %}>
-    <div class="capa-texto">
-        <h1>O sapato certo, no seu tempo e no seu limite.</h1>
+{% if capas %}
+    <section class="capa-carrossel" data-capa aria-roledescription="carrossel" aria-label="Destaques da loja">
+        {% for capa in capas %}
+            <a class="capa-slide{% if forloop.first %} ativa{% endif %}"
+               href="{{ capa.link }}"
+               data-capa-slide
+               style="--capa-foto: url('{{ capa.imagem.url }}');{% if capa.imagem_celular %} --capa-foto-celular: url('{{ capa.imagem_celular.url }}');{% endif %}"
+               {% if not forloop.first %}aria-hidden="true" tabindex="-1"{% endif %}>
+                <span class="capa-texto">
+                    <span class="capa-titulo">{{ capa.titulo }}</span>
+                    {% if capa.chamada %}<span class="capa-chamada">{{ capa.chamada }}</span>{% endif %}
+                </span>
+            </a>
+        {% endfor %}
 
-        <form class="capa-busca" method="get" action="{% url 'store_front' %}">
-            <label class="sr-only" for="busca-capa">O que você procura</label>
-            <input id="busca-capa" name="q" placeholder="O que você procura hoje?">
-            <button type="submit">Buscar</button>
-        </form>
+        <div class="capa-frente">
+            <form class="capa-busca" method="get" action="{% url 'store_front' %}">
+                <label class="sr-only" for="busca-capa">O que você procura</label>
+                <input id="busca-capa" name="q" placeholder="O que você procura hoje?">
+                <button type="submit">Buscar</button>
+            </form>
 
-        <p class="capa-provas">
-            <span>{{ total_produtos }} produtos</span>
-            <span>Crediário próprio</span>
-            <span>Entrega para todo o Brasil</span>
-        </p>
-    </div>
+            <p class="capa-provas">
+                <span>{{ total_produtos }} produtos</span>
+                <span>Crediário próprio</span>
+                <span>Entrega para todo o Brasil</span>
+            </p>
 
-    <aside class="capa-cartao">
-        <h2>Crediário Líndice</h2>
-        <p>Compre parcelado sem precisar de cartão de crédito. Quem aprova o limite é a loja.</p>
-        <a class="capa-cartao-link" href="{% url 'register' %}">Começar agora &rsaquo;</a>
-    </aside>
-</section>
+            {% if capas|length > 1 %}
+                <div class="capa-pontos" role="tablist" aria-label="Escolher foto">
+                    {% for capa in capas %}
+                        <button class="capa-ponto{% if forloop.first %} ativo{% endif %}" type="button"
+                                data-capa-ponto="{{ forloop.counter0 }}"
+                                aria-label="{{ capa.titulo }}"></button>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {% if capas|length > 1 %}
+            <button class="capa-seta capa-seta-antes" type="button" aria-label="Foto anterior" data-capa-antes>&lsaquo;</button>
+            <button class="capa-seta capa-seta-depois" type="button" aria-label="Próxima foto" data-capa-depois>&rsaquo;</button>
+        {% endif %}
+
+        <aside class="capa-cartao">
+            <h2>Crediário Líndice</h2>
+            <p>Compre parcelado sem precisar de cartão de crédito. Quem aprova o limite é a loja.</p>
+            <a class="capa-cartao-link" href="{% url 'register' %}">Começar agora &rsaquo;</a>
+        </aside>
+    </section>
+{% else %}
+    <section class="capa capa-sem-foto">
+        <div class="capa-texto">
+            <h1>O sapato certo, no seu tempo e no seu limite.</h1>
+
+            <form class="capa-busca" method="get" action="{% url 'store_front' %}">
+                <label class="sr-only" for="busca-capa">O que você procura</label>
+                <input id="busca-capa" name="q" placeholder="O que você procura hoje?">
+                <button type="submit">Buscar</button>
+            </form>
+
+            <p class="capa-provas">
+                <span>{{ total_produtos }} produtos</span>
+                <span>Crediário próprio</span>
+                <span>Entrega para todo o Brasil</span>
+            </p>
+        </div>
+
+        <aside class="capa-cartao">
+            <h2>Crediário Líndice</h2>
+            <p>Compre parcelado sem precisar de cartão de crédito. Quem aprova o limite é a loja.</p>
+            <a class="capa-cartao-link" href="{% url 'register' %}">Começar agora &rsaquo;</a>
+        </aside>
+    </section>
+{% endif %}
 
 {% if atalhos %}
     <nav class="atalhos" aria-label="Categorias">

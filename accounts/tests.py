@@ -21,7 +21,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 from .forms import CreditSaleForm, InstallmentChoiceForm, ProductForm, RegisterForm
-from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, UsoDeEspaco, User, add_months
+from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, CapaDoSite, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, UsoDeEspaco, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference, payment_method_from_payment
 from .bucket_publico import copiar_vitrine, PREFIXOS_DA_VITRINE
@@ -2356,15 +2356,50 @@ class StoreFlowTests(TestCase):
         # lista vazia so frustra quem clica.
         self.assertNotContains(resposta, ">Smartwatches<", html=False)
 
-    def test_homepage_works_before_the_store_uploads_the_hero_photo(self):
-        # A foto grande e opcional: sem ela a pagina usa o fundo da marca em
-        # vez de ficar quebrada esperando a imagem chegar.
-        self.assertFalse(StoreSettings.load().hero_image)
+    def test_homepage_shows_the_carousel_that_came_with_the_store(self):
+        # As quatro capas entram pela migracao 0070, porque o plano da Render
+        # nao da terminal para subir arquivo em producao.
+        self.assertEqual(CapaDoSite.objects.filter(visivel=True).count(), 4)
+
+        resposta = self.client.get("/")
+
+        self.assertContains(resposta, 'class="capa-carrossel"', html=False)
+        self.assertContains(resposta, "Moda fitness")
+        # Quatro fotos e quatro pontinhos. Conta a marcacao, nao o atributo:
+        # o atributo tambem aparece no JavaScript do carrossel.
+        pagina = resposta.content.decode()
+        self.assertEqual(pagina.count('class="capa-slide'), 4)
+        # com o = no fim: o seletor do JavaScript e sem ele, e o
+        # contêiner "capa-pontos" tambem contem "capa-ponto".
+        self.assertEqual(pagina.count('data-capa-ponto="'), 4)
+
+    def test_homepage_falls_back_to_the_brand_background_without_photos(self):
+        # Loja que apagar todas as capas nao fica com a primeira tela quebrada.
+        CapaDoSite.objects.all().delete()
 
         resposta = self.client.get("/")
 
         self.assertEqual(resposta.status_code, 200)
         self.assertContains(resposta, "capa-sem-foto")
+        self.assertNotContains(resposta, 'class="capa-carrossel"', html=False)
+
+    def test_hidden_cover_does_not_reach_the_site(self):
+        capa = CapaDoSite.objects.first()
+        capa.visivel = False
+        capa.save()
+
+        resposta = self.client.get("/")
+
+        self.assertNotContains(resposta, capa.titulo)
+        self.assertEqual(resposta.content.decode().count('class="capa-slide'), 3)
+
+    def test_cover_links_to_its_category_or_to_the_whole_store(self):
+        com_categoria = CapaDoSite.objects.filter(categoria="Smartwatches").first()
+        self.assertIsNotNone(com_categoria)
+        self.assertIn("categoria=Smartwatches", com_categoria.link())
+
+        sem_categoria = CapaDoSite.objects.filter(categoria="").first()
+        self.assertEqual(sem_categoria.link(), "/loja/")
 
     def test_logged_customer_does_not_see_the_landing_page(self):
         # Quem ja e cliente vai direto para onde usa o app.

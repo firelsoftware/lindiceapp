@@ -35,7 +35,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from . import google_oauth
 from .forms import LancamentoDePontosForm, MAX_PRODUCT_PHOTOS_PER_UPLOAD, validate_product_photo, CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, NewSupplierProductForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
-from .models import StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance, points_balance_capped, points_discount_percent, PointsTransaction, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .models import CapaDoSite, StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance, points_balance_capped, points_discount_percent, PointsTransaction, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .bucket_publico import conferir_se_e_publico, copiar_vitrine, PREFIXOS_DA_VITRINE
 from .espaco import atualizar_medicao, resumo_do_espaco, somar_arquivos
 from .notifications import create_credit_limit_increased_notification, create_manual_debt_notification, create_registration_approved_notification, create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
@@ -1109,19 +1109,16 @@ def pagina_inicial(request):
         if categoria in existentes
     ]
 
-    loja = StoreSettings.load()
-
     return render(
         request,
         "accounts/pagina_inicial.html",
         {
+            "capas": CapaDoSite.objects.filter(visivel=True),
             "destaques": destaques,
             "atalhos": atalhos,
             "total_produtos": a_venda.count(),
             "reels": StoreReel.objects.filter(is_visible=True).order_by("position", "-id")[:8],
-            "desconto_pix": loja.pix_discount_percent,
-            "hero_image": loja.hero_image.url if loja.hero_image else "",
-            "hero_image_mobile": loja.hero_image_mobile.url if loja.hero_image_mobile else "",
+            "desconto_pix": StoreSettings.load().pix_discount_percent,
         },
     )
 

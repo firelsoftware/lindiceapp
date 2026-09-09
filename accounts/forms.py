@@ -494,7 +494,6 @@ class StoreSettingsForm(forms.ModelForm):
             "pix_discount_percent", "points_active",
             "points_pix", "points_card", "points_credit",
             "points_payoff_bonus", "referral_points", "points_cap",
-            "hero_image", "hero_image_mobile",
         )
         labels = {
             "cashback_percent": "Cashback por compra (%)",
@@ -508,8 +507,6 @@ class StoreSettingsForm(forms.ModelForm):
             "points_payoff_bonus": "Bônus de quitação do carnê (pontos)",
             "referral_points": "Pontos por indicação",
             "points_cap": "Teto de pontos por cliente",
-            "hero_image": "Foto da primeira tela do site",
-            "hero_image_mobile": "Mesma foto, versão para celular",
         }
         widgets = {
             "cashback_percent": forms.NumberInput(attrs={"min": "0", "max": "100", "step": "0.5"}),
