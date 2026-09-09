@@ -409,6 +409,16 @@ class SupplierProduct(models.Model):
     is_visible = models.BooleanField(default=False)
     # Aparece no carrossel de destaques da pagina inicial.
     is_featured = models.BooleanField("destaque na pagina inicial", default=False)
+    # Lugar deste produto na vitrine da primeira tela. Zero e automatico: entra
+    # pela ordem de preco, depois de quem tem posicao escolhida. Existe porque
+    # so o preco fazia os smartwatches ocuparem as oito vagas e nenhum calcado
+    # aparecer, numa loja que e de calcado.
+    posicao_na_home = models.PositiveSmallIntegerField(
+        "ordem na primeira tela",
+        default=0,
+        blank=True,
+        help_text="1 e o primeiro lugar. Deixe em branco para o site escolher pelo preco.",
+    )
     # Regras de pagamento deste produto. Em branco, valem as da loja.
     pix_discount_override = models.DecimalField(
         "desconto a vista/Pix deste produto (%)",

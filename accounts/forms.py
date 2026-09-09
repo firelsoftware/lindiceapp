@@ -976,6 +976,10 @@ class PartnerBagForm(forms.ModelForm):
 
 
 class SupplierProductEditForm(forms.ModelForm):
+    def clean_posicao_na_home(self):
+        """Campo em branco quer dizer 'deixa o site escolher', que e o zero."""
+        return self.cleaned_data.get("posicao_na_home") or 0
+
     MATERIAL_CHOICES = [
         ("", "Nao se aplica"),
         ("Prata", "Prata"),
@@ -1002,7 +1006,7 @@ class SupplierProductEditForm(forms.ModelForm):
         fields = (
             "name", "brand", "category", "sizes", "description",
             "suggested_sale_price", "compare_at_price", "wholesale_price",
-            "stock_quantity", "is_visible", "is_active", "is_featured",
+            "stock_quantity", "is_visible", "is_active", "is_featured", "posicao_na_home",
             "pix_discount_override", "card_installments", "credit_surcharge_override",
             "image_file", "video_url", "video_file",
             "highlights", "tech_specs",

@@ -1416,39 +1416,6 @@
             color: #ffffff;
         }
 
-        /* Modelos nas laterais vazias da pagina, fora do painel da loja.
-           O halo cinza atras destaca a figura do fundo claro. */
-        @media (min-width: 1220px) {
-            .store-page::before,
-            .store-page::after {
-                --halo: linear-gradient(180deg,
-                    rgba(58, 67, 88, 0) 0%,
-                    rgba(58, 67, 88, 0.09) 14%,
-                    rgba(58, 67, 88, 0.20) 40%,
-                    rgba(58, 67, 88, 0.26) 100%);
-                content: "";
-                position: fixed;
-                bottom: 0;
-                z-index: -1;
-                width: calc((100vw - 960px) / 2);
-                height: min(80vh, 700px);
-                background-repeat: no-repeat;
-                background-position: center bottom;
-                background-size: contain, 100% 100%;
-                pointer-events: none;
-            }
-
-            .store-page::before {
-                left: 0;
-                background-image: var(--modelo-1, none), var(--halo);
-            }
-
-            .store-page::after {
-                right: 0;
-                background-image: var(--modelo-2, none), var(--halo);
-            }
-        }
-
         .store-pagination {
             display: flex;
             align-items: center;
@@ -3694,11 +3661,20 @@
 
         .capa-carrossel .capa-cartao {
             position: absolute;
-            right: 5%;
+            /* Fora do caminho do botao flutuante do WhatsApp, que e fixo em
+               18px da direita e 96px do fundo e cobria o "Comecar agora". */
+            right: calc(5% + 92px);
             bottom: 46px;
             z-index: 4;
-            width: 350px;
+            width: 340px;
             margin: 0;
+        }
+
+        @media (max-width: 1180px) {
+            .capa-carrossel .capa-cartao {
+                right: 5%;
+                bottom: 178px;
+            }
         }
 
         @media (max-width: 759px) {
@@ -3720,7 +3696,8 @@
             .capa-carrossel .capa-cartao {
                 position: static;
                 width: auto;
-                margin: 0 5% 8px;
+                /* Folga embaixo para o botao do WhatsApp nao cobrir o link. */
+                margin: 0 5% 84px;
             }
 
             .capa-frente {
@@ -4885,6 +4862,125 @@
             box-shadow: 0 6px 16px rgba(37, 211, 102, 0.42);
         }
 
+        /* Power: atalho da loja para lancar coisa nova de qualquer tela.
+           Fica acima do botao do WhatsApp, na mesma coluna. */
+        .power {
+            position: fixed;
+            right: 18px;
+            bottom: 172px;
+            z-index: 36;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .power-botao {
+            display: inline-grid;
+            grid-auto-flow: column;
+            align-items: center;
+            gap: 8px;
+            width: auto;
+            margin: 0;
+            padding: 0 20px 0 16px;
+            height: 56px;
+            border: 0;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #4d63b7 0%, #3d51a0 100%);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            box-shadow: 0 16px 34px rgba(77, 99, 183, 0.42);
+            transition: transform 160ms ease, box-shadow 160ms ease;
+        }
+
+        .power-botao:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(77, 99, 183, 0.5);
+        }
+
+        .power-mais {
+            display: grid;
+            place-items: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.22);
+            font-size: 22px;
+            line-height: 1;
+            transition: transform 220ms ease;
+        }
+
+        .power.aberto .power-mais {
+            transform: rotate(45deg);
+        }
+
+        .power-menu {
+            display: grid;
+            gap: 4px;
+            width: 260px;
+            padding: 8px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: var(--surface);
+            box-shadow: 0 22px 54px rgba(24, 34, 48, 0.22);
+        }
+
+        .power-menu a {
+            display: grid;
+            grid-template-columns: 34px 1fr;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 10px;
+            border-radius: 12px;
+            color: var(--ink);
+            text-decoration: none;
+        }
+
+        .power-menu a:hover {
+            background: var(--page);
+        }
+
+        .power-menu-icone {
+            display: grid;
+            place-items: center;
+            font-size: 19px;
+        }
+
+        .power-menu strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .power-menu small {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.35;
+        }
+
+        @media (max-width: 620px) {
+            .power {
+                bottom: 168px;
+            }
+
+            .power-nome {
+                display: none;
+            }
+
+            .power-botao {
+                width: 56px;
+                padding: 0;
+                justify-content: center;
+            }
+
+            .power-menu {
+                width: min(260px, calc(100vw - 44px));
+            }
+        }
+
         .floating-whatsapp {
             position: fixed;
             right: 18px;
@@ -5930,6 +6026,47 @@
             </a>
         </div>
     </footer>
+
+    {% if request.user.is_staff %}
+        <div class="power" data-power>
+            <div class="power-menu" data-power-menu hidden>
+                <a href="{% url 'new_supplier_product' %}">
+                    <span class="power-menu-icone" aria-hidden="true">🛍️</span>
+                    <span>
+                        <strong>Produto novo</strong>
+                        <small>Nome, preço, fotos e descrição</small>
+                    </span>
+                </a>
+                <a href="{% url 'staff_reels' %}">
+                    <span class="power-menu-icone" aria-hidden="true">🎬</span>
+                    <span>
+                        <strong>Vídeo novo</strong>
+                        <small>Cole o link do YouTube</small>
+                    </span>
+                </a>
+                <a href="{% url 'suppliers_list' %}">
+                    <span class="power-menu-icone" aria-hidden="true">📦</span>
+                    <span>
+                        <strong>Importar catálogo</strong>
+                        <small>CSV do dia do fornecedor</small>
+                    </span>
+                </a>
+                <a href="{% url 'espaco_usado' %}">
+                    <span class="power-menu-icone" aria-hidden="true">📊</span>
+                    <span>
+                        <strong>Espaço usado</strong>
+                        <small>Quanto falta para a cota</small>
+                    </span>
+                </a>
+            </div>
+
+            <button class="power-botao" type="button" data-power-botao
+                    aria-label="Lançar coisa nova" aria-expanded="false">
+                <span class="power-mais" aria-hidden="true">+</span>
+                <span class="power-nome">Power</span>
+            </button>
+        </div>
+    {% endif %}
 
     {% if firelsoft_whatsapp_url %}
         <a class="floating-whatsapp" href="{{ firelsoft_whatsapp_url }}" target="_blank" rel="noopener" aria-label="Tirar duvidas pelo WhatsApp da FirelSoft">
@@ -7356,6 +7493,47 @@
 
                 mostrar(0);
                 ligar();
+            });
+        })();
+
+        (function () {
+            // Power: abre e fecha o menu de lancar coisa nova.
+            document.addEventListener("DOMContentLoaded", function () {
+                var caixa = document.querySelector("[data-power]");
+
+                if (!caixa) {
+                    return;
+                }
+
+                var botao = caixa.querySelector("[data-power-botao]");
+                var menu = caixa.querySelector("[data-power-menu]");
+
+                function fechar() {
+                    menu.hidden = true;
+                    caixa.classList.remove("aberto");
+                    botao.setAttribute("aria-expanded", "false");
+                }
+
+                botao.addEventListener("click", function (evento) {
+                    evento.stopPropagation();
+                    var abrindo = menu.hidden;
+                    menu.hidden = !abrindo;
+                    caixa.classList.toggle("aberto", abrindo);
+                    botao.setAttribute("aria-expanded", abrindo ? "true" : "false");
+                });
+
+                // Clicar fora ou apertar Esc fecha, como todo menu.
+                document.addEventListener("click", function (evento) {
+                    if (!caixa.contains(evento.target)) {
+                        fechar();
+                    }
+                });
+
+                document.addEventListener("keydown", function (evento) {
+                    if (evento.key === "Escape") {
+                        fechar();
+                    }
+                });
             });
         })();
 

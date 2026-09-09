@@ -88,44 +88,6 @@ def _sem_acento(texto):
 # Fotos de modelo usadas na faixa de inspiracao da loja. Ficam em
 # accounts/static/accounts/img/modelos/<slug>.webp e ja vem com o topo
 # esmaecido, entao o rosto praticamente nao aparece.
-STORE_MODEL_PHOTOS = ["tenis", "sandalia", "rasteira", "bota", "bolsa", "bolsa2"]
-CATEGORY_MODEL_PHOTOS = {
-    "Tênis": ["tenis"],
-    "Tênis Premium": ["tenis"],
-    "Sandálias": ["sandalia"],
-    "Anabela": ["sandalia"],
-    "Meia Pata": ["sandalia"],
-    "Saltos Anabelas Chinelos": ["sandalia", "rasteira"],
-    "Rasteiras Papetes Flatforms": ["rasteira"],
-    "Botas": ["bota"],
-    "Botas Femininas": ["bota"],
-    "Bolsas": ["bolsa", "bolsa2"],
-    # Sem modelo propria de relogio ainda: usa os looks de trabalho, que
-    # combinam com acessorio de pulso.
-    "Bolsas e Relogios": ["bolsa", "bota"],
-}
-GROUP_MODEL_PHOTOS = {
-    "Calçados": ["tenis", "sandalia", "rasteira", "bota"],
-    "Bolsas": ["bolsa", "bolsa2"],
-    "Relógios": ["bolsa", "bota"],
-}
-
-
-def pick_store_model_photos(category, group, limit=2):
-    """Modelos das laterais da loja: a da categoria primeiro, depois as outras.
-
-    A ordem das complementares gira a cada dia, entao a vitrine muda sozinha.
-    """
-    preferred = []
-    if category or group:
-        preferred = CATEGORY_MODEL_PHOTOS.get(category) or GROUP_MODEL_PHOTOS.get(group) or []
-        if not preferred:
-            return []
-    others = [p for p in STORE_MODEL_PHOTOS if p not in preferred]
-    if others:
-        start = timezone.localdate().toordinal() % len(others)
-        others = others[start:] + others[:start]
-    return (preferred + others)[:limit]
 
 PARTNER_SALES_STATUSES = (
     StoreOrder.PAID,
@@ -1088,13 +1050,28 @@ def home(request):
 def pagina_inicial(request):
     a_venda = SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0)
 
-    # Os oito produtos da vitrine de entrada: com foto, do mais caro para o mais
-    # barato, para a primeira impressao nao ser a ponta do estoque.
-    destaques = list(
-        a_venda.exclude(image_file="", image_url="")
+    # Os oito da vitrine de entrada. Primeiro vem quem a loja colocou a mao,
+    # na ordem que ela escolheu; o resto entra do mais caro para o mais barato,
+    # para a primeira impressao nao ser a ponta do estoque.
+    escolhidos = list(
+        a_venda.filter(posicao_na_home__gt=0)
+        .exclude(image_file="", image_url="")
         .prefetch_related("photos")
-        .order_by("-is_featured", "-suggested_sale_price")[:8]
+        .order_by("posicao_na_home")[:8]
     )
+    faltam = 8 - len(escolhidos)
+    completam = (
+        list(
+            a_venda.filter(posicao_na_home=0)
+            .exclude(image_file="", image_url="")
+            .exclude(id__in=[p.id for p in escolhidos])
+            .prefetch_related("photos")
+            .order_by("-is_featured", "-suggested_sale_price")[:faltam]
+        )
+        if faltam > 0
+        else []
+    )
+    destaques = escolhidos + completam
 
     for produto in destaques:
         galeria = produto.gallery_images()
@@ -1807,7 +1784,6 @@ def store_front(request):
             "subcategories": subcategories,
             "active_group": active_group,
             "selected_category": category,
-            "store_model_photos": pick_store_model_photos(category, active_group),
             "show_size_filters": show_size_filters,
             "size_group": size_group,
             "size": size,

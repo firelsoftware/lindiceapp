@@ -2356,6 +2356,56 @@ class StoreFlowTests(TestCase):
         # lista vazia so frustra quem clica.
         self.assertNotContains(resposta, ">Smartwatches<", html=False)
 
+    def test_power_button_is_only_for_the_store(self):
+        # Atalho de lancar coisa nova de qualquer tela. Cliente nao pode nem
+        # ver os caminhos de gestao.
+        resposta = self.client.get("/loja/")
+        self.assertNotContains(resposta, 'class="power-botao"', html=False)
+
+        self.login_staff(email="loja-power@example.com")
+        resposta = self.client.get("/loja/")
+
+        self.assertContains(resposta, 'class="power-botao"', html=False)
+        self.assertContains(resposta, "Produto novo")
+        self.assertContains(resposta, "Vídeo novo")
+        self.assertContains(resposta, "Importar catálogo")
+
+    def test_store_chooses_who_opens_the_homepage_showcase(self):
+        # So o preco fazia os relogios ocuparem as oito vagas e nenhum calcado
+        # aparecer, numa loja em que calcado e quase todo o catalogo.
+        caro = self.create_supplier_product(
+            name="Bota cara",
+            suggested_sale_price=Decimal("900.00"),
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+        escolhido = self.create_supplier_product(
+            name="Sandalia escolhida a mao",
+            supplier_code="ESCOLHIDA",
+            suggested_sale_price=Decimal("120.00"),
+            image_url="/static/accounts/catalog-test/botas/1.958-4b.jpg",
+            posicao_na_home=1,
+        )
+
+        resposta = self.client.get("/")
+        pagina = resposta.content.decode()
+
+        # O escolhido vem antes do mais caro, mesmo custando menos.
+        self.assertLess(pagina.index(escolhido.name), pagina.index(caro.name))
+
+    def test_products_without_a_chosen_place_still_fill_the_showcase(self):
+        for indice in range(3):
+            self.create_supplier_product(
+                name=f"Bota automatica {indice}",
+                supplier_code=f"AUTO{indice}",
+                suggested_sale_price=Decimal(f"{200 + indice * 10}.00"),
+                image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+            )
+
+        resposta = self.client.get("/")
+
+        # Ninguem escolhido a mao: a vitrine continua cheia, pelo preco.
+        self.assertContains(resposta, "Bota automatica 2")
+
     def test_homepage_shows_the_carousel_that_came_with_the_store(self):
         # As quatro capas entram pela migracao 0070, porque o plano da Render
         # nao da terminal para subir arquivo em producao.
