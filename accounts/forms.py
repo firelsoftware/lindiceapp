@@ -1136,8 +1136,54 @@ class StoreReelForm(forms.ModelForm):
         return limpo
 
 
+# Valor que a lista usa para dizer "nao esta aqui, vou escrever".
+ESCREVER_NOVO = "__novo__"
+
+# Faixa de numeracao que a loja trabalha, do infantil ao maior adulto.
+MENOR_NUMERO = 15
+MAIOR_NUMERO = 46
+
+
+def valores_ja_usados(campo):
+    """O que a loja ja escreveu naquele campo, sem repetir.
+
+    A lista de categorias e de marcas nasce do proprio catalogo: cadastrar um
+    produto com categoria nova ja deixa ela disponivel no proximo. Nao precisa
+    de tela de cadastro de categoria nem de lista fixa no codigo.
+    """
+    valores = (
+        SupplierProduct.objects.exclude(**{campo: ""})
+        .values_list(campo, flat=True)
+        .distinct()
+    )
+
+    return sorted({valor.strip() for valor in valores if valor and valor.strip()}, key=str.lower)
+
+
+def lista_com_novo(campo, em_branco):
+    escolhas = [("", em_branco)]
+    escolhas += [(valor, valor) for valor in valores_ja_usados(campo)]
+    escolhas.append((ESCREVER_NOVO, "Nao esta na lista - vou escrever"))
+
+    return escolhas
+
+
 class NewSupplierProductForm(forms.ModelForm):
     """Cadastro rapido de um produto novo. O preco sai das regras da loja."""
+
+    categoria_nova = forms.CharField(
+        label="Escreva a categoria nova",
+        required=False,
+        help_text="So quando ela nao estiver na lista acima. Depois de salvar, ja aparece la.",
+    )
+    marca_nova = forms.CharField(label="Escreva a marca nova", required=False)
+    numero_de = forms.ChoiceField(label="Do numero", required=False)
+    numero_ate = forms.ChoiceField(label="Ate o numero", required=False)
+
+    field_order = [
+        "name", "category", "categoria_nova", "supplier_code", "brand", "marca_nova",
+        "wholesale_price", "stock_quantity", "numero_de", "numero_ate", "sizes",
+    ]
 
     class Meta:
         model = SupplierProduct
@@ -1154,15 +1200,72 @@ class NewSupplierProductForm(forms.ModelForm):
         help_texts = {
             "supplier_code": "Como o produto e identificado no fornecedor. Precisa ser unico.",
             "wholesale_price": "So para conta interna. A loja calcula o preco de venda a partir dele.",
-            "sizes": "Deixe 'Único' para relogios e fones.",
+            "sizes": "Preenchido pela faixa de numeracao. Deixe 'Único' para relogio e fone.",
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["brand"].initial = "Wearzone"
-        self.fields["category"].initial = "Smartwatches"
+        numeros = [("", "-")] + [
+            (str(numero), str(numero)) for numero in range(MENOR_NUMERO, MAIOR_NUMERO + 1)
+        ]
+        self.fields["numero_de"].choices = numeros
+        self.fields["numero_ate"].choices = numeros
+
+        # Categoria e obrigatoria: sem ela o produto nao entra em nenhuma linha
+        # da primeira tela e so aparece para quem procura pelo nome.
+        # Lista para escolher, mas o campo continua aceitando texto: quem chama
+        # o formulario de fora (uma importacao, um teste) nao pode depender de
+        # a categoria ja existir no catalogo.
+        self.fields["category"] = forms.CharField(
+            label="Categoria",
+            widget=forms.Select(choices=lista_com_novo("category", "Escolha a categoria")),
+            help_text="A prateleira em que ele vai aparecer na primeira tela.",
+        )
+        self.fields["brand"] = forms.CharField(
+            label="Marca",
+            required=False,
+            widget=forms.Select(choices=lista_com_novo("brand", "Sem marca")),
+        )
         self.fields["sizes"].initial = "Único"
         self.fields["stock_quantity"].initial = 10
+        self.order_fields(self.field_order)
+
+    def _resolver_lista(self, campo, campo_novo, rotulo):
+        """Troca o 'vou escrever' pelo que a loja escreveu."""
+        escolhido = (self.cleaned_data.get(campo) or "").strip()
+
+        if escolhido != ESCREVER_NOVO:
+            return escolhido
+
+        escrito = (self.cleaned_data.get(campo_novo) or "").strip()
+
+        if not escrito:
+            self.add_error(campo_novo, f"Escreva o nome {rotulo} ou escolha uma da lista.")
+
+            return ""
+
+        return escrito
+
+    def clean(self):
+        cleaned = super().clean()
+        cleaned["category"] = self._resolver_lista("category", "categoria_nova", "da categoria")
+        cleaned["brand"] = self._resolver_lista("brand", "marca_nova", "da marca")
+
+        de = cleaned.get("numero_de")
+        ate = cleaned.get("numero_ate")
+
+        if de and ate:
+            if int(de) > int(ate):
+                self.add_error("numero_ate", "O numero final tem que ser maior que o inicial.")
+            else:
+                # A faixa manda: e ela que a loja acabou de escolher.
+                cleaned["sizes"] = ",".join(str(numero) for numero in range(int(de), int(ate) + 1))
+        elif de or ate:
+            self.add_error(
+                "numero_ate" if de else "numero_de", "Preencha os dois numeros, ou nenhum dos dois."
+            )
+
+        return cleaned
 
     def clean_supplier_code(self):
         codigo = (self.cleaned_data["supplier_code"] or "").strip()

@@ -52,4 +52,69 @@
         </div>
     </form>
 </section>
+
+<script>
+(function () {
+    // O campo de escrever so aparece quando a loja diz que nao esta na lista.
+    function ligarLista(idLista, idEscrito) {
+        var lista = document.getElementById(idLista);
+        var escrito = document.getElementById(idEscrito);
+
+        if (!lista || !escrito) {
+            return;
+        }
+
+        var caixa = escrito.closest("p") || escrito.parentNode;
+        var primeiraVez = true;
+
+        function mostrar() {
+            var escrevendo = lista.value === "__novo__";
+            caixa.style.display = escrevendo ? "" : "none";
+
+            if (escrevendo && !primeiraVez) {
+                escrito.focus();
+            }
+
+            primeiraVez = false;
+        }
+
+        lista.addEventListener("change", mostrar);
+        mostrar();
+    }
+
+    ligarLista("id_category", "id_categoria_nova");
+    ligarLista("id_brand", "id_marca_nova");
+
+    // A faixa escreve a numeracao: 34 a 39 vira 34,35,36,37,38,39.
+    var de = document.getElementById("id_numero_de");
+    var ate = document.getElementById("id_numero_ate");
+    var tamanhos = document.getElementById("id_sizes");
+
+    function numerar() {
+        if (!de.value || !ate.value) {
+            return;
+        }
+
+        var inicio = parseInt(de.value, 10);
+        var fim = parseInt(ate.value, 10);
+
+        if (inicio > fim) {
+            return;
+        }
+
+        var lista = [];
+
+        for (var numero = inicio; numero <= fim; numero += 1) {
+            lista.push(numero);
+        }
+
+        tamanhos.value = lista.join(",");
+    }
+
+    if (de && ate && tamanhos) {
+        de.addEventListener("change", numerar);
+        ate.addEventListener("change", numerar);
+    }
+})();
+</script>
 {% endblock %}

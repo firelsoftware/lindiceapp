@@ -2520,6 +2520,76 @@ class StoreFlowTests(TestCase):
 
         self.assertLess(pagina.index("Chegou bota nova"), pagina.index("Mais desejados"))
 
+    def lancar_produto(self, **campos):
+        dados = {
+            "name": "Tenis Original Actvitta",
+            "category": "Botas Femininas",
+            "supplier_code": "NOVO1",
+            "brand": "",
+            "wholesale_price": "90",
+            "stock_quantity": "5",
+            "sizes": "Único",
+            "categoria_nova": "",
+            "marca_nova": "",
+            "numero_de": "",
+            "numero_ate": "",
+        }
+        dados.update(campos)
+
+        return self.client.post("/gestao/fornecedor/produtos/novo/", dados)
+
+    def test_launch_screen_offers_the_categories_the_store_already_uses(self):
+        # Digitar a categoria de novo a cada produto e convite a erro de escrita
+        # - e categoria errada tira o produto da linha dele na primeira tela.
+        self.create_supplier_product(name="Bota que ja existe", category="Botas Femininas")
+        self.create_supplier_product(
+            supplier_code="RC009", name="Relogio que ja existe", category="Bolsas e Relogios"
+        )
+        self.login_staff(email="loja-lancamento@example.com")
+
+        resposta = self.client.get("/gestao/fornecedor/produtos/novo/")
+
+        self.assertContains(resposta, '<option value="Botas Femininas">', html=False)
+        self.assertContains(resposta, '<option value="Bolsas e Relogios">', html=False)
+        self.assertContains(resposta, "Nao esta na lista")
+
+    def test_store_registers_a_category_it_never_used_before(self):
+        self.login_staff(email="loja-categoria@example.com")
+
+        self.lancar_produto(category="__novo__", categoria_nova="Mochilas")
+
+        produto = SupplierProduct.objects.get(supplier_code="NOVO1")
+        self.assertEqual(produto.category, "Mochilas")
+
+        # E no proximo lancamento ela ja esta na lista, sem tela de cadastro.
+        resposta = self.client.get("/gestao/fornecedor/produtos/novo/")
+        self.assertContains(resposta, '<option value="Mochilas">', html=False)
+
+    def test_launch_screen_asks_for_the_name_when_the_category_is_new(self):
+        self.login_staff(email="loja-sem-nome@example.com")
+
+        resposta = self.lancar_produto(category="__novo__", categoria_nova="")
+
+        self.assertFalse(SupplierProduct.objects.filter(supplier_code="NOVO1").exists())
+        self.assertContains(resposta, "Escreva o nome da categoria")
+
+    def test_size_range_writes_the_numbers_by_itself(self):
+        # "Do 34 ao 37" em vez de digitar 34,35,36,37 na mao.
+        self.login_staff(email="loja-numeracao@example.com")
+
+        self.lancar_produto(numero_de="34", numero_ate="37")
+
+        produto = SupplierProduct.objects.get(supplier_code="NOVO1")
+        self.assertEqual(produto.sizes, "34,35,36,37")
+
+    def test_size_range_refuses_a_backwards_pair(self):
+        self.login_staff(email="loja-numeracao-torta@example.com")
+
+        resposta = self.lancar_produto(numero_de="39", numero_ate="34")
+
+        self.assertFalse(SupplierProduct.objects.filter(supplier_code="NOVO1").exists())
+        self.assertContains(resposta, "maior que o inicial")
+
     def test_every_kind_of_product_gets_its_own_row_on_the_homepage(self):
         # Antes existia uma vitrine so: bastava a loja destacar oito relogios
         # para a bota sumir da primeira tela. Destaque agora e ordem dentro da
