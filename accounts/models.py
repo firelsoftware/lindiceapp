@@ -512,7 +512,13 @@ class SupplierProduct(models.Model):
         return {
             "pix": {"total": total_pix, "percent": Decimal(desconto_pix), "economia": money(preco - total_pix)},
             "card": {"total": money(preco), "installments": parcelas, "parcela": money(preco / Decimal(parcelas))},
-            "credit": {"total": credito, "extra": money(credito - preco)},
+            "credit": {
+                "total": credito,
+                "extra": money(credito - preco),
+                # Em quantas vezes sem juros esta compra cabe no crediario,
+                # respeitando a parcela minima de R$ 70 que o carne ja usa.
+                **credit_installment_preview(credito),
+            },
         }
 
     def highlight_list(self):
@@ -583,6 +589,29 @@ def retail_price_from_wholesale(wholesale, minimum=None):
     piso = WHOLESALE_MIN_PRICE if minimum is None else Decimal(minimum)
 
     return round_price_up(max(custo * WHOLESALE_MARKUP, piso))
+
+
+# A menor parcela que o carne aceita. Abaixo disso a loja cobra em uma vez so.
+MIN_CREDIT_INSTALLMENT = Decimal("70.00")
+
+
+def credit_installment_preview(total):
+    """Maior parcelamento sem juros que cabe neste valor, para mostrar na vitrine.
+
+    Usa a mesma regra do carne: sem juros ate 3x e nenhuma parcela abaixo do
+    minimo. Serve so para a chamada da loja - quem manda no parcelamento de
+    verdade continua sendo a tela de fechamento.
+    """
+    total = Decimal(total or 0)
+    sem_juros = max(n for n, juros in INSTALLMENT_INTEREST_RATES.items() if juros == 0)
+
+    for vezes in range(sem_juros, 1, -1):
+        parcela = money(total / Decimal(vezes))
+
+        if parcela >= MIN_CREDIT_INSTALLMENT:
+            return {"installments": vezes, "parcela": parcela}
+
+    return {"installments": 1, "parcela": money(total)}
 
 
 def credit_price_from_retail(retail, surcharge=None):

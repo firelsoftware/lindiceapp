@@ -1077,6 +1077,14 @@ def pagina_inicial(request):
         galeria = produto.gallery_images()
         produto.foto = galeria[0] if galeria else ""
         produto.pagamentos = produto.payment_options()
+        # Numeracao no proprio cartao: numa loja de calcado e o primeiro filtro
+        # da cliente, antes de cor e de preco. Sem isso ela abre o produto so
+        # para descobrir que nao tem o numero dela.
+        produto.numeros = [
+            numero.strip()
+            for numero in (produto.sizes or "").replace("/", ",").replace(";", ",").split(",")
+            if numero.strip() and numero.strip().lower() not in ("unico", "único")
+        ][:8]
 
     # So mostra o atalho da categoria que tem produto de verdade agora.
     existentes = set(a_venda.values_list("category", flat=True))

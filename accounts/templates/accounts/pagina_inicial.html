@@ -20,16 +20,11 @@
         {% endfor %}
 
         <div class="capa-frente">
-            <form class="capa-busca" method="get" action="{% url 'store_front' %}">
-                <label class="sr-only" for="busca-capa">O que você procura</label>
-                <input id="busca-capa" name="q" placeholder="O que você procura hoje?">
-                <button type="submit">Buscar</button>
-            </form>
 
             <p class="capa-provas">
+                <span>Parcele sem cartão de crédito</span>
+                <span>{{ desconto_pix|floatformat:0 }}% de desconto no Pix</span>
                 <span>{{ total_produtos }} produtos</span>
-                <span>Crediário próprio</span>
-                <span>Entrega para todo o Brasil</span>
             </p>
 
             {% if capas|length > 1 %}
@@ -59,16 +54,11 @@
         <div class="capa-texto">
             <h1>O sapato certo, no seu tempo e no seu limite.</h1>
 
-            <form class="capa-busca" method="get" action="{% url 'store_front' %}">
-                <label class="sr-only" for="busca-capa">O que você procura</label>
-                <input id="busca-capa" name="q" placeholder="O que você procura hoje?">
-                <button type="submit">Buscar</button>
-            </form>
 
             <p class="capa-provas">
+                <span>Parcele sem cartão de crédito</span>
+                <span>{{ desconto_pix|floatformat:0 }}% de desconto no Pix</span>
                 <span>{{ total_produtos }} produtos</span>
-                <span>Crediário próprio</span>
-                <span>Entrega para todo o Brasil</span>
             </p>
         </div>
 
@@ -88,6 +78,17 @@
     </nav>
 {% endif %}
 
+<section class="faixa-crediario">
+    <div class="faixa-crediario-dentro">
+        <div class="faixa-crediario-texto">
+            <h2>Compre parcelado sem cartão de crédito</h2>
+            <p>Quem aprova o limite é a própria loja. Você se cadastra, a gente analisa e você
+            leva hoje, pagando aos poucos.</p>
+        </div>
+        <a class="button faixa-crediario-botao" href="{% url 'register' %}">Pedir meu crediário</a>
+    </div>
+</section>
+
 {% if destaques %}
     <section class="home-secao">
         <div class="home-secao-topo">
@@ -105,15 +106,28 @@
                     </a>
                     <div class="home-produto-corpo">
                         <h3><a href="{% url 'store_product_detail' produto.id %}">{{ produto.name }}</a></h3>
-                        <p class="home-produto-preco">R$ {{ produto.suggested_sale_price|floatformat:2 }}</p>
+                        {% if produto.numeros %}
+                            <p class="home-produto-numeros">
+                                {% for numero in produto.numeros %}<span>{{ numero }}</span>{% endfor %}
+                            </p>
+                        {% endif %}
                         {% if produto.pagamentos %}
-                            <p class="home-produto-parcela">
-                                {{ produto.pagamentos.card.installments }}x de
-                                R$ {{ produto.pagamentos.card.parcela|floatformat:2 }} sem juros
+                            <p class="home-produto-crediario">
+                                {{ produto.pagamentos.credit.installments }}x de
+                                <strong>R$ {{ produto.pagamentos.credit.parcela|floatformat:2 }}</strong>
+                                <span>no crediário, sem cartão</span>
+                            </p>
+                            <p class="home-produto-preco">
+                                ou R$ {{ produto.suggested_sale_price|floatformat:2 }}
                             </p>
                             <p class="home-produto-pix">
                                 R$ {{ produto.pagamentos.pix.total|floatformat:2 }} no Pix
+                                <span class="home-produto-off">
+                                    -{{ produto.pagamentos.pix.percent|floatformat:0 }}%
+                                </span>
                             </p>
+                        {% else %}
+                            <p class="home-produto-preco">R$ {{ produto.suggested_sale_price|floatformat:2 }}</p>
                         {% endif %}
                     </div>
                 </article>
