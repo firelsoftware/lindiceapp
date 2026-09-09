@@ -3555,6 +3555,444 @@
             font-weight: 600;
         }
 
+        /* ---------------- Pagina inicial do site ---------------- */
+
+        .pagina-inicial main {
+            max-width: none;
+            padding: 0;
+        }
+
+        .capa {
+            position: relative;
+            display: grid;
+            align-items: center;
+            min-height: 72vh;
+            padding: 48px 5% 64px;
+            background-image:
+                linear-gradient(90deg, rgba(24, 34, 48, 0.86) 0%, rgba(24, 34, 48, 0.55) 45%, rgba(24, 34, 48, 0.2) 100%),
+                var(--capa-foto, none);
+            background-size: cover;
+            background-position: center right;
+            color: #fff;
+        }
+
+        /* Sem foto ainda: um fundo da propria marca, para a pagina nunca ficar
+           quebrada esperando a imagem chegar. */
+        .capa-sem-foto {
+            background-image:
+                radial-gradient(1200px 600px at 78% 20%, rgba(122, 45, 132, 0.55), transparent 60%),
+                linear-gradient(120deg, #182230 0%, #2b3a63 55%, #4d63b7 100%);
+        }
+
+        .capa-texto {
+            max-width: 560px;
+        }
+
+        .capa h1 {
+            margin: 0 0 22px;
+            color: #fff;
+            font-size: clamp(28px, 5vw, 46px);
+            font-weight: 700;
+            line-height: 1.15;
+            text-wrap: balance;
+        }
+
+        .capa-busca {
+            display: flex;
+            gap: 6px;
+            padding: 6px;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 18px 48px rgba(24, 34, 48, 0.22);
+        }
+
+        .capa-busca input {
+            flex: 1;
+            min-width: 0;
+            padding: 14px 14px;
+            border: 0;
+            background: none;
+            color: var(--ink);
+            font-size: 16px;
+        }
+
+        .capa-busca input:focus {
+            outline: none;
+        }
+
+        .capa-busca button {
+            flex: 0 0 auto;
+            /* O celular tem uma regra que estica todo botao para 100%; aqui ela
+               nao serve, senao o botao cobre o campo de busca. */
+            width: auto;
+            margin: 0;
+            padding: 14px 22px;
+            border: 0;
+            border-radius: 12px;
+            background: var(--brand-blue);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .capa-provas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+            margin: 18px 0 0;
+            color: #e6ecf5;
+            font-size: 14px;
+        }
+
+        .capa-provas span:not(:last-child)::after {
+            content: "•";
+            margin-left: 18px;
+            opacity: 0.55;
+        }
+
+        .capa-cartao {
+            margin-top: 28px;
+            padding: 22px 24px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: var(--surface);
+            color: var(--ink);
+            box-shadow: var(--shadow);
+        }
+
+        .capa-cartao h2 {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .capa-cartao p {
+            margin: 0 0 14px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .capa-cartao-link {
+            color: var(--brand-blue);
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .capa-cartao-link:hover {
+            text-decoration: underline;
+        }
+
+        .atalhos {
+            display: flex;
+            gap: 10px;
+            max-width: 1100px;
+            margin: 28px auto 0;
+            padding: 0 5%;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .atalhos::-webkit-scrollbar {
+            display: none;
+        }
+
+        .atalhos a {
+            flex: 0 0 auto;
+            padding: 10px 20px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: var(--surface);
+            color: var(--ink);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .atalhos a:hover {
+            border-color: var(--brand-blue);
+            color: var(--brand-blue);
+        }
+
+        .home-secao {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 44px 5% 8px;
+        }
+
+        .home-secao-topo {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .home-secao-topo h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .home-secao-topo a {
+            color: var(--brand-blue);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .home-produtos {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .home-produto {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: var(--surface);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .home-produto-foto {
+            display: block;
+            background: var(--page);
+        }
+
+        .home-produto-foto img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+        }
+
+        .home-produto-corpo {
+            padding: 14px 16px 18px;
+        }
+
+        .home-produto-corpo h3 {
+            margin: 0 0 8px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.35;
+        }
+
+        .home-produto-corpo h3 a {
+            color: var(--ink);
+            text-decoration: none;
+        }
+
+        .home-produto-preco {
+            margin: 0;
+            color: var(--brand-purple);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .home-produto-parcela,
+        .home-produto-pix {
+            margin: 2px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .home-produto-pix {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .home-crediario {
+            margin: 52px 0 0;
+            padding: 52px 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            background: var(--surface);
+        }
+
+        .home-crediario-dentro {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .home-crediario h2 {
+            margin: 0 0 6px;
+            font-size: 24px;
+        }
+
+        .home-crediario-linha {
+            margin: 0 0 28px;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .home-passos {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 26px;
+            margin: 0 0 28px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .home-passos li {
+            margin: 0;
+        }
+
+        .home-passo-numero {
+            display: grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            background: var(--page);
+            border: 1px solid var(--line);
+            color: var(--brand-blue);
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .home-passos h3 {
+            margin: 0 0 4px;
+            font-size: 16px;
+        }
+
+        .home-passos p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .home-videos {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+
+        .home-videos::-webkit-scrollbar {
+            display: none;
+        }
+
+        .home-video {
+            position: relative;
+            flex: 0 0 158px;
+            aspect-ratio: 9 / 16;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            text-decoration: none;
+        }
+
+        .home-video img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .home-video-play {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            color: #fff;
+        }
+
+        .home-video-play svg {
+            width: 42px;
+            height: 42px;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+        }
+
+        .home-video-nome {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            left: 10px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+        }
+
+        .home-fechamento {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 52px 5% 64px;
+            text-align: center;
+        }
+
+        .home-fechamento h2 {
+            margin: 0 0 8px;
+            font-size: 24px;
+        }
+
+        .home-fechamento p {
+            margin: 0 0 20px;
+            color: var(--muted);
+        }
+
+        .home-fechamento .action-row {
+            justify-content: center;
+        }
+
+        @media (min-width: 760px) {
+            .capa {
+                grid-template-columns: minmax(0, 1fr) 380px;
+                align-items: center;
+                gap: 40px;
+                min-height: 74vh;
+                padding: 64px 5%;
+            }
+
+            .capa-cartao {
+                margin-top: 0;
+            }
+
+            .home-produtos {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+
+            .home-passos {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 28px;
+            }
+        }
+
+        @media (max-width: 759px) {
+            .capa {
+                background-image:
+                    linear-gradient(180deg, rgba(24, 34, 48, 0.5) 0%, rgba(24, 34, 48, 0.88) 65%),
+                    var(--capa-foto-celular, var(--capa-foto, none));
+                background-position: center top;
+            }
+
+            .capa-sem-foto {
+                background-image:
+                    radial-gradient(700px 420px at 70% 12%, rgba(122, 45, 132, 0.55), transparent 62%),
+                    linear-gradient(160deg, #182230 0%, #2b3a63 58%, #4d63b7 100%);
+            }
+
+            /* Na tela estreita a lista quebra de linha e o ponto separador fica
+               sobrando no fim. O espacamento ja separa. */
+            .capa-provas span:not(:last-child)::after {
+                content: none;
+            }
+
+            .capa-provas {
+                gap: 4px 16px;
+            }
+        }
+
         .pontos-saldo {
             margin: 0 0 12px;
             font-size: 20px;

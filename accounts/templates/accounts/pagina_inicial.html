@@ -1,0 +1,138 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+
+{% block body_class %}pagina-inicial{% endblock %}
+
+{% block content %}
+<section class="capa{% if not hero_image %} capa-sem-foto{% endif %}"
+         {% if hero_image %}style="--capa-foto: url('{{ hero_image }}'); --capa-foto-celular: url('{{ hero_image_mobile|default:hero_image }}');"{% endif %}>
+    <div class="capa-texto">
+        <h1>O sapato certo, no seu tempo e no seu limite.</h1>
+
+        <form class="capa-busca" method="get" action="{% url 'store_front' %}">
+            <label class="sr-only" for="busca-capa">O que você procura</label>
+            <input id="busca-capa" name="q" placeholder="O que você procura hoje?">
+            <button type="submit">Buscar</button>
+        </form>
+
+        <p class="capa-provas">
+            <span>{{ total_produtos }} produtos</span>
+            <span>Crediário próprio</span>
+            <span>Entrega para todo o Brasil</span>
+        </p>
+    </div>
+
+    <aside class="capa-cartao">
+        <h2>Crediário Líndice</h2>
+        <p>Compre parcelado sem precisar de cartão de crédito. Quem aprova o limite é a loja.</p>
+        <a class="capa-cartao-link" href="{% url 'register' %}">Começar agora &rsaquo;</a>
+    </aside>
+</section>
+
+{% if atalhos %}
+    <nav class="atalhos" aria-label="Categorias">
+        {% for atalho in atalhos %}
+            <a href="{% url 'store_front' %}?categoria={{ atalho.categoria|urlencode }}">{{ atalho.nome }}</a>
+        {% endfor %}
+    </nav>
+{% endif %}
+
+{% if destaques %}
+    <section class="home-secao">
+        <div class="home-secao-topo">
+            <h2>Mais desejados</h2>
+            <a href="{% url 'store_front' %}">Ver todos &rsaquo;</a>
+        </div>
+
+        <div class="home-produtos">
+            {% for produto in destaques %}
+                <article class="home-produto">
+                    <a class="home-produto-foto" href="{% url 'store_product_detail' produto.id %}">
+                        {% if produto.foto %}
+                            <img src="{{ produto.foto }}" alt="{{ produto.name }}" loading="lazy">
+                        {% endif %}
+                    </a>
+                    <div class="home-produto-corpo">
+                        <h3><a href="{% url 'store_product_detail' produto.id %}">{{ produto.name }}</a></h3>
+                        <p class="home-produto-preco">R$ {{ produto.suggested_sale_price|floatformat:2 }}</p>
+                        {% if produto.pagamentos %}
+                            <p class="home-produto-parcela">
+                                {{ produto.pagamentos.card.installments }}x de
+                                R$ {{ produto.pagamentos.card.parcela|floatformat:2 }} sem juros
+                            </p>
+                            <p class="home-produto-pix">
+                                R$ {{ produto.pagamentos.pix.total|floatformat:2 }} no Pix
+                            </p>
+                        {% endif %}
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+<section class="home-crediario">
+    <div class="home-crediario-dentro">
+        <h2>Como funciona o crediário</h2>
+        <p class="home-crediario-linha">
+            Sem cartão, sem banco, sem consulta de terceiros. É a loja que analisa e libera.
+        </p>
+
+        <ol class="home-passos">
+            <li>
+                <span class="home-passo-numero">1</span>
+                <h3>Você se cadastra</h3>
+                <p>Pelo celular, com os documentos que você já tem na mão.</p>
+            </li>
+            <li>
+                <span class="home-passo-numero">2</span>
+                <h3>A loja aprova seu limite</h3>
+                <p>A gente analisa e libera um limite para você usar quando quiser.</p>
+            </li>
+            <li>
+                <span class="home-passo-numero">3</span>
+                <h3>Compre parcelado</h3>
+                <p>O limite volta a ficar disponível conforme você paga as parcelas.</p>
+            </li>
+        </ol>
+
+        <div class="action-row">
+            <a class="button" href="{% url 'register' %}">Pedir meu crediário</a>
+            <a class="button button-secondary" href="{% url 'store_front' %}">Só quero olhar a loja</a>
+        </div>
+    </div>
+</section>
+
+{% if reels %}
+    <section class="home-secao">
+        <div class="home-secao-topo">
+            <h2>Na Líndice</h2>
+            <a href="{% url 'store_front' %}">Ver na loja &rsaquo;</a>
+        </div>
+
+        <div class="home-videos">
+            {% for reel in reels %}
+                <a class="home-video" href="{% if reel.product %}{% url 'store_product_detail' reel.product.id %}{% else %}{% url 'store_front' %}{% endif %}">
+                    {% if reel.is_youtube %}
+                        <img src="{{ reel.thumbnail_url }}" alt="{{ reel.display_title }}" loading="lazy">
+                    {% elif reel.poster %}
+                        <img src="{{ reel.poster.url }}" alt="{{ reel.display_title }}" loading="lazy">
+                    {% endif %}
+                    <span class="home-video-play" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/></svg>
+                    </span>
+                    <span class="home-video-nome">{{ reel.display_title }}</span>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
+<section class="home-fechamento">
+    <h2>Pronta para escolher?</h2>
+    <p>{{ total_produtos }} produtos esperando, com {{ desconto_pix|floatformat:0 }}% de desconto à vista no Pix.</p>
+    <div class="action-row">
+        <a class="button" href="{% url 'store_front' %}">Ver a loja</a>
+    </div>
+</section>
+{% endblock %}

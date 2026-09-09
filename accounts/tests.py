@@ -2313,6 +2313,87 @@ class StoreFlowTests(TestCase):
         # Com o programa desligado, a tela avisa que o cliente ainda nao ve.
         self.assertContains(resposta, "ainda está desligado")
 
+    def test_visitor_lands_on_the_site_homepage(self):
+        produto = self.create_supplier_product(
+            name="Bota da vitrine",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        resposta = self.client.get("/")
+
+        self.assertEqual(resposta.status_code, 200)
+        self.assertTemplateUsed(resposta, "accounts/pagina_inicial.html")
+        # O produto e o preco sao os de verdade, nao exemplo.
+        self.assertContains(resposta, produto.name)
+        self.assertContains(resposta, "Crediário Líndice")
+        self.assertContains(resposta, "Como funciona o crediário")
+
+    def test_homepage_shows_the_real_installment_and_pix_price(self):
+        self.create_supplier_product(
+            name="Bota com preco",
+            suggested_sale_price=Decimal("400.00"),
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        resposta = self.client.get("/")
+
+        # 400 em 4x sem juros, e 15% de desconto no Pix arredondado para cima.
+        self.assertContains(resposta, "4x de")
+        self.assertContains(resposta, "R$ 100,00")
+        self.assertContains(resposta, "no Pix")
+
+    def test_homepage_only_offers_categories_that_have_products(self):
+        self.create_supplier_product(
+            name="So bota",
+            category="Botas Femininas",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        resposta = self.client.get("/")
+
+        self.assertContains(resposta, ">Botas<", html=False)
+        # Sem smartwatch cadastrado, o atalho nao aparece: botao que leva a
+        # lista vazia so frustra quem clica.
+        self.assertNotContains(resposta, ">Smartwatches<", html=False)
+
+    def test_homepage_works_before_the_store_uploads_the_hero_photo(self):
+        # A foto grande e opcional: sem ela a pagina usa o fundo da marca em
+        # vez de ficar quebrada esperando a imagem chegar.
+        self.assertFalse(StoreSettings.load().hero_image)
+
+        resposta = self.client.get("/")
+
+        self.assertEqual(resposta.status_code, 200)
+        self.assertContains(resposta, "capa-sem-foto")
+
+    def test_logged_customer_does_not_see_the_landing_page(self):
+        # Quem ja e cliente vai direto para onde usa o app.
+        user = User.objects.create_user(
+            email="cliente-home@example.com",
+            password="Teste12345!",
+            full_name="Cliente Home",
+            preferred_name="Cliente",
+        )
+        self.client.force_login(user)
+
+        resposta = self.client.get("/")
+
+        self.assertEqual(resposta.status_code, 302)
+        self.assertNotEqual(resposta["Location"], "/")
+
+    def test_homepage_search_goes_to_the_store(self):
+        self.create_supplier_product(
+            name="Bota procurada",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        resposta = self.client.get("/")
+        self.assertContains(resposta, 'action="/loja/"', html=False)
+
+        # E a busca realmente encontra.
+        resultado = self.client.get("/loja/?q=Bota procurada")
+        self.assertContains(resultado, "Bota procurada")
+
     def test_supplier_page_offers_the_catalog_import(self):
         # A importacao de catalogo ja morou nesta tela, mudou de lugar numa
         # reorganizacao e ninguem percebeu por meses, porque nada testava a
@@ -3671,10 +3752,14 @@ class CustomerEntryRoutingTests(TestCase):
 
         return user
 
-    def test_home_redirects_guest_to_public_store(self):
+    def test_home_shows_the_site_homepage_to_a_guest(self):
+        # O endereco do site deixou de mandar direto para a lista de produtos:
+        # visitante ve a pagina inicial, com a loja a um clique.
         response = self.client.get("/")
 
-        self.assertRedirects(response, "/loja/")
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "accounts/pagina_inicial.html")
+        self.assertContains(response, 'href="/loja/"', html=False)
 
     def test_home_redirects_client_with_pending_sale_to_store(self):
         user = self.create_client()

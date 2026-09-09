@@ -15,7 +15,7 @@
     <p>Ajuste os números do programa de fidelidade. As mudanças valem na hora, sem precisar de novo deploy.</p>
 </section>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <p>
         <label for="{{ form.cashback_percent.id_for_label }}">{{ form.cashback_percent.label }}</label>
@@ -90,6 +90,26 @@
         {{ form.points_cap }}
         <small>Máximo de pontos que um cliente pode acumular.</small>
         {{ form.points_cap.errors }}
+    </p>
+
+
+    <h2>Foto da primeira tela do site</h2>
+    <p class="store-product-note">
+        A foto grande que aparece no topo de <a href="{% url 'home' %}">lindice.com.br</a>.
+        Sem ela, o site usa um fundo com as cores da marca e continua bonito.
+        O texto entra do lado esquerdo, entao escolha uma foto com esse lado calmo.
+    </p>
+    <p>
+        <label for="{{ form.hero_image.id_for_label }}">{{ form.hero_image.label }}</label>
+        {{ form.hero_image }}
+        <small>Foto larga, no formato 16:9. E a que aparece no computador.</small>
+        {{ form.hero_image.errors }}
+    </p>
+    <p>
+        <label for="{{ form.hero_image_mobile.id_for_label }}">{{ form.hero_image_mobile.label }}</label>
+        {{ form.hero_image_mobile }}
+        <small>Mesma cena em pe, no formato 4:5. Sem ela, o celular usa a foto larga cortada.</small>
+        {{ form.hero_image_mobile.errors }}
     </p>
 
     <button type="submit">Salvar configurações</button>

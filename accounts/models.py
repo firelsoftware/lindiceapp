@@ -886,6 +886,22 @@ class StoreSettings(models.Model):
     # Sistema de pontos (ajustavel pelo admin, sem mexer no codigo).
     # Enquanto estiver desligado, as compras continuam creditando cashback em
     # dinheiro. Ligar troca o ganho para pontos, e desligar volta atras.
+    # Foto grande da primeira tela do site. Fica em branco ate a loja subir a
+    # dela; sem foto, a pagina usa um fundo proprio e continua bonita.
+    hero_image = models.FileField(
+        "foto da primeira tela",
+        storage=midia_da_vitrine,
+        upload_to="site/",
+        blank=True,
+        help_text="Foto larga (16:9). O texto entra do lado esquerdo, entao deixe esse lado calmo.",
+    )
+    hero_image_mobile = models.FileField(
+        "foto da primeira tela no celular",
+        storage=midia_da_vitrine,
+        upload_to="site/",
+        blank=True,
+        help_text="Mesma cena em pe (4:5). Opcional: sem ela, o celular usa a foto larga.",
+    )
     points_active = models.BooleanField("usar pontos no lugar do cashback", default=False)
     points_cap = models.PositiveSmallIntegerField("teto de pontos", default=POINTS_CAP)
     points_pix = models.PositiveSmallIntegerField("pontos por compra a vista/Pix", default=POINTS_PIX)

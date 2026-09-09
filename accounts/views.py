@@ -1059,11 +1059,71 @@ def build_cart_items(request):
     return items
 
 
+# Pares de categoria que a pagina inicial mostra como atalho. O nome curto e o
+# que aparece no botao; o valor e a categoria como esta gravada no produto.
+ATALHOS_DA_HOME = [
+    ("Tênis", "Tenis Premium e Original"),
+    ("Botas", "Botas Femininas"),
+    ("Saltos", "Saltos Anabelas Chinelos"),
+    ("Rasteiras", "Rasteiras Papetes Flatforms"),
+    ("Scarpins", "Ortopedicos Scarpin Mocassim Sapatilha"),
+    ("Bolsas", "Bolsas e Relogios"),
+    ("Infantil", "Linha Infantil"),
+    ("Smartwatches", "Smartwatches"),
+]
+
+
 def home(request):
+    """Primeira tela de quem chega pelo endereco do site.
+
+    Cliente logado vai direto para onde ele usa o app; quem chega de fora ve a
+    vitrine de entrada, com produto, preco e o crediario explicado.
+    """
     if request.user.is_authenticated:
         return redirect(authenticated_home_route(request.user))
 
-    return redirect("store_front")
+    return pagina_inicial(request)
+
+
+def pagina_inicial(request):
+    a_venda = SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0)
+
+    # Os oito produtos da vitrine de entrada: com foto, do mais caro para o mais
+    # barato, para a primeira impressao nao ser a ponta do estoque.
+    destaques = list(
+        a_venda.exclude(image_file="", image_url="")
+        .prefetch_related("photos")
+        .order_by("-is_featured", "-suggested_sale_price")[:8]
+    )
+
+    for produto in destaques:
+        galeria = produto.gallery_images()
+        produto.foto = galeria[0] if galeria else ""
+        produto.pagamentos = produto.payment_options()
+
+    # So mostra o atalho da categoria que tem produto de verdade agora.
+    existentes = set(a_venda.values_list("category", flat=True))
+    atalhos = [
+        {"nome": nome, "categoria": categoria}
+        for nome, categoria in ATALHOS_DA_HOME
+        if categoria in existentes
+    ]
+
+    loja = StoreSettings.load()
+
+    return render(
+        request,
+        "accounts/pagina_inicial.html",
+        {
+            "destaques": destaques,
+            "atalhos": atalhos,
+            "total_produtos": a_venda.count(),
+            "reels": StoreReel.objects.filter(is_visible=True).order_by("position", "-id")[:8],
+            "desconto_pix": loja.pix_discount_percent,
+            "hero_image": loja.hero_image.url if loja.hero_image else "",
+            "hero_image_mobile": loja.hero_image_mobile.url if loja.hero_image_mobile else "",
+        },
+    )
 
 
 def can_manage_doces_e_mais(user):
@@ -3039,7 +3099,7 @@ def staff_loyalty_settings(request):
     settings_obj = StoreSettings.load()
 
     if request.method == "POST":
-        form = StoreSettingsForm(request.POST, instance=settings_obj)
+        form = StoreSettingsForm(request.POST, request.FILES, instance=settings_obj)
         if form.is_valid():
             form.save()
             messages.success(request, "Configurações do cashback atualizadas.")
