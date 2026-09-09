@@ -1,5 +1,20 @@
 {% extends "accounts/base.html" %}
 
+{# Quem pesquisa "bota cano curto preta" no Google cai aqui, nao na inicial. #}
+{% block titulo %}{{ product.name }}{% if product.brand %} {{ product.brand }}{% endif %} | Líndice{% endblock %}
+
+{% block meta_descricao %}{{ product.name }}{% if product.sizes %} nos tamanhos {{ product.sizes }}{% endif %}. R$ {{ product.suggested_sale_price|floatformat:2 }}{% if product.pagamentos_seo %}, ou {{ product.pagamentos_seo.credit.installments }}x de R$ {{ product.pagamentos_seo.credit.parcela|floatformat:2 }} no crediário sem cartão{% endif %}. Entrega para todo o Brasil.{% endblock %}
+
+{% block og_titulo %}{{ product.name }} — R$ {{ product.suggested_sale_price|floatformat:2 }}{% endblock %}
+{% block og_descricao %}{% if product.pagamentos_seo %}{{ product.pagamentos_seo.credit.installments }}x de R$ {{ product.pagamentos_seo.credit.parcela|floatformat:2 }} no crediário, sem cartão. {% endif %}R$ {{ product.pagamentos_seo.pix.total|default:product.suggested_sale_price|floatformat:2 }} à vista no Pix.{% endblock %}
+{% block og_imagem %}{% if foto_para_compartilhar %}{{ foto_para_compartilhar }}{% else %}{{ block.super }}{% endif %}{% endblock %}
+{% block og_tipo %}product{% endblock %}
+
+{% block dados_estruturados %}
+    {# Ficha que o Google le para mostrar preco e disponibilidade no resultado. #}
+    <script type="application/ld+json">{{ ficha_google|safe }}</script>
+{% endblock %}
+
 {% block content %}
 <form class="ficha-busca" method="get" action="{% url 'store_front' %}">
     <svg class="store-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>

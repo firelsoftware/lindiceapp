@@ -1,4 +1,5 @@
 import json
+import re
 from io import StringIO
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -2360,6 +2361,92 @@ class StoreFlowTests(TestCase):
         # Sem smartwatch cadastrado, o atalho nao aparece: botao que leva a
         # lista vazia so frustra quem clica.
         self.assertNotContains(resposta, ">Smartwatches<", html=False)
+
+    def test_each_product_page_introduces_itself_to_search(self):
+        # As 1552 fichas tinham o mesmo titulo e a mesma descricao: para o
+        # Google elas eram a mesma pagina, e nenhuma aparecia na busca.
+        produto = self.create_supplier_product(
+            name="Bota Cano Curto Preta",
+            brand="Torricella",
+            suggested_sale_price=Decimal("289.90"),
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        resposta = self.client.get(f"/loja/produto/{produto.id}/")
+        pagina = resposta.content.decode()
+
+        self.assertIn("<title>Bota Cano Curto Preta Torricella | Líndice</title>", pagina)
+        self.assertIn("Bota Cano Curto Preta", re.search(
+            r'name="description" content="(.*?)"', pagina).group(1))
+        self.assertIn("crediário sem cartão", pagina)
+
+    def test_shared_link_shows_the_product_photo_not_the_app_icon(self):
+        produto = self.create_supplier_product(
+            name="Bota compartilhada",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        pagina = self.client.get(f"/loja/produto/{produto.id}/").content.decode()
+        foto = re.search(r'og:image" content="(.*?)"', pagina).group(1)
+
+        # O WhatsApp so mostra previa com endereco completo.
+        self.assertTrue(foto.startswith("http"), foto)
+        self.assertNotIn("lindice-icon", foto)
+
+    def test_google_reads_price_and_stock_from_the_product_page(self):
+        produto = self.create_supplier_product(
+            name="Bota com ficha",
+            suggested_sale_price=Decimal("199.90"),
+            stock_quantity=4,
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        pagina = self.client.get(f"/loja/produto/{produto.id}/").content.decode()
+        ficha = json.loads(
+            re.search(r'application/ld\+json">(.*?)</script>', pagina, re.S).group(1)
+        )
+
+        self.assertEqual(ficha["@type"], "Product")
+        self.assertEqual(ficha["offers"]["price"], "199.90")
+        self.assertEqual(ficha["offers"]["availability"], "https://schema.org/InStock")
+
+    def test_product_without_a_price_does_not_advertise_zero(self):
+        # R$ 0,00 no resultado da busca e pior do que preco nenhum.
+        produto = self.create_supplier_product(
+            name="Produto sem preco",
+            suggested_sale_price=Decimal("0.00"),
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        pagina = self.client.get(f"/loja/produto/{produto.id}/").content.decode()
+        ficha = json.loads(
+            re.search(r'application/ld\+json">(.*?)</script>', pagina, re.S).group(1)
+        )
+
+        self.assertNotIn("offers", ficha)
+
+    def test_sitemap_hands_the_catalog_to_the_search_engine(self):
+        produto = self.create_supplier_product(
+            name="Bota no mapa",
+            category="Botas Femininas",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        resposta = self.client.get("/sitemap.xml")
+
+        self.assertEqual(resposta.status_code, 200)
+        self.assertEqual(resposta["Content-Type"], "application/xml")
+        self.assertContains(resposta, f"/loja/produto/{produto.id}/")
+        self.assertContains(resposta, "categoria=")
+
+    def test_robots_keeps_the_crawler_out_of_the_management_area(self):
+        resposta = self.client.get("/robots.txt")
+
+        self.assertEqual(resposta.status_code, 200)
+        conteudo = resposta.content.decode()
+        self.assertIn("Disallow: /gestao/", conteudo)
+        self.assertIn("Disallow: /loja/carrinho/", conteudo)
+        self.assertIn("sitemap.xml", conteudo)
 
     def test_search_lives_in_the_fixed_header_on_every_page(self):
         # Antes a unica busca da home era a do heroi: sumia assim que a cliente

@@ -18,12 +18,19 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Líndice">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="Loja Líndice — calçados, bolsas e acessórios femininos. Compre pelo app com opções de crediário e entrega em casa.">
-    <meta property="og:title" content="Líndice">
-    <meta property="og:description" content="Calçados, bolsas e acessórios femininos. Crediário digital e entrega disponíveis.">
-    <meta property="og:image" content="{% static 'accounts/lindice-icon-512.png' %}">
-    <meta property="og:type" content="website">
-    <title>Líndice</title>
+    {# Cada tela diz do que ela e. Sem isso o Google ve 1.552 paginas iguais. #}
+    <meta name="description" content="{% block meta_descricao %}Loja Líndice — calçados, bolsas e acessórios femininos, com crediário próprio e entrega para todo o Brasil.{% endblock %}">
+    <meta property="og:title" content="{% block og_titulo %}Líndice{% endblock %}">
+    <meta property="og:description" content="{% block og_descricao %}Calçados, bolsas e acessórios femininos. Crediário próprio, sem cartão de crédito.{% endblock %}">
+    <meta property="og:image" content="{% block og_imagem %}{% static 'accounts/lindice-icon-512.png' %}{% endblock %}">
+    <meta property="og:type" content="{% block og_tipo %}website{% endblock %}">
+    <meta property="og:site_name" content="Líndice">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}">
+    <link rel="canonical" href="{% block canonica %}{{ request.build_absolute_uri }}{% endblock %}">
+    <title>{% block titulo %}Líndice{% endblock %}</title>
+    {% block dados_estruturados %}{% endblock %}
     <link rel="icon" type="image/svg+xml" href="{% static 'accounts/lindice-icon.svg' %}?v=20260623">
     <link rel="apple-touch-icon" href="{% static 'accounts/lindice-icon-192.png' %}?v=20260623">
     <link rel="manifest" href="{% static 'accounts/site.webmanifest' %}?v=20260623">

@@ -1825,6 +1825,11 @@ def store_product_detail(request, product_id):
     ] or ["Confirmar tamanho"]
 
     gallery = product.gallery_images()
+    # Usado no titulo e na descricao que aparecem na busca e no WhatsApp.
+    product.pagamentos_seo = product.payment_options()
+    # O WhatsApp e o Facebook exigem endereco completo na foto: com caminho
+    # relativo eles nao mostram previa nenhuma.
+    foto_para_compartilhar = request.build_absolute_uri(gallery[0]) if gallery else ""
 
     # Outros modelos da mesma categoria, para o cliente continuar olhando sem
     # ter que voltar para a vitrine.
@@ -1851,6 +1856,8 @@ def store_product_detail(request, product_id):
             "product": product,
             "size_options": size_options,
             "gallery_images": gallery,
+            "ficha_google": ficha_do_produto_para_busca(request, product, gallery),
+            "foto_para_compartilhar": foto_para_compartilhar,
             "customer_notice": source_notice_for_customer(product),
             "whatsapp_url": store_whatsapp_url(request, product),
             "relacionados": relacionados,
@@ -1867,6 +1874,54 @@ CAMPOS_RAPIDOS_PRODUTO = {
     "suggested_sale_price": ("Preco", "dinheiro"),
     "stock_quantity": ("Estoque", "inteiro"),
 }
+
+
+def ficha_do_produto_para_busca(request, produto, galeria):
+    """Dados do produto no formato que os buscadores entendem.
+
+    Sem isso o Google mostra so o titulo azul. Com isso ele pode mostrar preco,
+    disponibilidade e a foto - que e o que faz a pessoa clicar no seu resultado
+    em vez de no de cima.
+    """
+    pagamentos = produto.payment_options()
+    ficha = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": produto.name,
+        "url": request.build_absolute_uri(),
+        "image": [request.build_absolute_uri(foto) for foto in galeria[:6]],
+        "sku": produto.supplier_code or str(produto.id),
+    }
+
+    # Produto sem preco cadastrado nao anuncia preco: R$ 0,00 no resultado da
+    # busca e pior do que preco nenhum.
+    if produto.suggested_sale_price and produto.suggested_sale_price > 0:
+        ficha["offers"] = {
+            "@type": "Offer",
+            "url": request.build_absolute_uri(),
+            "priceCurrency": "BRL",
+            "price": f"{produto.suggested_sale_price:.2f}",
+            "availability": (
+                "https://schema.org/InStock"
+                if produto.stock_quantity > 0
+                else "https://schema.org/OutOfStock"
+            ),
+            "itemCondition": "https://schema.org/NewCondition",
+            "seller": {"@type": "Organization", "name": "Líndice"},
+        }
+
+    if produto.brand:
+        ficha["brand"] = {"@type": "Brand", "name": produto.brand}
+
+    if produto.description:
+        # Uma linha limpa: o buscador nao le marcacao.
+        limpo = re.sub(r"<[^>]+>", " ", produto.description)
+        ficha["description"] = " ".join(limpo.split())[:500]
+
+    if produto.category:
+        ficha["category"] = produto.category
+
+    return json.dumps(ficha, ensure_ascii=False)
 
 
 @staff_member_required(login_url="login")

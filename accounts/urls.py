@@ -1,7 +1,7 @@
 from django.contrib.auth import views as auth_views
 from django.urls import path
 
-from . import views, credit_views
+from . import seo, views, credit_views
 
 urlpatterns = [
     path("crediario/compra/<int:sale_id>/pdf/", credit_views.purchase_pdf, name="credit_purchase_pdf"),
@@ -12,6 +12,8 @@ urlpatterns = [
     path("gestao/crediario/cliente/<int:profile_id>/", credit_views.review_contract, name="credit_contract_review"),
     path("gestao/crediario/venda/<int:sale_id>/entrada/", credit_views.waive_entry, name="credit_entry_waive"),
     path("", views.home, name="home"),
+    path("robots.txt", seo.robots, name="robots"),
+    path("sitemap.xml", seo.sitemap, name="sitemap"),
     path(".well-known/assetlinks.json", views.assetlinks, name="assetlinks"),
     path("service-worker.js", views.service_worker, name="service_worker"),
     path("offline/", views.offline_page, name="offline_page"),
