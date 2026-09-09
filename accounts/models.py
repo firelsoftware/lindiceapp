@@ -493,14 +493,18 @@ class SupplierProduct(models.Model):
 
         return images
 
-    def payment_options(self):
-        """As tres formas de pagamento deste produto, ja com as regras aplicadas."""
+    def payment_options(self, loja=None):
+        """As tres formas de pagamento deste produto, ja com as regras aplicadas.
+
+        Quem monta uma tela com dezenas de cartoes passa a configuracao da loja
+        pronta: sem isso cada produto da vitrine faz sua propria consulta.
+        """
         preco = Decimal(self.suggested_sale_price or 0)
 
         if preco <= 0:
             return None
 
-        loja = StoreSettings.load()
+        loja = loja or StoreSettings.load()
         desconto_pix = self.pix_discount_override
         if desconto_pix is None:
             desconto_pix = loja.pix_discount_percent

@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
-from django.db.models import Case, Count, IntegerField, Max, Q, Sum, Value, When
+from django.db.models import Case, Count, F, IntegerField, Max, Q, Sum, Value, When
 from django.db.models.deletion import ProtectedError
 from django.http import FileResponse, Http404, HttpResponseForbidden, JsonResponse
 from django.core import signing
@@ -1047,12 +1047,117 @@ def home(request):
     return pagina_inicial(request)
 
 
+# Quantos produtos cada linha da primeira tela mostra antes do botao que leva
+# ao resto da categoria.
+PRODUTOS_POR_PRATELEIRA = 8
+
+# Quantos produtos a consulta traz para conseguir oito modelos diferentes,
+# depois de descartar os nomes repetidos do catalogo do fornecedor.
+CANDIDATOS_POR_PRATELEIRA = 48
+
+# Teto de linhas. O catalogo de hoje tem menos categorias que isso; o limite so
+# existe para a pagina nao crescer sozinha se o catalogo dobrar.
+LIMITE_DE_PRATELEIRAS = 12
+
+
+def preparar_cartoes(produtos, loja):
+    """Completa o que o cartao da primeira tela mostra."""
+    for produto in produtos:
+        galeria = produto.gallery_images()
+        produto.foto = galeria[0] if galeria else ""
+        produto.pagamentos = produto.payment_options(loja)
+        # Numeracao no proprio cartao: numa loja de calcado e o primeiro filtro
+        # da cliente, antes de cor e de preco. Sem isso ela abre o produto so
+        # para descobrir que nao tem o numero dela.
+        produto.numeros = [
+            numero.strip()
+            for numero in (produto.sizes or "").replace("/", ",").replace(";", ",").split(",")
+            if numero.strip() and numero.strip().lower() not in ("unico", "único")
+        ][:8]
+
+    return produtos
+
+
+def prateleiras_da_home(a_venda, loja):
+    """Uma linha por tipo de produto, cada uma com caminho proprio para a loja.
+
+    A vitrine unica de oito produtos escondia o catalogo inteiro: bastava
+    destacar quatro relogios para a bota sumir da primeira tela. Aqui destaque
+    e ordem dentro da linha, nao porta fechada para o resto.
+    """
+    quantidade = {
+        linha["category"]: linha["quantos"]
+        for linha in a_venda.exclude(category="").values("category").annotate(quantos=Count("id")).order_by()
+    }
+
+    nomes = {categoria: nome for nome, categoria in ATALHOS_DA_HOME}
+    ordem = {categoria: posicao for posicao, (_, categoria) in enumerate(ATALHOS_DA_HOME)}
+
+    # Primeiro as categorias na ordem que a loja ja tinha escolhido nos
+    # atalhos; o que sobrar entra depois, da maior para a menor.
+    categorias = sorted(
+        quantidade,
+        key=lambda categoria: (ordem.get(categoria, len(ordem)), -quantidade[categoria], categoria),
+    )[:LIMITE_DE_PRATELEIRAS]
+
+    prateleiras = []
+
+    for categoria in categorias:
+        candidatos = (
+            a_venda.filter(category=categoria)
+            .exclude(image_file="", image_url="")
+            .prefetch_related("photos")
+            # Quem a loja marcou a mao abre a linha; depois o destaque antigo e,
+            # por fim, do mais caro para o mais barato.
+            .annotate(
+                escolhido=Case(
+                    When(posicao_na_home__gt=0, then=F("posicao_na_home")),
+                    default=Value(9999),
+                    output_field=IntegerField(),
+                )
+            )
+            .order_by("escolhido", "-is_featured", "-suggested_sale_price")[:CANDIDATOS_POR_PRATELEIRA]
+        )
+
+        # O fornecedor batiza varios modelos com o mesmo nome ("Tenis Premium e
+        # Original (cod 42)"). Sem isso a linha vira oito cartoes com o mesmo
+        # titulo e o mesmo preco, que a cliente le como repeticao. Fica um por
+        # nome; os outros continuam na loja, atras do botao da categoria.
+        produtos = []
+        nomes_na_linha = set()
+
+        for produto in candidatos:
+            if produto.name in nomes_na_linha:
+                continue
+
+            nomes_na_linha.add(produto.name)
+            produtos.append(produto)
+
+            if len(produtos) == PRODUTOS_POR_PRATELEIRA:
+                break
+
+        if not produtos:
+            continue
+
+        prateleiras.append(
+            {
+                "nome": nomes.get(categoria, categoria),
+                "categoria": categoria,
+                "produtos": preparar_cartoes(produtos, loja),
+                "total": quantidade[categoria],
+            }
+        )
+
+    return prateleiras
+
+
 def pagina_inicial(request):
+    loja = StoreSettings.load()
     a_venda = SupplierProduct.objects.filter(is_active=True, is_visible=True, stock_quantity__gt=0)
 
-    # Os oito da vitrine de entrada. Primeiro vem quem a loja colocou a mao,
-    # na ordem que ela escolheu; o resto entra do mais caro para o mais barato,
-    # para a primeira impressao nao ser a ponta do estoque.
+    # A linha de abertura. Primeiro vem quem a loja colocou a mao, na ordem que
+    # ela escolheu; o resto entra do mais caro para o mais barato, para a
+    # primeira impressao nao ser a ponta do estoque.
     escolhidos = list(
         a_venda.filter(posicao_na_home__gt=0)
         .exclude(image_file="", image_url="")
@@ -1071,20 +1176,7 @@ def pagina_inicial(request):
         if faltam > 0
         else []
     )
-    destaques = escolhidos + completam
-
-    for produto in destaques:
-        galeria = produto.gallery_images()
-        produto.foto = galeria[0] if galeria else ""
-        produto.pagamentos = produto.payment_options()
-        # Numeracao no proprio cartao: numa loja de calcado e o primeiro filtro
-        # da cliente, antes de cor e de preco. Sem isso ela abre o produto so
-        # para descobrir que nao tem o numero dela.
-        produto.numeros = [
-            numero.strip()
-            for numero in (produto.sizes or "").replace("/", ",").replace(";", ",").split(",")
-            if numero.strip() and numero.strip().lower() not in ("unico", "único")
-        ][:8]
+    destaques = preparar_cartoes(escolhidos + completam, loja)
 
     # So mostra o atalho da categoria que tem produto de verdade agora.
     existentes = set(a_venda.values_list("category", flat=True))
@@ -1100,10 +1192,11 @@ def pagina_inicial(request):
         {
             "capas": CapaDoSite.objects.filter(visivel=True),
             "destaques": destaques,
+            "prateleiras": prateleiras_da_home(a_venda, loja),
             "atalhos": atalhos,
             "total_produtos": a_venda.count(),
             "reels": StoreReel.objects.filter(is_visible=True).order_by("position", "-id")[:8],
-            "desconto_pix": StoreSettings.load().pix_discount_percent,
+            "desconto_pix": loja.pix_discount_percent,
         },
     )
 

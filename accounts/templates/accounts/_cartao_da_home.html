@@ -1,0 +1,34 @@
+{# Cartao de produto da primeira tela: foto, numeracao e as formas de pagar. #}
+<article class="home-produto">
+    <a class="home-produto-foto" href="{% url 'store_product_detail' produto.id %}">
+        {% if produto.foto %}
+            <img src="{{ produto.foto }}" alt="{{ produto.name }}" loading="lazy">
+        {% endif %}
+    </a>
+    <div class="home-produto-corpo">
+        <h3><a href="{% url 'store_product_detail' produto.id %}">{{ produto.name }}</a></h3>
+        {% if produto.numeros %}
+            <p class="home-produto-numeros">
+                {% for numero in produto.numeros %}<span>{{ numero }}</span>{% endfor %}
+            </p>
+        {% endif %}
+        {% if produto.pagamentos %}
+            <p class="home-produto-crediario">
+                {{ produto.pagamentos.credit.installments }}x de
+                <strong>R$ {{ produto.pagamentos.credit.parcela|floatformat:2 }}</strong>
+                <span>no crediário, sem cartão</span>
+            </p>
+            <p class="home-produto-preco">
+                ou R$ {{ produto.suggested_sale_price|floatformat:2 }}
+            </p>
+            <p class="home-produto-pix">
+                R$ {{ produto.pagamentos.pix.total|floatformat:2 }} no Pix
+                <span class="home-produto-off">
+                    -{{ produto.pagamentos.pix.percent|floatformat:0 }}%
+                </span>
+            </p>
+        {% else %}
+            <p class="home-produto-preco">R$ {{ produto.suggested_sale_price|floatformat:2 }}</p>
+        {% endif %}
+    </div>
+</article>

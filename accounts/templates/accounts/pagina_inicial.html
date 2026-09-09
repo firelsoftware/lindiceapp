@@ -60,6 +60,36 @@
     </section>
 {% endif %}
 
+{% if reels %}
+    {# Video logo depois do heroi: e o que segura quem chegou sem saber a loja. #}
+    <section class="home-secao home-secao-fina">
+        <div class="home-secao-topo">
+            <h2>Na Líndice</h2>
+            <a href="{% url 'store_front' %}">Ver na loja &rsaquo;</a>
+        </div>
+
+        <div class="home-videos">
+            {% for reel in reels %}
+                <a class="home-video" href="{% if reel.product %}{% url 'store_product_detail' reel.product.id %}{% else %}{% url 'store_front' %}{% endif %}">
+                    {% if reel.is_youtube %}
+                        <img src="{{ reel.thumbnail_url }}" alt="{{ reel.display_title }}" loading="lazy">
+                    {% elif reel.poster %}
+                        <img src="{{ reel.poster.url }}" alt="{{ reel.display_title }}" loading="lazy">
+                    {% endif %}
+                    <span class="home-video-play" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/></svg>
+                    </span>
+                    {# Sem titulo e sem produto ligado a legenda vira o nome da loja
+                       repetido em todo cartao: melhor nao escrever nada. #}
+                    {% if reel.title or reel.product %}
+                        <span class="home-video-nome">{{ reel.display_title }}</span>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
+
 {% if atalhos %}
     <nav class="atalhos" aria-label="Categorias">
         {% for atalho in atalhos %}
@@ -69,51 +99,43 @@
 {% endif %}
 
 {% if destaques %}
-    <section class="home-secao">
+    <section class="home-secao home-secao-fina">
         <div class="home-secao-topo">
             <h2>Mais desejados</h2>
             <a href="{% url 'store_front' %}">Ver todos &rsaquo;</a>
         </div>
 
-        <div class="home-produtos">
+        <div class="home-prateleira">
             {% for produto in destaques %}
-                <article class="home-produto">
-                    <a class="home-produto-foto" href="{% url 'store_product_detail' produto.id %}">
-                        {% if produto.foto %}
-                            <img src="{{ produto.foto }}" alt="{{ produto.name }}" loading="lazy">
-                        {% endif %}
-                    </a>
-                    <div class="home-produto-corpo">
-                        <h3><a href="{% url 'store_product_detail' produto.id %}">{{ produto.name }}</a></h3>
-                        {% if produto.numeros %}
-                            <p class="home-produto-numeros">
-                                {% for numero in produto.numeros %}<span>{{ numero }}</span>{% endfor %}
-                            </p>
-                        {% endif %}
-                        {% if produto.pagamentos %}
-                            <p class="home-produto-crediario">
-                                {{ produto.pagamentos.credit.installments }}x de
-                                <strong>R$ {{ produto.pagamentos.credit.parcela|floatformat:2 }}</strong>
-                                <span>no crediário, sem cartão</span>
-                            </p>
-                            <p class="home-produto-preco">
-                                ou R$ {{ produto.suggested_sale_price|floatformat:2 }}
-                            </p>
-                            <p class="home-produto-pix">
-                                R$ {{ produto.pagamentos.pix.total|floatformat:2 }} no Pix
-                                <span class="home-produto-off">
-                                    -{{ produto.pagamentos.pix.percent|floatformat:0 }}%
-                                </span>
-                            </p>
-                        {% else %}
-                            <p class="home-produto-preco">R$ {{ produto.suggested_sale_price|floatformat:2 }}</p>
-                        {% endif %}
-                    </div>
-                </article>
+                {% include "accounts/_cartao_da_home.html" %}
             {% endfor %}
         </div>
+
+        <a class="home-prateleira-mais" href="{% url 'store_front' %}">
+            Ver os {{ total_produtos }} produtos da loja
+        </a>
     </section>
 {% endif %}
+
+{# Uma linha por tipo de produto: destaque nao esconde o resto do catalogo. #}
+{% for prateleira in prateleiras %}
+    <section class="home-secao home-secao-fina">
+        <div class="home-secao-topo">
+            <h2>{{ prateleira.nome }}</h2>
+            <a href="{% url 'store_front' %}?categoria={{ prateleira.categoria|urlencode }}">Ver todos &rsaquo;</a>
+        </div>
+
+        <div class="home-prateleira">
+            {% for produto in prateleira.produtos %}
+                {% include "accounts/_cartao_da_home.html" %}
+            {% endfor %}
+        </div>
+
+        <a class="home-prateleira-mais" href="{% url 'store_front' %}?categoria={{ prateleira.categoria|urlencode }}">
+            Ver {{ prateleira.total }} produto{{ prateleira.total|pluralize }} em {{ prateleira.nome }}
+        </a>
+    </section>
+{% endfor %}
 
 <section class="home-crediario">
     <div class="home-crediario-dentro">
@@ -142,31 +164,6 @@
 
     </div>
 </section>
-
-{% if reels %}
-    <section class="home-secao">
-        <div class="home-secao-topo">
-            <h2>Na Líndice</h2>
-            <a href="{% url 'store_front' %}">Ver na loja &rsaquo;</a>
-        </div>
-
-        <div class="home-videos">
-            {% for reel in reels %}
-                <a class="home-video" href="{% if reel.product %}{% url 'store_product_detail' reel.product.id %}{% else %}{% url 'store_front' %}{% endif %}">
-                    {% if reel.is_youtube %}
-                        <img src="{{ reel.thumbnail_url }}" alt="{{ reel.display_title }}" loading="lazy">
-                    {% elif reel.poster %}
-                        <img src="{{ reel.poster.url }}" alt="{{ reel.display_title }}" loading="lazy">
-                    {% endif %}
-                    <span class="home-video-play" aria-hidden="true">
-                        <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/></svg>
-                    </span>
-                    <span class="home-video-nome">{{ reel.display_title }}</span>
-                </a>
-            {% endfor %}
-        </div>
-    </section>
-{% endif %}
 
 <section class="home-fechamento">
     <h2>Gostou de alguma coisa?</h2>

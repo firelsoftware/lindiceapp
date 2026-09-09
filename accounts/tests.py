@@ -22,7 +22,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 from .forms import CreditSaleForm, InstallmentChoiceForm, ProductForm, RegisterForm
-from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, CapaDoSite, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, UsoDeEspaco, User, add_months
+from .models import CASHBACK_PERCENT, cashback_balance, CashbackTransaction, ClientProfile, StoreReel, StoreReel, CreditSale, CreditSaleProduct, Debt, Notification, PaymentAlert, PersonalDebt, points_balance, PointsTransaction, Product, StoreOrder, StoreSettings, CapaDoSite, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, UsoDeEspaco, User, add_months
 from .notifications import create_sale_available_notification, create_sale_confirmed_notifications, generate_due_notifications
 from .payments import create_credit_sale_card_preference, payment_method_from_payment
 from .bucket_publico import copiar_vitrine, PREFIXOS_DA_VITRINE
@@ -2474,6 +2474,96 @@ class StoreFlowTests(TestCase):
 
         self.assertNotIn("faixa-crediario", pagina)
         self.assertLess(pagina.index("Mais desejados"), pagina.index("Pedir meu crediário"))
+
+    def test_every_kind_of_product_gets_its_own_row_on_the_homepage(self):
+        # Antes existia uma vitrine so: bastava a loja destacar oito relogios
+        # para a bota sumir da primeira tela. Destaque agora e ordem dentro da
+        # linha, nao porta fechada para o resto do catalogo.
+        for indice in range(9):
+            self.create_supplier_product(
+                supplier_code=f"REL{indice}",
+                name=f"Relogio destacado {indice}",
+                category="Bolsas e Relogios",
+                suggested_sale_price=Decimal("900.00"),
+                posicao_na_home=indice + 1,
+                image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+            )
+        bota = self.create_supplier_product(
+            supplier_code="BOT1",
+            name="Bota que nao pode sumir",
+            category="Botas Femininas",
+            suggested_sale_price=Decimal("120.00"),
+            image_url="/static/accounts/catalog-test/botas/1.958-4b.jpg",
+        )
+
+        pagina = self.client.get("/").content.decode()
+
+        self.assertIn(bota.name, pagina)
+        self.assertIn('class="home-prateleira"', pagina)
+        # Cada linha tem o botao que leva para a categoria inteira na loja.
+        self.assertIn("Ver 1 produto em Botas", pagina)
+        self.assertIn("Ver 9 produtos em Bolsas", pagina)
+        self.assertIn("categoria=Botas%20Femininas", pagina)
+
+    def test_video_comes_right_after_the_cover(self):
+        # Quem chega de fora nao conhece a loja: o video e a primeira prova de
+        # que existe gente e produto de verdade atras do site.
+        StoreReel.objects.create(
+            title="Chegou bota nova", video_url="https://www.youtube.com/watch?v=abcdefghijk"
+        )
+        self.create_supplier_product(
+            name="Bota do video",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        pagina = self.client.get("/").content.decode()
+
+        self.assertLess(pagina.index("Chegou bota nova"), pagina.index("Mais desejados"))
+
+    def test_every_kind_of_product_gets_its_own_row_on_the_homepage(self):
+        # Antes existia uma vitrine so: bastava a loja destacar oito relogios
+        # para a bota sumir da primeira tela. Destaque agora e ordem dentro da
+        # linha, nao porta fechada para o resto do catalogo.
+        for indice in range(9):
+            self.create_supplier_product(
+                supplier_code=f"REL{indice}",
+                name=f"Relogio destacado {indice}",
+                category="Bolsas e Relogios",
+                suggested_sale_price=Decimal("900.00"),
+                posicao_na_home=indice + 1,
+                image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+            )
+        bota = self.create_supplier_product(
+            supplier_code="BOT1",
+            name="Bota que nao pode sumir",
+            category="Botas Femininas",
+            suggested_sale_price=Decimal("120.00"),
+            image_url="/static/accounts/catalog-test/botas/1.958-4b.jpg",
+        )
+
+        pagina = self.client.get("/").content.decode()
+
+        self.assertIn(bota.name, pagina)
+        self.assertIn('class="home-prateleira"', pagina)
+        # Cada linha tem o botao que leva para a categoria inteira na loja.
+        self.assertIn("Ver 1 produto em Botas", pagina)
+        self.assertIn("Ver 9 produtos em Bolsas", pagina)
+        self.assertIn("categoria=Botas%20Femininas", pagina)
+
+    def test_video_comes_right_after_the_cover(self):
+        # Quem chega de fora nao conhece a loja: o video e a primeira prova de
+        # que existe gente e produto de verdade atras do site.
+        StoreReel.objects.create(
+            title="Chegou bota nova", video_url="https://www.youtube.com/watch?v=abcdefghijk"
+        )
+        self.create_supplier_product(
+            name="Bota do video",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+
+        pagina = self.client.get("/").content.decode()
+
+        self.assertLess(pagina.index("Chegou bota nova"), pagina.index("Mais desejados"))
 
     def test_power_button_is_only_for_the_store(self):
         # Atalho de lancar coisa nova de qualquer tela. Cliente nao pode nem
