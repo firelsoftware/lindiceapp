@@ -2582,6 +2582,51 @@ class StoreFlowTests(TestCase):
         award_signup_points(comum)
         self.assertEqual(points_balance(comum), loja.points_signup)
 
+    def cliente_com_cashback_no_carrinho(self, email):
+        produto = self.create_supplier_product(
+            supplier_code=f"CB-{email[:6]}", name="Bota do cashback", sizes="35,36"
+        )
+        cliente = get_user_model().objects.create_user(
+            email=email, password="Teste12345!", full_name="Cliente Cashback", preferred_name="Cliente"
+        )
+        ClientProfile.objects.create(
+            user=cliente,
+            cpf_hash=ClientProfile.generate_cpf_placeholder(),
+            cpf_last_digits="4444",
+            phone="61999999999",
+            phone_verified=True,
+            address="Endereco",
+            registration_status=ClientProfile.APPROVED,
+        )
+        CashbackTransaction.objects.create(
+            user=cliente, kind=CashbackTransaction.EARN, amount=Decimal("30.00"), description="Saldo antigo"
+        )
+        self.client.force_login(cliente)
+        self.client.post(f"/loja/carrinho/adicionar/{produto.id}/", {"selected_size": "35"})
+
+        return cliente
+
+    def test_old_cashback_is_offered_at_checkout_while_points_are_off(self):
+        self.cliente_com_cashback_no_carrinho("cb-ligado@example.com")
+
+        resposta = self.client.get("/loja/carrinho/finalizar/")
+
+        self.assertContains(resposta, "Usar meu cashback nesta compra")
+
+    def test_old_cashback_is_not_offered_once_points_start_from_zero(self):
+        # A loja decidiu comecar os pontos do zero. O cashback antigo ja some do
+        # painel da cliente; se continuasse no checkout, ela veria uma caixinha
+        # para gastar um saldo que nao aparece em lugar nenhum.
+        loja = StoreSettings.load()
+        loja.points_active = True
+        loja.save(update_fields=["points_active"])
+        self.cliente_com_cashback_no_carrinho("cb-desligado@example.com")
+
+        resposta = self.client.get("/loja/carrinho/finalizar/")
+
+        self.assertEqual(resposta.status_code, 200)
+        self.assertNotContains(resposta, "Usar meu cashback nesta compra")
+
     def test_loyalty_screen_opens_on_points_and_says_what_is_in_use(self):
         # A tela abria pelo cashback, com titulo de cashback, e os pontos
         # ficavam fora da primeira rolagem: quem entrava concluia que a
@@ -2594,6 +2639,9 @@ class StoreFlowTests(TestCase):
         self.assertLess(pagina.index("<h2>Pontos</h2>"), pagina.index("Cashback em dinheiro"))
         # E diz de cara o que esta valendo hoje.
         self.assertIn("Hoje a loja credita CASHBACK", pagina)
+        # A loja decidiu comecar os pontos do zero: a tela nao pede conversao.
+        self.assertNotIn("converta os saldos", pagina)
+        self.assertIn("Os pontos começam do zero", pagina)
         # Nenhum campo se perdeu na mudanca de ordem.
         for campo in ("points_active", "points_pix", "points_card", "points_credit",
                       "points_payoff_bonus", "referral_points", "points_cap",

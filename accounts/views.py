@@ -2283,8 +2283,15 @@ def cart_checkout(request):
     voucher_discount = welcome_discount_amount(subtotal) if welcome_profile else Decimal("0.00")
 
     is_client = request.user.is_authenticated and not request.user.is_staff
-    cashback_available = cashback_balance(request.user) if is_client else Decimal("0.00")
     store_settings = StoreSettings.load()
+    # Com os pontos ligados a loja comecou do zero. O cashback antigo ja some
+    # do painel da cliente; se continuasse oferecido aqui, ela veria no checkout
+    # uma caixinha para gastar um saldo que nao aparece em lugar nenhum.
+    cashback_available = (
+        cashback_balance(request.user)
+        if is_client and not store_settings.points_active
+        else Decimal("0.00")
+    )
     cashback_max_percent = store_settings.cashback_max_redeem_percent
     # Preview: no maximo o % configurado da compra (apos voucher), sem zerar.
     items_after_voucher_preview = max(subtotal - voucher_discount, Decimal("0.00"))
@@ -3351,7 +3358,7 @@ def staff_loyalty_settings(request):
         form = StoreSettingsForm(request.POST, request.FILES, instance=settings_obj)
         if form.is_valid():
             form.save()
-            messages.success(request, "Configurações do cashback atualizadas.")
+            messages.success(request, "Configurações da fidelidade atualizadas.")
             return redirect("staff_loyalty_settings")
     else:
         form = StoreSettingsForm(instance=settings_obj)
@@ -4294,9 +4301,9 @@ def cadastrar_cliente_do_balcao(nome, email, telefone):
 
     ClientProfile.objects.create(
         user=cliente,
-        # O CPF ainda nao existe, mas a coluna e unica: um marcador por ficha
-        # segura o lugar ate a cliente completar o cadastro.
-        cpf_hash=f"sem-cpf-{uuid.uuid4().hex}",
+        # O CPF ainda nao existe, mas a coluna e unica: o mesmo marcador que o
+        # cadastro normal usa segura o lugar ate a cliente completar a ficha.
+        cpf_hash=ClientProfile.generate_cpf_placeholder(),
         cpf_last_digits="",
         phone=(telefone or "").strip(),
         address="",
