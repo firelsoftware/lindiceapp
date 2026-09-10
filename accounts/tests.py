@@ -2458,6 +2458,24 @@ class StoreFlowTests(TestCase):
         self.assertNotIn("http://testserver", mapa)
         self.assertIn("Sitemap: https://www.lindice.com.br/sitemap.xml", robo)
 
+    def test_a_photo_hosted_elsewhere_keeps_its_own_address(self):
+        # Foto do fornecedor ja vem com endereco completo. Pendurar o dominio da
+        # loja na frente gerava "https://www.lindice.com.brhttps://..." e o
+        # WhatsApp deixava de mostrar a imagem do produto.
+        produto = self.create_supplier_product(
+            name="Bota com foto de fora",
+            image_url="https://www.revendadecalcados.com.br/fma600/uma-foto.jpg",
+        )
+
+        with self.settings(SITE_CANONICO="https://www.lindice.com.br"):
+            ficha = self.client.get(f"/loja/produto/{produto.id}/").content.decode()
+
+        self.assertIn(
+            '<meta property="og:image" content="https://www.revendadecalcados.com.br/fma600/uma-foto.jpg">',
+            ficha,
+        )
+        self.assertNotIn("lindice.com.brhttps://", ficha)
+
     def test_without_a_chosen_domain_each_page_keeps_the_address_of_the_visit(self):
         # Em branco, nada muda: e o que vale hoje, e o que vale em dev.
         resposta = self.client.get("/loja/")

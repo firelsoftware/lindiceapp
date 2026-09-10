@@ -23,6 +23,11 @@ def endereco_publico(request, caminho=None):
     """
     caminho = request.get_full_path() if caminho is None else caminho
 
+    # Boa parte das fotos do catalogo mora no site do fornecedor: o endereco ja
+    # vem completo e nao tem dominio nosso para pendurar na frente.
+    if caminho.startswith(("http://", "https://", "//")):
+        return caminho
+
     if settings.SITE_CANONICO:
         return f"{settings.SITE_CANONICO}{caminho}"
 
