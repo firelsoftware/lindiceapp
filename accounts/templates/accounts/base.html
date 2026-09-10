@@ -630,23 +630,51 @@
                ao lado do logo, nao caberia nem o campo nem os botoes. */
             .topbar-inner {
                 flex-wrap: wrap;
-                gap: 8px 12px;
+                gap: 6px 12px;
+            }
+
+            /* O cabecalho ocupava 160px de uma tela de 812: um quinto do que a
+               cliente ve, o tempo todo, so com logo e busca. Aqui ele encolhe
+               sem apertar area de toque - os botoes seguem com 44px. */
+            .topbar {
+                padding: 8px 16px;
             }
 
             .topbar-busca {
                 order: 3;
                 flex: 1 0 100%;
                 max-width: none;
+                padding: 2px 2px 2px 10px;
+            }
+
+            .topbar-busca input {
+                padding: 6px 2px;
+                /* Abaixo de 16px o iPhone da zoom sozinho quando a cliente
+                   toca no campo, e a tela inteira sai do lugar. */
+                font-size: 16px;
             }
 
             .topbar-busca button {
-                padding: 8px 14px;
+                /* Dedo pede 44px. Estava com 33 e errar o alvo numa busca e o
+                   tipo de atrito que faz a cliente desistir. */
+                min-height: 44px;
+                padding: 0 16px;
                 font-size: 13px;
             }
         }
 
         .topbar-inner .brand {
             margin: 0;
+        }
+
+        /* A regra geral de botao carrega margin-top: 18px. Dentro do cabecalho
+           isso virava espaco morto: o botao de conta empurrava a barra inteira
+           18px para baixo, em toda pagina. Quem espaca aqui e o layout. */
+        .topbar button,
+        .topbar .button,
+        .topbar-actions button,
+        .topbar-actions .button {
+            margin-top: 0;
         }
 
         .main-nav {
@@ -3963,12 +3991,19 @@
             text-decoration: underline;
         }
 
+        .atalhos-barra {
+            margin: 24px 0 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            background: var(--surface);
+        }
+
         .atalhos {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             max-width: 1100px;
-            margin: 28px auto 0;
-            padding: 0 5%;
+            margin: 0 auto;
+            padding: 10px 5%;
             overflow-x: auto;
             scrollbar-width: none;
         }
@@ -3978,8 +4013,12 @@
         }
 
         .atalhos a {
+            display: inline-flex;
+            align-items: center;
             flex: 0 0 auto;
-            padding: 10px 20px;
+            /* Dedo pede 44px. */
+            min-height: 44px;
+            padding: 0 20px;
             border: 1px solid var(--line);
             border-radius: 14px;
             background: var(--surface);
@@ -4065,15 +4104,6 @@
             text-transform: uppercase;
         }
 
-        .home-produto-promo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 0 0 6px;
-            color: var(--muted);
-            font-size: 13px;
-        }
-
         .barra-loja-promo {
             display: flex;
             flex-wrap: wrap;
@@ -4103,8 +4133,8 @@
 
         .home-prateleira-mais {
             display: block;
-            margin-top: 14px;
-            padding: 13px 18px;
+            margin-top: 12px;
+            padding: 12px 18px;
             border: 1px solid var(--brand-blue);
             border-radius: 14px;
             background: var(--surface);
@@ -4176,41 +4206,34 @@
 
         /* A parcela do crediario e a informacao que decide a compra aqui, entao
            ela vem primeiro e em destaque. O preco cheio vira referencia. */
-        .home-produto-crediario {
-            margin: 0;
-            color: var(--brand-purple);
-            font-size: 15px;
-            font-weight: 600;
-            line-height: 1.25;
-        }
-
-        .home-produto-crediario strong {
-            font-size: 19px;
-            font-weight: 700;
-        }
-
-        .home-produto-crediario span {
-            display: block;
-            color: var(--muted);
-            font-size: 11px;
-            font-weight: 500;
-        }
-
+        /* A escala do cartao: o preco cheio e o unico numero grande. Pix e
+           crediario descem para o tamanho de legenda - continuam ali para quem
+           procura, sem disputar o primeiro olhar. */
         .home-produto-preco {
-            margin: 6px 0 0;
+            margin: 4px 0 2px;
             color: var(--ink);
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 1.2;
         }
 
-        .home-produto-pix {
+        .home-produto-pagamento {
             display: flex;
             align-items: center;
             gap: 6px;
-            margin: 3px 0 0;
-            color: var(--success);
-            font-size: 12px;
-            font-weight: 600;
+            margin: 0 0 2px;
+            color: var(--muted);
+            font-size: 12.5px;
+            line-height: 1.35;
+        }
+
+        .home-produto-antes {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 12.5px;
         }
 
         .home-produto-off {

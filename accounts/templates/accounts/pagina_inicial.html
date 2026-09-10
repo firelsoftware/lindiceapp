@@ -98,11 +98,18 @@
 {% endif %}
 
 {% if atalhos %}
-    <nav class="atalhos" aria-label="Categorias">
-        {% for atalho in atalhos %}
-            <a href="{% url 'store_front' %}?grupo={{ atalho.grupo|urlencode }}">{{ atalho.nome }}</a>
-        {% endfor %}
-    </nav>
+    {% comment %}
+        A faixa e uma barra que atravessa a tela, com fundo e fio em cima e
+        embaixo. Solta no meio das prateleiras, ela parecia um par de botoes
+        largados ali - e navegacao precisa parecer navegacao.
+    {% endcomment %}
+    <div class="atalhos-barra">
+        <nav class="atalhos" aria-label="Categorias">
+            {% for atalho in atalhos %}
+                <a href="{% url 'store_front' %}?grupo={{ atalho.grupo|urlencode }}">{{ atalho.nome }}</a>
+            {% endfor %}
+        </nav>
+    </div>
 {% endif %}
 
 {% if promocoes %}
@@ -123,7 +130,6 @@
     <section class="home-secao home-secao-fina">
         <div class="home-secao-topo">
             <h2>Mais desejados</h2>
-            <a href="{% url 'store_front' %}">Ver todos &rsaquo;</a>
         </div>
 
         <div class="home-prateleira">
@@ -146,7 +152,6 @@
                 {% if prateleira.grupo %}<span class="home-secao-grupo">{{ prateleira.grupo }}</span>{% endif %}
                 {{ prateleira.nome }}
             </h2>
-            <a href="{% url 'store_front' %}?categoria={{ prateleira.categoria|urlencode }}">Ver todos &rsaquo;</a>
         </div>
 
         <div class="home-prateleira">

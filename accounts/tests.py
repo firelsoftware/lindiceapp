@@ -2337,13 +2337,18 @@ class StoreFlowTests(TestCase):
 
         resposta = self.client.get("/")
 
-        # O cartao anuncia o CREDIARIO, que e o diferencial da loja, e nao a
-        # condicao do cartao de credito, que qualquer concorrente tambem tem.
-        self.assertContains(resposta, "no crediário, sem cartão")
-        self.assertContains(resposta, "no Pix")
-
         produto = SupplierProduct.objects.get(name="Bota com preco")
         pagamentos = produto.payment_options()
+
+        # Um preco manda no cartao: o de venda. Antes o crediario, o preco cheio
+        # e o Pix tinham peso parecido e a cliente nao sabia, em um segundo,
+        # quanto custava o produto.
+        pagina = resposta.content.decode()
+        self.assertIn('<p class="home-produto-preco">R$ 400,00</p>', pagina)
+
+        # As formas de pagar continuam na tela, como legenda.
+        self.assertContains(resposta, "no Pix")
+        self.assertContains(resposta, "no crediário")
         self.assertContains(resposta, f"{pagamentos['credit']['installments']}x de")
         # Nenhuma parcela do crediario abaixo do minimo de R$ 70.
         self.assertGreaterEqual(pagamentos["credit"]["parcela"], Decimal("70.00"))

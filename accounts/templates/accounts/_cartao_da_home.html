@@ -12,29 +12,26 @@
                 {% for numero in produto.numeros %}<span>{{ numero }}</span>{% endfor %}
             </p>
         {% endif %}
+        {% comment %}
+            Um preco manda, os outros dois explicam. Antes os tres tinham peso
+            parecido e a cliente nao sabia em um segundo quanto custava.
+        {% endcomment %}
         {% if produto.on_promo %}
-            <p class="home-produto-promo">
+            <p class="home-produto-antes">
                 <s>R$ {{ produto.compare_at_price|floatformat:2 }}</s>
                 <span class="home-produto-off">-{{ produto.discount_percent }}%</span>
             </p>
         {% endif %}
+        <p class="home-produto-preco">R$ {{ produto.suggested_sale_price|floatformat:2 }}</p>
         {% if produto.pagamentos %}
-            <p class="home-produto-crediario">
-                {{ produto.pagamentos.credit.installments }}x de
-                <strong>R$ {{ produto.pagamentos.credit.parcela|floatformat:2 }}</strong>
-                <span>no crediário, sem cartão</span>
-            </p>
-            <p class="home-produto-preco">
-                ou R$ {{ produto.suggested_sale_price|floatformat:2 }}
-            </p>
-            <p class="home-produto-pix">
+            <p class="home-produto-pagamento">
                 R$ {{ produto.pagamentos.pix.total|floatformat:2 }} no Pix
-                <span class="home-produto-off">
-                    -{{ produto.pagamentos.pix.percent|floatformat:0 }}%
-                </span>
+                <span class="home-produto-off">-{{ produto.pagamentos.pix.percent|floatformat:0 }}%</span>
             </p>
-        {% else %}
-            <p class="home-produto-preco">R$ {{ produto.suggested_sale_price|floatformat:2 }}</p>
+            <p class="home-produto-pagamento">
+                {{ produto.pagamentos.credit.installments }}x de R$ {{ produto.pagamentos.credit.parcela|floatformat:2 }}
+                no crediário
+            </p>
         {% endif %}
     </div>
 </article>
