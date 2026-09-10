@@ -2482,6 +2482,17 @@ class StoreFlowTests(TestCase):
 
         self.assertContains(resposta, '<link rel="canonical" href="http://testserver/loja/">', html=False)
 
+    def test_the_site_can_prove_to_google_that_it_belongs_to_the_store(self):
+        # O Search Console pede um arquivo no endereco raiz. Se ele parar de
+        # responder, a propriedade perde a verificacao e os relatorios somem.
+        resposta = self.client.get("/google985abea835c787a9.html")
+
+        self.assertEqual(resposta.status_code, 200)
+        self.assertEqual(
+            resposta.content.decode().strip(),
+            "google-site-verification: google985abea835c787a9.html",
+        )
+
     def test_robots_keeps_the_crawler_out_of_the_management_area(self):
         resposta = self.client.get("/robots.txt")
 

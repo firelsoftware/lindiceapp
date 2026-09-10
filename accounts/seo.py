@@ -49,6 +49,21 @@ FORA_DA_BUSCA = (
     "/contrato/",
 )
 
+# O arquivo que o Search Console pede para provar que o site e da loja. O nome
+# vem dele e o conteudo e o proprio nome. Nao e segredo: fica publico no ar de
+# qualquer jeito, e nao serve para ninguem que nao mande neste dominio. Mas nao
+# pode sumir - o dia que esse endereco parar de responder, a propriedade perde
+# a verificacao. Por isso mora no codigo, e nao numa variavel de ambiente que
+# alguem pode apagar sem saber o que era.
+ARQUIVO_DO_GOOGLE = "google985abea835c787a9.html"
+
+
+def verificacao_do_google(request):
+    return HttpResponse(
+        f"google-site-verification: {ARQUIVO_DO_GOOGLE}\n", content_type="text/html"
+    )
+
+
 # Quantos produtos entram no sitemap. O Google aceita 50 mil por arquivo, mas
 # gerar mil linhas ja e uma consulta grande num servidor gratuito.
 LIMITE_DE_PRODUTOS = 2000

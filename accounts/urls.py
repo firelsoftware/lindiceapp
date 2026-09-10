@@ -28,6 +28,7 @@ urlpatterns = [
     path("loja/produto/<int:product_id>/", views.store_product_detail, name="store_product_detail"),
     path("loja/produto/<int:product_id>/campo/", views.salvar_campo_produto, name="salvar_campo_produto"),
     path("loja/produto/<int:product_id>/promocao/", views.promover_produto, name="promover_produto"),
+    path(seo.ARQUIVO_DO_GOOGLE, seo.verificacao_do_google, name="verificacao_google"),
     path("loja/produto/<int:product_id>/comprar/", views.store_checkout, name="store_checkout"),
     path("loja/carrinho/", views.cart_detail, name="cart_detail"),
     path("loja/carrinho/boticario/", views.cart_boticario_redirect, name="cart_boticario_redirect"),
