@@ -2580,6 +2580,33 @@ class StoreFlowTests(TestCase):
         self.assertIn("Ver 9 produtos em Smartwatches", pagina)
         self.assertIn("categoria=Botas", pagina)
 
+    def test_no_family_is_pushed_out_of_the_homepage_by_the_row_limit(self):
+        # A home mostra seis linhas. Como o catalogo tem muito mais categoria de
+        # calcado que de qualquer outra coisa, ordenar so por grupo enchia as
+        # seis com sapato e a loja perdia smartwatch e bolsa da primeira tela.
+        muitos_calcados = [
+            "Tênis", "Botas", "Anabela", "Meia Pata", "Sapatilhas",
+            "Sapato Scarpin", "Sandálias",
+        ]
+        for indice, categoria in enumerate(muitos_calcados + ["Bolsas", "Smartwatches"]):
+            self.create_supplier_product(
+                supplier_code=f"FAM{indice}",
+                name=f"Produto de {categoria}",
+                category=categoria,
+                image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+            )
+
+        pagina = self.client.get("/").content.decode()
+
+        # Bolsa e smartwatch tem uma categoria cada contra sete de calcado:
+        # sem rodizio, as seis vagas iam todas para sapato. O texto " em X" so
+        # aparece no botao que fecha a linha daquela categoria.
+        self.assertIn(" em Bolsas", pagina)
+        self.assertIn(" em Smartwatches", pagina)
+        # E o teto continua valendo: seis linhas de categoria, mais a de
+        # "Mais desejados", que tem botao proprio.
+        self.assertEqual(pagina.count('class="home-prateleira-mais"'), 7)
+
     def test_homepage_shows_the_family_each_row_belongs_to(self):
         # Bota, anabela e tenis sao linhas diferentes, mas a cliente pensa em
         # todas como calcado: o grupo aparece por cima do titulo, e o atalho do

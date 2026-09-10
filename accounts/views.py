@@ -1042,9 +1042,11 @@ PRODUTOS_POR_PRATELEIRA = 8
 # depois de descartar os nomes repetidos do catalogo do fornecedor.
 CANDIDATOS_POR_PRATELEIRA = 48
 
-# Teto de linhas. O catalogo de hoje tem menos categorias que isso; o limite so
-# existe para a pagina nao crescer sozinha se o catalogo dobrar.
-LIMITE_DE_PRATELEIRAS = 12
+# Teto de linhas na primeira tela. Com uma linha por categoria a pagina passava
+# de onze secoes e doze mil pixels: mais de dez telas de rolagem, quase todas
+# iguais. Seis e o quanto alguem percorre antes de desistir. O resto nao some -
+# a barra de categorias no topo e o botao de cada linha levam a loja inteira.
+LIMITE_DE_PRATELEIRAS = 6
 
 
 def grupo_de_cada_categoria():
@@ -1105,7 +1107,28 @@ def prateleiras_da_home(a_venda, loja):
 
         return (posicao_do_grupo, posicao, -quantidade[categoria], categoria)
 
-    categorias = sorted(quantidade, key=lugar)[:LIMITE_DE_PRATELEIRAS]
+    ordenadas = sorted(quantidade, key=lugar)
+
+    # Uma vaga por familia antes de repetir. Ordenar so por grupo, com teto de
+    # seis linhas, enchia a tela de calcado e deixava smartwatch e fone de fora
+    # - a loja perdia uma familia inteira da primeira tela.
+    fila_do_grupo = {}
+    for categoria in ordenadas:
+        grupo = mapa.get(categoria, ("", fim_da_fila, 0))[0] or categoria
+        fila_do_grupo.setdefault(grupo, []).append(categoria)
+
+    escolhidas = []
+    while len(escolhidas) < LIMITE_DE_PRATELEIRAS:
+        rodada = [fila.pop(0) for fila in fila_do_grupo.values() if fila]
+
+        if not rodada:
+            break
+
+        escolhidas.extend(rodada[: LIMITE_DE_PRATELEIRAS - len(escolhidas)])
+
+    # Escolhidas no rodizio, mostradas na ordem das abas: as de calcado ficam
+    # juntas, e nao alternando com bolsa e relogio.
+    categorias = sorted(escolhidas, key=lugar)
 
     prateleiras = []
 

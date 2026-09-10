@@ -4162,6 +4162,9 @@
 
         .home-produto-foto {
             display: block;
+            /* Segura a foto quando ela cresce: sem isso ela vaza por cima do
+               cartao vizinho. */
+            overflow: hidden;
             background: var(--page);
         }
 
@@ -4170,6 +4173,26 @@
             width: 100%;
             aspect-ratio: 1 / 1;
             object-fit: cover;
+            transition: transform 240ms ease;
+        }
+
+        /* Um crescimento leve responde a quem passa o mouse ou encosta o dedo:
+           diz "isto abre" sem precisar escrever. */
+        @media (hover: hover) {
+            .home-produto:hover .home-produto-foto img {
+                transform: scale(1.06);
+            }
+        }
+
+        .home-produto-foto:active img {
+            transform: scale(1.04);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .home-produto-foto img {
+                transition: none;
+                transform: none;
+            }
         }
 
         .home-produto-corpo {
