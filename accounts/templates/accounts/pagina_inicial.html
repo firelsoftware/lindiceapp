@@ -79,8 +79,15 @@
                     <span class="home-video-play" aria-hidden="true">
                         <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/></svg>
                     </span>
-                    {# Sem titulo e sem produto ligado a legenda vira o nome da loja
-                       repetido em todo cartao: melhor nao escrever nada. #}
+                    {% comment %}
+                        Sem titulo e sem produto ligado, a legenda vira o nome da
+                        loja repetido em todo cartao: melhor nao escrever nada.
+
+                        Comentario de cerquilha so vale numa linha. Quebrado em
+                        duas, o Django desiste de tratar como comentario e
+                        imprime o texto na tela da cliente - foi o que
+                        aconteceu aqui. Varias linhas pedem esta marcacao.
+                    {% endcomment %}
                     {% if reel.title or reel.product %}
                         <span class="home-video-nome">{{ reel.display_title }}</span>
                     {% endif %}

@@ -2493,6 +2493,22 @@ class StoreFlowTests(TestCase):
             "google-site-verification: google985abea835c787a9.html",
         )
 
+    def test_no_template_leftovers_reach_the_customer(self):
+        # Um comentario de cerquilha quebrado em duas linhas parou de ser
+        # comentario e apareceu cinco vezes na pagina inicial, escrito para a
+        # cliente ler. Nenhuma tela pode entregar sobra de codigo.
+        self.create_supplier_product(
+            name="Bota da vitrine limpa",
+            image_url="/static/accounts/catalog-test/botas/1.958-4a.jpg",
+        )
+        StoreReel.objects.create(video_url="https://youtu.be/abc123", is_visible=True)
+
+        for pagina in ("/", "/loja/"):
+            corpo = self.client.get(pagina).content.decode()
+
+            for sobra in ("{#", "#}", "{%", "%}", "{{", "}}", "lorem ipsum"):
+                self.assertNotIn(sobra, corpo, f"{sobra} apareceu em {pagina}")
+
     def test_robots_keeps_the_crawler_out_of_the_management_area(self):
         resposta = self.client.get("/robots.txt")
 
