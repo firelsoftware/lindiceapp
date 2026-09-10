@@ -267,6 +267,10 @@ POINTS_CREDIT = 3
 POINTS_PAYOFF_BONUS = 20
 # Pontos que o indicador ganha quando o indicado entra (uma indicacao = 10% de desconto).
 REFERRAL_POINTS = 100
+# O convite para a cliente se cadastrar sozinha. Pelo Google vale mais: poupa
+# senha e e-mail digitado errado, e e onde menos gente desiste no meio.
+POINTS_SIGNUP = 3
+POINTS_SIGNUP_GOOGLE = 5
 # Resgate: cada 100 pontos valem 10% de desconto (so em compra a vista/Pix). (Fase 2)
 POINTS_PER_DISCOUNT_STEP = 100
 POINTS_DISCOUNT_STEP_PERCENT = Decimal("10.00")
@@ -859,6 +863,7 @@ class PointsTransaction(models.Model):
     REDEEM = "redeem"
     REFERRAL = "referral"
     PAYOFF = "payoff"
+    SIGNUP = "signup"
     ADJUST = "adjust"
     EXPIRE = "expire"
     KIND_CHOICES = [
@@ -866,6 +871,7 @@ class PointsTransaction(models.Model):
         (REDEEM, "Resgate"),
         (REFERRAL, "Indicacao"),
         (PAYOFF, "Bonus de quitacao"),
+        (SIGNUP, "Cadastro"),
         (ADJUST, "Ajuste"),
         (EXPIRE, "Expiracao"),
     ]
@@ -940,6 +946,12 @@ class StoreSettings(models.Model):
     points_credit = models.PositiveSmallIntegerField("pontos por compra no crediario", default=POINTS_CREDIT)
     points_payoff_bonus = models.PositiveSmallIntegerField("bonus de quitacao do carne", default=POINTS_PAYOFF_BONUS)
     referral_points = models.PositiveSmallIntegerField("pontos por indicacao", default=REFERRAL_POINTS)
+    points_signup = models.PositiveSmallIntegerField(
+        "pontos por se cadastrar", default=POINTS_SIGNUP
+    )
+    points_signup_google = models.PositiveSmallIntegerField(
+        "pontos por se cadastrar com o Google", default=POINTS_SIGNUP_GOOGLE
+    )
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
@@ -1145,6 +1157,27 @@ def can_earn_points(user):
         return False
     profile = getattr(user, "profile", None)
     return bool(profile and profile.registration_status == ClientProfile.APPROVED)
+
+
+def award_signup_points(user, *, via_google=False):
+    """Credita os pontos de quem acabou de se cadastrar. Uma vez por pessoa.
+
+    Aqui nao vale a Regra de Ouro do cadastro aprovado: o ponto e justamente o
+    convite para a cliente se cadastrar sozinha, em vez de a loja digitar tudo
+    no balcao. Entrar pelo Google vale mais porque poupa senha e e-mail
+    errado - e e o caminho que menos gente abandona no meio.
+    """
+    if user is None or not getattr(user, "pk", None) or getattr(user, "is_staff", False):
+        return None
+
+    if PointsTransaction.objects.filter(user=user, kind=PointsTransaction.SIGNUP).exists():
+        return None
+
+    loja = StoreSettings.load()
+    pontos = loja.points_signup_google if via_google else loja.points_signup
+    motivo = "Pontos por se cadastrar com o Google" if via_google else "Pontos por se cadastrar"
+
+    return _grant_points(user, PointsTransaction.SIGNUP, pontos, motivo)
 
 
 def _grant_points(user, kind, points, description, *, store_order=None, credit_sale=None):

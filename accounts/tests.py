@@ -2514,6 +2514,74 @@ class StoreFlowTests(TestCase):
             for sobra in ("{#", "#}", "{%", "%}", "{{", "}}", "lorem ipsum"):
                 self.assertNotIn(sobra, corpo, f"{sobra} apareceu em {pagina}")
 
+    def test_store_can_open_a_client_file_while_launching_the_sale(self):
+        # A loja ouviu "que burocracia" no balcao e quase perdeu a venda. Agora
+        # da para abrir a ficha na hora, so com o contato: sem CPF, sem
+        # documento e sem limite. O credito vem depois, se vier.
+        self.login_staff(email="loja-balcao@example.com")
+
+        resposta = self.client.post(
+            "/gestao/vendas/nova/",
+            {
+                "client": "",
+                "guest_name": "Maria do Balcao",
+                "guest_email": "maria.balcao@example.com",
+                "guest_phone": "61999990000",
+                "cadastrar_cliente": "on",
+                "description": "Bota",
+                "total_amount": "200.00",
+                "products-TOTAL_FORMS": "0",
+                "products-INITIAL_FORMS": "0",
+                "products-MIN_NUM_FORMS": "0",
+                "products-MAX_NUM_FORMS": "10",
+            },
+        )
+
+        self.assertEqual(resposta.status_code, 200)
+        cliente = get_user_model().objects.filter(email__iexact="maria.balcao@example.com").first()
+        self.assertIsNotNone(cliente)
+        self.assertEqual(cliente.profile.registration_status, ClientProfile.PENDING)
+        self.assertEqual(cliente.profile.phone, "61999990000")
+        # Sem limite: a ficha nasce so como contato.
+        self.assertEqual(cliente.profile.pre_approved_credit_limit, Decimal("0.00"))
+        # E a venda ja fica no nome dela.
+        self.assertEqual(CreditSale.objects.latest("id").client_id, cliente.id)
+
+    def test_the_sale_does_not_open_a_file_when_the_store_does_not_ask(self):
+        self.login_staff(email="loja-sem-ficha@example.com")
+
+        self.client.post(
+            "/gestao/vendas/nova/",
+            {
+                "client": "", "guest_name": "Passante", "guest_email": "passante@example.com",
+                "description": "Bota", "total_amount": "200.00",
+                "products-TOTAL_FORMS": "0", "products-INITIAL_FORMS": "0",
+                "products-MIN_NUM_FORMS": "0", "products-MAX_NUM_FORMS": "10",
+            },
+        )
+
+        self.assertFalse(get_user_model().objects.filter(email__iexact="passante@example.com").exists())
+
+    def test_signing_up_pays_points_and_google_pays_more(self):
+        # O convite para a cliente se cadastrar sozinha em vez de a loja
+        # digitar tudo no balcao.
+        from accounts.models import award_signup_points
+
+        comum = get_user_model().objects.create_user(email="sozinha@example.com", password="x")
+        pelo_google = get_user_model().objects.create_user(email="google@example.com", password="x")
+
+        award_signup_points(comum)
+        award_signup_points(pelo_google, via_google=True)
+
+        loja = StoreSettings.load()
+        self.assertEqual(points_balance(comum), loja.points_signup)
+        self.assertEqual(points_balance(pelo_google), loja.points_signup_google)
+        self.assertGreater(loja.points_signup_google, loja.points_signup)
+
+        # Uma vez por pessoa: entrar de novo nao paga de novo.
+        award_signup_points(comum)
+        self.assertEqual(points_balance(comum), loja.points_signup)
+
     def test_loyalty_screen_opens_on_points_and_says_what_is_in_use(self):
         # A tela abria pelo cashback, com titulo de cashback, e os pontos
         # ficavam fora da primeira rolagem: quem entrava concluia que a

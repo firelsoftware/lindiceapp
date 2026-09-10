@@ -66,6 +66,20 @@
         {{ form.points_payoff_bonus.errors }}
     </p>
     <p>
+        <label for="{{ form.points_signup.id_for_label }}">{{ form.points_signup.label }}</label>
+        {{ form.points_signup }}
+        <small>Ganho de quem faz o proprio cadastro. É o que convence a cliente a
+        preencher sozinha, em vez de a loja digitar tudo no balcão.</small>
+        {{ form.points_signup.errors }}
+    </p>
+    <p>
+        <label for="{{ form.points_signup_google.id_for_label }}">{{ form.points_signup_google.label }}</label>
+        {{ form.points_signup_google }}
+        <small>Vale mais: entrar pelo Google poupa senha e e-mail digitado errado,
+        e é onde menos gente desiste no meio.</small>
+        {{ form.points_signup_google.errors }}
+    </p>
+    <p>
         <label for="{{ form.referral_points.id_for_label }}">{{ form.referral_points.label }}</label>
         {{ form.referral_points }}
         <small>Pontos para quem indica um cliente que se cadastra.</small>

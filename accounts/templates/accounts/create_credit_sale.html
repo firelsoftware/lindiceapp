@@ -138,6 +138,14 @@
                         {{ form.guest_phone }}
                         {{ form.guest_phone.errors }}
                     </div>
+                    <div class="field-stack full">
+                        <label class="reg-checkbox">
+                            {{ form.cadastrar_cliente }}
+                            <span>{{ form.cadastrar_cliente.label }}</span>
+                        </label>
+                        <small class="helptext">{{ form.cadastrar_cliente.help_text }}</small>
+                        {{ form.cadastrar_cliente.errors }}
+                    </div>
                 </div>
             </div>
             <div class="field-stack">

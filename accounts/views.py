@@ -35,7 +35,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from . import google_oauth
 from .forms import LancamentoDePontosForm, MAX_PRODUCT_PHOTOS_PER_UPLOAD, validate_product_photo, CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, NewSupplierProductForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
-from .models import CapaDoSite, StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance, points_balance_capped, points_discount_percent, PointsTransaction, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .models import award_signup_points, CapaDoSite, StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance, points_balance_capped, points_discount_percent, PointsTransaction, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .bucket_publico import conferir_se_e_publico, copiar_vitrine, PREFIXOS_DA_VITRINE
 from .espaco import atualizar_medicao, resumo_do_espaco, somar_arquivos
 from .seo import endereco_publico
@@ -2768,6 +2768,9 @@ def register(request):
                 profile.phone_verified = True
                 profile.save(update_fields=["phone_verified"])
             login(request, user)
+            # O convite para a cliente se cadastrar sozinha em vez de a loja
+            # digitar tudo no balcao. Pelo Google vale mais.
+            award_signup_points(user, via_google=bool(google_email))
 
             for session_key in (GOOGLE_EMAIL_SESSION_KEY, GOOGLE_NAME_SESSION_KEY, GOOGLE_FIRST_NAME_SESSION_KEY):
                 request.session.pop(session_key, None)
@@ -4267,6 +4270,42 @@ def update_debt_payment(request, debt_id):
     return redirect("clients_list")
 
 
+def cadastrar_cliente_do_balcao(nome, email, telefone):
+    """Abre a ficha de quem comprou no balcao, so com o contato.
+
+    Sem CPF, sem documento e sem limite: a pessoa entra como pendente e a loja
+    a leva para o credito depois, se quiser. O ponto e nao perder a venda por
+    causa de papelada na hora - foi a critica que a loja ouviu no balcao.
+
+    Se ja existe alguem com esse e-mail, aproveita a ficha em vez de criar uma
+    segunda.
+    """
+    email = (email or "").strip().lower()
+    Cliente = get_user_model()
+    existente = Cliente.objects.filter(email__iexact=email).first()
+
+    if existente:
+        return existente
+
+    nome = " ".join((nome or "").split())
+    cliente = Cliente.objects.create_user(email=email, password=None, full_name=nome)
+    cliente.set_unusable_password()
+    cliente.save(update_fields=["password"])
+
+    ClientProfile.objects.create(
+        user=cliente,
+        # O CPF ainda nao existe, mas a coluna e unica: um marcador por ficha
+        # segura o lugar ate a cliente completar o cadastro.
+        cpf_hash=f"sem-cpf-{uuid.uuid4().hex}",
+        cpf_last_digits="",
+        phone=(telefone or "").strip(),
+        address="",
+        registration_status=ClientProfile.PENDING,
+    )
+
+    return cliente
+
+
 @staff_member_required(login_url="login")
 def create_credit_sale(request):
     available_products = list(Product.objects.filter(status=Product.AVAILABLE).select_related("supplier").order_by("product_code"))
@@ -4288,6 +4327,14 @@ def create_credit_sale(request):
 
         if form.is_valid() and product_formset.is_valid():
             sale = form.save(commit=False)
+
+            if form.cleaned_data.get("cadastrar_cliente") and not sale.client_id:
+                sale.client = cadastrar_cliente_do_balcao(
+                    form.cleaned_data.get("guest_name"),
+                    form.cleaned_data.get("guest_email"),
+                    form.cleaned_data.get("guest_phone"),
+                )
+
             sale.created_by = request.user
             sale.first_due_date = timezone.localdate() + timedelta(days=30)
             sale.max_installments_allowed = sale.client.profile.default_max_installments if sale.client_id else 10
@@ -4317,7 +4364,15 @@ def create_credit_sale(request):
                 sale.save(update_fields=["total_amount"])
 
             create_sale_available_notification(sale)
-            messages.success(request, "Venda lancada. Envie o link para o cliente finalizar.")
+
+            if form.cleaned_data.get("cadastrar_cliente") and sale.client_id:
+                messages.success(
+                    request,
+                    f"Venda lancada e ficha de {sale.customer_name()} criada. "
+                    "Ela entra como pendente: o crediario voce libera quando quiser.",
+                )
+            else:
+                messages.success(request, "Venda lancada. Envie o link para o cliente finalizar.")
 
             payment_link = build_sale_payment_link(request, sale)
             return render(

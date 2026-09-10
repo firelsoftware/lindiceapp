@@ -375,10 +375,19 @@ class CreditSaleForm(forms.ModelForm):
     guest_name = forms.CharField(label="Nome do cliente novo", max_length=150, required=False)
     guest_email = forms.EmailField(label="Email do cliente novo", required=False)
     guest_phone = forms.CharField(label="Telefone do cliente novo", max_length=20, required=False)
+    cadastrar_cliente = forms.BooleanField(
+        label="Cadastrar esta pessoa como cliente",
+        required=False,
+        help_text=(
+            "Cria a ficha dela agora, so com o contato acima - sem CPF, sem documento e "
+            "sem limite. Ela entra como pendente, e voce leva para o crediario depois se quiser."
+        ),
+    )
 
     class Meta:
         model = CreditSale
         fields = ("client", "guest_name", "guest_email", "guest_phone", "description", "total_amount")
+        # cadastrar_cliente nao e campo da venda: e uma decisao do momento.
         labels = {
             "client": "Cliente",
             "description": "Descricao da venda",
@@ -422,6 +431,20 @@ class CreditSaleForm(forms.ModelForm):
 
         if not guest_name:
             self.add_error("guest_name", "Informe o nome do cliente novo ou selecione um cliente cadastrado.")
+
+        if cleaned_data.get("cadastrar_cliente"):
+            if cleaned_data.get("client"):
+                # Ja e cliente: nao ha o que cadastrar.
+                cleaned_data["cadastrar_cliente"] = False
+            else:
+                if not guest_name:
+                    self.add_error("guest_name", "Para cadastrar, o nome e obrigatorio.")
+
+                if not guest_email:
+                    self.add_error(
+                        "guest_email",
+                        "Para cadastrar, o e-mail e obrigatorio: e por ele que a cliente entra depois.",
+                    )
 
         if not guest_email:
             self.add_error("guest_email", "Informe o email do cliente novo para enviar o link.")
@@ -493,7 +516,8 @@ class StoreSettingsForm(forms.ModelForm):
             "cashback_percent", "cashback_max_redeem_percent", "referral_bonus",
             "pix_discount_percent", "points_active",
             "points_pix", "points_card", "points_credit",
-            "points_payoff_bonus", "referral_points", "points_cap",
+            "points_payoff_bonus", "points_signup", "points_signup_google",
+            "referral_points", "points_cap",
         )
         labels = {
             "cashback_percent": "Cashback por compra (%)",
@@ -505,6 +529,8 @@ class StoreSettingsForm(forms.ModelForm):
             "points_card": "Pontos por compra no cartão",
             "points_credit": "Pontos por compra no crediário",
             "points_payoff_bonus": "Bônus de quitação do carnê (pontos)",
+            "points_signup": "Pontos por se cadastrar",
+            "points_signup_google": "Pontos por se cadastrar com o Google",
             "referral_points": "Pontos por indicação",
             "points_cap": "Teto de pontos por cliente",
         }
@@ -517,6 +543,8 @@ class StoreSettingsForm(forms.ModelForm):
             "points_card": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
             "points_credit": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
             "points_payoff_bonus": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
+            "points_signup": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
+            "points_signup_google": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
             "referral_points": forms.NumberInput(attrs={"min": "0", "max": "500", "step": "1"}),
             "points_cap": forms.NumberInput(attrs={"min": "1", "max": "1000", "step": "1"}),
         }
