@@ -667,6 +667,10 @@
             margin: 0;
         }
 
+        body.pagina-inicial .topbar-inner {
+            max-width: var(--home-largura);
+        }
+
         /* A regra geral de botao carrega margin-top: 18px. Dentro do cabecalho
            isso virava espaco morto: o botao de conta empurrava a barra inteira
            18px para baixo, em toda pagina. Quem espaca aqui e o layout. */
@@ -4042,12 +4046,21 @@
             background: var(--surface);
         }
 
+        /* Largura unica da primeira tela. As secoes repetiam 1100px cada uma:
+           numa tela de 1875 sobravam quase 400px vazios de cada lado, embaixo
+           de um hero que vai de ponta a ponta - parecia app esticado, nao site.
+           Grandes lojas usam por volta de 1440 com respiro lateral curto. */
+        body.pagina-inicial {
+            --home-largura: 1440px;
+            --home-respiro: clamp(16px, 3vw, 40px);
+        }
+
         .atalhos {
             display: flex;
             gap: 8px;
-            max-width: 1100px;
+            max-width: var(--home-largura, 1100px);
             margin: 0 auto;
-            padding: 10px 5%;
+            padding: 10px var(--home-respiro, 5%);
             overflow-x: auto;
             scrollbar-width: none;
         }
@@ -4079,9 +4092,9 @@
         }
 
         .home-secao {
-            max-width: 1100px;
+            max-width: var(--home-largura, 1100px);
             margin: 0 auto;
-            padding: 44px 5% 8px;
+            padding: 44px var(--home-respiro, 5%) 8px;
         }
 
         .home-secao-topo {
@@ -4320,9 +4333,9 @@
         }
 
         .home-crediario-dentro {
-            max-width: 1100px;
+            max-width: var(--home-largura, 1100px);
             margin: 0 auto;
-            padding: 0 5%;
+            padding: 0 var(--home-respiro, 5%);
         }
 
         .home-crediario h2 {
@@ -4376,7 +4389,9 @@
         }
 
         .home-videos {
-            display: flex;
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: minmax(158px, 300px);
             gap: 14px;
             overflow-x: auto;
             padding-bottom: 8px;
@@ -4389,7 +4404,6 @@
 
         .home-video {
             position: relative;
-            flex: 0 0 158px;
             aspect-ratio: 9 / 16;
             border-radius: 16px;
             overflow: hidden;
@@ -4429,9 +4443,9 @@
         }
 
         .home-fechamento {
-            max-width: 1100px;
+            max-width: var(--home-largura, 1100px);
             margin: 0 auto;
-            padding: 52px 5% 64px;
+            padding: 52px var(--home-respiro, 5%) 64px;
             text-align: center;
         }
 
