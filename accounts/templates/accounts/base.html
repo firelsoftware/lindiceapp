@@ -4222,14 +4222,21 @@
             /* Segura a foto quando ela cresce: sem isso ela vaza por cima do
                cartao vizinho. */
             overflow: hidden;
-            background: var(--page);
+            /* Branco como o fundo das fotos dos fornecedores: a sobra em volta
+               de uma foto larga se funde com ela, em vez de virar faixa cinza. */
+            background: #ffffff;
         }
 
         .home-produto-foto img {
             display: block;
             width: 100%;
             aspect-ratio: 1 / 1;
-            object-fit: cover;
+            /* Inteira, nunca cortada. Com cover a foto enchia o quadrado a
+               forca: sapato e mais largo que alto, e sumiam a ponta e o salto
+               - justo o que a cliente quer ver. Sem margem interna de
+               proposito: as artes quadradas dos relogios continuam de ponta a
+               ponta, como antes. */
+            object-fit: contain;
             transition: transform 240ms ease;
         }
 
