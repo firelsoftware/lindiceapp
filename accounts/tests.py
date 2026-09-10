@@ -2514,6 +2514,17 @@ class StoreFlowTests(TestCase):
             for sobra in ("{#", "#}", "{%", "%}", "{{", "}}", "lorem ipsum"):
                 self.assertNotIn(sobra, corpo, f"{sobra} apareceu em {pagina}")
 
+    def test_sale_screen_says_what_each_button_does(self):
+        # "Adicionar produto" parecia cadastrar produto na loja, e o botao de
+        # enviar nao dizia que ali a venda nasce.
+        self.login_staff(email="loja-venda@example.com")
+
+        resposta = self.client.get("/gestao/vendas/nova/")
+
+        self.assertContains(resposta, "Lançar venda")
+        self.assertContains(resposta, "Adicionar outro item a esta venda")
+        self.assertNotContains(resposta, "Enviar para escolha do cliente")
+
     def test_robots_keeps_the_crawler_out_of_the_management_area(self):
         resposta = self.client.get("/robots.txt")
 

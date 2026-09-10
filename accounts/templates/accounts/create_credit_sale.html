@@ -260,12 +260,12 @@
         </section>
     </template>
 
-    <button type="button" class="button button-secondary" id="add-product">Adicionar produto</button>
+    <button type="button" class="button button-secondary" id="add-product">Adicionar outro item a esta venda</button>
 
-    <button type="submit">Enviar para escolha do cliente</button>
+    <button type="submit">Lançar venda</button>
 </form>
 
-<p>O cliente escolhe Pix com 10% de desconto, cartao com juros a partir de 6x ou crediario dentro do limite aprovado.</p>
+<p>Ao lancar, a venda gera um link de pagamento: o cliente escolhe Pix com desconto, cartao ou crediario dentro do limite aprovado.</p>
 <p><a href="{% url 'management_dashboard' %}">Voltar ao painel de gestao</a></p>
 
 {{ product_catalog|json_script:"product-catalog" }}
