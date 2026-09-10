@@ -2914,10 +2914,44 @@
             gap: 14px;
         }
 
+        /* A fila de botoes ganha a margem que antes cada botao carregava
+           sozinho. Com a margem no botao, uma fila que quebrava em duas linhas
+           somava 18px da margem com 10px do gap e o espaco entre as linhas
+           saia maior que entre os botoes. Usada em 18 telas. */
         .action-row {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+            margin-top: 18px;
+        }
+
+        .action-row button,
+        .action-row .button {
+            margin-top: 0;
+        }
+
+        /* Toda fila de botoes do app. A regra geral de botao carrega
+           margin-top: 18px, feita para botao sozinho embaixo de um paragrafo.
+           Dentro de uma fila ela nao espaca nada: empurra o botao para baixo da
+           linha e desalinha do campo ou do botao ao lado - e o que fazia botao
+           parecer solto. Quem espaca aqui e o gap da fila.
+           Levantado tela por tela: ficha do produto, loja, carrinho, cadastro,
+           gestao e assistente. */
+        .ficha-busca button,
+        .ficha-busca .button,
+        .barra-loja-acoes button,
+        .barra-loja-acoes .button,
+        .barra-loja-promo button,
+        .barra-loja-promo .button,
+        .reg-nav button,
+        .reg-nav .button,
+        .table-actions button,
+        .table-actions .button,
+        .toolbar button,
+        .toolbar .button,
+        .linde-assistant button,
+        .linde-assistant .button {
+            margin-top: 0;
         }
 
         .action-row.action-row-end {
