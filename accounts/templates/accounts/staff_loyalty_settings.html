@@ -1,7 +1,7 @@
 {% extends "accounts/base.html" %}
 
 {% block content %}
-<h1>Configurações do cashback</h1>
+<h1>Programa de fidelidade</h1>
 
 {% if messages %}
     <ul class="messages">
@@ -11,39 +11,25 @@
     </ul>
 {% endif %}
 
+{% comment %}
+    A tela abria pelo cashback e os pontos ficavam la embaixo, fora da
+    primeira rolagem: quem entrava aqui concluia que a pontuacao nao existia.
+    Agora ela diz de cara o que esta valendo e comeca pelos pontos.
+{% endcomment %}
 <section class="info-panel">
-    <p>Ajuste os números do programa de fidelidade. As mudanças valem na hora, sem precisar de novo deploy.</p>
+    {% if form.instance.points_active %}
+        <p><strong>Hoje a loja credita PONTOS.</strong> Cada compra paga gera pontos conforme
+        a forma de pagamento, e o cliente usa em desconto.</p>
+    {% else %}
+        <p><strong>Hoje a loja credita CASHBACK em dinheiro.</strong> Os pontos já estão
+        configurados abaixo, mas só passam a valer quando você ligar a chave.</p>
+    {% endif %}
+    <p>As mudanças valem na hora, sem precisar de novo deploy.</p>
 </section>
 
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>
-        <label for="{{ form.cashback_percent.id_for_label }}">{{ form.cashback_percent.label }}</label>
-        {{ form.cashback_percent }}
-        <small>Quanto o cliente ganha de volta em cada compra paga.</small>
-        {{ form.cashback_percent.errors }}
-    </p>
-    <p>
-        <label for="{{ form.cashback_max_redeem_percent.id_for_label }}">{{ form.cashback_max_redeem_percent.label }}</label>
-        {{ form.cashback_max_redeem_percent }}
-        <small>Limite de quanto o saldo pode abater em uma compra (evita prejuízo).</small>
-        {{ form.cashback_max_redeem_percent.errors }}
-    </p>
-    <p>
-        <label for="{{ form.referral_bonus.id_for_label }}">{{ form.referral_bonus.label }}</label>
-        {{ form.referral_bonus }}
-        <small>Bônus para quem indica, quando o indicado faz a 1ª compra.</small>
-        {{ form.referral_bonus.errors }}
-    </p>
-
-    <p>
-        <label for="{{ form.pix_discount_percent.id_for_label }}">{{ form.pix_discount_percent.label }}</label>
-        {{ form.pix_discount_percent }}
-        <small>Desconto que o cliente ganha ao escolher pagar à vista/Pix.</small>
-        {{ form.pix_discount_percent.errors }}
-    </p>
-
-    <h2 style="margin-top:28px">Sistema de pontos</h2>
+    <h2>Pontos</h2>
     <section class="info-panel">
         <p>Os pontos substituem o cashback em dinheiro. O cliente ganha pontos por compra
         (conforme o método de pagamento) e usa em desconto. Teto de {{ form.instance.points_cap }} pontos.</p>
@@ -93,6 +79,38 @@
     </p>
 
 
+
+    <h2 style="margin-top:32px">Cashback em dinheiro</h2>
+    <section class="info-panel">
+        <p>O sistema antigo. Continua valendo enquanto a chave dos pontos estiver desligada.</p>
+    </section>
+    <p>
+        <label for="{{ form.cashback_percent.id_for_label }}">{{ form.cashback_percent.label }}</label>
+        {{ form.cashback_percent }}
+        <small>Quanto o cliente ganha de volta em cada compra paga.</small>
+        {{ form.cashback_percent.errors }}
+    </p>
+    <p>
+        <label for="{{ form.cashback_max_redeem_percent.id_for_label }}">{{ form.cashback_max_redeem_percent.label }}</label>
+        {{ form.cashback_max_redeem_percent }}
+        <small>Limite de quanto o saldo pode abater em uma compra (evita prejuízo).</small>
+        {{ form.cashback_max_redeem_percent.errors }}
+    </p>
+    <p>
+        <label for="{{ form.referral_bonus.id_for_label }}">{{ form.referral_bonus.label }}</label>
+        {{ form.referral_bonus }}
+        <small>Bônus para quem indica, quando o indicado faz a 1ª compra.</small>
+        {{ form.referral_bonus.errors }}
+    </p>
+
+    <h2 style="margin-top:32px">Desconto à vista</h2>
+    <p>
+        <label for="{{ form.pix_discount_percent.id_for_label }}">{{ form.pix_discount_percent.label }}</label>
+        {{ form.pix_discount_percent }}
+        <small>Desconto que o cliente ganha ao escolher pagar à vista/Pix. Vale sempre,
+        com pontos ou com cashback.</small>
+        {{ form.pix_discount_percent.errors }}
+    </p>
 
     <button type="submit">Salvar configurações</button>
 </form>

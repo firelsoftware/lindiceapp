@@ -2514,6 +2514,25 @@ class StoreFlowTests(TestCase):
             for sobra in ("{#", "#}", "{%", "%}", "{{", "}}", "lorem ipsum"):
                 self.assertNotIn(sobra, corpo, f"{sobra} apareceu em {pagina}")
 
+    def test_loyalty_screen_opens_on_points_and_says_what_is_in_use(self):
+        # A tela abria pelo cashback, com titulo de cashback, e os pontos
+        # ficavam fora da primeira rolagem: quem entrava concluia que a
+        # pontuacao nao tinha sido feita.
+        self.login_staff(email="loja-fidelidade@example.com")
+
+        pagina = self.client.get("/gestao/cashback/").content.decode()
+
+        self.assertIn("Programa de fidelidade", pagina)
+        self.assertLess(pagina.index("<h2>Pontos</h2>"), pagina.index("Cashback em dinheiro"))
+        # E diz de cara o que esta valendo hoje.
+        self.assertIn("Hoje a loja credita CASHBACK", pagina)
+        # Nenhum campo se perdeu na mudanca de ordem.
+        for campo in ("points_active", "points_pix", "points_card", "points_credit",
+                      "points_payoff_bonus", "referral_points", "points_cap",
+                      "cashback_percent", "cashback_max_redeem_percent",
+                      "referral_bonus", "pix_discount_percent"):
+            self.assertIn(f'name="{campo}"', pagina)
+
     def test_sale_screen_says_what_each_button_does(self):
         # "Adicionar produto" parecia cadastrar produto na loja, e o botao de
         # enviar nao dizia que ali a venda nasce.
