@@ -622,6 +622,12 @@
             }
 
             cartao.classList.remove("tocando");
+
+            var capaDeClique = cartao.querySelector("[data-reel-play]");
+
+            if (capaDeClique) {
+                capaDeClique.style.pointerEvents = "";
+            }
         }
 
         function pausarOutros(menos) {
@@ -667,6 +673,16 @@
                 cartao.insertBefore(frame, cartao.firstChild);
                 cartao.classList.add("tocando");
 
+                // O botao de play cobre o cartao inteiro. Enquanto ele estava
+                // so transparente, engolia todo toque: quem tentava pausar
+                // acertava o play invisivel e o video recomecava. Com o video
+                // no ar quem manda e o player.
+                var capaDeClique = cartao.querySelector("[data-reel-play]");
+
+                if (capaDeClique) {
+                    capaDeClique.style.pointerEvents = "none";
+                }
+
                 return;
             }
 
@@ -706,6 +722,17 @@
 
             if (botao) {
                 botao.addEventListener("click", function () {
+                    // Video de arquivo roda sem controle a vista: o proprio
+                    // toque pausa e volta, senao nao havia como parar.
+                    var video = cartao.querySelector("[data-reel-video]");
+
+                    if (video && !video.paused) {
+                        video.pause();
+                        cartao.classList.remove("tocando");
+
+                        return;
+                    }
+
                     abrir(cartao, true);
                 });
             }

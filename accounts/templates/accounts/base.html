@@ -3485,6 +3485,16 @@
             }
         }
 
+        /* Em tela de toque a seta nao serve: quem passa de um video para o
+           outro e o dedo. E ela ficava bem por cima do video - com dois
+           cartoes na largura do celular, uma seta em cada um, tapando a
+           imagem e disputando o toque com o player. */
+        @media (hover: none) {
+            .watch-strip-nav {
+                display: none;
+            }
+        }
+
         .watch-card {
             flex: 0 0 190px;
             scroll-snap-align: start;
