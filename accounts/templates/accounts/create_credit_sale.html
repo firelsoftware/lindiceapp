@@ -317,9 +317,30 @@
     };
 
     const guestFieldsHaveValue = () => guestInputs.some((input) => input && input.value.trim() !== "");
+    const registerClientCheckbox = document.getElementById("id_cadastrar_cliente");
+
+    // Aberto porque a loja clicou, ou porque o contato ja veio preenchido (a
+    // tela voltou com erro). Antes so valia o segundo caso: o botao abria o
+    // bloco e esta funcao, chamada logo depois, fechava na hora porque os
+    // campos estavam vazios - para quem clicava, o botao nao fazia nada.
+    let guestContactOpen = false;
+
+    const clearGuestContact = () => {
+        guestInputs.forEach((input) => {
+            if (input) {
+                input.value = "";
+            }
+        });
+
+        // Escondida e marcada, a caixinha pediria nome e e-mail num bloco que
+        // a loja nem esta vendo.
+        if (registerClientCheckbox) {
+            registerClientCheckbox.checked = false;
+        }
+    };
 
     const updateGuestContactVisibility = () => {
-        const showFields = !clientSelect.value && guestFieldsHaveValue();
+        const showFields = !clientSelect.value && (guestContactOpen || guestFieldsHaveValue());
         guestContactFields.hidden = !showFields;
         toggleGuestContactButton.hidden = !!clientSelect.value;
         toggleGuestContactButton.textContent = showFields ? "Ocultar contato" : "Adicionar contato agora";
@@ -407,24 +428,23 @@
     });
 
     toggleGuestContactButton?.addEventListener("click", () => {
-        guestContactFields.hidden = !guestContactFields.hidden;
-        if (guestContactFields.hidden) {
-            guestInputs.forEach((input) => {
-                if (input) {
-                    input.value = "";
-                }
-            });
+        guestContactOpen = guestContactFields.hidden;
+
+        if (!guestContactOpen) {
+            clearGuestContact();
         }
+
         updateGuestContactVisibility();
+
+        if (guestContactOpen) {
+            guestInputs[0]?.focus();
+        }
     });
 
     clientSelect?.addEventListener("change", () => {
         if (clientSelect.value) {
-            guestInputs.forEach((input) => {
-                if (input) {
-                    input.value = "";
-                }
-            });
+            guestContactOpen = false;
+            clearGuestContact();
         }
         updateGuestContactVisibility();
     });
