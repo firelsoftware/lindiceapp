@@ -738,6 +738,9 @@ class StoreOrder(models.Model):
     product_name = models.CharField(max_length=180)
     supplier_code = models.CharField(max_length=120)
     selected_size = models.CharField(max_length=30)
+    # Escolhida na pagina do produto. Antes a cliente tinha que escrever a cor
+    # nas observacoes, e a loja garimpava no texto livre.
+    selected_color = models.CharField(max_length=60, blank=True)
     quantity = models.PositiveSmallIntegerField(default=1)
     customer_name = models.CharField(max_length=150)
     customer_email = models.EmailField()

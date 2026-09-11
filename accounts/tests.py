@@ -1617,7 +1617,10 @@ class StoreFlowTests(TestCase):
             supplier_code="SC002",
         )
 
-        response = self.client.post(f"/loja/carrinho/adicionar/{product.id}/", {"selected_size": "35"}, follow=True)
+        # "Finalizar compra" adiciona e leva ao carrinho; "Adicionar" deixa na pagina.
+        response = self.client.post(
+            f"/loja/carrinho/adicionar/{product.id}/", {"selected_size": "35", "depois": "finalizar"}, follow=True
+        )
 
         self.assertRedirects(response, "/loja/carrinho/")
         cart = self.client.session.get("store_cart", {})
@@ -2626,6 +2629,95 @@ class StoreFlowTests(TestCase):
 
         self.assertEqual(resposta.status_code, 200)
         self.assertNotContains(resposta, "Usar meu cashback nesta compra")
+
+    def test_adding_to_cart_keeps_the_customer_on_the_product_page(self):
+        # Antes o botao de adicionar tirava a cliente da vitrine a cada produto.
+        produto = self.create_supplier_product(supplier_code="FICA1", name="Bota que fica")
+
+        resposta = self.client.post(f"/loja/carrinho/adicionar/{produto.id}/", {"selected_size": "35"})
+
+        self.assertRedirects(resposta, f"/loja/produto/{produto.id}/")
+        self.assertEqual(len(self.client.session.get("store_cart", {})), 1)
+
+    def test_customer_picks_the_color_on_the_product_page(self):
+        # A cor era uma lista para olhar, com "diga a cor nas observacoes".
+        from accounts.models import SupplierProductVariant
+
+        produto = self.create_supplier_product(supplier_code="COR1", name="Bota com cores", sizes="35,36")
+        SupplierProductVariant.objects.create(product=produto, name="Preto", position=1)
+        SupplierProductVariant.objects.create(product=produto, name="Preto/Branco", position=2)
+
+        pagina = self.client.get(f"/loja/produto/{produto.id}/").content.decode()
+        self.assertIn('name="selected_color" value="Preto"', pagina)
+        self.assertNotIn("Diga a cor preferida", pagina)
+        self.assertIn("Finalizar compra", pagina)
+
+        self.client.post(f"/loja/carrinho/adicionar/{produto.id}/", {"selected_size": "35", "selected_color": "Preto"})
+        self.client.post(
+            f"/loja/carrinho/adicionar/{produto.id}/", {"selected_size": "35", "selected_color": "Preto/Branco"}
+        )
+
+        # A mesma bota em duas cores sao dois itens.
+        carrinho = self.client.session.get("store_cart", {})
+        self.assertEqual(sorted(item["selected_color"] for item in carrinho.values()), ["Preto", "Preto/Branco"])
+        # Cor com barra no nome nao pode quebrar o endereco de remover.
+        self.assertTrue(all("/" not in chave for chave in carrinho))
+
+        tela = self.client.get("/loja/carrinho/")
+        self.assertContains(tela, "Cor Preto/Branco")
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
+    def test_the_chosen_color_reaches_the_order_the_store_receives(self):
+        # A cor escolhida so vale se chegar ao pedido: e dele que a loja separa
+        # o produto para enviar. Antes ela vinha, quando vinha, perdida no meio
+        # das observacoes.
+        from accounts.models import SupplierProductVariant
+
+        produto = self.create_supplier_product(supplier_code="COR3", name="Bota do pedido")
+        SupplierProductVariant.objects.create(product=produto, name="Caramelo")
+        cliente = User.objects.create_user(
+            email="cliente-cor@example.com", password="Teste12345!", full_name="Cliente Cor", preferred_name="Cliente"
+        )
+        ClientProfile.objects.create(
+            user=cliente,
+            cpf_hash=ClientProfile.generate_cpf_placeholder(),
+            cpf_last_digits="4444",
+            phone="61999999999",
+            phone_verified=True,
+            address="Endereco",
+            registration_status=ClientProfile.APPROVED,
+        )
+        self.client.force_login(cliente)
+        self.client.post(
+            f"/loja/carrinho/adicionar/{produto.id}/", {"selected_size": "35", "selected_color": "Caramelo"}
+        )
+
+        self.client.post(
+            "/loja/carrinho/finalizar/",
+            {
+                "customer_name": "Cliente Cor",
+                "customer_email": "cliente-cor@example.com",
+                "customer_phone": "61999999999",
+                "shipping_state": "DF",
+                "shipping_address": "Rua Teste, 1",
+                "notes": "",
+                "accept_terms": "on",
+            },
+        )
+
+        self.assertEqual(StoreOrder.objects.get().selected_color, "Caramelo")
+
+    def test_color_is_required_when_the_product_has_colors(self):
+        from accounts.models import SupplierProductVariant
+
+        produto = self.create_supplier_product(supplier_code="COR2", name="Bota sem cor escolhida")
+        SupplierProductVariant.objects.create(product=produto, name="Nude")
+        SupplierProductVariant.objects.create(product=produto, name="Caramelo")
+
+        resposta = self.client.post(f"/loja/carrinho/adicionar/{produto.id}/", {"selected_size": "35"})
+
+        self.assertRedirects(resposta, f"/loja/produto/{produto.id}/")
+        self.assertEqual(self.client.session.get("store_cart", {}), {})
 
     def test_loyalty_screen_opens_on_points_and_says_what_is_in_use(self):
         # A tela abria pelo cashback, com titulo de cashback, e os pontos

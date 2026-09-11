@@ -42,7 +42,7 @@
         </div>
         <div>
             <dt>Produto</dt>
-            <dd>{{ order.product_name }} | Tam. {{ order.selected_size }}</dd>
+            <dd>{{ order.product_name }} | Tam. {{ order.selected_size }}{% if order.selected_color %} | Cor {{ order.selected_color }}{% endif %}</dd>
         </div>
         <div>
             <dt>Frete</dt>

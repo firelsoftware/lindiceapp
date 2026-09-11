@@ -4991,6 +4991,46 @@
             font-size: 13px;
         }
 
+        /* A lista de cores virou escolha dentro do formulario da compra. */
+        fieldset.detail-colors {
+            margin: 0 0 16px;
+            padding: 0;
+            border: 0;
+        }
+
+        label.detail-color-item {
+            position: relative;
+            min-height: 44px;
+            cursor: pointer;
+        }
+
+        /* O botao redondo some; quem mostra a escolha e o cartao inteiro. */
+        label.detail-color-item input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        label.detail-color-item:has(input:checked) {
+            border-color: var(--brand-blue);
+            box-shadow: inset 0 0 0 2px var(--brand-blue);
+        }
+
+        label.detail-color-item:has(input:focus-visible) {
+            outline: 2px solid var(--brand-blue);
+            outline-offset: 2px;
+        }
+
+        /* Adicionar e finalizar, um embaixo do outro, como a loja pediu. */
+        .detail-form-card form > button {
+            display: block;
+            width: 100%;
+        }
+
+        .button-finalizar {
+            background: var(--brand-purple);
+        }
+
         .detail-block {
             max-width: 960px;
             margin: 0 auto 22px;

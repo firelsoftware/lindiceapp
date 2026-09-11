@@ -22,6 +22,12 @@
             <dt>Tamanho</dt>
             <dd>{{ order.selected_size }}</dd>
         </div>
+        {% if order.selected_color %}
+            <div>
+                <dt>Cor</dt>
+                <dd>{{ order.selected_color }}</dd>
+            </div>
+        {% endif %}
         <div>
             <dt>Frete</dt>
             <dd>{{ order.get_shipping_state_display|default:order.shipping_state }} - R$ {{ order.shipping_cost|floatformat:2 }}</dd>

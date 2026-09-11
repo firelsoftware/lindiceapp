@@ -33,6 +33,7 @@
                         <h2>{{ item.product.name }}</h2>
                         <div class="cart-item-meta">
                             <span class="mini-chip">Tamanho {{ item.selected_size }}</span>
+                            {% if item.selected_color %}<span class="mini-chip">Cor {{ item.selected_color }}</span>{% endif %}
                             <span class="mini-chip">Quantidade {{ item.quantity }}</span>
                             {% if item.product.category %}
                                 <span class="mini-chip">{{ item.product.category }}</span>

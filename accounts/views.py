@@ -932,6 +932,9 @@ def create_credit_sale_from_checkout(request, items, form, shipping_cost):
             f"Endereco: {cleaned_data['shipping_address']}",
         ]
 
+        if item.get("selected_color"):
+            notes.append(f"Cor: {item['selected_color']}")
+
         if cleaned_data.get("notes"):
             notes.append(f"Observacoes do cliente: {cleaned_data['notes']}")
 
@@ -1014,6 +1017,8 @@ def build_cart_items(request):
                 "key": key,
                 "product": product,
                 "selected_size": item["selected_size"],
+                # Carrinho montado antes das cores nao tem a chave.
+                "selected_color": item.get("selected_color", ""),
                 "quantity": quantity,
                 "total": money(product.suggested_sale_price * quantity),
             }
@@ -2209,16 +2214,44 @@ def cart_add(request, product_id):
             messages.error(request, "Escolha um tamanho disponivel.")
             return redirect("store_product_detail", product_id=product.id)
 
+        # A cor e escolhida na hora, e so vale uma das cores do produto.
+        variantes = {variante.name: variante.id for variante in product.variants.all()}
+        selected_color = request.POST.get("selected_color", "").strip()
+
+        if variantes and selected_color not in variantes:
+            messages.error(request, "Escolha uma cor.")
+            return redirect("store_product_detail", product_id=product.id)
+
+        if not variantes:
+            selected_color = ""
+
         selected_size = selected_size or "Confirmar tamanho"
+        # A mesma bota em duas cores sao dois itens. Na chave vai o numero da
+        # variacao, nao o nome: a chave vira endereco no botao de remover, e
+        # nome de cor tem barra ("Preto/Branco").
         key = f"{product.id}:{selected_size}"
+
+        if selected_color:
+            key = f"{key}:c{variantes[selected_color]}"
+
         cart = get_cart(request)
         cart[key] = {
             "product_id": product.id,
             "selected_size": selected_size,
+            "selected_color": selected_color,
             "quantity": min(cart.get(key, {}).get("quantity", 0) + 1, product.stock_quantity),
         }
         request.session.modified = True
-        messages.success(request, "Produto adicionado ao carrinho.")
+
+        # "Finalizar compra" leva direto ao carrinho. "Adicionar ao carrinho"
+        # deixa a cliente na pagina, para continuar escolhendo - antes os dois
+        # caminhos eram o mesmo, e cada produto a tirava da vitrine.
+        if request.POST.get("depois") == "finalizar":
+            messages.success(request, "Produto adicionado ao carrinho.")
+            return redirect("cart_detail")
+
+        messages.success(request, "Produto no carrinho. Continue escolhendo ou finalize a compra.")
+        return redirect("store_product_detail", product_id=product.id)
 
     return redirect("cart_detail")
 
@@ -2362,6 +2395,7 @@ def cart_checkout(request):
                         product_name=product.name,
                         supplier_code=product.supplier_code,
                         selected_size=item["selected_size"],
+                        selected_color=item.get("selected_color", ""),
                         quantity=item["quantity"],
                         customer_name=form.cleaned_data["customer_name"],
                         customer_email=form.cleaned_data["customer_email"],

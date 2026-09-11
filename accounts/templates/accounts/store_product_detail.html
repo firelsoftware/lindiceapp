@@ -160,21 +160,6 @@
             {% else %}
                 <p class="detail-note">Selecione o tamanho ideal e leve o item para o carrinho antes de finalizar o pagamento.</p>
             {% endif %}
-            {% if product.variants.all %}
-                <section class="detail-colors">
-                    <h2 class="detail-section-title">Cor</h2>
-                    <ul class="detail-color-list">
-                        {% for cor in product.variants.all %}
-                            <li class="detail-color-item">
-                                {% if cor.image %}<img src="{{ cor.image.url }}" alt="{{ cor.name }}">{% endif %}
-                                <span class="detail-color-name">{{ cor.name }}</span>
-                                {% if cor.code %}<span class="detail-color-code">Cód. {{ cor.code }}</span>{% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                    <p class="detail-color-hint">Diga a cor preferida nas observações do pedido. Sujeito à disponibilidade.</p>
-                </section>
-            {% endif %}
             {% if request.user.is_staff %}
                 <p><a class="button button-secondary" href="{% url 'edit_supplier_product' product.id %}">✎ Editar produto</a></p>
             {% endif %}
@@ -200,6 +185,27 @@
             {% endif %}
             <form method="post" action="{% url 'cart_add' product.id %}">
                 {% csrf_token %}
+                {% if product.variants.all %}
+                    {% comment %}
+                        A cor era so uma lista para olhar, com o aviso "diga a cor
+                        nas observacoes do pedido". Agora a cliente toca na cor, e
+                        ela segue ate o pedido que chega para a loja.
+                    {% endcomment %}
+                    <fieldset class="detail-colors">
+                        <legend class="detail-section-title">Cor</legend>
+                        <div class="detail-color-list">
+                            {% for cor in product.variants.all %}
+                                <label class="detail-color-item">
+                                    <input type="radio" name="selected_color" value="{{ cor.name }}" required{% if product.variants.all|length == 1 %} checked{% endif %}>
+                                    {% if cor.image %}<img src="{{ cor.image.url }}" alt="">{% endif %}
+                                    <span class="detail-color-name">{{ cor.name }}</span>
+                                    {% if cor.code %}<span class="detail-color-code">Cód. {{ cor.code }}</span>{% endif %}
+                                </label>
+                            {% endfor %}
+                        </div>
+                        <p class="detail-color-hint">Sujeito à disponibilidade.</p>
+                    </fieldset>
+                {% endif %}
                 {% if size_options|length > 1 %}
                     <label for="selected-size">Tamanho</label>
                     <select id="selected-size" name="selected_size" required>
@@ -214,6 +220,7 @@
                     <input type="hidden" name="selected_size" value="{{ size_options.0|default:'Único' }}">
                 {% endif %}
                 <button type="submit">Adicionar ao carrinho</button>
+                <button class="button-finalizar" type="submit" name="depois" value="finalizar">Finalizar compra</button>
             </form>
 
             {% if whatsapp_url %}
