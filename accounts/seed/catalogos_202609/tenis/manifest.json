@@ -1,0 +1,3999 @@
+{
+  "catalog": "tenis-2026-09",
+  "source_pdf": "TÊNIS PREMIUM E ORIGINAL (1).pdf",
+  "complete": false,
+  "products": [
+    {
+      "code": "pdf26-tenis-miu-premium",
+      "name": "Tênis Miu Miu de solado alto — Premium",
+      "brand": "Miu Miu",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        4
+      ],
+      "photos": [
+        {
+          "file": "photos/ced038005778801d7a90df1074f4d0f78068008d1b5bb089c58dcbb8e6c4492a.jpg",
+          "sha256": "ced038005778801d7a90df1074f4d0f78068008d1b5bb089c58dcbb8e6c4492a",
+          "color": "Preto",
+          "source_id": "p004-i01"
+        },
+        {
+          "file": "photos/0ffeb097e38aac8ebd0e85e5d9eaa0c37547bcde4784649fc69e1dd81d96eba8.jpg",
+          "sha256": "0ffeb097e38aac8ebd0e85e5d9eaa0c37547bcde4784649fc69e1dd81d96eba8",
+          "color": "Branco",
+          "source_id": "p004-i02"
+        },
+        {
+          "file": "photos/eb6c1438cdc36e444da3bf6d6889a3049938f1fab37874af718447752c85d613.jpg",
+          "sha256": "eb6c1438cdc36e444da3bf6d6889a3049938f1fab37874af718447752c85d613",
+          "color": "",
+          "source_id": "p004-i03"
+        },
+        {
+          "file": "photos/48f14fd8e2f8fa6c458739ea2357ac72a67d8b8c7ad2126f38d04db555713a9b.jpg",
+          "sha256": "48f14fd8e2f8fa6c458739ea2357ac72a67d8b8c7ad2126f38d04db555713a9b",
+          "color": "Bege",
+          "source_id": "p004-i04"
+        }
+      ],
+      "aliases": [],
+      "revision": "8fd5878bf302a0ce9cc848f223863d9b3e9a3ec93bbac2a3d632b13d26efee3f"
+    },
+    {
+      "code": "pdf26-tenis-nike-air-premium",
+      "name": "Tênis Nike esportivo com detalhes coloridos — Premium",
+      "brand": "Nike",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        5
+      ],
+      "photos": [
+        {
+          "file": "photos/852ada2121f7e8cdacc26070db1ae373cb8178274c6155599bcad3fc12e5009d.jpg",
+          "sha256": "852ada2121f7e8cdacc26070db1ae373cb8178274c6155599bcad3fc12e5009d",
+          "color": "Cinza e rosa",
+          "source_id": "p005-i01"
+        },
+        {
+          "file": "photos/2f8106cbde151c3f60d26dbcf54667ff626d794a50a749e984a9e24c0e8ec853.jpg",
+          "sha256": "2f8106cbde151c3f60d26dbcf54667ff626d794a50a749e984a9e24c0e8ec853",
+          "color": "Cinza e amarelo",
+          "source_id": "p005-i02"
+        },
+        {
+          "file": "photos/211aa11f6c91c208403b74cd6d073ada7529fcde5f0f31fc437f9c4941493f60.jpg",
+          "sha256": "211aa11f6c91c208403b74cd6d073ada7529fcde5f0f31fc437f9c4941493f60",
+          "color": "Cinza e laranja",
+          "source_id": "p005-i03"
+        },
+        {
+          "file": "photos/50b5e9f6857f0e6944d74a75f954803319f4fcb6f69db3a1040454c15d0756a1.jpg",
+          "sha256": "50b5e9f6857f0e6944d74a75f954803319f4fcb6f69db3a1040454c15d0756a1",
+          "color": "Azul",
+          "source_id": "p005-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p5-i1",
+        "tenis_premium_e_original-f18-p5-i2",
+        "tenis_premium_e_original-f18-p5-i3",
+        "tenis_premium_e_original-f18-p5-i4"
+      ],
+      "revision": "54d8045e915ce0d6f697ec0b1d3d0f6189248c23779e67884a1e330e77f46839"
+    },
+    {
+      "code": "pdf26-tenis-samba-premium",
+      "name": "Tênis Adidas Samba — Premium",
+      "brand": "Adidas",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        7,
+        20,
+        28,
+        62,
+        66
+      ],
+      "photos": [
+        {
+          "file": "photos/8f98126ad7b34a600c17598414a2c382063b0a88041b697161e1706e3b3afee7.jpg",
+          "sha256": "8f98126ad7b34a600c17598414a2c382063b0a88041b697161e1706e3b3afee7",
+          "color": "",
+          "source_id": "p007-i01"
+        },
+        {
+          "file": "photos/a30789b7cfe53e561fdb5feb93bf68ce60506c9930c90203de4cdf15363803e7.jpg",
+          "sha256": "a30789b7cfe53e561fdb5feb93bf68ce60506c9930c90203de4cdf15363803e7",
+          "color": "Branco e preto",
+          "source_id": "p007-i02"
+        },
+        {
+          "file": "photos/0bdbf5a21e808134cf500b460cdf1709c36bea4d895215d7ced37dd0b79a88f7.jpg",
+          "sha256": "0bdbf5a21e808134cf500b460cdf1709c36bea4d895215d7ced37dd0b79a88f7",
+          "color": "Vinho",
+          "source_id": "p007-i03"
+        },
+        {
+          "file": "photos/2ffc4ccd9b066fceca908aa96dc4af5a34fb5b5135f662f8c23ca4231f9e7c56.jpg",
+          "sha256": "2ffc4ccd9b066fceca908aa96dc4af5a34fb5b5135f662f8c23ca4231f9e7c56",
+          "color": "",
+          "source_id": "p020-i04"
+        },
+        {
+          "file": "photos/5e4db4663434eeb9568d7cea13b20df08c78f9e6a8ee48b624a39e7296d38c48.jpg",
+          "sha256": "5e4db4663434eeb9568d7cea13b20df08c78f9e6a8ee48b624a39e7296d38c48",
+          "color": "Bege",
+          "source_id": "p028-i01"
+        },
+        {
+          "file": "photos/f1e1ea6b6a11699625685e59f80937f0fd877fdb5e6a626b53e1731f549eb9dc.jpg",
+          "sha256": "f1e1ea6b6a11699625685e59f80937f0fd877fdb5e6a626b53e1731f549eb9dc",
+          "color": "Branco e preto",
+          "source_id": "p028-i02"
+        },
+        {
+          "file": "photos/c5d8707f02f3d8309fcd2a4380d8a4f315c87517383fb99e76ba49c8324c709b.jpg",
+          "sha256": "c5d8707f02f3d8309fcd2a4380d8a4f315c87517383fb99e76ba49c8324c709b",
+          "color": "",
+          "source_id": "p066-i01"
+        },
+        {
+          "file": "photos/d556d0002377e664497a42040929976495bdaf3e966c5b0fa558c76d38cd8547.jpg",
+          "sha256": "d556d0002377e664497a42040929976495bdaf3e966c5b0fa558c76d38cd8547",
+          "color": "",
+          "source_id": "p066-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p17-i4",
+        "tenis_premium_e_original-f20-p79-i4"
+      ],
+      "revision": "3a67816f377a8b08c0ff3aac3ce6b8bd3709921214a890d773f7806756b968ac"
+    },
+    {
+      "code": "pdf26-tenis-nike-mesh-premium",
+      "name": "Tênis Nike esportivo em tela — Premium",
+      "brand": "Nike",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        8,
+        48
+      ],
+      "photos": [
+        {
+          "file": "photos/98f6df25428b153cb44e013b9d9edcaad20295555aced164abc385503e85af46.jpg",
+          "sha256": "98f6df25428b153cb44e013b9d9edcaad20295555aced164abc385503e85af46",
+          "color": "Preto",
+          "source_id": "p008-i01"
+        },
+        {
+          "file": "photos/d65217412f104b1325b146679a5e32f8ed698e3ddfe0d03dcb7a539bbcf53e0e.jpg",
+          "sha256": "d65217412f104b1325b146679a5e32f8ed698e3ddfe0d03dcb7a539bbcf53e0e",
+          "color": "Azul",
+          "source_id": "p008-i02"
+        },
+        {
+          "file": "photos/5d7ee354388f05892285a69eb3f7a996d78589a1e21347352e965ff0a4bd8360.jpg",
+          "sha256": "5d7ee354388f05892285a69eb3f7a996d78589a1e21347352e965ff0a4bd8360",
+          "color": "Preto",
+          "source_id": "p048-i01"
+        },
+        {
+          "file": "photos/1b71aadab504c5beeaf65cff55abcbee674991858cdc09eb8ebf3cff30dd1d48.jpg",
+          "sha256": "1b71aadab504c5beeaf65cff55abcbee674991858cdc09eb8ebf3cff30dd1d48",
+          "color": "Azul",
+          "source_id": "p048-i02"
+        },
+        {
+          "file": "photos/1b15ad98a73a2963e00462e45a8534c3932e9368326d01f1b6508adce29ee071.jpg",
+          "sha256": "1b15ad98a73a2963e00462e45a8534c3932e9368326d01f1b6508adce29ee071",
+          "color": "Preto e verde",
+          "source_id": "p048-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p6-i1",
+        "tenis_premium_e_original-f18-p6-i2",
+        "tenis_premium_e_original-f18-p63-i1",
+        "tenis_premium_e_original-f18-p63-i2",
+        "tenis_premium_e_original-f18-p63-i3"
+      ],
+      "revision": "ac0ddf5b2f0cfc49a779a5cf260626f02b1827f6307a9ae8f6e393b18a1eafa1"
+    },
+    {
+      "code": "pdf26-tenis-dunk-joia-premium",
+      "name": "Tênis Nike casual com detalhe no cadarço — Premium",
+      "brand": "Nike",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        9,
+        12,
+        19,
+        29
+      ],
+      "photos": [
+        {
+          "file": "photos/b4c25d88269794ac34ead3cd4a5410b49db0afddb5992d228b7d13c8bb48fa9a.jpg",
+          "sha256": "b4c25d88269794ac34ead3cd4a5410b49db0afddb5992d228b7d13c8bb48fa9a",
+          "color": "Bege",
+          "source_id": "p009-i01"
+        },
+        {
+          "file": "photos/e8420dd5135b36b051b00711c8ab2bdb1b77fe34e03694597b5c9dc4053730e2.jpg",
+          "sha256": "e8420dd5135b36b051b00711c8ab2bdb1b77fe34e03694597b5c9dc4053730e2",
+          "color": "Vinho",
+          "source_id": "p009-i02"
+        },
+        {
+          "file": "photos/7eb561494eacad4dc2dbd07e6f9a77d5c4197d434562476e85ce4be489adbbd3.jpg",
+          "sha256": "7eb561494eacad4dc2dbd07e6f9a77d5c4197d434562476e85ce4be489adbbd3",
+          "color": "Rosa e verde",
+          "source_id": "p009-i03"
+        },
+        {
+          "file": "photos/ddfb22f57b1efd2548e18a0f7ead8b7848a2feed23ac75e7642ec08c17c3e9ab.jpg",
+          "sha256": "ddfb22f57b1efd2548e18a0f7ead8b7848a2feed23ac75e7642ec08c17c3e9ab",
+          "color": "",
+          "source_id": "p029-i01"
+        },
+        {
+          "file": "photos/bf438e1c9ef20a8b6c34710172c028832a93c85e92f7f484149312be65686869.jpg",
+          "sha256": "bf438e1c9ef20a8b6c34710172c028832a93c85e92f7f484149312be65686869",
+          "color": "",
+          "source_id": "p029-i03"
+        },
+        {
+          "file": "photos/d036aec15ddcaec94495966e21eb75853d430cb12da868ad1f221ad6d607c72f.jpg",
+          "sha256": "d036aec15ddcaec94495966e21eb75853d430cb12da868ad1f221ad6d607c72f",
+          "color": "Cinza",
+          "source_id": "p012-i01"
+        },
+        {
+          "file": "photos/cad6f65c008433e7c31e36aac616669f06f19c7ce164846baf28afda00acdcd6.jpg",
+          "sha256": "cad6f65c008433e7c31e36aac616669f06f19c7ce164846baf28afda00acdcd6",
+          "color": "",
+          "source_id": "p019-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p28-i4"
+      ],
+      "revision": "93338d03266a9895e37978d837c909cbd257cffac7a80177c5e14156c784894e"
+    },
+    {
+      "code": "pdf26-tenis-nb-retro-premium",
+      "name": "Tênis New Balance esportivo retrô — Premium",
+      "brand": "New Balance",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        11
+      ],
+      "photos": [
+        {
+          "file": "photos/497cfd92e87aeb3d4f6701116e96425af348956843afdf17551faed1387ae7d8.jpg",
+          "sha256": "497cfd92e87aeb3d4f6701116e96425af348956843afdf17551faed1387ae7d8",
+          "color": "Rosa",
+          "source_id": "p011-i01"
+        },
+        {
+          "file": "photos/a3ae2c467922ae1a3f5c1b1cb203c436a86d84677001d869c335ca8cf58d5011.jpg",
+          "sha256": "a3ae2c467922ae1a3f5c1b1cb203c436a86d84677001d869c335ca8cf58d5011",
+          "color": "Cinza e rosa",
+          "source_id": "p011-i02"
+        },
+        {
+          "file": "photos/04fc362c88f06f5adda6d5f02e91a238f72dd6f765d702c01f51ddc5db23166f.jpg",
+          "sha256": "04fc362c88f06f5adda6d5f02e91a238f72dd6f765d702c01f51ddc5db23166f",
+          "color": "Preto",
+          "source_id": "p011-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p8-i2",
+        "tenis_premium_e_original-f20-p8-i4"
+      ],
+      "revision": "8399dcdceea98a597de3aafe57522f3136436a6df746add20a557c62a2c437da"
+    },
+    {
+      "code": "pdf26-tenis-adidas-tela-premium",
+      "name": "Tênis Adidas esportivo em tela — Premium",
+      "brand": "Adidas",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 25,
+      "retail": "209.90",
+      "price": "229.90",
+      "cost": "146.93",
+      "pages": [
+        14
+      ],
+      "photos": [
+        {
+          "file": "photos/dca48144f9f989084609b6f848d3fc741e83544d3d5f2d48b30fe83fe8ab82b0.jpg",
+          "sha256": "dca48144f9f989084609b6f848d3fc741e83544d3d5f2d48b30fe83fe8ab82b0",
+          "color": "Bege",
+          "source_id": "p014-i01"
+        },
+        {
+          "file": "photos/925cf4815f9237a54559894094ae89f07e690fdada15330cc7b89d6b31f5db86.jpg",
+          "sha256": "925cf4815f9237a54559894094ae89f07e690fdada15330cc7b89d6b31f5db86",
+          "color": "Cinza",
+          "source_id": "p014-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f25-p12-i1",
+        "tenis_premium_e_original-f25-p12-i2"
+      ],
+      "revision": "6d3bbd074fbedf515440f41dac7107f463f8e6bf24078b15aa422e6a566bd635"
+    },
+    {
+      "code": "pdf26-tenis-vans-robusto-premium",
+      "name": "Tênis Vans de solado robusto — Premium",
+      "brand": "Vans",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        16,
+        76
+      ],
+      "photos": [
+        {
+          "file": "photos/66a71473bbd1b320c7e5e04c7ddef74556aba911371f53745d7fea3d925347e7.jpg",
+          "sha256": "66a71473bbd1b320c7e5e04c7ddef74556aba911371f53745d7fea3d925347e7",
+          "color": "Preto e branco",
+          "source_id": "p016-i01"
+        },
+        {
+          "file": "photos/dcfec51584803b58bd5f263f9e755870851ee908efb0db7de39b58cbffd9782f.jpg",
+          "sha256": "dcfec51584803b58bd5f263f9e755870851ee908efb0db7de39b58cbffd9782f",
+          "color": "Rosa",
+          "source_id": "p016-i02"
+        },
+        {
+          "file": "photos/5455cb48a5bd2309ff6fcce87665b6b593b72c4935564650d76d8063bc057aec.jpg",
+          "sha256": "5455cb48a5bd2309ff6fcce87665b6b593b72c4935564650d76d8063bc057aec",
+          "color": "Branco",
+          "source_id": "p016-i03"
+        },
+        {
+          "file": "photos/f69def67a802b50a3d66651142490fca2eb84a4edf859ae3c27f66aa311faa5a.jpg",
+          "sha256": "f69def67a802b50a3d66651142490fca2eb84a4edf859ae3c27f66aa311faa5a",
+          "color": "Preto",
+          "source_id": "p016-i04"
+        },
+        {
+          "file": "photos/a9a3ca9c2d529ba5427df9d3df917e19c347efdc7a2034c87144d9d4b0911b94.jpg",
+          "sha256": "a9a3ca9c2d529ba5427df9d3df917e19c347efdc7a2034c87144d9d4b0911b94",
+          "color": "",
+          "source_id": "p076-i01"
+        },
+        {
+          "file": "photos/9bda6ef72d6fad1b9ece230dae42074f69adcfdaf15ce287ff90d556289e30b1.jpg",
+          "sha256": "9bda6ef72d6fad1b9ece230dae42074f69adcfdaf15ce287ff90d556289e30b1",
+          "color": "",
+          "source_id": "p076-i02"
+        },
+        {
+          "file": "photos/455b381f8bfaf20771de2033d5fb1b2caecd071703719933e12621596a727bda.jpg",
+          "sha256": "455b381f8bfaf20771de2033d5fb1b2caecd071703719933e12621596a727bda",
+          "color": "",
+          "source_id": "p076-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p14-i1",
+        "tenis_premium_e_original-f20-p14-i2",
+        "tenis_premium_e_original-f20-p14-i3",
+        "tenis_premium_e_original-f20-p14-i4",
+        "tenis_premium_e_original-f20-p99-i1",
+        "tenis_premium_e_original-f20-p99-i2",
+        "tenis_premium_e_original-f20-p99-i3"
+      ],
+      "revision": "4f71be3070808f5073803af555c21b4eea9f3adb019a1e4ff9e40b41ba063550"
+    },
+    {
+      "code": "pdf26-tenis-alo-premium",
+      "name": "Tênis Alo casual — Premium",
+      "brand": "Alo",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        18
+      ],
+      "photos": [
+        {
+          "file": "photos/9dae9a54a06231073960e60fc9886638a640eb7de9a003d0ebf7555b17dbe5aa.jpg",
+          "sha256": "9dae9a54a06231073960e60fc9886638a640eb7de9a003d0ebf7555b17dbe5aa",
+          "color": "Branco",
+          "source_id": "p018-i01"
+        },
+        {
+          "file": "photos/2868b037575bb975d86bd5f18bdcdb4bc655236f749a4d1020c5f574a5e6ba9d.jpg",
+          "sha256": "2868b037575bb975d86bd5f18bdcdb4bc655236f749a4d1020c5f574a5e6ba9d",
+          "color": "Cinza",
+          "source_id": "p018-i02"
+        },
+        {
+          "file": "photos/ef74cba32c911c5097c778ec9f1454eb700b9d242c0ec6787a36cb365327d862.jpg",
+          "sha256": "ef74cba32c911c5097c778ec9f1454eb700b9d242c0ec6787a36cb365327d862",
+          "color": "Marrom",
+          "source_id": "p018-i03"
+        },
+        {
+          "file": "photos/32d9e19858b925b48b866f625cd4a5ed15cca9fd6052770768fbcae50f830051.jpg",
+          "sha256": "32d9e19858b925b48b866f625cd4a5ed15cca9fd6052770768fbcae50f830051",
+          "color": "Preto",
+          "source_id": "p018-i04"
+        }
+      ],
+      "aliases": [],
+      "revision": "6580f3f8ea0a66832cbc4603c12a320191a00e68659c46df5564c179cd737d7f"
+    },
+    {
+      "code": "pdf26-tenis-vans-robusto-b-premium",
+      "name": "Tênis Vans casual com solado texturizado — Premium",
+      "brand": "Vans",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        20,
+        62
+      ],
+      "photos": [
+        {
+          "file": "photos/d939a31f4a67725a79ba9a3f8c1107cbc860bad40c796e8e5fce19fb2bde0620.jpg",
+          "sha256": "d939a31f4a67725a79ba9a3f8c1107cbc860bad40c796e8e5fce19fb2bde0620",
+          "color": "",
+          "source_id": "p020-i01"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p17-i1",
+        "tenis_premium_e_original-f20-p79-i1"
+      ],
+      "revision": "bbf0cedce5062808bd6c89ec1bcb7f649aad2d91567f325e2a75ef0f5065a770"
+    },
+    {
+      "code": "pdf26-tenis-dunk-premium",
+      "name": "Tênis Nike Dunk Low — Premium",
+      "brand": "Nike",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        20,
+        33,
+        38,
+        53,
+        62
+      ],
+      "photos": [
+        {
+          "file": "photos/d79015f5e67f05be9714fc2ac92063f38b357839345a475ab59af5d1f89c56f4.jpg",
+          "sha256": "d79015f5e67f05be9714fc2ac92063f38b357839345a475ab59af5d1f89c56f4",
+          "color": "",
+          "source_id": "p020-i02"
+        },
+        {
+          "file": "photos/6e5d4ad742068287dbbf53f6aa2e9a02ff22907d13e6a1f313c36e67fdeec658.jpg",
+          "sha256": "6e5d4ad742068287dbbf53f6aa2e9a02ff22907d13e6a1f313c36e67fdeec658",
+          "color": "",
+          "source_id": "p033-i01"
+        },
+        {
+          "file": "photos/4c31bc0c30781d6e0096aa67976bf81add4c87793298819ce1f5aeec63426762.jpg",
+          "sha256": "4c31bc0c30781d6e0096aa67976bf81add4c87793298819ce1f5aeec63426762",
+          "color": "",
+          "source_id": "p038-i01"
+        },
+        {
+          "file": "photos/6b9e59153adbc1e45edc2faa9548095f562f911aed0b9bdcf88e46ef6e4c458c.jpg",
+          "sha256": "6b9e59153adbc1e45edc2faa9548095f562f911aed0b9bdcf88e46ef6e4c458c",
+          "color": "",
+          "source_id": "p038-i03"
+        },
+        {
+          "file": "photos/69c147d14e0ba1f5d0f1b8cb3ec340d0b03520628d30dbabe8c552abafe2c04d.jpg",
+          "sha256": "69c147d14e0ba1f5d0f1b8cb3ec340d0b03520628d30dbabe8c552abafe2c04d",
+          "color": "",
+          "source_id": "p053-i01"
+        },
+        {
+          "file": "photos/33aaef41b42a7256ab58e11ab2c233d35f22144e4ae8a0aad2e36ad9d7c7f038.jpg",
+          "sha256": "33aaef41b42a7256ab58e11ab2c233d35f22144e4ae8a0aad2e36ad9d7c7f038",
+          "color": "",
+          "source_id": "p053-i02"
+        },
+        {
+          "file": "photos/f107a94885cddf097f600017a1e9159826f0b22da684bb13670469a44801d399.jpg",
+          "sha256": "f107a94885cddf097f600017a1e9159826f0b22da684bb13670469a44801d399",
+          "color": "",
+          "source_id": "p053-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p17-i2",
+        "tenis_premium_e_original-f20-p33-i1",
+        "tenis_premium_e_original-f20-p44-i1",
+        "tenis_premium_e_original-f20-p44-i3",
+        "tenis_premium_e_original-f20-p69-i1",
+        "tenis_premium_e_original-f20-p69-i2",
+        "tenis_premium_e_original-f20-p79-i2"
+      ],
+      "revision": "32f9abbe5e00edb43e78755e67504b7dfb4d7b7a033e567f0abb5926eeaeb811"
+    },
+    {
+      "code": "pdf26-tenis-nike-curvo-premium",
+      "name": "Tênis Nike esportivo de solado curvo — Premium",
+      "brand": "Nike",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        24,
+        64
+      ],
+      "photos": [
+        {
+          "file": "photos/0aace5a407fdc3a7dacecacb3c2f7fc0c5bd69b0eeb4c206b55a52c038357625.jpg",
+          "sha256": "0aace5a407fdc3a7dacecacb3c2f7fc0c5bd69b0eeb4c206b55a52c038357625",
+          "color": "Preto",
+          "source_id": "p024-i01"
+        },
+        {
+          "file": "photos/d2dfd7b183526000612169a1a03738052b2f7e5b85c7ef4ebaeabda4e85f271c.jpg",
+          "sha256": "d2dfd7b183526000612169a1a03738052b2f7e5b85c7ef4ebaeabda4e85f271c",
+          "color": "Bege",
+          "source_id": "p024-i02"
+        },
+        {
+          "file": "photos/8dfe2ce01d667bd37b3d22ffeb042420d024517b06ff314ece181b2a863ba173.jpg",
+          "sha256": "8dfe2ce01d667bd37b3d22ffeb042420d024517b06ff314ece181b2a863ba173",
+          "color": "Branco",
+          "source_id": "p024-i03"
+        },
+        {
+          "file": "photos/041d17d55146991de7bed9677f6924716dcd6b424100e3a1ac5bf3644e06c57f.jpg",
+          "sha256": "041d17d55146991de7bed9677f6924716dcd6b424100e3a1ac5bf3644e06c57f",
+          "color": "Preto e branco",
+          "source_id": "p024-i04"
+        },
+        {
+          "file": "photos/4bea85b235091c2c24f131eb8eb530c5dca6d3a590383a5dc037bd4e2a1c344a.jpg",
+          "sha256": "4bea85b235091c2c24f131eb8eb530c5dca6d3a590383a5dc037bd4e2a1c344a",
+          "color": "",
+          "source_id": "p064-i02"
+        },
+        {
+          "file": "photos/0b42730c079c14fb7f644a1ccf4e954292b4b768537ca246580c1c0c3d476504.jpg",
+          "sha256": "0b42730c079c14fb7f644a1ccf4e954292b4b768537ca246580c1c0c3d476504",
+          "color": "",
+          "source_id": "p064-i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "cec9a7573641b57ade86bf789da9e172c8c549fcd009e7499b5f2ab642cd2f61"
+    },
+    {
+      "code": "pdf26-tenis-adidas-retro-premium",
+      "name": "Tênis Adidas retrô de solado baixo — Premium",
+      "brand": "Adidas",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        25
+      ],
+      "photos": [
+        {
+          "file": "photos/9e29f1c982593771d868d984012bd4867bd60d142943fbca4a9c981d6b3afeb5.jpg",
+          "sha256": "9e29f1c982593771d868d984012bd4867bd60d142943fbca4a9c981d6b3afeb5",
+          "color": "Marrom",
+          "source_id": "p025-i01"
+        },
+        {
+          "file": "photos/31876c8b2b3e75cddcc0cf7c397b9cae520884e80f4209149e3ac15316622ace.jpg",
+          "sha256": "31876c8b2b3e75cddcc0cf7c397b9cae520884e80f4209149e3ac15316622ace",
+          "color": "Bege",
+          "source_id": "p025-i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "eebb5b670d99cc2270d40eedb74b1aadd103f90578c8bcc9e004225b0175be02"
+    },
+    {
+      "code": "pdf26-tenis-vans-esportivo-b-premium",
+      "name": "Tênis Vans esportivo com recortes — Premium",
+      "brand": "Vans",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        33
+      ],
+      "photos": [
+        {
+          "file": "photos/987099aef4c38c02f0de775a230712acdafd05433108074810de2fb1e176955b.jpg",
+          "sha256": "987099aef4c38c02f0de775a230712acdafd05433108074810de2fb1e176955b",
+          "color": "",
+          "source_id": "p033-i02"
+        },
+        {
+          "file": "photos/e8344629db18175ff48bea79b470ab5d6ca2e4b9404d811cf910340e85e53f54.jpg",
+          "sha256": "e8344629db18175ff48bea79b470ab5d6ca2e4b9404d811cf910340e85e53f54",
+          "color": "",
+          "source_id": "p033-i03"
+        },
+        {
+          "file": "photos/c34d3affbfcceae90aa696a2b2ff88fc086ffd061aa0c58d02eab460afc1a278.jpg",
+          "sha256": "c34d3affbfcceae90aa696a2b2ff88fc086ffd061aa0c58d02eab460afc1a278",
+          "color": "",
+          "source_id": "p033-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p33-i2",
+        "tenis_premium_e_original-f20-p33-i3",
+        "tenis_premium_e_original-f20-p33-i4"
+      ],
+      "revision": "394a13f8fc145754f3f78f2f4ae81d2f6d887990383d60e2c05f7582da985092"
+    },
+    {
+      "code": "pdf26-tenis-nike-off-premium",
+      "name": "Tênis Nike casual off-white — Premium",
+      "brand": "Nike",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        36
+      ],
+      "photos": [
+        {
+          "file": "photos/53fcce864b1390e1eeb506c78b5307d7cf54faea60f65ab8527203cf1fd5ec38.jpg",
+          "sha256": "53fcce864b1390e1eeb506c78b5307d7cf54faea60f65ab8527203cf1fd5ec38",
+          "color": "Off-white",
+          "source_id": "p036-i01"
+        },
+        {
+          "file": "photos/9e3a31e28f7469e736cc3a5a5c8849f5fd338e9aa00aa669f60396c27dc39492.jpg",
+          "sha256": "9e3a31e28f7469e736cc3a5a5c8849f5fd338e9aa00aa669f60396c27dc39492",
+          "color": "Off-white",
+          "source_id": "p036-i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "d3cdc39629fd7eee8639eb3373df849fc397bc88628238ae709e511486835844"
+    },
+    {
+      "code": "pdf26-tenis-converse-premium",
+      "name": "Tênis Converse de cano baixo — Premium",
+      "brand": "Converse",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        39,
+        42
+      ],
+      "photos": [
+        {
+          "file": "photos/53f96b8e37e7def0e7d799c7ccbf5b07833829dfebc0a2828ae73788be87ea37.jpg",
+          "sha256": "53f96b8e37e7def0e7d799c7ccbf5b07833829dfebc0a2828ae73788be87ea37",
+          "color": "Bege",
+          "source_id": "p039-i01"
+        },
+        {
+          "file": "photos/dbb07b5f0f43056f35b842e0af4c7ed41300ae6e21c63c2519ff04588e665e23.jpg",
+          "sha256": "dbb07b5f0f43056f35b842e0af4c7ed41300ae6e21c63c2519ff04588e665e23",
+          "color": "Preto",
+          "source_id": "p039-i02"
+        },
+        {
+          "file": "photos/129ee579a1f1dc6fbe492755030ece03c7cd517db3acbca221ec49a4cc0508ec.jpg",
+          "sha256": "129ee579a1f1dc6fbe492755030ece03c7cd517db3acbca221ec49a4cc0508ec",
+          "color": "Branco",
+          "source_id": "p039-i03"
+        },
+        {
+          "file": "photos/907b74152ba07d8420feb9c49b3326244efeb7b406b9d99dc8ec49b2e3e37ffc.jpg",
+          "sha256": "907b74152ba07d8420feb9c49b3326244efeb7b406b9d99dc8ec49b2e3e37ffc",
+          "color": "Roxo",
+          "source_id": "p042-i01"
+        },
+        {
+          "file": "photos/fb3a781ca4c80989b33764000eeee3314c03e45f27810e6acb9a1029ca445f6f.jpg",
+          "sha256": "fb3a781ca4c80989b33764000eeee3314c03e45f27810e6acb9a1029ca445f6f",
+          "color": "Branco",
+          "source_id": "p042-i02"
+        },
+        {
+          "file": "photos/23e987295dc8512ccc726d63873f8b414067d14d0ab7f8a96337173cba9d3f62.jpg",
+          "sha256": "23e987295dc8512ccc726d63873f8b414067d14d0ab7f8a96337173cba9d3f62",
+          "color": "Verde",
+          "source_id": "p042-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p45-i1",
+        "tenis_premium_e_original-f18-p45-i2",
+        "tenis_premium_e_original-f18-p45-i3",
+        "tenis_premium_e_original-f18-p54-i2",
+        "tenis_premium_e_original-f18-p54-i6"
+      ],
+      "revision": "d06a98e70ce57614d17122bd3669a022c060b302a1ac710f214830b177b8ca16"
+    },
+    {
+      "code": "pdf26-tenis-vans-esportivo-premium",
+      "name": "Tênis Vans esportivo — Premium",
+      "brand": "Vans",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        41,
+        79
+      ],
+      "photos": [
+        {
+          "file": "photos/22ed5212d975505176f38c5ff37e8d586cc097f35b9074a76d3e18a10cdd487f.jpg",
+          "sha256": "22ed5212d975505176f38c5ff37e8d586cc097f35b9074a76d3e18a10cdd487f",
+          "color": "",
+          "source_id": "p041-i01"
+        },
+        {
+          "file": "photos/d420c699582da03e8550c30ae511e5533fc3ebe5a723c775976e71c04a95176e.jpg",
+          "sha256": "d420c699582da03e8550c30ae511e5533fc3ebe5a723c775976e71c04a95176e",
+          "color": "",
+          "source_id": "p041-i02"
+        },
+        {
+          "file": "photos/0df9ceb78437ba8e82755dedeeab84c2acfa0c7a512ea9b25fa729307a0019a5.jpg",
+          "sha256": "0df9ceb78437ba8e82755dedeeab84c2acfa0c7a512ea9b25fa729307a0019a5",
+          "color": "",
+          "source_id": "p041-i03"
+        },
+        {
+          "file": "photos/0c4521f8982ed8ec236d3b0c496d1bf69f3de8afe06f4a474ba97b9c00bf0c6e.jpg",
+          "sha256": "0c4521f8982ed8ec236d3b0c496d1bf69f3de8afe06f4a474ba97b9c00bf0c6e",
+          "color": "",
+          "source_id": "p041-i04"
+        },
+        {
+          "file": "photos/45c36288387fcf95a8033bae258eeab3f922c5e4725e8bc5322f9cd1c9b93805.jpg",
+          "sha256": "45c36288387fcf95a8033bae258eeab3f922c5e4725e8bc5322f9cd1c9b93805",
+          "color": "Bege",
+          "source_id": "p079-i01"
+        },
+        {
+          "file": "photos/6a1285399724c79e93f796007311a3e106dd81abc51f99b2c8bd3f8d5f676cbb.jpg",
+          "sha256": "6a1285399724c79e93f796007311a3e106dd81abc51f99b2c8bd3f8d5f676cbb",
+          "color": "Preto",
+          "source_id": "p079-i02"
+        },
+        {
+          "file": "photos/027e7a334025b28c8575fe1e452661cd5dcdaf1fed0e8e14fdfa1afe25ec6ab8.jpg",
+          "sha256": "027e7a334025b28c8575fe1e452661cd5dcdaf1fed0e8e14fdfa1afe25ec6ab8",
+          "color": "Verde",
+          "source_id": "p079-i03"
+        },
+        {
+          "file": "photos/f30ce452fa8f4dca2cbaff11b5c3e8dfed887ccbe60b3d8ce79ccfdd00e3e322.jpg",
+          "sha256": "f30ce452fa8f4dca2cbaff11b5c3e8dfed887ccbe60b3d8ce79ccfdd00e3e322",
+          "color": "Cinza",
+          "source_id": "p079-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p103-i1",
+        "tenis_premium_e_original-f20-p103-i2",
+        "tenis_premium_e_original-f20-p103-i3",
+        "tenis_premium_e_original-f20-p103-i4",
+        "tenis_premium_e_original-f20-p47-i1",
+        "tenis_premium_e_original-f20-p47-i2",
+        "tenis_premium_e_original-f20-p47-i3",
+        "tenis_premium_e_original-f20-p47-i4"
+      ],
+      "revision": "5a42a4a1fc9c67a373be8c6b1458eabc3dac309a6bac40232562884811933035"
+    },
+    {
+      "code": "pdf26-tenis-converse-alto-premium",
+      "name": "Tênis Converse de solado alto — Premium",
+      "brand": "Converse",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        43
+      ],
+      "photos": [
+        {
+          "file": "photos/dcfe17f37059f69e0294f3c03347c04371ce38444bd30a879112a2017ce0315d.jpg",
+          "sha256": "dcfe17f37059f69e0294f3c03347c04371ce38444bd30a879112a2017ce0315d",
+          "color": "Preto",
+          "source_id": "p043-i01"
+        },
+        {
+          "file": "photos/ef315c1d6409516c584140fb0e4082dc6eb8ed667c16e0bdd5a074245d8701f1.jpg",
+          "sha256": "ef315c1d6409516c584140fb0e4082dc6eb8ed667c16e0bdd5a074245d8701f1",
+          "color": "Branco",
+          "source_id": "p043-i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "8b79b8629208541725dd6c4866c9a3fe46e6315ffe3853d831bb391d936c2884"
+    },
+    {
+      "code": "pdf26-tenis-vans-tres-premium",
+      "name": "Tênis casual de solado recortado — Premium",
+      "brand": "",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        45,
+        71
+      ],
+      "photos": [
+        {
+          "file": "photos/c98b20c197372c83a92a589593fdab2b75cec88f9cc78d2fd59625343a6b5b55.jpg",
+          "sha256": "c98b20c197372c83a92a589593fdab2b75cec88f9cc78d2fd59625343a6b5b55",
+          "color": "",
+          "source_id": "p045-i01"
+        },
+        {
+          "file": "photos/98c70185d1b5bcdebdf326b15ec9cd6f38ecd5b7fb134aa90c352e723966c67d.jpg",
+          "sha256": "98c70185d1b5bcdebdf326b15ec9cd6f38ecd5b7fb134aa90c352e723966c67d",
+          "color": "",
+          "source_id": "p045-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p58-i1",
+        "tenis_premium_e_original-f18-p58-i2",
+        "tenis_premium_e_original-f18-p92-i1",
+        "tenis_premium_e_original-f18-p92-i2"
+      ],
+      "revision": "127e32f1eae7e089a5233cd3a817fed65354b8b209044fc5c962271c8763fed9"
+    },
+    {
+      "code": "pdf26-tenis-vans-v-premium",
+      "name": "Tênis casual com detalhe lateral — Premium",
+      "brand": "",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        45,
+        71
+      ],
+      "photos": [
+        {
+          "file": "photos/155ec42b96f3a165b1cb55823c989e62e294780e36e350e8113784249f276f54.jpg",
+          "sha256": "155ec42b96f3a165b1cb55823c989e62e294780e36e350e8113784249f276f54",
+          "color": "",
+          "source_id": "p045-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p58-i4",
+        "tenis_premium_e_original-f18-p92-i4"
+      ],
+      "revision": "4fbcbc787a6bb853bc809ad5df4069276d4dc3b6d04283fe65f83a41e4e85499"
+    },
+    {
+      "code": "pdf26-tenis-nike-vazado-premium",
+      "name": "Tênis Nike de solado vazado — Premium",
+      "brand": "Nike",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        61,
+        67
+      ],
+      "photos": [
+        {
+          "file": "photos/babca0d60a029e3347520cfed89e4eb4349368a39f1d1bbc4506a6f584c453b2.jpg",
+          "sha256": "babca0d60a029e3347520cfed89e4eb4349368a39f1d1bbc4506a6f584c453b2",
+          "color": "",
+          "source_id": "p061-i03"
+        },
+        {
+          "file": "photos/4db3f224e6d8c2aa3d2ed69225c55ea543a3e334b6d9953d8ed4174168dc6ec6.jpg",
+          "sha256": "4db3f224e6d8c2aa3d2ed69225c55ea543a3e334b6d9953d8ed4174168dc6ec6",
+          "color": "",
+          "source_id": "p061-i04"
+        },
+        {
+          "file": "photos/dea2f0afe14057289dc71991534694151c97e202e51866412f206483ac39a404.jpg",
+          "sha256": "dea2f0afe14057289dc71991534694151c97e202e51866412f206483ac39a404",
+          "color": "",
+          "source_id": "p061-i05"
+        },
+        {
+          "file": "photos/be7acc6632f6030a307b49aa6c00fc6784fdc5a79191be4875b4045bed2005e1.jpg",
+          "sha256": "be7acc6632f6030a307b49aa6c00fc6784fdc5a79191be4875b4045bed2005e1",
+          "color": "",
+          "source_id": "p061-i06"
+        },
+        {
+          "file": "photos/735e2d3f8ebeb48978e67b019a58965133bd7847639b55de554095ba35878a5b.jpg",
+          "sha256": "735e2d3f8ebeb48978e67b019a58965133bd7847639b55de554095ba35878a5b",
+          "color": "",
+          "source_id": "p067-i01"
+        },
+        {
+          "file": "photos/c44df5f157bb0d5c4906af6c3d10e7d37629a564fdc991e2e7aba385819c7bbf.jpg",
+          "sha256": "c44df5f157bb0d5c4906af6c3d10e7d37629a564fdc991e2e7aba385819c7bbf",
+          "color": "",
+          "source_id": "p067-i02"
+        },
+        {
+          "file": "photos/f816107b7eeb0500a59ae93c4ea52493d8655928b89cbde350e54e512708297c.jpg",
+          "sha256": "f816107b7eeb0500a59ae93c4ea52493d8655928b89cbde350e54e512708297c",
+          "color": "",
+          "source_id": "p067-i03"
+        },
+        {
+          "file": "photos/b381ea8bed8482b490ce4058a4403383092d25a68825ebde5e448380a400cdf0.jpg",
+          "sha256": "b381ea8bed8482b490ce4058a4403383092d25a68825ebde5e448380a400cdf0",
+          "color": "",
+          "source_id": "p067-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p78-i2",
+        "tenis_premium_e_original-f20-p78-i3",
+        "tenis_premium_e_original-f20-p78-i4",
+        "tenis_premium_e_original-f20-p78-i5",
+        "tenis_premium_e_original-f20-p84-i1",
+        "tenis_premium_e_original-f20-p84-i2",
+        "tenis_premium_e_original-f20-p84-i3",
+        "tenis_premium_e_original-f20-p84-i4"
+      ],
+      "revision": "17b44fe67a47f652db1be9a8272d0e9a514a1096267db687c0c2413b4d39b6b7"
+    },
+    {
+      "code": "pdf26-tenis-nb-casual-premium",
+      "name": "Tênis New Balance casual em tela — Premium",
+      "brand": "New Balance",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        65
+      ],
+      "photos": [
+        {
+          "file": "photos/0bc8fae482f6e2d71cf75dfc300d62d7084574ae5e87ff429b9bc33ef58b7348.jpg",
+          "sha256": "0bc8fae482f6e2d71cf75dfc300d62d7084574ae5e87ff429b9bc33ef58b7348",
+          "color": "",
+          "source_id": "p065-i01"
+        },
+        {
+          "file": "photos/560f21b60745e509494e36d69e84318769cdfb0ab342d592b7a9acccbbc668f5.jpg",
+          "sha256": "560f21b60745e509494e36d69e84318769cdfb0ab342d592b7a9acccbbc668f5",
+          "color": "",
+          "source_id": "p065-i02"
+        },
+        {
+          "file": "photos/aa76ffea113b4558899940a61a12c1e5cacc2b352fee77a4f2819bbdfd8e3acd.jpg",
+          "sha256": "aa76ffea113b4558899940a61a12c1e5cacc2b352fee77a4f2819bbdfd8e3acd",
+          "color": "",
+          "source_id": "p065-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p82-i1",
+        "tenis_premium_e_original-f18-p82-i2",
+        "tenis_premium_e_original-f18-p82-i3"
+      ],
+      "revision": "d2e19de6d1d242740b40c005724f9ff47578e5a11124b14ceda0a07d1f0ddef8"
+    },
+    {
+      "code": "pdf26-tenis-nb-retro-casual-premium",
+      "name": "Tênis New Balance casual com recortes — Premium",
+      "brand": "New Balance",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        65
+      ],
+      "photos": [
+        {
+          "file": "photos/49317b9fd0140cede2a43ab983a7b344eb26c1eda6a3fe3c7a72736a61213ca4.jpg",
+          "sha256": "49317b9fd0140cede2a43ab983a7b344eb26c1eda6a3fe3c7a72736a61213ca4",
+          "color": "",
+          "source_id": "p065-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p82-i4"
+      ],
+      "revision": "af30993ec1cb3451e194548cd628eafdb16fa4ca5e1553d9b0e5ed7f907c6915"
+    },
+    {
+      "code": "pdf26-tenis-on-premium",
+      "name": "Tênis On esportivo — Premium",
+      "brand": "On",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        69
+      ],
+      "photos": [
+        {
+          "file": "photos/8c4e8e39c13b88d4028659defd96897b0fa6e11d65d5c255e6cd11a9071da2ee.jpg",
+          "sha256": "8c4e8e39c13b88d4028659defd96897b0fa6e11d65d5c255e6cd11a9071da2ee",
+          "color": "Bege",
+          "source_id": "p069-i01"
+        },
+        {
+          "file": "photos/e92e31b1c340c50fa68a7e018410110a78e75cade6c9135bfca3f32e80e267ed.jpg",
+          "sha256": "e92e31b1c340c50fa68a7e018410110a78e75cade6c9135bfca3f32e80e267ed",
+          "color": "Preto",
+          "source_id": "p069-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p86-i1",
+        "tenis_premium_e_original-f18-p86-i2"
+      ],
+      "revision": "4918a9c760bc34ff73e9501d56fe6c43aff589b10b38fa6780e75372073f6e96"
+    },
+    {
+      "code": "pdf26-tenis-nb530-premium",
+      "name": "Tênis New Balance 530 — Premium",
+      "brand": "New Balance",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        37,
+        70,
+        74
+      ],
+      "photos": [
+        {
+          "file": "photos/b1e0d4363ee2626b3674063b1be5920661d3386ccc952beb2048d3f7525e6c6c.jpg",
+          "sha256": "b1e0d4363ee2626b3674063b1be5920661d3386ccc952beb2048d3f7525e6c6c",
+          "color": "",
+          "source_id": "p070-i06"
+        },
+        {
+          "file": "photos/9827d846ef9b094e22a7fb766188adcdc1bf21c7a8854677f1c2eb9bc0c9bd06.jpg",
+          "sha256": "9827d846ef9b094e22a7fb766188adcdc1bf21c7a8854677f1c2eb9bc0c9bd06",
+          "color": "Cinza",
+          "source_id": "p074-i01"
+        },
+        {
+          "file": "photos/11bce85f71dd8e0af39b276d3f40a8f4537ded0901f88fcf725227fd77d2a342.jpg",
+          "sha256": "11bce85f71dd8e0af39b276d3f40a8f4537ded0901f88fcf725227fd77d2a342",
+          "color": "",
+          "source_id": "p037-i01"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p89-i5",
+        "tenis_premium_e_original-f20-p96-i3",
+        "tenis_premium_e_original-f23-p46-i4"
+      ],
+      "revision": "49225f688d9c6d8305b878343c216a7201254e71a4357e722b1da0b98dec6c64"
+    },
+    {
+      "code": "pdf26-tenis-nike-zoom-premium",
+      "name": "Tênis Nike esportivo com detalhe lateral — Premium",
+      "brand": "Nike",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        73
+      ],
+      "photos": [
+        {
+          "file": "photos/04373d23b328166ca93cbee861b2f75d45a9f8bdc36836b49b74320083519b91.jpg",
+          "sha256": "04373d23b328166ca93cbee861b2f75d45a9f8bdc36836b49b74320083519b91",
+          "color": "",
+          "source_id": "p073-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f17-p94-i1"
+      ],
+      "revision": "dff0ad6601a3d2e0f4b642714543d76efded07f066ea8a999c48369ebe3eb2b3"
+    },
+    {
+      "code": "pdf26-tenis-lv-premium",
+      "name": "Tênis Louis Vuitton casual — Premium",
+      "brand": "Louis Vuitton",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        75
+      ],
+      "photos": [
+        {
+          "file": "photos/2b925d60d6f629ef84964de51263713ab775bb74de14eada4cee608b0df49ad8.jpg",
+          "sha256": "2b925d60d6f629ef84964de51263713ab775bb74de14eada4cee608b0df49ad8",
+          "color": "",
+          "source_id": "p075-i01"
+        },
+        {
+          "file": "photos/d8fb4d1fe58afa16d953883d742b95fd37a871aa4de6a6a7ab7442a777057d0d.jpg",
+          "sha256": "d8fb4d1fe58afa16d953883d742b95fd37a871aa4de6a6a7ab7442a777057d0d",
+          "color": "",
+          "source_id": "p075-i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "346e438b1b7d99a3bca4342d29f597672d79c904d6817f9fa9fa54d0e28dd427"
+    },
+    {
+      "code": "pdf26-tenis-ramarim-monograma-original-p81",
+      "name": "Tênis Ramarim casual com monograma — Original",
+      "brand": "Ramarim",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 32,
+      "retail": "279.90",
+      "price": "299.90",
+      "cost": "195.93",
+      "pages": [
+        81
+      ],
+      "photos": [
+        {
+          "file": "photos/c7f2d1bbbe480a652e57d090d644c967cef764e8f90399f8d2d0635316fd3c88.jpg",
+          "sha256": "c7f2d1bbbe480a652e57d090d644c967cef764e8f90399f8d2d0635316fd3c88",
+          "color": "Marrom",
+          "source_id": "p081-i01"
+        },
+        {
+          "file": "photos/0c14c3c22300353d6b9f9542c32450978265eaebef8a3df2fb549403f056a937.jpg",
+          "sha256": "0c14c3c22300353d6b9f9542c32450978265eaebef8a3df2fb549403f056a937",
+          "color": "Marrom",
+          "source_id": "p081-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f32-p106-i1",
+        "tenis_premium_e_original-f32-p106-i2"
+      ],
+      "revision": "eb05e49fef992a76594b74806ddb8678d8a8ad7a8347b9d3808e43c6759efabe"
+    },
+    {
+      "code": "pdf26-tenis-actvitta-fem-original-p82",
+      "name": "Tênis Actvitta feminino em tela — Original",
+      "brand": "Actvitta",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 34,
+      "retail": "299.90",
+      "price": "319.90",
+      "cost": "209.93",
+      "pages": [
+        82
+      ],
+      "photos": [
+        {
+          "file": "photos/189b6440dc99057c128d7bc59a858b0f465d7527e68ce236f417713b4099494c.jpg",
+          "sha256": "189b6440dc99057c128d7bc59a858b0f465d7527e68ce236f417713b4099494c",
+          "color": "",
+          "source_id": "p082-i01"
+        },
+        {
+          "file": "photos/15296717d45857c41b4e0a6781e78fe1fe3b57e8dd76f38d72b74ca573f9e1e9.jpg",
+          "sha256": "15296717d45857c41b4e0a6781e78fe1fe3b57e8dd76f38d72b74ca573f9e1e9",
+          "color": "",
+          "source_id": "p082-i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "4930975067a0b2aba1722f28a04efd75637d664236d80a5f5dcd37512bbc2271"
+    },
+    {
+      "code": "pdf26-tenis-ramarim-casual-original-p83",
+      "name": "Tênis Ramarim casual bicolor — Original",
+      "brand": "Ramarim",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 32,
+      "retail": "279.90",
+      "price": "299.90",
+      "cost": "195.93",
+      "pages": [
+        83
+      ],
+      "photos": [
+        {
+          "file": "photos/fa9cfa4e821955051f5cc56caa23c0d70201995811bdcff1ccfd0c35ba62a763.jpg",
+          "sha256": "fa9cfa4e821955051f5cc56caa23c0d70201995811bdcff1ccfd0c35ba62a763",
+          "color": "Bege",
+          "source_id": "p083-i01"
+        },
+        {
+          "file": "photos/e3b4c496102844a8792730f18b8051113882d49147f5c597189eaf54a3f26e53.jpg",
+          "sha256": "e3b4c496102844a8792730f18b8051113882d49147f5c597189eaf54a3f26e53",
+          "color": "Bege",
+          "source_id": "p083-i02"
+        },
+        {
+          "file": "photos/0978af6ee95ab4d822e25e44aad7989bf93a863b0d233c14c3490ad831dc3cab.jpg",
+          "sha256": "0978af6ee95ab4d822e25e44aad7989bf93a863b0d233c14c3490ad831dc3cab",
+          "color": "Branco",
+          "source_id": "p083-i03"
+        },
+        {
+          "file": "photos/359bf84ead42541055ff36f42634b7197c2829ccbcd428255d73d013739e561f.jpg",
+          "sha256": "359bf84ead42541055ff36f42634b7197c2829ccbcd428255d73d013739e561f",
+          "color": "Branco",
+          "source_id": "p083-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f32-p107-i1",
+        "tenis_premium_e_original-f32-p107-i2",
+        "tenis_premium_e_original-f32-p107-i3",
+        "tenis_premium_e_original-f32-p107-i4"
+      ],
+      "revision": "78744fb9807e2833401eaafdd6f3f34e6f6c81eb2e4c0de1428a71c0b0038c45"
+    },
+    {
+      "code": "pdf26-tenis-ramarim-chunky-original-p84",
+      "name": "Tênis Ramarim de solado alto — Original",
+      "brand": "Ramarim",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 34,
+      "retail": "299.90",
+      "price": "319.90",
+      "cost": "209.93",
+      "pages": [
+        84
+      ],
+      "photos": [
+        {
+          "file": "photos/ad8f4b0a4db9cf547a414547aea6da12cf56008afc415222298ba528019cc93b.jpg",
+          "sha256": "ad8f4b0a4db9cf547a414547aea6da12cf56008afc415222298ba528019cc93b",
+          "color": "Caramelo",
+          "source_id": "p084-i01"
+        },
+        {
+          "file": "photos/5382fc027051a7cc98167c0d38ced8de1b510f86cc8d10f54d5f563c95fd22c7.jpg",
+          "sha256": "5382fc027051a7cc98167c0d38ced8de1b510f86cc8d10f54d5f563c95fd22c7",
+          "color": "Caramelo",
+          "source_id": "p084-i02"
+        },
+        {
+          "file": "photos/845007f547e372ee4e03f0a02b03429c2443bbbdfd195524fd4a7c29ea3ba423.jpg",
+          "sha256": "845007f547e372ee4e03f0a02b03429c2443bbbdfd195524fd4a7c29ea3ba423",
+          "color": "Branco",
+          "source_id": "p084-i03"
+        },
+        {
+          "file": "photos/43c882a3854075b2c16b635315543016d2bbf53e8f5b103632d809c4b875eb83.jpg",
+          "sha256": "43c882a3854075b2c16b635315543016d2bbf53e8f5b103632d809c4b875eb83",
+          "color": "Branco",
+          "source_id": "p084-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f34-p108-i1",
+        "tenis_premium_e_original-f34-p108-i2",
+        "tenis_premium_e_original-f34-p108-i3",
+        "tenis_premium_e_original-f34-p108-i4"
+      ],
+      "revision": "5fb5bb74721c95078490a755cdd1f7650e4921728ee3da0be1fbcf217e57bbf2"
+    },
+    {
+      "code": "pdf26-tenis-actvitta-esportivo-original-p85",
+      "name": "Tênis Actvitta esportivo — Original",
+      "brand": "Actvitta",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 34,
+      "retail": "299.90",
+      "price": "319.90",
+      "cost": "209.93",
+      "pages": [
+        85
+      ],
+      "photos": [
+        {
+          "file": "photos/e75c4d97d791db5ea40342976a80dfabc51346df1283f40ca21232d5de309a6a.jpg",
+          "sha256": "e75c4d97d791db5ea40342976a80dfabc51346df1283f40ca21232d5de309a6a",
+          "color": "Bege",
+          "source_id": "p085-i01"
+        },
+        {
+          "file": "photos/1db62fb48b51b83637d00cad55cf23ad2c3f7b5037d66cd24e6e80b9b641ec01.jpg",
+          "sha256": "1db62fb48b51b83637d00cad55cf23ad2c3f7b5037d66cd24e6e80b9b641ec01",
+          "color": "Preto",
+          "source_id": "p085-i02"
+        },
+        {
+          "file": "photos/e56b816cce50f4274c539962b7a70bb0779c2ac1b0e992b283b3cccc987fc709.jpg",
+          "sha256": "e56b816cce50f4274c539962b7a70bb0779c2ac1b0e992b283b3cccc987fc709",
+          "color": "Preto",
+          "source_id": "p085-i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "5cefb601f185661e2475b21293e36aa9ed1b0bb1eb67e3ea168dadd2c19a6b47"
+    },
+    {
+      "code": "pdf26-tenis-actvitta-ondas-original-p86",
+      "name": "Tênis Actvitta de solado ondulado — Original",
+      "brand": "Actvitta",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 34,
+      "retail": "299.90",
+      "price": "319.90",
+      "cost": "209.93",
+      "pages": [
+        86
+      ],
+      "photos": [
+        {
+          "file": "photos/59afd5e9dbbde4e07f1b6753bdbe6674cc8ded2d27d5d1834f8dad00d3167fce.jpg",
+          "sha256": "59afd5e9dbbde4e07f1b6753bdbe6674cc8ded2d27d5d1834f8dad00d3167fce",
+          "color": "Bege",
+          "source_id": "p086-i01"
+        },
+        {
+          "file": "photos/3a5c702b776e30501d591420205765ac866f89e9820ef83a9cda14408568ca77.jpg",
+          "sha256": "3a5c702b776e30501d591420205765ac866f89e9820ef83a9cda14408568ca77",
+          "color": "Rosa",
+          "source_id": "p086-i02"
+        },
+        {
+          "file": "photos/8e44342e57d13b2806f16ce93de81a66a348b383745c8dd92c48610a7c0fc578.jpg",
+          "sha256": "8e44342e57d13b2806f16ce93de81a66a348b383745c8dd92c48610a7c0fc578",
+          "color": "Bege",
+          "source_id": "p086-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p111-i2",
+        "tenis_premium_e_original-f29-p111-i3"
+      ],
+      "revision": "6f02149454d0ef2b75583a68f90ec1fb490cc1dbf9461b58b1123122754b1763"
+    },
+    {
+      "code": "pdf26-tenis-actvitta-leve-original-p87",
+      "name": "Tênis Actvitta em tela com cadarço — Original",
+      "brand": "Actvitta",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        87
+      ],
+      "photos": [
+        {
+          "file": "photos/e99d21e3b1cdac3a5073513ff578cabcf1cb8e42511872b0c9f0c636b995a429.jpg",
+          "sha256": "e99d21e3b1cdac3a5073513ff578cabcf1cb8e42511872b0c9f0c636b995a429",
+          "color": "Rosa",
+          "source_id": "p087-i01"
+        },
+        {
+          "file": "photos/6c8ef838986fb670eb14f780702d204c8cb40feaa3e9c9c3cea36423f9b4f9a5.jpg",
+          "sha256": "6c8ef838986fb670eb14f780702d204c8cb40feaa3e9c9c3cea36423f9b4f9a5",
+          "color": "Preto",
+          "source_id": "p087-i02"
+        },
+        {
+          "file": "photos/be7be1cb8571e97ef71470320b5ae1607fbdca2c38657772fe927d6d50cfc58d.jpg",
+          "sha256": "be7be1cb8571e97ef71470320b5ae1607fbdca2c38657772fe927d6d50cfc58d",
+          "color": "Rosa",
+          "source_id": "p087-i03"
+        },
+        {
+          "file": "photos/c091cfa56c2784ddf361c8d9f2aa8bea2f5739a93680b82a40d2502e9bb90ef1.jpg",
+          "sha256": "c091cfa56c2784ddf361c8d9f2aa8bea2f5739a93680b82a40d2502e9bb90ef1",
+          "color": "Bege",
+          "source_id": "p087-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p112-i1",
+        "tenis_premium_e_original-f29-p112-i2",
+        "tenis_premium_e_original-f29-p112-i3",
+        "tenis_premium_e_original-f29-p112-i4"
+      ],
+      "revision": "0713bcf703b06f6d4040f02c96f533c106f7cec1a39d13b0de03b0ea07a695b6"
+    },
+    {
+      "code": "pdf26-tenis-dijean-cadarco-original-p88",
+      "name": "Tênis Dijean com cadarço — Original",
+      "brand": "Dijean",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        88
+      ],
+      "photos": [
+        {
+          "file": "photos/f6b1a65b930191bcd14d4a005962b4f93c6f141134544bea6b1bd4d3f6eacb43.jpg",
+          "sha256": "f6b1a65b930191bcd14d4a005962b4f93c6f141134544bea6b1bd4d3f6eacb43",
+          "color": "Branco",
+          "source_id": "p088-i01"
+        },
+        {
+          "file": "photos/854930c153fc1b80180f986979612b205dc96d69911d77033eacf36f98a495b2.jpg",
+          "sha256": "854930c153fc1b80180f986979612b205dc96d69911d77033eacf36f98a495b2",
+          "color": "Branco",
+          "source_id": "p088-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f26-p113-i1",
+        "tenis_premium_e_original-f26-p113-i2"
+      ],
+      "revision": "26d1424b550bf0ef2f10e8566d924b92af1a89a1721e9ddb8ede780ce97e0d62"
+    },
+    {
+      "code": "pdf26-tenis-dijean-tiras-original-p88",
+      "name": "Tênis Dijean com tiras aderentes — Original",
+      "brand": "Dijean",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        88
+      ],
+      "photos": [
+        {
+          "file": "photos/7b298e8e1f889509769fb73ca039abe46b32d1f3796339898227f51961ceb64f.jpg",
+          "sha256": "7b298e8e1f889509769fb73ca039abe46b32d1f3796339898227f51961ceb64f",
+          "color": "Branco",
+          "source_id": "p088-i03"
+        },
+        {
+          "file": "photos/7bfb61263895ecbe26caa716056327af5aa4a111ad16a6a1575b9b70e6bb729d.jpg",
+          "sha256": "7bfb61263895ecbe26caa716056327af5aa4a111ad16a6a1575b9b70e6bb729d",
+          "color": "Preto",
+          "source_id": "p088-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f26-p113-i3",
+        "tenis_premium_e_original-f26-p113-i4"
+      ],
+      "revision": "4449b62848b68fdc405a2a33a2bb4629cbb5d84cc9f24647424271519a681ab4"
+    },
+    {
+      "code": "pdf26-tenis-ramarim-athletic-original-p89",
+      "name": "Tênis Ramarim esportivo bicolor — Original",
+      "brand": "Ramarim",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 37,
+      "retail": "329.90",
+      "price": "349.90",
+      "cost": "230.93",
+      "pages": [
+        89
+      ],
+      "photos": [
+        {
+          "file": "photos/b141ca4bcc862959f4ac5c9a0b3fe21e60548840710ace40f5110e69d8bb7327.jpg",
+          "sha256": "b141ca4bcc862959f4ac5c9a0b3fe21e60548840710ace40f5110e69d8bb7327",
+          "color": "",
+          "source_id": "p089-i01"
+        },
+        {
+          "file": "photos/07265d0941aa2ac5d3ab5908cd8e7e9e285cfdf89257c72e02a4c2798d487895.jpg",
+          "sha256": "07265d0941aa2ac5d3ab5908cd8e7e9e285cfdf89257c72e02a4c2798d487895",
+          "color": "",
+          "source_id": "p089-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f37-p115-i1",
+        "tenis_premium_e_original-f37-p115-i2"
+      ],
+      "revision": "ae1edd40f3009ac1ac6d8a32c98d0e89d89b715bbe4ef20add4ab0892c30effc"
+    },
+    {
+      "code": "pdf26-tenis-ramarim-baixo-original-p89",
+      "name": "Tênis Ramarim casual de solado baixo — Original",
+      "brand": "Ramarim",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 37,
+      "retail": "329.90",
+      "price": "349.90",
+      "cost": "230.93",
+      "pages": [
+        89
+      ],
+      "photos": [
+        {
+          "file": "photos/34df1460152db5daf88e80979964b13b9bf2827a237373036d434f9bd26c5bdf.jpg",
+          "sha256": "34df1460152db5daf88e80979964b13b9bf2827a237373036d434f9bd26c5bdf",
+          "color": "",
+          "source_id": "p089-i03"
+        },
+        {
+          "file": "photos/15527b8b86e44ab114071f49f7270d9aa24201cbd0e7e49ddc7529d714c9cddd.jpg",
+          "sha256": "15527b8b86e44ab114071f49f7270d9aa24201cbd0e7e49ddc7529d714c9cddd",
+          "color": "",
+          "source_id": "p089-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f37-p115-i3",
+        "tenis_premium_e_original-f37-p115-i4"
+      ],
+      "revision": "7d5b18aaee61b328cf2e6793567d2c39a0d71cbfef8eec1a83d202f8d1714995"
+    },
+    {
+      "code": "pdf26-tenis-casual-liso-original-p90",
+      "name": "Tênis casual liso — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        90
+      ],
+      "photos": [
+        {
+          "file": "photos/5f4011ecbdd1018d0b6504642d61634fba9a4b40e707d66994bfdbcc39b68075.jpg",
+          "sha256": "5f4011ecbdd1018d0b6504642d61634fba9a4b40e707d66994bfdbcc39b68075",
+          "color": "Caramelo",
+          "source_id": "p090-i01"
+        },
+        {
+          "file": "photos/90472afd756bf1bcbcae0c67cd3a9639b6deeb7b9b933d49c6154f4c9d63edad.jpg",
+          "sha256": "90472afd756bf1bcbcae0c67cd3a9639b6deeb7b9b933d49c6154f4c9d63edad",
+          "color": "Branco",
+          "source_id": "p090-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f14-p116-i3"
+      ],
+      "revision": "ed6b1c859bc5112926aac6e9e0ea3a4e46b0e1f5372e2f515124495d9a6e55f4"
+    },
+    {
+      "code": "pdf26-tenis-casual-listras-original-p91",
+      "name": "Tênis casual com listras — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        91
+      ],
+      "photos": [
+        {
+          "file": "photos/94ea6a1fd4ca0794bd0351ceb54de147293955473a43420d7d0beacd64e2b084.jpg",
+          "sha256": "94ea6a1fd4ca0794bd0351ceb54de147293955473a43420d7d0beacd64e2b084",
+          "color": "",
+          "source_id": "p091-i01"
+        },
+        {
+          "file": "photos/b1f176f6c8f92a14388b7d5e321e4cba392769b4012a1ad4b7bbe6c473ff3ea0.jpg",
+          "sha256": "b1f176f6c8f92a14388b7d5e321e4cba392769b4012a1ad4b7bbe6c473ff3ea0",
+          "color": "",
+          "source_id": "p091-i02"
+        },
+        {
+          "file": "photos/4a784b42b4af623f47cf2b674b09a449e077cb57f91db653614d61cbe30c4730.jpg",
+          "sha256": "4a784b42b4af623f47cf2b674b09a449e077cb57f91db653614d61cbe30c4730",
+          "color": "",
+          "source_id": "p091-i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "db17151bb3245d702624730fdf561b17a7434db3ab62d07dde54b829322682cd"
+    },
+    {
+      "code": "pdf26-tenis-casual-retro-original-p94",
+      "name": "Tênis casual retrô — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        94
+      ],
+      "photos": [
+        {
+          "file": "photos/71cd68d0fd36da173581ffc0db9c2aa9c1d735cc37444b69a4dd9b63adcf3a47.jpg",
+          "sha256": "71cd68d0fd36da173581ffc0db9c2aa9c1d735cc37444b69a4dd9b63adcf3a47",
+          "color": "Bege",
+          "source_id": "p094-i01"
+        },
+        {
+          "file": "photos/c9f6f104422385dd684cb8229813cc4a3f925c88c569d89d72594b8b34bcb70f.jpg",
+          "sha256": "c9f6f104422385dd684cb8229813cc4a3f925c88c569d89d72594b8b34bcb70f",
+          "color": "Branco",
+          "source_id": "p094-i02"
+        },
+        {
+          "file": "photos/01632eb25a580f2f72fb690059b12e7658bdefe475ddb114a1fab622aa403c09.jpg",
+          "sha256": "01632eb25a580f2f72fb690059b12e7658bdefe475ddb114a1fab622aa403c09",
+          "color": "Bege",
+          "source_id": "p094-i03"
+        },
+        {
+          "file": "photos/075ba5cfec222ad74384d6bd0eff69a7ccbbda83b08a5a585819ade32fe1436c.jpg",
+          "sha256": "075ba5cfec222ad74384d6bd0eff69a7ccbbda83b08a5a585819ade32fe1436c",
+          "color": "Preto",
+          "source_id": "p094-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p120-i1",
+        "tenis_premium_e_original-f20-p120-i2",
+        "tenis_premium_e_original-f20-p120-i3",
+        "tenis_premium_e_original-f20-p120-i4"
+      ],
+      "revision": "b487bb06b0029a1f3e35b67d2b637c720f2d1e334ea207f5d3e436054f3a1215"
+    },
+    {
+      "code": "pdf26-tenis-wc-liso-original-p97",
+      "name": "Tênis West Coast casual liso — Original",
+      "brand": "West Coast",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        97
+      ],
+      "photos": [
+        {
+          "file": "photos/abd3fc79f476ec87560c0bb468606757e316e046da5bc6b33de5691b42ce462b.jpg",
+          "sha256": "abd3fc79f476ec87560c0bb468606757e316e046da5bc6b33de5691b42ce462b",
+          "color": "",
+          "source_id": "p097-i01"
+        },
+        {
+          "file": "photos/1e8890907d60038e1325a963294f94de2104c7e45c7c6784d67f224f85ef17f5.jpg",
+          "sha256": "1e8890907d60038e1325a963294f94de2104c7e45c7c6784d67f224f85ef17f5",
+          "color": "",
+          "source_id": "p097-i02"
+        },
+        {
+          "file": "photos/bd63fbdba43789a490f6e58c1917e7aad140aad84f47e3c567673dddbe973478.jpg",
+          "sha256": "bd63fbdba43789a490f6e58c1917e7aad140aad84f47e3c567673dddbe973478",
+          "color": "",
+          "source_id": "p097-i03"
+        },
+        {
+          "file": "photos/c45be278446dc967d66c06ff4c1847e32b50fbc696fc778812266f30120e83b6.jpg",
+          "sha256": "c45be278446dc967d66c06ff4c1847e32b50fbc696fc778812266f30120e83b6",
+          "color": "",
+          "source_id": "p097-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p124-i1",
+        "tenis_premium_e_original-f29-p124-i2",
+        "tenis_premium_e_original-f29-p124-i3",
+        "tenis_premium_e_original-f29-p124-i4"
+      ],
+      "revision": "26660c7b4ddd2e068a376fa1a7f8e7195c660d19ac11f486440d059f920ee668"
+    },
+    {
+      "code": "pdf26-tenis-actvitta-masc-original-p98",
+      "name": "Tênis Actvitta masculino esportivo — Original",
+      "brand": "Actvitta",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        98
+      ],
+      "photos": [
+        {
+          "file": "photos/7777ec1ae0e5e2c9eacaf360ff37f2b058acccedffe2fd4ed9ca67d3ae833f18.jpg",
+          "sha256": "7777ec1ae0e5e2c9eacaf360ff37f2b058acccedffe2fd4ed9ca67d3ae833f18",
+          "color": "Azul",
+          "source_id": "p098-i01"
+        },
+        {
+          "file": "photos/dde29067928f596d1f14cedcfc5057cc467ae0f9724f6b9327e3ab43c91601d0.jpg",
+          "sha256": "dde29067928f596d1f14cedcfc5057cc467ae0f9724f6b9327e3ab43c91601d0",
+          "color": "Preto",
+          "source_id": "p098-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p135-i1",
+        "tenis_premium_e_original-f29-p135-i2"
+      ],
+      "revision": "38cfdb0698d7b459fa00249da56f22ed7297e320902a675c849bebbda251139f"
+    },
+    {
+      "code": "pdf26-tenis-wc-recortes-original-p100",
+      "name": "Tênis West Coast casual com recortes — Original",
+      "brand": "West Coast",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        100
+      ],
+      "photos": [
+        {
+          "file": "photos/24bd549e1d8fadbd514d195965f023a33306ec145ed1ed7498f1017a92e4109c.jpg",
+          "sha256": "24bd549e1d8fadbd514d195965f023a33306ec145ed1ed7498f1017a92e4109c",
+          "color": "",
+          "source_id": "p100-i01"
+        },
+        {
+          "file": "photos/33517614883cae2fa97b15f91b04e7c507dfebdda2b246d6ae33eb158b745c49.jpg",
+          "sha256": "33517614883cae2fa97b15f91b04e7c507dfebdda2b246d6ae33eb158b745c49",
+          "color": "",
+          "source_id": "p100-i02"
+        },
+        {
+          "file": "photos/4e0ddf3bee6c262efd68daba3665acc77cd259fc352a17313dba3032cb80225c.jpg",
+          "sha256": "4e0ddf3bee6c262efd68daba3665acc77cd259fc352a17313dba3032cb80225c",
+          "color": "",
+          "source_id": "p100-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p126-i1",
+        "tenis_premium_e_original-f29-p126-i2",
+        "tenis_premium_e_original-f29-p126-i3"
+      ],
+      "revision": "cae6ced26a1c41ebc912a1330010faad752757014f13322343b03cd2c4687347"
+    },
+    {
+      "code": "pdf26-tenis-mormaii-casual-original-p101",
+      "name": "Tênis Mormaii casual — Original",
+      "brand": "Mormaii",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        101
+      ],
+      "photos": [
+        {
+          "file": "photos/fa80e1032010ec45f66c4ab22159ff3cbb67c4e38458a85c9cc1de129fb10b71.jpg",
+          "sha256": "fa80e1032010ec45f66c4ab22159ff3cbb67c4e38458a85c9cc1de129fb10b71",
+          "color": "Branco",
+          "source_id": "p101-i01"
+        },
+        {
+          "file": "photos/d25e2492dd6e3b0e48aa2f30998566243652f192872cebcd83d3eb927ca11af3.jpg",
+          "sha256": "d25e2492dd6e3b0e48aa2f30998566243652f192872cebcd83d3eb927ca11af3",
+          "color": "Preto",
+          "source_id": "p101-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p127-i1",
+        "tenis_premium_e_original-f29-p127-i2",
+        "tenis_premium_e_original-f29-p148-i2",
+        "tenis_premium_e_original-f29-p148-i4"
+      ],
+      "revision": "85b71e04d1dd33607a374dc83b994632ee15c5bdeb3162fb5d9fb7e00d594259"
+    },
+    {
+      "code": "pdf26-tenis-mormaii-lateral-original-p102",
+      "name": "Tênis Mormaii com detalhe lateral — Original",
+      "brand": "Mormaii",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        102
+      ],
+      "photos": [
+        {
+          "file": "photos/6c7ce8822f95c88199c016309ec363ead259beec1c4d5d30e82e7d97150d5708.jpg",
+          "sha256": "6c7ce8822f95c88199c016309ec363ead259beec1c4d5d30e82e7d97150d5708",
+          "color": "",
+          "source_id": "p102-i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "fd26f01eb96f506a8dd47a13487813c29d9417928f0b8e5cb9b19ed935635b99"
+    },
+    {
+      "code": "pdf26-tenis-mormaii-sport-original-p102",
+      "name": "Tênis Mormaii esportivo — Original",
+      "brand": "Mormaii",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        102
+      ],
+      "photos": [
+        {
+          "file": "photos/7163182cbd0572b0887eb6374d0182d9790f8b205dd206ed9fa8ae5fcef2a3f0.jpg",
+          "sha256": "7163182cbd0572b0887eb6374d0182d9790f8b205dd206ed9fa8ae5fcef2a3f0",
+          "color": "",
+          "source_id": "p102-i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "4d70896cd041deba140b9ca186d201feb74c73a006b0a179b5aa9111825c7d5a"
+    },
+    {
+      "code": "pdf26-tenis-wc-cadarco-original-p104",
+      "name": "Tênis West Coast com cadarço — Original",
+      "brand": "West Coast",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        104
+      ],
+      "photos": [
+        {
+          "file": "photos/6214fbe26beeeedfd65eedd9db0c6347eda4b512ada70fad62d1cc76fd09591e.jpg",
+          "sha256": "6214fbe26beeeedfd65eedd9db0c6347eda4b512ada70fad62d1cc76fd09591e",
+          "color": "",
+          "source_id": "p104-i01"
+        },
+        {
+          "file": "photos/1042ad35bcced5199e3bb1d0b30c2c8e164ced78a6216baf88015007c12f5cf5.jpg",
+          "sha256": "1042ad35bcced5199e3bb1d0b30c2c8e164ced78a6216baf88015007c12f5cf5",
+          "color": "",
+          "source_id": "p104-i02"
+        },
+        {
+          "file": "photos/cb95d0518803158a2cf1d85df90588e78d325c4d36df35e0089377aa0198e06a.jpg",
+          "sha256": "cb95d0518803158a2cf1d85df90588e78d325c4d36df35e0089377aa0198e06a",
+          "color": "",
+          "source_id": "p104-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p130-i1",
+        "tenis_premium_e_original-f29-p130-i2",
+        "tenis_premium_e_original-f29-p130-i3"
+      ],
+      "revision": "b9a914013dbbd6979e95764d77b83cd3dc0075e15ad04033b118a9dfa66183d8"
+    },
+    {
+      "code": "pdf26-tenis-casual-urbano-original-p105",
+      "name": "Tênis casual urbano — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        105
+      ],
+      "photos": [
+        {
+          "file": "photos/e9c9a685171b0fb0c835162ea06fa154bf41b0b323cbfcfff3de779ece6829c7.jpg",
+          "sha256": "e9c9a685171b0fb0c835162ea06fa154bf41b0b323cbfcfff3de779ece6829c7",
+          "color": "Branco",
+          "source_id": "p105-i01"
+        },
+        {
+          "file": "photos/838ceec15f45510699ba266b51614f79f4bc51c5ca851fd3a7fa9294fae4b7e4.jpg",
+          "sha256": "838ceec15f45510699ba266b51614f79f4bc51c5ca851fd3a7fa9294fae4b7e4",
+          "color": "Cinza",
+          "source_id": "p105-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f30-p131-i2",
+        "tenis_premium_e_original-f30-p131-i3"
+      ],
+      "revision": "ac68808dc8170a7944d64ca49fe6bdf2feb1c3bc270be72f8170f0e6a0b22c9b"
+    },
+    {
+      "code": "pdf26-tenis-casual-contraste-original-p105",
+      "name": "Tênis casual com recortes contrastantes — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        105
+      ],
+      "photos": [
+        {
+          "file": "photos/270e9244f906a585ef50f2938b28514210954bfcb64bb8e68803d9ea4708fa67.jpg",
+          "sha256": "270e9244f906a585ef50f2938b28514210954bfcb64bb8e68803d9ea4708fa67",
+          "color": "Azul",
+          "source_id": "p105-i03"
+        },
+        {
+          "file": "photos/2c9104057a7b722890bfb859772966bdc2384c684dabda94ed82748a5130e2b7.jpg",
+          "sha256": "2c9104057a7b722890bfb859772966bdc2384c684dabda94ed82748a5130e2b7",
+          "color": "Bege",
+          "source_id": "p105-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f30-p131-i4",
+        "tenis_premium_e_original-f30-p131-i6"
+      ],
+      "revision": "641af48a79e398440511f378031a97e297fa677d6989e28ab29109f82cab0b79"
+    },
+    {
+      "code": "pdf26-tenis-wc-traseiro-original-p106",
+      "name": "Tênis West Coast com detalhe no calcanhar — Original",
+      "brand": "West Coast",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        106
+      ],
+      "photos": [
+        {
+          "file": "photos/43ccfed29cff3e203532d3f25a02f4f51d0257f532dd5c0fdc3a065af9e6adb7.jpg",
+          "sha256": "43ccfed29cff3e203532d3f25a02f4f51d0257f532dd5c0fdc3a065af9e6adb7",
+          "color": "",
+          "source_id": "p106-i01"
+        },
+        {
+          "file": "photos/b8ff287999c7576cce12c1ef02aef464763837b9af06d5b40a5e511ea410e571.jpg",
+          "sha256": "b8ff287999c7576cce12c1ef02aef464763837b9af06d5b40a5e511ea410e571",
+          "color": "",
+          "source_id": "p106-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p132-i1",
+        "tenis_premium_e_original-f29-p132-i2"
+      ],
+      "revision": "73ad20bbce36a01d4f3279508ebba33b9ebdbf7243aeb328a2f2df97bc35bb98"
+    },
+    {
+      "code": "pdf26-tenis-bota-cadarco-original-p107",
+      "name": "Bota casual com cadarço — Original",
+      "brand": "",
+      "category": "Calçados Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        107
+      ],
+      "photos": [
+        {
+          "file": "photos/b3b4392c829599777725d096a2c7e48ad55485906a92d5b85f5b36bef863b6c5.jpg",
+          "sha256": "b3b4392c829599777725d096a2c7e48ad55485906a92d5b85f5b36bef863b6c5",
+          "color": "",
+          "source_id": "p107-i01"
+        },
+        {
+          "file": "photos/9163e281c91fcbb5e0353ba9d3df1ae14c9a692aa560aeeb16d2b7a68a259c93.jpg",
+          "sha256": "9163e281c91fcbb5e0353ba9d3df1ae14c9a692aa560aeeb16d2b7a68a259c93",
+          "color": "",
+          "source_id": "p107-i02"
+        },
+        {
+          "file": "photos/97cb6869d8d3f2ccb7ebca9ce7895d1a9166a831a44bf0ee2d2953d3051d099d.jpg",
+          "sha256": "97cb6869d8d3f2ccb7ebca9ce7895d1a9166a831a44bf0ee2d2953d3051d099d",
+          "color": "",
+          "source_id": "p107-i03"
+        },
+        {
+          "file": "photos/98176c2aaa75ef20424c354408ffb5078a5ff23605ab0f4540a9fe2fd842da77.jpg",
+          "sha256": "98176c2aaa75ef20424c354408ffb5078a5ff23605ab0f4540a9fe2fd842da77",
+          "color": "",
+          "source_id": "p107-i04"
+        },
+        {
+          "file": "photos/bfa90454328ca21ea1a58d9ac202fe508900792352b394e7e25b7442afc40b92.jpg",
+          "sha256": "bfa90454328ca21ea1a58d9ac202fe508900792352b394e7e25b7442afc40b92",
+          "color": "",
+          "source_id": "p107-i05"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p133-i1",
+        "tenis_premium_e_original-f29-p133-i2",
+        "tenis_premium_e_original-f29-p133-i3",
+        "tenis_premium_e_original-f29-p133-i4",
+        "tenis_premium_e_original-f29-p133-i5"
+      ],
+      "revision": "087e705152e0f9e530a1a578abe0092b004229b87fb0598c189c5fa8ae3436e3"
+    },
+    {
+      "code": "pdf26-tenis-manchester-sport-original-p108",
+      "name": "Tênis Manchester esportivo — Original",
+      "brand": "Manchester",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        108
+      ],
+      "photos": [
+        {
+          "file": "photos/c872e4c88455049ab0c7937e37b60369d4df21098f1eb054395bb645f21cb037.jpg",
+          "sha256": "c872e4c88455049ab0c7937e37b60369d4df21098f1eb054395bb645f21cb037",
+          "color": "Azul",
+          "source_id": "p108-i01"
+        },
+        {
+          "file": "photos/0f7dabeefcc4e92690ca5faba8a0fb866b7520ac7c7d3954176234ba19fd45f6.jpg",
+          "sha256": "0f7dabeefcc4e92690ca5faba8a0fb866b7520ac7c7d3954176234ba19fd45f6",
+          "color": "Branco",
+          "source_id": "p108-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f24-p144-i1",
+        "tenis_premium_e_original-f24-p144-i3"
+      ],
+      "revision": "eaaaa0c16d2120257e82cff3e6a3981abe365c13bdcbd903c0a70667a4b946b9"
+    },
+    {
+      "code": "pdf26-tenis-casual-tres-original-p108",
+      "name": "Tênis casual com três faixas — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        108
+      ],
+      "photos": [
+        {
+          "file": "photos/fff2fd713acf1c88fa8f20fedeec3cebbfeb7bab711bb31293b8434b45cac72c.jpg",
+          "sha256": "fff2fd713acf1c88fa8f20fedeec3cebbfeb7bab711bb31293b8434b45cac72c",
+          "color": "Preto e caramelo",
+          "source_id": "p108-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f24-p144-i2"
+      ],
+      "revision": "320f62ee069796350f5c68abe4547def335b75c02d84502f8c3d3bdf3dcf9f51"
+    },
+    {
+      "code": "pdf26-tenis-wc-liso-original-p109",
+      "name": "Tênis West Coast casual liso — Original",
+      "brand": "West Coast",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        109,
+        112
+      ],
+      "photos": [
+        {
+          "file": "photos/491331610bf80fc5d4e0a0d7117b0889585429b8c3de483295d872a9b7ce0247.jpg",
+          "sha256": "491331610bf80fc5d4e0a0d7117b0889585429b8c3de483295d872a9b7ce0247",
+          "color": "",
+          "source_id": "p109-i01"
+        },
+        {
+          "file": "photos/acc2a2625dbbd8d9affbbe99501d0eb87a8d5f327bfd6e2800d53c02e9af41f8.jpg",
+          "sha256": "acc2a2625dbbd8d9affbbe99501d0eb87a8d5f327bfd6e2800d53c02e9af41f8",
+          "color": "",
+          "source_id": "p109-i02"
+        },
+        {
+          "file": "photos/cf59b19ace2aef28a230615df3051a033745ce6ddbd5613c0f573313bbe2598b.jpg",
+          "sha256": "cf59b19ace2aef28a230615df3051a033745ce6ddbd5613c0f573313bbe2598b",
+          "color": "",
+          "source_id": "p109-i03"
+        },
+        {
+          "file": "photos/eecd82576a253a7c455d03bc567bbfe78e7114191c7f91f017674e6b78d4c648.jpg",
+          "sha256": "eecd82576a253a7c455d03bc567bbfe78e7114191c7f91f017674e6b78d4c648",
+          "color": "",
+          "source_id": "p112-i01"
+        },
+        {
+          "file": "photos/bd5d4269cc0bb21624621f4f9e19b7529b034ae089e60b70bdf3c98a62c06b77.jpg",
+          "sha256": "bd5d4269cc0bb21624621f4f9e19b7529b034ae089e60b70bdf3c98a62c06b77",
+          "color": "",
+          "source_id": "p112-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p136-i1",
+        "tenis_premium_e_original-f29-p136-i2",
+        "tenis_premium_e_original-f29-p136-i3",
+        "tenis_premium_e_original-f29-p139-i1",
+        "tenis_premium_e_original-f29-p139-i2"
+      ],
+      "revision": "c989e1a5b416047958428105211aaa46c1ae93b99d07968e4f8b00f492e69b16"
+    },
+    {
+      "code": "pdf26-tenis-actvitta-bicolor-original-p110",
+      "name": "Tênis Actvitta esportivo bicolor — Original",
+      "brand": "Actvitta",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 31,
+      "retail": "269.90",
+      "price": "289.90",
+      "cost": "188.93",
+      "pages": [
+        110
+      ],
+      "photos": [
+        {
+          "file": "photos/cc84932bcdc1e76f18b06a43787e70ae9e4896a58994c92f162111d29bb0c9eb.jpg",
+          "sha256": "cc84932bcdc1e76f18b06a43787e70ae9e4896a58994c92f162111d29bb0c9eb",
+          "color": "",
+          "source_id": "p110-i01"
+        },
+        {
+          "file": "photos/dd2eeddf7ef6e6cda15c9866670a0f3c10910df8f72db45d583e09364e8d0b31.jpg",
+          "sha256": "dd2eeddf7ef6e6cda15c9866670a0f3c10910df8f72db45d583e09364e8d0b31",
+          "color": "",
+          "source_id": "p110-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f31-p137-i1",
+        "tenis_premium_e_original-f31-p137-i3"
+      ],
+      "revision": "2a10ddf99021232a8c7881307f302b0ff905bd15dbda3aa266740a3e12fa4384"
+    },
+    {
+      "code": "pdf26-tenis-actvitta-recorte-original-p110",
+      "name": "Tênis Actvitta com detalhe lateral contrastante — Original",
+      "brand": "Actvitta",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 31,
+      "retail": "269.90",
+      "price": "289.90",
+      "cost": "188.93",
+      "pages": [
+        110
+      ],
+      "photos": [
+        {
+          "file": "photos/4428adda9064f6fed87af84de131e807cdbf7fe036bc98a258d091d9febccce6.jpg",
+          "sha256": "4428adda9064f6fed87af84de131e807cdbf7fe036bc98a258d091d9febccce6",
+          "color": "",
+          "source_id": "p110-i02"
+        },
+        {
+          "file": "photos/c7e27f6dc9c27dc5b371d8e844ee76a970df8fc1470fadc54ca934e0d6dfba82.jpg",
+          "sha256": "c7e27f6dc9c27dc5b371d8e844ee76a970df8fc1470fadc54ca934e0d6dfba82",
+          "color": "",
+          "source_id": "p110-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f31-p137-i2",
+        "tenis_premium_e_original-f31-p137-i4"
+      ],
+      "revision": "7f6b519a3c21591dc73f8f906c41c8d72ea8c91f32a85b0293b8917b30da4910"
+    },
+    {
+      "code": "pdf26-tenis-actvitta-leve-original-p111",
+      "name": "Tênis Actvitta em tela com cadarço — Original",
+      "brand": "Actvitta",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 30,
+      "retail": "259.90",
+      "price": "279.90",
+      "cost": "181.93",
+      "pages": [
+        111
+      ],
+      "photos": [
+        {
+          "file": "photos/ea0f036d206f605f19c80d8e8f69dad1580825d0d9ff1dab8547d8f592a47837.jpg",
+          "sha256": "ea0f036d206f605f19c80d8e8f69dad1580825d0d9ff1dab8547d8f592a47837",
+          "color": "",
+          "source_id": "p111-i01"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p138-i1"
+      ],
+      "revision": "afe9cb4c47e1f781945f684b63664d46f10805857034dbd3bfc17d3ca40b39b5"
+    },
+    {
+      "code": "pdf26-tenis-actvitta-vazado-original-p111",
+      "name": "Tênis Actvitta de solado recortado — Original",
+      "brand": "Actvitta",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 30,
+      "retail": "259.90",
+      "price": "279.90",
+      "cost": "181.93",
+      "pages": [
+        111
+      ],
+      "photos": [
+        {
+          "file": "photos/344fbbe6d1c3ced4686d042514e0d5884914c37a6ea34fecf26cdc8a0d055422.jpg",
+          "sha256": "344fbbe6d1c3ced4686d042514e0d5884914c37a6ea34fecf26cdc8a0d055422",
+          "color": "",
+          "source_id": "p111-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f30-p131-i1"
+      ],
+      "revision": "2fb7be28fe20e90e0faf3e81483c46a8a4fb03f8a939e594d2bac6cd15e2f3a2"
+    },
+    {
+      "code": "pdf26-tenis-manchester-sport-original-p113",
+      "name": "Tênis Manchester esportivo — Original",
+      "brand": "Manchester",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        113
+      ],
+      "photos": [
+        {
+          "file": "photos/fcb5b06758f067e7e21d8df23780680ac3085b26b4dd94535ae194732e9119b5.jpg",
+          "sha256": "fcb5b06758f067e7e21d8df23780680ac3085b26b4dd94535ae194732e9119b5",
+          "color": "Cinza",
+          "source_id": "p113-i01"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f24-p140-i1"
+      ],
+      "revision": "cf64379ad6706592a941cf491cc765ad767462d9933910032b5c38842458620d"
+    },
+    {
+      "code": "pdf26-tenis-manchester-casual-original-p113",
+      "name": "Tênis Manchester casual — Original",
+      "brand": "Manchester",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        113
+      ],
+      "photos": [
+        {
+          "file": "photos/2397218110dc3967d2c999dfe8bc9a0ffcaebc504f86ab71924bb6f850dc62e2.jpg",
+          "sha256": "2397218110dc3967d2c999dfe8bc9a0ffcaebc504f86ab71924bb6f850dc62e2",
+          "color": "Marrom",
+          "source_id": "p113-i02"
+        },
+        {
+          "file": "photos/c4a6f81ad502b0d5cd6103880eb1db46aa2d054c5905802ee37e5792ffa845ce.jpg",
+          "sha256": "c4a6f81ad502b0d5cd6103880eb1db46aa2d054c5905802ee37e5792ffa845ce",
+          "color": "Branco",
+          "source_id": "p113-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f24-p140-i2",
+        "tenis_premium_e_original-f24-p140-i3"
+      ],
+      "revision": "c072df442ffbf75ffd322d5d6df348582a931867fbfe35910d2c1c10a69712b1"
+    },
+    {
+      "code": "pdf26-tenis-actvitta-leve-original-p114",
+      "name": "Tênis Actvitta em tela com cadarço — Original",
+      "brand": "Actvitta",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        114
+      ],
+      "photos": [
+        {
+          "file": "photos/70f8e41fce897b1e506bce31bc1c091b7a0479150a47bb2016c8033a798d2c12.jpg",
+          "sha256": "70f8e41fce897b1e506bce31bc1c091b7a0479150a47bb2016c8033a798d2c12",
+          "color": "Azul",
+          "source_id": "p114-i01"
+        },
+        {
+          "file": "photos/644dd7d59916806a84f469d37190d05d2e786590f5eed8b6c82a8b276a682027.jpg",
+          "sha256": "644dd7d59916806a84f469d37190d05d2e786590f5eed8b6c82a8b276a682027",
+          "color": "Azul",
+          "source_id": "p114-i02"
+        },
+        {
+          "file": "photos/1c811f0e98ebe84acb8592cf2dfba9fbbb3d1d61b8ed31a0a37c5f9fb862b6b3.jpg",
+          "sha256": "1c811f0e98ebe84acb8592cf2dfba9fbbb3d1d61b8ed31a0a37c5f9fb862b6b3",
+          "color": "Bege",
+          "source_id": "p114-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p141-i2",
+        "tenis_premium_e_original-f29-p141-i3",
+        "tenis_premium_e_original-f29-p141-i4"
+      ],
+      "revision": "c61430d7b607cac4f72465c7bb25771f77cd2d9e222ec62da97b387e4a111ad7"
+    },
+    {
+      "code": "pdf26-tenis-casual-micro-original-p115",
+      "name": "Tênis casual com detalhe perfurado — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        115
+      ],
+      "photos": [
+        {
+          "file": "photos/1ce5e2066b83635e03e6bc2fa11aae32e2f884c8058ffb37edc0b4a80cff7a3b.jpg",
+          "sha256": "1ce5e2066b83635e03e6bc2fa11aae32e2f884c8058ffb37edc0b4a80cff7a3b",
+          "color": "",
+          "source_id": "p115-i01"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p142-i1"
+      ],
+      "revision": "9a563b0a831e5990f227b71227212eca0c75b43cffecc02428b182f4e4448da2"
+    },
+    {
+      "code": "pdf26-tenis-casual-lateral-original-p115",
+      "name": "Tênis casual com detalhe lateral — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        115
+      ],
+      "photos": [
+        {
+          "file": "photos/9965173e09cb0ed67b0585814ae70032596927cd2ed73d8b9127e7eae74242ce.jpg",
+          "sha256": "9965173e09cb0ed67b0585814ae70032596927cd2ed73d8b9127e7eae74242ce",
+          "color": "",
+          "source_id": "p115-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p142-i2"
+      ],
+      "revision": "ea98d837227d5e7be3ea25328310b31d3239fab236b566d3539cb1a994ef15be"
+    },
+    {
+      "code": "pdf26-tenis-casual-tratorado-original-p115",
+      "name": "Tênis casual de solado tratorado — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        115
+      ],
+      "photos": [
+        {
+          "file": "photos/327daab95c689e4b24d7af9f303803603f9dbb8aa607df26b68f996f7c4fcc3f.jpg",
+          "sha256": "327daab95c689e4b24d7af9f303803603f9dbb8aa607df26b68f996f7c4fcc3f",
+          "color": "",
+          "source_id": "p115-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p142-i3"
+      ],
+      "revision": "3ca5e1c02429af9d16e982e1e4a5579ca3116157287cfaa0129281e639362b17"
+    },
+    {
+      "code": "pdf26-tenis-hanscy-original-p116",
+      "name": "Tênis Hanscy casual — Original",
+      "brand": "Hanscy",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        116
+      ],
+      "photos": [
+        {
+          "file": "photos/139173325bca549c099db4e0b44c251d712b6513446709ccad4fe2f3081a1371.jpg",
+          "sha256": "139173325bca549c099db4e0b44c251d712b6513446709ccad4fe2f3081a1371",
+          "color": "",
+          "source_id": "p116-i01"
+        },
+        {
+          "file": "photos/7ca9ca1e4c8103034aeda1df374930f526a1685118523ebbe6a5986432c06ab6.jpg",
+          "sha256": "7ca9ca1e4c8103034aeda1df374930f526a1685118523ebbe6a5986432c06ab6",
+          "color": "",
+          "source_id": "p116-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f26-p143-i1",
+        "tenis_premium_e_original-f26-p143-i3"
+      ],
+      "revision": "f147f4e4b3163e235676bc8f859a98fc44d0ed1fd2cec46ca054eb8c06c227e1"
+    },
+    {
+      "code": "pdf26-tenis-esportivo-recortes-original-p116",
+      "name": "Tênis esportivo com recortes — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        116
+      ],
+      "photos": [
+        {
+          "file": "photos/34f84f2e2ba47c2b2e507971793408c42c447e9ded600257cbd8ebaa27e5c88b.jpg",
+          "sha256": "34f84f2e2ba47c2b2e507971793408c42c447e9ded600257cbd8ebaa27e5c88b",
+          "color": "",
+          "source_id": "p116-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f26-p143-i2"
+      ],
+      "revision": "2929d94be81cb1c64e54f9a744c4973611cff9b79b4b455dcbb1068fbdab789e"
+    },
+    {
+      "code": "pdf26-tenis-tenis-trilha-original-p117",
+      "name": "Tênis de solado tratorado — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 42,
+      "retail": "379.90",
+      "price": "399.90",
+      "cost": "265.93",
+      "pages": [
+        117
+      ],
+      "photos": [
+        {
+          "file": "photos/62cbc87d4f391017ef44eac65ce42ed8b08e4915e5eec48ae55c2611ae768a37.jpg",
+          "sha256": "62cbc87d4f391017ef44eac65ce42ed8b08e4915e5eec48ae55c2611ae768a37",
+          "color": "",
+          "source_id": "p117-i01"
+        },
+        {
+          "file": "photos/06fe2b3b4e8969d3265837a1ced2c991fec6bbe820eed8df75e4c28b24cacef3.jpg",
+          "sha256": "06fe2b3b4e8969d3265837a1ced2c991fec6bbe820eed8df75e4c28b24cacef3",
+          "color": "",
+          "source_id": "p117-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f42-p145-i1",
+        "tenis_premium_e_original-f42-p145-i4"
+      ],
+      "revision": "9cfc1223057c9a797161df4aa8097757fdab1f40b7eb41a518bde6184098150d"
+    },
+    {
+      "code": "pdf26-tenis-bota-trilha-original-p117",
+      "name": "Bota de cano curto com cadarço — Original",
+      "brand": "",
+      "category": "Calçados Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 42,
+      "retail": "379.90",
+      "price": "399.90",
+      "cost": "265.93",
+      "pages": [
+        117
+      ],
+      "photos": [
+        {
+          "file": "photos/3927d792cec223623c5fca3c5827367ce899d4a90274295da231b0fdad298d3c.jpg",
+          "sha256": "3927d792cec223623c5fca3c5827367ce899d4a90274295da231b0fdad298d3c",
+          "color": "",
+          "source_id": "p117-i02"
+        },
+        {
+          "file": "photos/0e49c50508b0e4e90adda9aae5a02a0248010e17d3e551eb804b6fd240b20b0c.jpg",
+          "sha256": "0e49c50508b0e4e90adda9aae5a02a0248010e17d3e551eb804b6fd240b20b0c",
+          "color": "",
+          "source_id": "p117-i03"
+        },
+        {
+          "file": "photos/34f1e56f81dab4a0fb7b2899a24b3ae5e46cf9b09f4cec89f377df98f9f4ae87.jpg",
+          "sha256": "34f1e56f81dab4a0fb7b2899a24b3ae5e46cf9b09f4cec89f377df98f9f4ae87",
+          "color": "",
+          "source_id": "p117-i05"
+        },
+        {
+          "file": "photos/31b58e003f952ffda66bb3000b068f96ff251c0b868071e791c6644b1e7d4d55.jpg",
+          "sha256": "31b58e003f952ffda66bb3000b068f96ff251c0b868071e791c6644b1e7d4d55",
+          "color": "",
+          "source_id": "p117-i06"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f42-p145-i2",
+        "tenis_premium_e_original-f42-p145-i3",
+        "tenis_premium_e_original-f42-p145-i5",
+        "tenis_premium_e_original-f42-p145-i6"
+      ],
+      "revision": "c1c64afd1ebef37afcc065c89ff20c62a9ada68d638f18148f516be6f7fe6f97"
+    },
+    {
+      "code": "pdf26-tenis-ferracini-social-original-p118",
+      "name": "Sapato Ferracini social com cadarço — Original",
+      "brand": "Ferracini",
+      "category": "Calçados Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 31,
+      "retail": "269.90",
+      "price": "289.90",
+      "cost": "188.93",
+      "pages": [
+        118
+      ],
+      "photos": [
+        {
+          "file": "photos/373b6be273faef0d692bfd5a80f571d12ff91ba75ec8aa2077c93b4c4f685528.jpg",
+          "sha256": "373b6be273faef0d692bfd5a80f571d12ff91ba75ec8aa2077c93b4c4f685528",
+          "color": "",
+          "source_id": "p118-i01"
+        },
+        {
+          "file": "photos/043ddc7fa566d2cd295ebe58972e2a2345760ad37b776e3fb0f0cc358a68e7f1.jpg",
+          "sha256": "043ddc7fa566d2cd295ebe58972e2a2345760ad37b776e3fb0f0cc358a68e7f1",
+          "color": "",
+          "source_id": "p118-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f31-p146-i1",
+        "tenis_premium_e_original-f31-p146-i3"
+      ],
+      "revision": "942d86e85b9c3d47a2c0821888d785212ca9a4a340a8c082ec63319de5928c0f"
+    },
+    {
+      "code": "pdf26-tenis-ferracini-social-liso-original-p118",
+      "name": "Sapato Ferracini social liso — Original",
+      "brand": "Ferracini",
+      "category": "Calçados Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 31,
+      "retail": "269.90",
+      "price": "289.90",
+      "cost": "188.93",
+      "pages": [
+        118
+      ],
+      "photos": [
+        {
+          "file": "photos/82067a42426b3b6b88038cfa415ecc200cb0e61c722a86bc721bab7c6aede85c.jpg",
+          "sha256": "82067a42426b3b6b88038cfa415ecc200cb0e61c722a86bc721bab7c6aede85c",
+          "color": "",
+          "source_id": "p118-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f31-p146-i2"
+      ],
+      "revision": "23832f4be99f46a74172c09aadebab2ddcbdc804a1ab4383543e29b902cc84b0"
+    },
+    {
+      "code": "pdf26-tenis-ferracini-fechado-original-p118",
+      "name": "Sapato Ferracini social de calce fácil — Original",
+      "brand": "Ferracini",
+      "category": "Calçados Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 31,
+      "retail": "269.90",
+      "price": "289.90",
+      "cost": "188.93",
+      "pages": [
+        118
+      ],
+      "photos": [
+        {
+          "file": "photos/05a9179d5c2931a63dfcebc3d8ec5130e82acdf1946197f8d5dbbfdc1abcf4ed.jpg",
+          "sha256": "05a9179d5c2931a63dfcebc3d8ec5130e82acdf1946197f8d5dbbfdc1abcf4ed",
+          "color": "",
+          "source_id": "p118-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f31-p146-i4"
+      ],
+      "revision": "a288685f9e41a353c4438d1f743095de2ebe946ca21981eb125d8c67d79a38ef"
+    },
+    {
+      "code": "pdf26-tenis-slip-liso-original-p120",
+      "name": "Tênis casual de calce fácil — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        120
+      ],
+      "photos": [
+        {
+          "file": "photos/677423b4e953755303964f424f0c65d830e767726d8a36713e3685f677807cc2.jpg",
+          "sha256": "677423b4e953755303964f424f0c65d830e767726d8a36713e3685f677807cc2",
+          "color": "Caramelo",
+          "source_id": "p120-i01"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f24-p149-i1"
+      ],
+      "revision": "67f99d65954a10e09d9424ca35a05ebae23419707beaf7638c35dd249a9e6a01"
+    },
+    {
+      "code": "pdf26-tenis-casual-lateral-original-p120",
+      "name": "Tênis casual com detalhe lateral — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        120
+      ],
+      "photos": [
+        {
+          "file": "photos/0e0286cbf1c6afba6dffb412c8eb107d66589b0357685cbb10f1d119a472ee0d.jpg",
+          "sha256": "0e0286cbf1c6afba6dffb412c8eb107d66589b0357685cbb10f1d119a472ee0d",
+          "color": "Branco",
+          "source_id": "p120-i02"
+        },
+        {
+          "file": "photos/2ddf5409b34f968348c1d94eba60dffe5efce45e12b7e96d1a057b2979c2d3a6.jpg",
+          "sha256": "2ddf5409b34f968348c1d94eba60dffe5efce45e12b7e96d1a057b2979c2d3a6",
+          "color": "Bege e café",
+          "source_id": "p120-i03"
+        },
+        {
+          "file": "photos/7b117b7edccea39be33db31379771b047e23800c22af20a8325b9747eab566f6.jpg",
+          "sha256": "7b117b7edccea39be33db31379771b047e23800c22af20a8325b9747eab566f6",
+          "color": "Preto",
+          "source_id": "p120-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f24-p149-i2",
+        "tenis_premium_e_original-f24-p149-i3",
+        "tenis_premium_e_original-f24-p149-i4"
+      ],
+      "revision": "b857ddce3a1f85f38243fe39883c192541413ff26d0a13eaaf691bcdd491d8bd"
+    },
+    {
+      "code": "pdf26-tenis-mocassim-original-p121",
+      "name": "Mocassim com detalhe no cabedal — Original",
+      "brand": "",
+      "category": "Calçados Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 21,
+      "retail": "169.90",
+      "price": "189.90",
+      "cost": "118.93",
+      "pages": [
+        121
+      ],
+      "photos": [
+        {
+          "file": "photos/c60a5e9ec5a45f6cf4dbc2fbb00adf155e284e57cf3962b7955cb72301ae9b77.jpg",
+          "sha256": "c60a5e9ec5a45f6cf4dbc2fbb00adf155e284e57cf3962b7955cb72301ae9b77",
+          "color": "",
+          "source_id": "p121-i01"
+        },
+        {
+          "file": "photos/e6f36ca151d616a55baf798b6123d511737ce313ddfc67379a7bbeee2e8f605a.jpg",
+          "sha256": "e6f36ca151d616a55baf798b6123d511737ce313ddfc67379a7bbeee2e8f605a",
+          "color": "",
+          "source_id": "p121-i02"
+        },
+        {
+          "file": "photos/e5f2bb33a81ccdb02f84835098fc49e1ce356066528962621e93efd050d895e6.jpg",
+          "sha256": "e5f2bb33a81ccdb02f84835098fc49e1ce356066528962621e93efd050d895e6",
+          "color": "",
+          "source_id": "p121-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f21-p150-i1",
+        "tenis_premium_e_original-f21-p150-i2"
+      ],
+      "revision": "a187323696c649bdb77d20bd07f6dcdae3f85d6753bf3ca2a3e1d2427082cd57"
+    },
+    {
+      "code": "pdf26-tenis-botina-original-p122",
+      "name": "Botina casual de cano curto — Original",
+      "brand": "",
+      "category": "Calçados Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        122
+      ],
+      "photos": [
+        {
+          "file": "photos/7f02672073892b096e6367e5c9122a80708db24691d4555812fd6eec901ce945.jpg",
+          "sha256": "7f02672073892b096e6367e5c9122a80708db24691d4555812fd6eec901ce945",
+          "color": "",
+          "source_id": "p122-i01"
+        },
+        {
+          "file": "photos/6ac03d9303dea97faae97a625c2e5f018aad13e00937f8e7de3b96decd8a4b8a.jpg",
+          "sha256": "6ac03d9303dea97faae97a625c2e5f018aad13e00937f8e7de3b96decd8a4b8a",
+          "color": "",
+          "source_id": "p122-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f23-p151-i1"
+      ],
+      "revision": "fbd6709e0b11ad61ebd12bcb3f59489afa67cf9aa36370df00e889726a5978d0"
+    },
+    {
+      "code": "pdf26-tenis-cavalera-slip-original-p123",
+      "name": "Tênis Cavalera de calce fácil — Original",
+      "brand": "Cavalera",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        123
+      ],
+      "photos": [
+        {
+          "file": "photos/b834dc096118c34b3e69c703f7945edc52ed950c49a0414d81a744f9ccd96f7d.jpg",
+          "sha256": "b834dc096118c34b3e69c703f7945edc52ed950c49a0414d81a744f9ccd96f7d",
+          "color": "",
+          "source_id": "p123-i01"
+        },
+        {
+          "file": "photos/ecd97ba3836c2889b9534acd3ef027eec4a22a294ebea8a9a8b4bfa8169c17f6.jpg",
+          "sha256": "ecd97ba3836c2889b9534acd3ef027eec4a22a294ebea8a9a8b4bfa8169c17f6",
+          "color": "",
+          "source_id": "p123-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p152-i1",
+        "tenis_premium_e_original-f20-p152-i4"
+      ],
+      "revision": "ada74a12324ad46ca441d9db539870531e40ccac52fd81a09e498a233c851d9b"
+    },
+    {
+      "code": "pdf26-tenis-cavalera-alto-original-p123",
+      "name": "Tênis Cavalera de cano alto — Original",
+      "brand": "Cavalera",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        123
+      ],
+      "photos": [
+        {
+          "file": "photos/d2121de94a14cae6613555d387581b1cdd95bd24c485c299cd1d40a2d585ce80.jpg",
+          "sha256": "d2121de94a14cae6613555d387581b1cdd95bd24c485c299cd1d40a2d585ce80",
+          "color": "",
+          "source_id": "p123-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p152-i2"
+      ],
+      "revision": "2607a62b44aedb156188ac65d9d3f3253134d81a0078cff3b2997446e2861535"
+    },
+    {
+      "code": "pdf26-tenis-cavalera-casual-original-p123",
+      "name": "Tênis Cavalera casual — Original",
+      "brand": "Cavalera",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        123
+      ],
+      "photos": [
+        {
+          "file": "photos/3c411f94acd76dd134c04c599e9ed927a71c2e3849eb1780ff353cc1eca4fcc2.jpg",
+          "sha256": "3c411f94acd76dd134c04c599e9ed927a71c2e3849eb1780ff353cc1eca4fcc2",
+          "color": "",
+          "source_id": "p123-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p152-i3"
+      ],
+      "revision": "1db5c32d752282359ec73e09c80bbf4eb47b1fb57ceabb9845501b507d7de783"
+    },
+    {
+      "code": "pdf26-tenis-social-liso-original-p124",
+      "name": "Sapato social com cadarço — Original",
+      "brand": "",
+      "category": "Calçados Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        124
+      ],
+      "photos": [
+        {
+          "file": "photos/416509ca99282b1447ec4b94993fbb1f8d9e74ad87ea455a38e8a7f2e307c06f.jpg",
+          "sha256": "416509ca99282b1447ec4b94993fbb1f8d9e74ad87ea455a38e8a7f2e307c06f",
+          "color": "",
+          "source_id": "p124-i01"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p153-i1"
+      ],
+      "revision": "f6f916f283b7e0d86acb3978a0d1b4890f7a481dfe4f1d568e1e356505663d1a"
+    },
+    {
+      "code": "pdf26-tenis-perlatto-original-p124",
+      "name": "Tênis Perlatto casual — Original",
+      "brand": "Perlatto",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        124
+      ],
+      "photos": [
+        {
+          "file": "photos/7c852eb3770ae7c9cc772da7065274e39f9c2c4b505af496bafd90240765eede.jpg",
+          "sha256": "7c852eb3770ae7c9cc772da7065274e39f9c2c4b505af496bafd90240765eede",
+          "color": "",
+          "source_id": "p124-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p153-i2"
+      ],
+      "revision": "5fac3987ab314ce61a3cb6bffcd01aa1a991b8914ca239be9b00976161eb8868"
+    },
+    {
+      "code": "pdf26-tenis-social-liso-original-p125",
+      "name": "Sapato social com cadarço — Original",
+      "brand": "",
+      "category": "Calçados Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 30,
+      "retail": "259.90",
+      "price": "279.90",
+      "cost": "181.93",
+      "pages": [
+        125
+      ],
+      "photos": [
+        {
+          "file": "photos/43e7281d95b91604a98809825ed3900662c120a8ff466a0a077814674aa1dff8.jpg",
+          "sha256": "43e7281d95b91604a98809825ed3900662c120a8ff466a0a077814674aa1dff8",
+          "color": "",
+          "source_id": "p125-i01"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f30-p154-i1"
+      ],
+      "revision": "3b7de241b3fc1261d3d05a1491d2b49b5d3aa766a96243511fd172d5a65a469d"
+    },
+    {
+      "code": "pdf26-tenis-ferracini-fechado-original-p125",
+      "name": "Sapato Ferracini social de calce fácil — Original",
+      "brand": "Ferracini",
+      "category": "Calçados Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 30,
+      "retail": "259.90",
+      "price": "279.90",
+      "cost": "181.93",
+      "pages": [
+        125
+      ],
+      "photos": [
+        {
+          "file": "photos/5f2ae30e23ab6dce2ae363e717a1d713da954dfe3660d980576f2a31e60d611c.jpg",
+          "sha256": "5f2ae30e23ab6dce2ae363e717a1d713da954dfe3660d980576f2a31e60d611c",
+          "color": "",
+          "source_id": "p125-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f30-p154-i2"
+      ],
+      "revision": "12631281cd8c152b64a097551e7122b3635ec7e6b399e58278a1d30f3fbfacb5"
+    },
+    {
+      "code": "pdf26-tenis-manutt-original-p125",
+      "name": "Sapato Manutt social de calce fácil — Original",
+      "brand": "Manutt",
+      "category": "Calçados Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 30,
+      "retail": "259.90",
+      "price": "279.90",
+      "cost": "181.93",
+      "pages": [
+        125
+      ],
+      "photos": [
+        {
+          "file": "photos/4e5155f961d03f12572b4ee9029a20610e19e6eb46faf5936193c973709de9bc.jpg",
+          "sha256": "4e5155f961d03f12572b4ee9029a20610e19e6eb46faf5936193c973709de9bc",
+          "color": "",
+          "source_id": "p125-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f30-p154-i3"
+      ],
+      "revision": "225c547d9418cab1ccfcd433e1448fd7e6f1d164d3278a20ae1ccfbe065f777f"
+    },
+    {
+      "code": "pdf26-tenis-nb-angular-premium",
+      "name": "Tênis New Balance de solado geométrico — Premium",
+      "brand": "New Balance",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        12
+      ],
+      "photos": [
+        {
+          "file": "photos/e4ca4b8d1b32b74723f4a136f70d73bc0332936d6c14a292a7a4adc3f2ab25d5.jpg",
+          "sha256": "e4ca4b8d1b32b74723f4a136f70d73bc0332936d6c14a292a7a4adc3f2ab25d5",
+          "color": "Cinza e bege",
+          "source_id": "p012-i02"
+        },
+        {
+          "file": "photos/7c04f532db7706316b7abe940995a45a825f91c463ecf7e50f805de9b22421dd.jpg",
+          "sha256": "7c04f532db7706316b7abe940995a45a825f91c463ecf7e50f805de9b22421dd",
+          "color": "Rosa",
+          "source_id": "p012-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f23-p10-i2",
+        "tenis_premium_e_original-f23-p9-i2"
+      ],
+      "revision": "95d70b82ce3dc550a5a5a40d888148e274be16b2178d13c5eb6e7b61d6c69cce"
+    },
+    {
+      "code": "pdf26-tenis-nikemid-premium",
+      "name": "Tênis Nike de cano médio — Premium",
+      "brand": "Nike",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        19
+      ],
+      "photos": [
+        {
+          "file": "photos/58557f6cc7959953f29750638a32b386c826cb0a9320dc026bbbecc9bfe5ef32.jpg",
+          "sha256": "58557f6cc7959953f29750638a32b386c826cb0a9320dc026bbbecc9bfe5ef32",
+          "color": "",
+          "source_id": "p019-i01"
+        },
+        {
+          "file": "photos/758e5852c7f75f1981f84a869784eae18459ace060078fdb27099f33a32f83fd.jpg",
+          "sha256": "758e5852c7f75f1981f84a869784eae18459ace060078fdb27099f33a32f83fd",
+          "color": "",
+          "source_id": "p019-i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "183b70f5ebebe37d5b52539673e744937ebbe9aa4705e60f7ce135ae5a53353e"
+    },
+    {
+      "code": "pdf26-tenis-nike-meia-premium",
+      "name": "Tênis Nike esportivo de calce fácil — Premium",
+      "brand": "Nike",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        51
+      ],
+      "photos": [
+        {
+          "file": "photos/852aa0a382a5090d95bd1550adb174d6ec0ef0c78f4a605deea85c2fcdf345db.jpg",
+          "sha256": "852aa0a382a5090d95bd1550adb174d6ec0ef0c78f4a605deea85c2fcdf345db",
+          "color": "",
+          "source_id": "p051-i02"
+        },
+        {
+          "file": "photos/ffcedc188f88a2bc3cbbd95cb066958e3f52265f35d99b0ac5d23ac0ae7b340a.jpg",
+          "sha256": "ffcedc188f88a2bc3cbbd95cb066958e3f52265f35d99b0ac5d23ac0ae7b340a",
+          "color": "",
+          "source_id": "p051-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p66-i3"
+      ],
+      "revision": "4fe5ab124e44d1fe7e18e401e06980df03de7f19091b9500eb3ae6f4d25aa546"
+    },
+    {
+      "code": "pdf26-tenis-esportivo-vazado-premium",
+      "name": "Tênis esportivo de solado vazado — Premium",
+      "brand": "",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        58
+      ],
+      "photos": [
+        {
+          "file": "photos/b0e2ed149d3092e4415aeeabb5bda1f72390aedda1c71b763c04944fe327820e.jpg",
+          "sha256": "b0e2ed149d3092e4415aeeabb5bda1f72390aedda1c71b763c04944fe327820e",
+          "color": "Preto e verde",
+          "source_id": "p058-i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "e64d855d708709876014f971bf0bdc1b9eef165bfbd977ba58de21a22244bd7b"
+    },
+    {
+      "code": "pdf26-tenis-mizuno-aro-premium",
+      "name": "Tênis Mizuno de solado com aros — Premium",
+      "brand": "Mizuno",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 22,
+      "retail": "179.90",
+      "price": "199.90",
+      "cost": "125.93",
+      "pages": [
+        58
+      ],
+      "photos": [
+        {
+          "file": "photos/2e0e8c69bfbbeca10516c179fde36859e383d00d688a3e448c21e5db8d17ca06.jpg",
+          "sha256": "2e0e8c69bfbbeca10516c179fde36859e383d00d688a3e448c21e5db8d17ca06",
+          "color": "Preto",
+          "source_id": "p058-i02"
+        },
+        {
+          "file": "photos/2b5a4753166693f7f6afa874bc9fb42d8fbb423a7366cf50a424ae8d5e657ad6.jpg",
+          "sha256": "2b5a4753166693f7f6afa874bc9fb42d8fbb423a7366cf50a424ae8d5e657ad6",
+          "color": "Bege",
+          "source_id": "p058-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p74-i2",
+        "tenis_premium_e_original-f18-p74-i3"
+      ],
+      "revision": "2b4a0dd635a8a4f709109599d38409c455315e88b007cc023aff2d2ba0d41610"
+    },
+    {
+      "code": "pdf26-tenis-ramarim-r-original-p92",
+      "name": "Tênis Ramarim com detalhe lateral — Original",
+      "brand": "Ramarim",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 31,
+      "retail": "269.90",
+      "price": "289.90",
+      "cost": "188.93",
+      "pages": [
+        92
+      ],
+      "photos": [
+        {
+          "file": "photos/a31b54042e9b5c36dc9a990f204453edeabcaf18fcecd7a7b91d85367fe8854b.jpg",
+          "sha256": "a31b54042e9b5c36dc9a990f204453edeabcaf18fcecd7a7b91d85367fe8854b",
+          "color": "",
+          "source_id": "p092-i01"
+        },
+        {
+          "file": "photos/717f66fa3337ff39aaea79b2b182cd2e177f7e2b1155beca5efe05d818038b79.jpg",
+          "sha256": "717f66fa3337ff39aaea79b2b182cd2e177f7e2b1155beca5efe05d818038b79",
+          "color": "",
+          "source_id": "p092-i02"
+        },
+        {
+          "file": "photos/cd21d85fc8528aafdc7c5a898b6c6385c3e9cfbbd869ca0f7aa512ddf7725c62.jpg",
+          "sha256": "cd21d85fc8528aafdc7c5a898b6c6385c3e9cfbbd869ca0f7aa512ddf7725c62",
+          "color": "",
+          "source_id": "p092-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p118-i1",
+        "tenis_premium_e_original-f29-p118-i3"
+      ],
+      "revision": "895ddd709e96fda533aa93afbcd24c8cae607de5f192683de37f451901dbb488"
+    },
+    {
+      "code": "pdf26-tenis-casual-alto-original-p92",
+      "name": "Tênis casual de solado alto — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        92
+      ],
+      "photos": [
+        {
+          "file": "photos/e30cd4d435df9f6641b34cfb7ff47f81feccdc893a946f0efe3b4182a413af18.jpg",
+          "sha256": "e30cd4d435df9f6641b34cfb7ff47f81feccdc893a946f0efe3b4182a413af18",
+          "color": "",
+          "source_id": "p092-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f29-p118-i4"
+      ],
+      "revision": "819cedf81b195e7b44d3b4818a52b0306631e166dd165e11ad15821e41945925"
+    },
+    {
+      "code": "pdf26-tenis-casual-alto-original-p93",
+      "name": "Tênis casual de solado alto — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        93
+      ],
+      "photos": [
+        {
+          "file": "photos/90b491298a1c02e7df3b781d987e6afcaa5662f1c10ce24154de882578f5a035.jpg",
+          "sha256": "90b491298a1c02e7df3b781d987e6afcaa5662f1c10ce24154de882578f5a035",
+          "color": "",
+          "source_id": "p093-i01"
+        },
+        {
+          "file": "photos/bdbbf0a355789541918535ba458b7f2186ad2695e7fd5e66d7b5b15839c996b1.jpg",
+          "sha256": "bdbbf0a355789541918535ba458b7f2186ad2695e7fd5e66d7b5b15839c996b1",
+          "color": "",
+          "source_id": "p093-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f31-p119-i2"
+      ],
+      "revision": "59f32633ad679dc7b6602dc2fd94ddd7c6da5459d756cf7cd9d7732ce48aa2fe"
+    },
+    {
+      "code": "pdf26-tenis-casual-ilhos-original-p93",
+      "name": "Tênis casual com ilhoses — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        93
+      ],
+      "photos": [
+        {
+          "file": "photos/eb055a4c5e654bf7c2415d12184e23a6c34688a36fef89aee2308a937bb46b19.jpg",
+          "sha256": "eb055a4c5e654bf7c2415d12184e23a6c34688a36fef89aee2308a937bb46b19",
+          "color": "",
+          "source_id": "p093-i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "788f846dfe730bcd0197d6a241c64386e1a8d710bdc7d6a44e552e3731b55744"
+    },
+    {
+      "code": "pdf26-tenis-ramarim-r-original-p93",
+      "name": "Tênis Ramarim com detalhe lateral — Original",
+      "brand": "Ramarim",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 31,
+      "retail": "269.90",
+      "price": "289.90",
+      "cost": "188.93",
+      "pages": [
+        93
+      ],
+      "photos": [
+        {
+          "file": "photos/a053789cc1d279642f7c9affce73d959de0570160c55d478664d3a7779b26e47.jpg",
+          "sha256": "a053789cc1d279642f7c9affce73d959de0570160c55d478664d3a7779b26e47",
+          "color": "",
+          "source_id": "p093-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f31-p119-i6"
+      ],
+      "revision": "490c6510c577bffaad5c3e24e0bc3c25c8d066d653a5e997ba4e0de059ecd59b"
+    },
+    {
+      "code": "pdf26-tenis-ramarim-urbano-original-p95",
+      "name": "Tênis Ramarim urbano — Original",
+      "brand": "Ramarim",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        95
+      ],
+      "photos": [
+        {
+          "file": "photos/3dc554f32a23cdc1a6577d69d8fea2124f895324b07ff60c23c6d248eb58648c.jpg",
+          "sha256": "3dc554f32a23cdc1a6577d69d8fea2124f895324b07ff60c23c6d248eb58648c",
+          "color": "",
+          "source_id": "p095-i01"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f27-p122-i1"
+      ],
+      "revision": "a122ad93d52bac4377726026da17c5c95d3b266512288132301abf2366223d2f"
+    },
+    {
+      "code": "pdf26-tenis-casual-ilhos-original-p95",
+      "name": "Tênis casual com ilhoses — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        95
+      ],
+      "photos": [
+        {
+          "file": "photos/04ef2602f67096b98ca4251bdf45c617d7174b0ddbc93443db8cc7155e59b5f3.jpg",
+          "sha256": "04ef2602f67096b98ca4251bdf45c617d7174b0ddbc93443db8cc7155e59b5f3",
+          "color": "",
+          "source_id": "p095-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f27-p122-i2"
+      ],
+      "revision": "50ae4e081025ea3f341b27c4aebc2f4037724b6a811d8be9a0c3623af172cc9c"
+    },
+    {
+      "code": "pdf26-tenis-actvitta-esportivo-original-p95",
+      "name": "Tênis Actvitta esportivo — Original",
+      "brand": "Actvitta",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 31,
+      "retail": "269.90",
+      "price": "289.90",
+      "cost": "188.93",
+      "pages": [
+        95
+      ],
+      "photos": [
+        {
+          "file": "photos/81267dbb250c5ff8d3145ccff74bcc957cec59ef73e132c36de2d3024639ee4a.jpg",
+          "sha256": "81267dbb250c5ff8d3145ccff74bcc957cec59ef73e132c36de2d3024639ee4a",
+          "color": "",
+          "source_id": "p095-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f27-p122-i3"
+      ],
+      "revision": "f9ba603bb5304aeaa486084a6dbf03768e0a8e759a548a5065063219280de940"
+    },
+    {
+      "code": "pdf26-tenis-dijean-slip-original-p95",
+      "name": "Tênis Dijean de calce fácil — Original",
+      "brand": "Dijean",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        95
+      ],
+      "photos": [
+        {
+          "file": "photos/2b2b7c9f40d73848d231326a183be7c96a5d2f654490bade1883076ba6ba073a.jpg",
+          "sha256": "2b2b7c9f40d73848d231326a183be7c96a5d2f654490bade1883076ba6ba073a",
+          "color": "",
+          "source_id": "p095-i04"
+        },
+        {
+          "file": "photos/d2d8ea0f32407653f1263e1b38904cf8998e71cfde2a8f6e078de5ceea398b9b.jpg",
+          "sha256": "d2d8ea0f32407653f1263e1b38904cf8998e71cfde2a8f6e078de5ceea398b9b",
+          "color": "",
+          "source_id": "p095-i05"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f27-p122-i4"
+      ],
+      "revision": "d6f6a940fec9c167b78cf0cdd64ec3449e84348dc7e4dc849e21a7a3cdadc661"
+    },
+    {
+      "code": "pdf26-tenis-mormaii-sport-original-p103",
+      "name": "Tênis Mormaii esportivo — Original",
+      "brand": "Mormaii",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 31,
+      "retail": "269.90",
+      "price": "289.90",
+      "cost": "188.93",
+      "pages": [
+        103
+      ],
+      "photos": [
+        {
+          "file": "photos/5afcfb6a4532b0f609442ccbcde3b3b5a279f6c13fd8f3938df7ee7d280274be.jpg",
+          "sha256": "5afcfb6a4532b0f609442ccbcde3b3b5a279f6c13fd8f3938df7ee7d280274be",
+          "color": "",
+          "source_id": "p103-i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "6155ad76a1ef605af9c731ac5560debf4e4550a9768e99b4952eecf398c71167"
+    },
+    {
+      "code": "pdf26-tenis-casual-lateral-original-p103",
+      "name": "Tênis casual com detalhe lateral — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 31,
+      "retail": "269.90",
+      "price": "289.90",
+      "cost": "188.93",
+      "pages": [
+        103
+      ],
+      "photos": [
+        {
+          "file": "photos/979c17d3564d5a94fe39d152fdf35b6f462cad0845e4ac79eb32d955c03cb328.jpg",
+          "sha256": "979c17d3564d5a94fe39d152fdf35b6f462cad0845e4ac79eb32d955c03cb328",
+          "color": "",
+          "source_id": "p103-i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "6e6b7e2dda3bd98fb181bdf22ab0ceee77e8c6bcaa72bfa754e04560d072f108"
+    },
+    {
+      "code": "pdf26-tenis-ferracini-tenis-original-p119",
+      "name": "Tênis Ferracini casual — Original",
+      "brand": "Ferracini",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 36,
+      "retail": "319.90",
+      "price": "339.90",
+      "cost": "223.93",
+      "pages": [
+        119
+      ],
+      "photos": [
+        {
+          "file": "photos/feb44c9fa8e695042e5794df1ba9f5c34cbfa20cca7cc9964653697b51c1f432.jpg",
+          "sha256": "feb44c9fa8e695042e5794df1ba9f5c34cbfa20cca7cc9964653697b51c1f432",
+          "color": "",
+          "source_id": "p119-i01"
+        },
+        {
+          "file": "photos/729f7398e2562aa4ea29363d5893b749d345af9911bf4c92342db34d7af9c4de.jpg",
+          "sha256": "729f7398e2562aa4ea29363d5893b749d345af9911bf4c92342db34d7af9c4de",
+          "color": "",
+          "source_id": "p119-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f28-p147-i1",
+        "tenis_premium_e_original-f28-p147-i2"
+      ],
+      "revision": "4a089ece3a4fac8503106a00ba800a4a2ef9fdd26ec57bf5c6c0715277787f00"
+    },
+    {
+      "code": "pdf26-tenis-mormaii-sport-original-p119",
+      "name": "Tênis Mormaii esportivo — Original",
+      "brand": "Mormaii",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 28,
+      "retail": "239.90",
+      "price": "259.90",
+      "cost": "167.93",
+      "pages": [
+        119
+      ],
+      "photos": [
+        {
+          "file": "photos/37fb5433ab5788e1e7bc7c129e7ab4ce48f1029cf95a6fd1f3f3ada948f10b77.jpg",
+          "sha256": "37fb5433ab5788e1e7bc7c129e7ab4ce48f1029cf95a6fd1f3f3ada948f10b77",
+          "color": "",
+          "source_id": "p119-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f28-p147-i4"
+      ],
+      "revision": "8936d60c073fc9afe2fa00d74ad0bc358f657668ec8accdd390648f65b833b6c"
+    },
+    {
+      "code": "pdf26-tenis-casual-urbano-original-p119",
+      "name": "Tênis casual urbano — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 28,
+      "retail": "239.90",
+      "price": "259.90",
+      "cost": "167.93",
+      "pages": [
+        119
+      ],
+      "photos": [
+        {
+          "file": "photos/9729af221f447ba484f79624f4613af56e60101f3971a41455cf2b56d7ee7b63.jpg",
+          "sha256": "9729af221f447ba484f79624f4613af56e60101f3971a41455cf2b56d7ee7b63",
+          "color": "",
+          "source_id": "p119-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f28-p147-i3"
+      ],
+      "revision": "7566f286883eb91b08bed28d429c0b87d21e13a2f93c51ff1835698ee3edc9e2"
+    }
+  ],
+  "pending": [
+    {
+      "id": "nb9060-premium",
+      "name": "Tênis New Balance 9060 — Premium",
+      "prices": [
+        {
+          "tier": 20,
+          "base": "159.90",
+          "sale": "179.90"
+        },
+        {
+          "tier": 21,
+          "base": "169.90",
+          "sale": "189.90"
+        },
+        {
+          "tier": 23,
+          "base": "189.90",
+          "sale": "209.90"
+        },
+        {
+          "tier": 26,
+          "base": "219.90",
+          "sale": "239.90"
+        }
+      ],
+      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
+    },
+    {
+      "id": "oldskool-premium",
+      "name": "Tênis Vans Old Skool — Premium",
+      "prices": [
+        {
+          "tier": 18,
+          "base": "139.90",
+          "sale": "159.90"
+        },
+        {
+          "tier": 20,
+          "base": "159.90",
+          "sale": "179.90"
+        }
+      ],
+      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
+    },
+    {
+      "id": "vans-alto-premium",
+      "name": "Tênis Vans casual de solado alto — Premium",
+      "prices": [
+        {
+          "tier": 18,
+          "base": "139.90",
+          "sale": "159.90"
+        },
+        {
+          "tier": 20,
+          "base": "159.90",
+          "sale": "179.90"
+        }
+      ],
+      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
+    },
+    {
+      "id": "adidas-running-premium",
+      "name": "Tênis Adidas esportivo de solado alto — Premium",
+      "prices": [
+        {
+          "tier": 18,
+          "base": "139.90",
+          "sale": "159.90"
+        },
+        {
+          "tier": 20,
+          "base": "159.90",
+          "sale": "179.90"
+        }
+      ],
+      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
+    },
+    {
+      "id": "adidas-corrida-premium",
+      "name": "Tênis Adidas esportivo bicolor — Premium",
+      "prices": [
+        {
+          "tier": 18,
+          "base": "139.90",
+          "sale": "159.90"
+        },
+        {
+          "tier": 20,
+          "base": "159.90",
+          "sale": "179.90"
+        }
+      ],
+      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
+    },
+    {
+      "id": "nike-casual-premium",
+      "name": "Tênis Nike casual — Premium",
+      "prices": [
+        {
+          "tier": 18,
+          "base": "139.90",
+          "sale": "159.90"
+        },
+        {
+          "tier": 20,
+          "base": "159.90",
+          "sale": "179.90"
+        }
+      ],
+      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
+    },
+    {
+      "id": "olympikus-premium",
+      "name": "Tênis Olympikus esportivo — Premium",
+      "prices": [
+        {
+          "tier": 18,
+          "base": "139.90",
+          "sale": "159.90"
+        },
+        {
+          "tier": 20,
+          "base": "159.90",
+          "sale": "179.90"
+        }
+      ],
+      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
+    },
+    {
+      "id": "adidas-knit-premium",
+      "name": "Tênis Adidas em malha — Premium",
+      "prices": [
+        {
+          "tier": 18,
+          "base": "139.90",
+          "sale": "159.90"
+        },
+        {
+          "tier": 20,
+          "base": "159.90",
+          "sale": "179.90"
+        }
+      ],
+      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
+    },
+    {
+      "id": "campus-premium",
+      "name": "Tênis Adidas Campus — Premium",
+      "prices": [
+        {
+          "tier": 19,
+          "base": "149.90",
+          "sale": "169.90"
+        },
+        {
+          "tier": 20,
+          "base": "159.90",
+          "sale": "179.90"
+        }
+      ],
+      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
+    },
+    {
+      "id": "mizuno-ondas-premium",
+      "name": "Tênis Mizuno de solado ondulado — Premium",
+      "prices": [
+        {
+          "tier": 20,
+          "base": "159.90",
+          "sale": "179.90"
+        },
+        {
+          "tier": 23,
+          "base": "189.90",
+          "sale": "209.90"
+        }
+      ],
+      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
+    },
+    {
+      "id": "nike-sport-premium",
+      "name": "Tênis Nike esportivo bicolor — Premium",
+      "prices": [
+        {
+          "tier": 17,
+          "base": "129.90",
+          "sale": "149.90"
+        },
+        {
+          "tier": 20,
+          "base": "159.90",
+          "sale": "179.90"
+        }
+      ],
+      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
+    },
+    {
+      "id": "casual-masc-original-p99",
+      "name": "Tênis masculino casual com cadarço — Original",
+      "prices": [
+        {
+          "tier": 21,
+          "base": "169.90",
+          "sale": "189.90"
+        },
+        {
+          "tier": 24,
+          "base": "199.90",
+          "sale": "219.90"
+        }
+      ],
+      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
+    }
+  ]
+}
