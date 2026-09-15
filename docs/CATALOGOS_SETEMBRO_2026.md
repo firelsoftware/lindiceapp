@@ -41,3 +41,9 @@ O PDF `LINHA INFANTIL (2).pdf` tem 44 páginas. A revisão visual separou 150 re
 Marcas foram atribuídas quando a foto ou embalagem as mostra; os demais nomes descrevem o desenho visível sem presumir código de referência, autenticidade ou material. Algumas páginas informam numeração 17–25 ou 26–36, mas a disponibilidade continua sob consulta. Fotos idênticas ao PDF infantil antigo fornecem 120 equivalências únicas para reaproveitar cadastros sem tocar pedidos anteriores.
 
 A importação local criou 113 produtos, e a segunda execução ignorou os 113. Os nove testes do importador passaram; as 113 fichas locais responderam HTTP 200 com preços e galerias conferidos. Verificar o deploy e as imagens públicas após o envio.
+
+## Rasteiras, flatforms e papetes (15/09/2026)
+
+O PDF `RASTEIRAS  PAPETES  FLATFORMS (2).pdf` tem 94 páginas e três seções. A revisão extraiu 260 fotos e gerou 96 produtos: 38 rasteiras, 21 flatforms e 37 papetes. Páginas com mais de uma faixa foram separadas conforme a posição do preço e revisadas visualmente. Cores do mesmo desenho na mesma página formam uma galeria; páginas e faixas diferentes permanecem separadas. Marcas só aparecem quando visíveis, como Gucci, Schutz, Dijean e Miu Miu; os demais nomes usam a seção e o número auditável da página.
+
+O manifesto preserva 200 equivalências únicas com fotos idênticas do PDF antigo. O ensaio passou, a importação local criou 96 produtos e a repetição preservou os 96. Os nove testes passaram e todas as 96 fichas locais responderam HTTP 200, com preços e galerias conferidos.

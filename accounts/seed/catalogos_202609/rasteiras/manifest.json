@@ -1,0 +1,3664 @@
+{
+  "catalog": "rasteiras-2026-09",
+  "source_pdf": "C:\\Users\\Programador\\Downloads\\RASTEIRAS  PAPETES  FLATFORMS (2).pdf",
+  "complete": true,
+  "products": [
+    {
+      "code": "pdf26-rasteiras-001",
+      "name": "Rasteira feminina — modelo 004",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 9,
+      "retail": "49.90",
+      "price": "59.90",
+      "cost": "34.93",
+      "pages": [
+        4
+      ],
+      "photos": [
+        {
+          "file": "photos/a07d3aa3e8a7ff80c963a7d135156a89628afaa364628f5b999eabd35a98d4e5.jpg",
+          "sha256": "a07d3aa3e8a7ff80c963a7d135156a89628afaa364628f5b999eabd35a98d4e5",
+          "color": "",
+          "source_id": "p04i01"
+        },
+        {
+          "file": "photos/7b1e0950910fd7ecd64d3c69475ae6ce89ac882031037be83a38d2f06a4fa97a.jpg",
+          "sha256": "7b1e0950910fd7ecd64d3c69475ae6ce89ac882031037be83a38d2f06a4fa97a",
+          "color": "",
+          "source_id": "p04i02"
+        },
+        {
+          "file": "photos/d59dec28537d1fc104b93ab24e21941f499072273cc0a24742276dd1edcf88a6.jpg",
+          "sha256": "d59dec28537d1fc104b93ab24e21941f499072273cc0a24742276dd1edcf88a6",
+          "color": "",
+          "source_id": "p04i03"
+        },
+        {
+          "file": "photos/2dc1aa99135b668ec54938e445f58ee76b4b0edc29be44e3b2ee7689545ebd3f.jpg",
+          "sha256": "2dc1aa99135b668ec54938e445f58ee76b4b0edc29be44e3b2ee7689545ebd3f",
+          "color": "",
+          "source_id": "p04i04"
+        }
+      ],
+      "aliases": [],
+      "revision": "988e3637e22bfb8c54c69cff4b4eeb012c2903d1c086b09110e95902e88b0b87"
+    },
+    {
+      "code": "pdf26-rasteiras-002",
+      "name": "Rasteira feminina — modelo 005",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        5
+      ],
+      "photos": [
+        {
+          "file": "photos/2306f25994e0ab7f3a40d0bf019f0f30dea746d519f8b302f26276887e33649c.jpg",
+          "sha256": "2306f25994e0ab7f3a40d0bf019f0f30dea746d519f8b302f26276887e33649c",
+          "color": "",
+          "source_id": "p05i01"
+        },
+        {
+          "file": "photos/42938ee633430b00fc96feb4712809148012ca2b9ba85dd71f7ac2997316206f.jpg",
+          "sha256": "42938ee633430b00fc96feb4712809148012ca2b9ba85dd71f7ac2997316206f",
+          "color": "",
+          "source_id": "p05i02"
+        },
+        {
+          "file": "photos/052e120ac67089b45e9a1bd39eb9e4953396e7fb82a4bd6d5c805ecfb99eae98.jpg",
+          "sha256": "052e120ac67089b45e9a1bd39eb9e4953396e7fb82a4bd6d5c805ecfb99eae98",
+          "color": "",
+          "source_id": "p05i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f15-p4-i1",
+        "rasteiras_papetes_flatforms-f15-p4-i2"
+      ],
+      "revision": "1656de753992c9393505ef9fd1b841171dcc253d20cdd2b33f0c8d931d578172"
+    },
+    {
+      "code": "pdf26-rasteiras-003",
+      "name": "Rasteira feminina — modelo 006",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        6
+      ],
+      "photos": [
+        {
+          "file": "photos/cd0561cb643077cba74680a4cf791ee136f24aa9d3182ec761c7100a2a357c6c.jpg",
+          "sha256": "cd0561cb643077cba74680a4cf791ee136f24aa9d3182ec761c7100a2a357c6c",
+          "color": "",
+          "source_id": "p06i01"
+        },
+        {
+          "file": "photos/9d04bb1ad3e99e8ce3dd46f3ab65f23e43f6b8a688151054be5a294b70956ef2.jpg",
+          "sha256": "9d04bb1ad3e99e8ce3dd46f3ab65f23e43f6b8a688151054be5a294b70956ef2",
+          "color": "",
+          "source_id": "p06i02"
+        },
+        {
+          "file": "photos/90731802376fc253fbd5c2689b327d504a029ed90963bf10ee6549a8234fcf25.jpg",
+          "sha256": "90731802376fc253fbd5c2689b327d504a029ed90963bf10ee6549a8234fcf25",
+          "color": "",
+          "source_id": "p06i03"
+        },
+        {
+          "file": "photos/20de6e38b281d426bad63ab1a6a14c8f7187f81893da5ac6cb85f0176ab3f83c.jpg",
+          "sha256": "20de6e38b281d426bad63ab1a6a14c8f7187f81893da5ac6cb85f0176ab3f83c",
+          "color": "",
+          "source_id": "p06i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f13-p5-i1",
+        "rasteiras_papetes_flatforms-f13-p5-i2",
+        "rasteiras_papetes_flatforms-f13-p5-i3",
+        "rasteiras_papetes_flatforms-f13-p5-i4"
+      ],
+      "revision": "364fd848500283bb7347434f71adc5b6ec2b21abc6e8dc07c8cdaba3b5dc551d"
+    },
+    {
+      "code": "pdf26-rasteiras-004",
+      "name": "Rasteira feminina — modelo 007",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        7
+      ],
+      "photos": [
+        {
+          "file": "photos/e16e9e2de48193aec684fce8ac26fb588656fa6f08d92cc0d5b4ce62b289832a.jpg",
+          "sha256": "e16e9e2de48193aec684fce8ac26fb588656fa6f08d92cc0d5b4ce62b289832a",
+          "color": "",
+          "source_id": "p07i01"
+        },
+        {
+          "file": "photos/0d06109c1331443ea3592da6c976caf99018b49c1338e3e46f721d0e8ea5488b.jpg",
+          "sha256": "0d06109c1331443ea3592da6c976caf99018b49c1338e3e46f721d0e8ea5488b",
+          "color": "",
+          "source_id": "p07i02"
+        },
+        {
+          "file": "photos/e17021f2775056fd694f88eeb92f7bf07e3686b8c0f85612c79c82983f7b6252.jpg",
+          "sha256": "e17021f2775056fd694f88eeb92f7bf07e3686b8c0f85612c79c82983f7b6252",
+          "color": "",
+          "source_id": "p07i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f15-p6-i1",
+        "rasteiras_papetes_flatforms-f15-p6-i2",
+        "rasteiras_papetes_flatforms-f15-p6-i3"
+      ],
+      "revision": "bf6b9374b2e6105b632e5c19f0a6c7780a4ff1da875e22fc1bf15e00c595d89f"
+    },
+    {
+      "code": "pdf26-rasteiras-005",
+      "name": "Rasteira feminina — modelo 008",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 19,
+      "retail": "149.90",
+      "price": "169.90",
+      "cost": "104.93",
+      "pages": [
+        8
+      ],
+      "photos": [
+        {
+          "file": "photos/cbe5f3f39a27ea2d8d2736f966efaf1490bc7e063f6c4f0ced2c7a6354375a58.jpg",
+          "sha256": "cbe5f3f39a27ea2d8d2736f966efaf1490bc7e063f6c4f0ced2c7a6354375a58",
+          "color": "",
+          "source_id": "p08i01"
+        },
+        {
+          "file": "photos/889621e3ab18a65d1085ca9a7806076ec2343ddec90cefb29479923dc7b00ab7.jpg",
+          "sha256": "889621e3ab18a65d1085ca9a7806076ec2343ddec90cefb29479923dc7b00ab7",
+          "color": "",
+          "source_id": "p08i02"
+        },
+        {
+          "file": "photos/1b85a584d43da54509e076f08b2af8cc77ca177bb48f893158c411b8a94f7ac3.jpg",
+          "sha256": "1b85a584d43da54509e076f08b2af8cc77ca177bb48f893158c411b8a94f7ac3",
+          "color": "",
+          "source_id": "p08i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "2bc9cbe427531d4888a282c5e7a66d4242b18ec6cc1338c3874d16f796cd8224"
+    },
+    {
+      "code": "pdf26-rasteiras-006",
+      "name": "Rasteira feminina Gucci — modelo 009 faixa 9",
+      "brand": "Gucci",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 9,
+      "retail": "49.90",
+      "price": "59.90",
+      "cost": "34.93",
+      "pages": [
+        9
+      ],
+      "photos": [
+        {
+          "file": "photos/65ee8ce70b193f7c3d9892d0cb807c6058ef051fea18f404e4318cde856706b8.jpg",
+          "sha256": "65ee8ce70b193f7c3d9892d0cb807c6058ef051fea18f404e4318cde856706b8",
+          "color": "",
+          "source_id": "p09i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "2a9592158adb9aa002573300209867c65428b32a028974883289cac336feb223"
+    },
+    {
+      "code": "pdf26-rasteiras-007",
+      "name": "Rasteira feminina Gucci — modelo 009 faixa 14",
+      "brand": "Gucci",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        9
+      ],
+      "photos": [
+        {
+          "file": "photos/02481989cd5b5ccd9e186157899bc967340aca83ca3c1c07b8fedd87ac302d9a.jpg",
+          "sha256": "02481989cd5b5ccd9e186157899bc967340aca83ca3c1c07b8fedd87ac302d9a",
+          "color": "",
+          "source_id": "p09i03"
+        },
+        {
+          "file": "photos/f1e55566cfbc5ca51dbac922e778ab3097765030f919e89311aff706acb04e40.jpg",
+          "sha256": "f1e55566cfbc5ca51dbac922e778ab3097765030f919e89311aff706acb04e40",
+          "color": "",
+          "source_id": "p09i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "536874fd50e247a49bc587580270feeba178d98995d423cc7c9dc69ba683dc1c"
+    },
+    {
+      "code": "pdf26-rasteiras-008",
+      "name": "Rasteira feminina — modelo 010",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        10
+      ],
+      "photos": [
+        {
+          "file": "photos/3255a2d2e6ce44e54a3f56dff675f2a3d6d487a7bab1952daaca7928f31d2b58.jpg",
+          "sha256": "3255a2d2e6ce44e54a3f56dff675f2a3d6d487a7bab1952daaca7928f31d2b58",
+          "color": "",
+          "source_id": "p10i01"
+        },
+        {
+          "file": "photos/d2311ac72451119d35027f2caddc04ba213db50591051be9f6b412cf2d3f60f0.jpg",
+          "sha256": "d2311ac72451119d35027f2caddc04ba213db50591051be9f6b412cf2d3f60f0",
+          "color": "",
+          "source_id": "p10i02"
+        },
+        {
+          "file": "photos/fed69685df832c5465ff0198323441343afe8c49ceaf5f7aee51cd358e7ff018.jpg",
+          "sha256": "fed69685df832c5465ff0198323441343afe8c49ceaf5f7aee51cd358e7ff018",
+          "color": "",
+          "source_id": "p10i03"
+        },
+        {
+          "file": "photos/1183a2cdf00a97d0979a0812b20ca281b6fe0ab789c4a92911fea977dbf0b626.jpg",
+          "sha256": "1183a2cdf00a97d0979a0812b20ca281b6fe0ab789c4a92911fea977dbf0b626",
+          "color": "",
+          "source_id": "p10i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f14-p7-i1",
+        "rasteiras_papetes_flatforms-f14-p7-i2",
+        "rasteiras_papetes_flatforms-f14-p7-i3",
+        "rasteiras_papetes_flatforms-f14-p7-i4"
+      ],
+      "revision": "b6802f5ae357504c41db4cfb87e6fb2845d7580de07b7b4f5ec6d63a6f589a32"
+    },
+    {
+      "code": "pdf26-rasteiras-009",
+      "name": "Rasteira feminina — modelo 011",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 19,
+      "retail": "149.90",
+      "price": "169.90",
+      "cost": "104.93",
+      "pages": [
+        11
+      ],
+      "photos": [
+        {
+          "file": "photos/69228ad96eb7dd79476d7c92a481b62002c15d850f6d35ecb354bdcf4247c380.jpg",
+          "sha256": "69228ad96eb7dd79476d7c92a481b62002c15d850f6d35ecb354bdcf4247c380",
+          "color": "",
+          "source_id": "p11i01"
+        },
+        {
+          "file": "photos/bd4d66bf958049b9ce5d4db3dd3777bf1aa634f6b93c02d4eb5cee8ddd445124.jpg",
+          "sha256": "bd4d66bf958049b9ce5d4db3dd3777bf1aa634f6b93c02d4eb5cee8ddd445124",
+          "color": "",
+          "source_id": "p11i02"
+        },
+        {
+          "file": "photos/6d3fabedfbc3327a7904bef3170bf93322bd17896e122b2be6919feab8fb744c.jpg",
+          "sha256": "6d3fabedfbc3327a7904bef3170bf93322bd17896e122b2be6919feab8fb744c",
+          "color": "",
+          "source_id": "p11i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f19-p8-i1",
+        "rasteiras_papetes_flatforms-f19-p8-i2",
+        "rasteiras_papetes_flatforms-f19-p8-i3"
+      ],
+      "revision": "50838fcbecd32c09d4c76f54cf2b154d997a81b2012acc5657f767514e3067f5"
+    },
+    {
+      "code": "pdf26-rasteiras-010",
+      "name": "Rasteira feminina — modelo 012",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        12
+      ],
+      "photos": [
+        {
+          "file": "photos/92d63c4c57ef57d51ca07eb99069b1ec15b0395b1ea477ee701ba0af4540a662.jpg",
+          "sha256": "92d63c4c57ef57d51ca07eb99069b1ec15b0395b1ea477ee701ba0af4540a662",
+          "color": "",
+          "source_id": "p12i01"
+        },
+        {
+          "file": "photos/2863ff223392fd663cea2cd4f43c76c1f0f41456243c9ef14df6620aea7b41b6.jpg",
+          "sha256": "2863ff223392fd663cea2cd4f43c76c1f0f41456243c9ef14df6620aea7b41b6",
+          "color": "",
+          "source_id": "p12i02"
+        },
+        {
+          "file": "photos/7ddeb70c6e59833545d2bd15baffa44bc5f17e4b38855583f679765b090874da.jpg",
+          "sha256": "7ddeb70c6e59833545d2bd15baffa44bc5f17e4b38855583f679765b090874da",
+          "color": "",
+          "source_id": "p12i03"
+        },
+        {
+          "file": "photos/bbade20725362cbe82fc4a3e9efa16b4a8c435c66699c0eee13cecd3549a9033.jpg",
+          "sha256": "bbade20725362cbe82fc4a3e9efa16b4a8c435c66699c0eee13cecd3549a9033",
+          "color": "",
+          "source_id": "p12i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f17-p9-i1",
+        "rasteiras_papetes_flatforms-f17-p9-i2",
+        "rasteiras_papetes_flatforms-f17-p9-i3",
+        "rasteiras_papetes_flatforms-f17-p9-i4"
+      ],
+      "revision": "0933308cfef46effa6e5860df71d9d83e1c7a1b7dc115d65095b0489b2e01e3c"
+    },
+    {
+      "code": "pdf26-rasteiras-011",
+      "name": "Rasteira feminina — modelo 013",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        13
+      ],
+      "photos": [
+        {
+          "file": "photos/186a0b7c6d56c288fc9c636d4efab7c8777111ebdff9d582f4415752842a3a86.jpg",
+          "sha256": "186a0b7c6d56c288fc9c636d4efab7c8777111ebdff9d582f4415752842a3a86",
+          "color": "",
+          "source_id": "p13i01"
+        },
+        {
+          "file": "photos/eb2a10bd677913b85dfaee4c3ede01cf195f4ad254aa59a327c26e2757858fc0.jpg",
+          "sha256": "eb2a10bd677913b85dfaee4c3ede01cf195f4ad254aa59a327c26e2757858fc0",
+          "color": "",
+          "source_id": "p13i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f17-p10-i1",
+        "rasteiras_papetes_flatforms-f17-p10-i2"
+      ],
+      "revision": "d0c3d4693b84ed553b99a323845f5744457f5a6dc46de43f0cf859c1d71dc925"
+    },
+    {
+      "code": "pdf26-rasteiras-012",
+      "name": "Rasteira feminina Schutz — modelo 014",
+      "brand": "Schutz",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 16,
+      "retail": "119.90",
+      "price": "139.90",
+      "cost": "83.93",
+      "pages": [
+        14
+      ],
+      "photos": [
+        {
+          "file": "photos/bba244e125a8099b26a8a513709e2d19da6063c4d15005effa8f6a736682a95c.jpg",
+          "sha256": "bba244e125a8099b26a8a513709e2d19da6063c4d15005effa8f6a736682a95c",
+          "color": "",
+          "source_id": "p14i01"
+        },
+        {
+          "file": "photos/8135b1c601da8426f6b66cab218c400d265727c6361e6f67d85609142e90f4fe.jpg",
+          "sha256": "8135b1c601da8426f6b66cab218c400d265727c6361e6f67d85609142e90f4fe",
+          "color": "",
+          "source_id": "p14i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "323531f4829128e1682d08da53aaceecd6c194669980803d0ae84a942d829eca"
+    },
+    {
+      "code": "pdf26-rasteiras-013",
+      "name": "Rasteira feminina — modelo 015 faixa 17",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        15
+      ],
+      "photos": [
+        {
+          "file": "photos/51874997a4d0638a6a304195f31c74281583fe699cd3cf394adbad6637c6ef09.jpg",
+          "sha256": "51874997a4d0638a6a304195f31c74281583fe699cd3cf394adbad6637c6ef09",
+          "color": "",
+          "source_id": "p15i01"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f17-p11-i1"
+      ],
+      "revision": "ec868770dd26155d8f8b2419bb4bdf31fa949f06bf7fc16c0bc9bbc6ee55072e"
+    },
+    {
+      "code": "pdf26-rasteiras-014",
+      "name": "Rasteira feminina — modelo 015 faixa 18",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        15
+      ],
+      "photos": [
+        {
+          "file": "photos/63c4f5f8c15d3c604256eaca54f005ba154df0c053f05b24d5d96ce861b9a0e0.jpg",
+          "sha256": "63c4f5f8c15d3c604256eaca54f005ba154df0c053f05b24d5d96ce861b9a0e0",
+          "color": "",
+          "source_id": "p15i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "0693b74d81d02755afabf5a471bf5ffee1d616bf9b37fab8140aa91b4d97aa59"
+    },
+    {
+      "code": "pdf26-rasteiras-015",
+      "name": "Rasteira feminina — modelo 016",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 10,
+      "retail": "59.90",
+      "price": "69.90",
+      "cost": "41.93",
+      "pages": [
+        16
+      ],
+      "photos": [
+        {
+          "file": "photos/fb9eec08ad99d83534b9e6ff1f44ce853ce68111a43f86ae30b1cf27c5aadeff.jpg",
+          "sha256": "fb9eec08ad99d83534b9e6ff1f44ce853ce68111a43f86ae30b1cf27c5aadeff",
+          "color": "",
+          "source_id": "p16i01"
+        },
+        {
+          "file": "photos/89488a2ad5c38fcf7055294fe3e56f190f8a7e235d94c9f30db5476bbfe5b4fa.jpg",
+          "sha256": "89488a2ad5c38fcf7055294fe3e56f190f8a7e235d94c9f30db5476bbfe5b4fa",
+          "color": "",
+          "source_id": "p16i02"
+        },
+        {
+          "file": "photos/00f9fec2f59051798b0ba0c8f608df4bc6199c6598c80eb94da71246d37b8f04.jpg",
+          "sha256": "00f9fec2f59051798b0ba0c8f608df4bc6199c6598c80eb94da71246d37b8f04",
+          "color": "",
+          "source_id": "p16i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "414e7db9785545408eb93f1092b3212ceb5136bc6ab7330965e7c38a6fc3bf83"
+    },
+    {
+      "code": "pdf26-rasteiras-016",
+      "name": "Rasteira feminina — modelo 017",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        17
+      ],
+      "photos": [
+        {
+          "file": "photos/50b604580e420b4681d8cbfeba063dd33cef7980746e1e45c642df7caad45fb9.jpg",
+          "sha256": "50b604580e420b4681d8cbfeba063dd33cef7980746e1e45c642df7caad45fb9",
+          "color": "",
+          "source_id": "p17i01"
+        },
+        {
+          "file": "photos/ac604c2a15dc6507a41b62275dbcdac38bfff243774bff3a320dc85b61198800.jpg",
+          "sha256": "ac604c2a15dc6507a41b62275dbcdac38bfff243774bff3a320dc85b61198800",
+          "color": "",
+          "source_id": "p17i02"
+        },
+        {
+          "file": "photos/87e2dfcd48f762ed935e30d1cb77b9c1d35d4c4d382d10bd7d743fd93192f6f3.jpg",
+          "sha256": "87e2dfcd48f762ed935e30d1cb77b9c1d35d4c4d382d10bd7d743fd93192f6f3",
+          "color": "",
+          "source_id": "p17i03"
+        },
+        {
+          "file": "photos/c9a379ac9b8d6857df4063693e7e831418e168e18d97db4cdb88c28831bf9c31.jpg",
+          "sha256": "c9a379ac9b8d6857df4063693e7e831418e168e18d97db4cdb88c28831bf9c31",
+          "color": "",
+          "source_id": "p17i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f17-p12-i1",
+        "rasteiras_papetes_flatforms-f17-p12-i2",
+        "rasteiras_papetes_flatforms-f17-p12-i3",
+        "rasteiras_papetes_flatforms-f17-p12-i4"
+      ],
+      "revision": "04a2d7f13bafd298f8c96c0d4e90e8db4ae9ebc1358bd5ffc01b32f3a4780f47"
+    },
+    {
+      "code": "pdf26-rasteiras-017",
+      "name": "Rasteira feminina — modelo 018",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        18
+      ],
+      "photos": [
+        {
+          "file": "photos/47b81cb0ca0ce8756ba2a81fa80c3dd743af4224a587383b54c630ee903c4a1e.jpg",
+          "sha256": "47b81cb0ca0ce8756ba2a81fa80c3dd743af4224a587383b54c630ee903c4a1e",
+          "color": "",
+          "source_id": "p18i01"
+        },
+        {
+          "file": "photos/318e6a8c615e1f933cb16ea203dd4ac0a7b1e11d692df45afd0ef8d4a24b4ff9.jpg",
+          "sha256": "318e6a8c615e1f933cb16ea203dd4ac0a7b1e11d692df45afd0ef8d4a24b4ff9",
+          "color": "",
+          "source_id": "p18i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f15-p14-i1",
+        "rasteiras_papetes_flatforms-f15-p14-i2"
+      ],
+      "revision": "26e67386f4d2c976df501571491688237accc42f65d19cd3dc441d7e17e26932"
+    },
+    {
+      "code": "pdf26-rasteiras-018",
+      "name": "Rasteira feminina — modelo 019",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 10,
+      "retail": "59.90",
+      "price": "69.90",
+      "cost": "41.93",
+      "pages": [
+        19
+      ],
+      "photos": [
+        {
+          "file": "photos/7fd9367b17ea8d38f532ae395cc99533c85c9d8decabda1fd6cc4d11c8d5f499.jpg",
+          "sha256": "7fd9367b17ea8d38f532ae395cc99533c85c9d8decabda1fd6cc4d11c8d5f499",
+          "color": "",
+          "source_id": "p19i01"
+        },
+        {
+          "file": "photos/861e67e7f81c81a64038063d1ba15af184354cd479697914b975067920c2ec13.jpg",
+          "sha256": "861e67e7f81c81a64038063d1ba15af184354cd479697914b975067920c2ec13",
+          "color": "",
+          "source_id": "p19i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "12a3a9bd0d1bc7552a48a8e1754c15297ff703de662f6ce245d73d30dcff6f1a"
+    },
+    {
+      "code": "pdf26-rasteiras-019",
+      "name": "Rasteira feminina — modelo 020",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        20
+      ],
+      "photos": [
+        {
+          "file": "photos/57244e600542f612dbc1cdca86b6058b74e01e13572714c1e7f1d3d797b78665.jpg",
+          "sha256": "57244e600542f612dbc1cdca86b6058b74e01e13572714c1e7f1d3d797b78665",
+          "color": "",
+          "source_id": "p20i01"
+        },
+        {
+          "file": "photos/dbd3c9093fecd00179b9fd868f6b276d204059a91c1152d727bd2ca6de09b182.jpg",
+          "sha256": "dbd3c9093fecd00179b9fd868f6b276d204059a91c1152d727bd2ca6de09b182",
+          "color": "",
+          "source_id": "p20i02"
+        },
+        {
+          "file": "photos/ae9e89fb016e8bc83df80cbfdf8733896d57de658d2a19b6468ef51eaa44adf4.jpg",
+          "sha256": "ae9e89fb016e8bc83df80cbfdf8733896d57de658d2a19b6468ef51eaa44adf4",
+          "color": "",
+          "source_id": "p20i03"
+        },
+        {
+          "file": "photos/07b6f8a017374424d9259889c2578e528624ca118ae14ee0539c19769ed7363b.jpg",
+          "sha256": "07b6f8a017374424d9259889c2578e528624ca118ae14ee0539c19769ed7363b",
+          "color": "",
+          "source_id": "p20i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f13-p15-i1",
+        "rasteiras_papetes_flatforms-f13-p15-i2",
+        "rasteiras_papetes_flatforms-f13-p15-i3",
+        "rasteiras_papetes_flatforms-f13-p15-i4"
+      ],
+      "revision": "c1096a2e631d5850ca22f915ac493682b92c3e80f68e91c7aa21b7ce46895ba7"
+    },
+    {
+      "code": "pdf26-rasteiras-020",
+      "name": "Rasteira feminina — modelo 021",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        21
+      ],
+      "photos": [
+        {
+          "file": "photos/24f9e0c7764ced1e9bd4d3cbbed615fad591b5c36475552558d4ba3f0bf91f92.jpg",
+          "sha256": "24f9e0c7764ced1e9bd4d3cbbed615fad591b5c36475552558d4ba3f0bf91f92",
+          "color": "",
+          "source_id": "p21i01"
+        },
+        {
+          "file": "photos/05c81da83314c88c6606d9ae9604e1a7bcbb00d24d27e892e4fb6de86b23cc66.jpg",
+          "sha256": "05c81da83314c88c6606d9ae9604e1a7bcbb00d24d27e892e4fb6de86b23cc66",
+          "color": "",
+          "source_id": "p21i02"
+        },
+        {
+          "file": "photos/fdfe1522847880ee8e4f2394224414c9d30abc69f9b9ca860111e8d4c135eab5.jpg",
+          "sha256": "fdfe1522847880ee8e4f2394224414c9d30abc69f9b9ca860111e8d4c135eab5",
+          "color": "",
+          "source_id": "p21i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f14-p16-i1",
+        "rasteiras_papetes_flatforms-f14-p16-i2",
+        "rasteiras_papetes_flatforms-f14-p16-i3"
+      ],
+      "revision": "7ae6eddea9360c809aa93adcae8bcaaf11b08822783901a945a015ade48b2f26"
+    },
+    {
+      "code": "pdf26-rasteiras-021",
+      "name": "Rasteira feminina — modelo 022",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        22
+      ],
+      "photos": [
+        {
+          "file": "photos/d3acd3350de57ce9a444b1c545aa454c23e7b7826f7f491213ebb986796b96cf.jpg",
+          "sha256": "d3acd3350de57ce9a444b1c545aa454c23e7b7826f7f491213ebb986796b96cf",
+          "color": "",
+          "source_id": "p22i01"
+        },
+        {
+          "file": "photos/b78ee2e1c11938c95090a187242758acfc15e0af36f6d72903f9a8c95b76fbae.jpg",
+          "sha256": "b78ee2e1c11938c95090a187242758acfc15e0af36f6d72903f9a8c95b76fbae",
+          "color": "",
+          "source_id": "p22i02"
+        },
+        {
+          "file": "photos/fe73d0927ecfd3d0c0bb6f04545df88f47a12911c1e4e740fe3b2862ad7bff9c.jpg",
+          "sha256": "fe73d0927ecfd3d0c0bb6f04545df88f47a12911c1e4e740fe3b2862ad7bff9c",
+          "color": "",
+          "source_id": "p22i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f13-p17-i1",
+        "rasteiras_papetes_flatforms-f13-p17-i2",
+        "rasteiras_papetes_flatforms-f13-p17-i3"
+      ],
+      "revision": "95ece0bfa594ded02276f05dc000353eb51bca8755dd720c258e2f17878bdba6"
+    },
+    {
+      "code": "pdf26-rasteiras-022",
+      "name": "Rasteira feminina — modelo 023",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        23
+      ],
+      "photos": [
+        {
+          "file": "photos/c889585a91fc8c1716e6f670cf453fcac720ac3961f49ef4380ff4860a7db9cc.jpg",
+          "sha256": "c889585a91fc8c1716e6f670cf453fcac720ac3961f49ef4380ff4860a7db9cc",
+          "color": "",
+          "source_id": "p23i01"
+        },
+        {
+          "file": "photos/d0692c9e835310b2a301e7a99dae06062fbdcb799ddfc98eac408d0cffe4b4c9.jpg",
+          "sha256": "d0692c9e835310b2a301e7a99dae06062fbdcb799ddfc98eac408d0cffe4b4c9",
+          "color": "",
+          "source_id": "p23i02"
+        },
+        {
+          "file": "photos/1cb44fd2fa47d4ef8e1b89e1143f090ab6c4b883a6995c32bfe3d359341b609c.jpg",
+          "sha256": "1cb44fd2fa47d4ef8e1b89e1143f090ab6c4b883a6995c32bfe3d359341b609c",
+          "color": "",
+          "source_id": "p23i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f14-p18-i1",
+        "rasteiras_papetes_flatforms-f14-p18-i2",
+        "rasteiras_papetes_flatforms-f14-p18-i3"
+      ],
+      "revision": "8ddb106befe78fde87ae08309b1fb443c1e10790115b4ebceb74989255e726af"
+    },
+    {
+      "code": "pdf26-rasteiras-023",
+      "name": "Rasteira feminina — modelo 024",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        24
+      ],
+      "photos": [
+        {
+          "file": "photos/76a9d69fbd993f9e1ec9921cde4646bbcaee22991e29eced7174368303cc81a9.jpg",
+          "sha256": "76a9d69fbd993f9e1ec9921cde4646bbcaee22991e29eced7174368303cc81a9",
+          "color": "",
+          "source_id": "p24i01"
+        },
+        {
+          "file": "photos/40e91f5e4d89a3c49a946aff9e2eef89b19bd9fa042f9092a8ba65a04e0e1739.jpg",
+          "sha256": "40e91f5e4d89a3c49a946aff9e2eef89b19bd9fa042f9092a8ba65a04e0e1739",
+          "color": "",
+          "source_id": "p24i02"
+        },
+        {
+          "file": "photos/b24601d43a9f316b2970f4fda9e43c5efcca5e889d2b17fe1c26e1dfad104de3.jpg",
+          "sha256": "b24601d43a9f316b2970f4fda9e43c5efcca5e889d2b17fe1c26e1dfad104de3",
+          "color": "",
+          "source_id": "p24i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f14-p19-i1",
+        "rasteiras_papetes_flatforms-f14-p19-i2"
+      ],
+      "revision": "b7dd84c82e821de400988b6f41955b8b684a69d4f198e36be79f4fcc621e9b0a"
+    },
+    {
+      "code": "pdf26-rasteiras-024",
+      "name": "Rasteira feminina — modelo 025",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        25
+      ],
+      "photos": [
+        {
+          "file": "photos/ad180519d0dbaab3a6b063dffb4d6cc8641c29650e97439e20aeb8cbebf7a4a1.jpg",
+          "sha256": "ad180519d0dbaab3a6b063dffb4d6cc8641c29650e97439e20aeb8cbebf7a4a1",
+          "color": "",
+          "source_id": "p25i01"
+        },
+        {
+          "file": "photos/0d3bf8537a2a01a02ef055948b4a2600c956f53a77127bf3152322b595ad7850.jpg",
+          "sha256": "0d3bf8537a2a01a02ef055948b4a2600c956f53a77127bf3152322b595ad7850",
+          "color": "",
+          "source_id": "p25i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f15-p20-i2"
+      ],
+      "revision": "9332cd539cd94942b295cb3094cd6d51162dfaf10f6faacafb2bced6ec10410d"
+    },
+    {
+      "code": "pdf26-rasteiras-025",
+      "name": "Rasteira feminina — modelo 026",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        26
+      ],
+      "photos": [
+        {
+          "file": "photos/dcb55235a87a955cbd9c9da54f8caa7783b9bfbad4976119d1f58469b6aa67be.jpg",
+          "sha256": "dcb55235a87a955cbd9c9da54f8caa7783b9bfbad4976119d1f58469b6aa67be",
+          "color": "",
+          "source_id": "p26i01"
+        },
+        {
+          "file": "photos/8c53249b247836295dd057cf0b286c1eed5e4e531179de917673974dcaa52c69.jpg",
+          "sha256": "8c53249b247836295dd057cf0b286c1eed5e4e531179de917673974dcaa52c69",
+          "color": "",
+          "source_id": "p26i02"
+        },
+        {
+          "file": "photos/b78ab58de6b04b5a2cc0b1198a8d3a2a4f147c057a1a0075585f736fddd04238.jpg",
+          "sha256": "b78ab58de6b04b5a2cc0b1198a8d3a2a4f147c057a1a0075585f736fddd04238",
+          "color": "",
+          "source_id": "p26i03"
+        },
+        {
+          "file": "photos/1069d63e466445eb6c369436a48709aee4e2d081d0fbfa413c5000d68b4a1c5d.jpg",
+          "sha256": "1069d63e466445eb6c369436a48709aee4e2d081d0fbfa413c5000d68b4a1c5d",
+          "color": "",
+          "source_id": "p26i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f14-p24-i1",
+        "rasteiras_papetes_flatforms-f14-p24-i2",
+        "rasteiras_papetes_flatforms-f14-p24-i3",
+        "rasteiras_papetes_flatforms-f14-p24-i4"
+      ],
+      "revision": "6173f73458bafc5239a09ef84fe0eb0ead4464103c4e707f63db169f9e2f9bf1"
+    },
+    {
+      "code": "pdf26-rasteiras-026",
+      "name": "Rasteira feminina — modelo 027",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        27
+      ],
+      "photos": [
+        {
+          "file": "photos/b6d98529f4c4078cff6fd54074d7254cc6190dd7159982fc6fb8215adb0bfe70.jpg",
+          "sha256": "b6d98529f4c4078cff6fd54074d7254cc6190dd7159982fc6fb8215adb0bfe70",
+          "color": "",
+          "source_id": "p27i01"
+        },
+        {
+          "file": "photos/52cca5032a7b7338eea0234ac1f271ad3ca21e3adf87a453c422bda613fa13b6.jpg",
+          "sha256": "52cca5032a7b7338eea0234ac1f271ad3ca21e3adf87a453c422bda613fa13b6",
+          "color": "",
+          "source_id": "p27i02"
+        },
+        {
+          "file": "photos/5059e1cbe933d5fc69dddc6f9e304b0fe9291dce8357991184b11be639bb200e.jpg",
+          "sha256": "5059e1cbe933d5fc69dddc6f9e304b0fe9291dce8357991184b11be639bb200e",
+          "color": "",
+          "source_id": "p27i03"
+        },
+        {
+          "file": "photos/c7a83f75b8ecbf74aa5068e456a978e10e2bf8d357afc9c8e2fd91e0b5b49b7d.jpg",
+          "sha256": "c7a83f75b8ecbf74aa5068e456a978e10e2bf8d357afc9c8e2fd91e0b5b49b7d",
+          "color": "",
+          "source_id": "p27i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f14-p25-i1",
+        "rasteiras_papetes_flatforms-f14-p25-i2",
+        "rasteiras_papetes_flatforms-f14-p25-i3",
+        "rasteiras_papetes_flatforms-f14-p25-i4"
+      ],
+      "revision": "0da169424ea1374a44b8d190dce271efc76fc4eba9ace56d721dbb33060a0c3d"
+    },
+    {
+      "code": "pdf26-rasteiras-027",
+      "name": "Rasteira feminina — modelo 028",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        28
+      ],
+      "photos": [
+        {
+          "file": "photos/6d5cb73c94c241d42316fbe5ff83e512a26f19789cd799f65ac1c6f7eeac75fc.jpg",
+          "sha256": "6d5cb73c94c241d42316fbe5ff83e512a26f19789cd799f65ac1c6f7eeac75fc",
+          "color": "",
+          "source_id": "p28i01"
+        },
+        {
+          "file": "photos/052cd1aadba20a654d03e1e43571e096a7a792932e0d2a8b3c069d0aac7e0027.jpg",
+          "sha256": "052cd1aadba20a654d03e1e43571e096a7a792932e0d2a8b3c069d0aac7e0027",
+          "color": "",
+          "source_id": "p28i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f12-p28-i1",
+        "rasteiras_papetes_flatforms-f12-p28-i2"
+      ],
+      "revision": "093510c7abdf61abcc9600f2e3ea9320778e128f5a0f18481eccbc3f69867598"
+    },
+    {
+      "code": "pdf26-rasteiras-028",
+      "name": "Rasteira feminina — modelo 029",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        29
+      ],
+      "photos": [
+        {
+          "file": "photos/bd149d2a5ab89523c51e0e4f55150e192152125cfd3d21733335d466f9c754ea.jpg",
+          "sha256": "bd149d2a5ab89523c51e0e4f55150e192152125cfd3d21733335d466f9c754ea",
+          "color": "",
+          "source_id": "p29i01"
+        },
+        {
+          "file": "photos/58a88d5a72910e5ee99e897a6046124e0ac84c13c200f2f26c53855cba09151f.jpg",
+          "sha256": "58a88d5a72910e5ee99e897a6046124e0ac84c13c200f2f26c53855cba09151f",
+          "color": "",
+          "source_id": "p29i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p32-i1",
+        "rasteiras_papetes_flatforms-f18-p32-i2"
+      ],
+      "revision": "581085cd5148ef297ee51df76c2215d0e394dbe8d2392f545f11594e08931a90"
+    },
+    {
+      "code": "pdf26-rasteiras-029",
+      "name": "Rasteira feminina — modelo 030",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        30
+      ],
+      "photos": [
+        {
+          "file": "photos/17269678cba41e6d3ff4cf8de08ce9a5edc405db46955ac96dfa2ff40e571db7.jpg",
+          "sha256": "17269678cba41e6d3ff4cf8de08ce9a5edc405db46955ac96dfa2ff40e571db7",
+          "color": "",
+          "source_id": "p30i01"
+        },
+        {
+          "file": "photos/43890fef301496d3a8e594a9976675bf9e06bc27a11b9f4729d8c8577102b142.jpg",
+          "sha256": "43890fef301496d3a8e594a9976675bf9e06bc27a11b9f4729d8c8577102b142",
+          "color": "",
+          "source_id": "p30i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f12-p34-i1",
+        "rasteiras_papetes_flatforms-f12-p34-i2"
+      ],
+      "revision": "6f53eb03cbf5a3eb5ad5f00cceedf949a0d50719df074c6b1c1cb542f22db754"
+    },
+    {
+      "code": "pdf26-rasteiras-030",
+      "name": "Rasteira feminina — modelo 031",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 10,
+      "retail": "59.90",
+      "price": "69.90",
+      "cost": "41.93",
+      "pages": [
+        31
+      ],
+      "photos": [
+        {
+          "file": "photos/4b91a809f21a2459a21ccbed5370a2a2a52ba8e6f7b99e4364b41020497dc209.jpg",
+          "sha256": "4b91a809f21a2459a21ccbed5370a2a2a52ba8e6f7b99e4364b41020497dc209",
+          "color": "",
+          "source_id": "p31i01"
+        },
+        {
+          "file": "photos/96960b5258a6e2d1b9a6d04f1581166bb55b87242ab5d51bb14639ddb3ee9f49.jpg",
+          "sha256": "96960b5258a6e2d1b9a6d04f1581166bb55b87242ab5d51bb14639ddb3ee9f49",
+          "color": "",
+          "source_id": "p31i02"
+        },
+        {
+          "file": "photos/405394a1378e1edae560d15fbdba0a103e3a16437bc719e171c6741f42cb08bd.jpg",
+          "sha256": "405394a1378e1edae560d15fbdba0a103e3a16437bc719e171c6741f42cb08bd",
+          "color": "",
+          "source_id": "p31i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f10-p35-i1",
+        "rasteiras_papetes_flatforms-f10-p35-i2",
+        "rasteiras_papetes_flatforms-f10-p35-i3"
+      ],
+      "revision": "fd105e0625ff8a7bda7b94573d2f8d791940c40db7edb2899d0401704f3e9323"
+    },
+    {
+      "code": "pdf26-rasteiras-031",
+      "name": "Rasteira feminina — modelo 032",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        32
+      ],
+      "photos": [
+        {
+          "file": "photos/0cc4cd7ed063a59591d2bcd85984144ec25ebd6c21e76d6f44166d0f439e551e.jpg",
+          "sha256": "0cc4cd7ed063a59591d2bcd85984144ec25ebd6c21e76d6f44166d0f439e551e",
+          "color": "",
+          "source_id": "p32i01"
+        },
+        {
+          "file": "photos/67abc664b86f05ca3b070307924abebfbaba77de6a4e3becbee9047bd18abbe9.jpg",
+          "sha256": "67abc664b86f05ca3b070307924abebfbaba77de6a4e3becbee9047bd18abbe9",
+          "color": "",
+          "source_id": "p32i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f12-p36-i1",
+        "rasteiras_papetes_flatforms-f12-p36-i2"
+      ],
+      "revision": "144edc2b382c91a9f226a323126aeee21f8dceebf42cd9f9fb9a454c7adb5f5f"
+    },
+    {
+      "code": "pdf26-rasteiras-032",
+      "name": "Rasteira feminina — modelo 033 faixa 10",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 10,
+      "retail": "59.90",
+      "price": "69.90",
+      "cost": "41.93",
+      "pages": [
+        33
+      ],
+      "photos": [
+        {
+          "file": "photos/b46e632bc98aaaf589b5c42ae40be6e22ddfb4173bb43123b60cab4d2b6173d8.jpg",
+          "sha256": "b46e632bc98aaaf589b5c42ae40be6e22ddfb4173bb43123b60cab4d2b6173d8",
+          "color": "",
+          "source_id": "p33i01"
+        },
+        {
+          "file": "photos/41f72c72803f1af66a161da5aab12bfcf56479dde2b78d51ae1d28724ac0552f.jpg",
+          "sha256": "41f72c72803f1af66a161da5aab12bfcf56479dde2b78d51ae1d28724ac0552f",
+          "color": "",
+          "source_id": "p33i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f10-p37-i1",
+        "rasteiras_papetes_flatforms-f10-p37-i2"
+      ],
+      "revision": "56902e62a7a1f24a795101fd0c9fcfffbca41d3c3a90583aacf219cdd0b9bd67"
+    },
+    {
+      "code": "pdf26-rasteiras-033",
+      "name": "Rasteira feminina — modelo 033 faixa 18",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        33
+      ],
+      "photos": [
+        {
+          "file": "photos/1c7d7f12a395fba452a2845f4c2ec634fca67b1f66ece818656a2a1cbd7f1377.jpg",
+          "sha256": "1c7d7f12a395fba452a2845f4c2ec634fca67b1f66ece818656a2a1cbd7f1377",
+          "color": "",
+          "source_id": "p33i03"
+        },
+        {
+          "file": "photos/bbbf158d0697b642a80d544b9875fbd53361635aa61a70cc4aba7d1b35e6a42c.jpg",
+          "sha256": "bbbf158d0697b642a80d544b9875fbd53361635aa61a70cc4aba7d1b35e6a42c",
+          "color": "",
+          "source_id": "p33i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f10-p37-i3",
+        "rasteiras_papetes_flatforms-f10-p37-i4"
+      ],
+      "revision": "4ccfaf42a7974f9776e84d3dd85fd389ee97c6c65d7d8841eb734fb70bfdcaa1"
+    },
+    {
+      "code": "pdf26-rasteiras-034",
+      "name": "Rasteira feminina — modelo 034 faixa 10",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 10,
+      "retail": "59.90",
+      "price": "69.90",
+      "cost": "41.93",
+      "pages": [
+        34
+      ],
+      "photos": [
+        {
+          "file": "photos/72a9f2213855c7bca82a61aaba42a555554c59918f3f19c4bf63e2936e69b69c.jpg",
+          "sha256": "72a9f2213855c7bca82a61aaba42a555554c59918f3f19c4bf63e2936e69b69c",
+          "color": "",
+          "source_id": "p34i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f12-p38-i3"
+      ],
+      "revision": "0f5c783b446baf05c8cab1d480427dca68f3a48275e6c61ea51e1eb1b8f332e2"
+    },
+    {
+      "code": "pdf26-rasteiras-035",
+      "name": "Rasteira feminina — modelo 034 faixa 12",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        34
+      ],
+      "photos": [
+        {
+          "file": "photos/23f81c5baefa5bd3a45a6ae44791cb4c6abe2eed91a08679aefd467cbb377b4a.jpg",
+          "sha256": "23f81c5baefa5bd3a45a6ae44791cb4c6abe2eed91a08679aefd467cbb377b4a",
+          "color": "",
+          "source_id": "p34i02"
+        },
+        {
+          "file": "photos/6b4efc086ed5552402ca5b1acf06ad873b18e83f3d1645fba5ed795a65b9edfc.jpg",
+          "sha256": "6b4efc086ed5552402ca5b1acf06ad873b18e83f3d1645fba5ed795a65b9edfc",
+          "color": "",
+          "source_id": "p34i01"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f12-p38-i1",
+        "rasteiras_papetes_flatforms-f12-p38-i2"
+      ],
+      "revision": "8980363395991ac51f6288311365f6b0d649caad4596030b327db21ac95db8e2"
+    },
+    {
+      "code": "pdf26-rasteiras-036",
+      "name": "Rasteira feminina — modelo 035",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        35
+      ],
+      "photos": [
+        {
+          "file": "photos/d3086bd505ec01a9b5f8191852a54752615915c2a4e1501d4e18d6bf9c1a451f.jpg",
+          "sha256": "d3086bd505ec01a9b5f8191852a54752615915c2a4e1501d4e18d6bf9c1a451f",
+          "color": "",
+          "source_id": "p35i01"
+        },
+        {
+          "file": "photos/f903da33f7b5b1397a0cd7974b4fd68036252eb0150c5766382c2a6f68f617f0.jpg",
+          "sha256": "f903da33f7b5b1397a0cd7974b4fd68036252eb0150c5766382c2a6f68f617f0",
+          "color": "",
+          "source_id": "p35i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f12-p39-i1",
+        "rasteiras_papetes_flatforms-f12-p39-i2"
+      ],
+      "revision": "f3e2d3de196d6fd2ac1a01eed5525c1c5e77409e36b6bc950c40582dc240432a"
+    },
+    {
+      "code": "pdf26-rasteiras-037",
+      "name": "Rasteira feminina — modelo 036",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        36
+      ],
+      "photos": [
+        {
+          "file": "photos/97886adc63127a3a5a856d32ea4dcc0340c97f753ee0007dca6b3f2d460db927.jpg",
+          "sha256": "97886adc63127a3a5a856d32ea4dcc0340c97f753ee0007dca6b3f2d460db927",
+          "color": "",
+          "source_id": "p36i01"
+        },
+        {
+          "file": "photos/4a69c6ae24cff3eddce0960a2aceff3fe01b10a555377bfa0485017f778564dd.jpg",
+          "sha256": "4a69c6ae24cff3eddce0960a2aceff3fe01b10a555377bfa0485017f778564dd",
+          "color": "",
+          "source_id": "p36i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f12-p41-i3"
+      ],
+      "revision": "743bc0d432d6ecded71e367c2779e5f9334e459bae17d0afb17f36b945deb98e"
+    },
+    {
+      "code": "pdf26-rasteiras-038",
+      "name": "Rasteira feminina — modelo 037",
+      "brand": "",
+      "category": "Rasteiras Femininas",
+      "description": "Rasteira feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        37
+      ],
+      "photos": [
+        {
+          "file": "photos/ce1a367a906275d8ae68985e14878339b7765c9f43633592d9f7f1a85c53b123.jpg",
+          "sha256": "ce1a367a906275d8ae68985e14878339b7765c9f43633592d9f7f1a85c53b123",
+          "color": "",
+          "source_id": "p37i01"
+        },
+        {
+          "file": "photos/df6c2169aeec0555cf64221eabce81bd6ecbf7db56f5701fe9f254edd4cffa2d.jpg",
+          "sha256": "df6c2169aeec0555cf64221eabce81bd6ecbf7db56f5701fe9f254edd4cffa2d",
+          "color": "",
+          "source_id": "p37i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f12-p42-i1",
+        "rasteiras_papetes_flatforms-f12-p42-i2"
+      ],
+      "revision": "26c7d6a2ca4e02b755275f68826e8cb2dca3cd77b150e4c9d978b951a34dbb59"
+    },
+    {
+      "code": "pdf26-rasteiras-039",
+      "name": "Flatform feminina — modelo 039",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 16,
+      "retail": "119.90",
+      "price": "139.90",
+      "cost": "83.93",
+      "pages": [
+        39
+      ],
+      "photos": [
+        {
+          "file": "photos/50999a094671052db0141e474cfb3f0995e66f17b9b5f90b9c3db24dc2b9d829.jpg",
+          "sha256": "50999a094671052db0141e474cfb3f0995e66f17b9b5f90b9c3db24dc2b9d829",
+          "color": "",
+          "source_id": "p39i01"
+        },
+        {
+          "file": "photos/5cb274fcf1efe7c5d63d9117a0d13352d71cbbedc9d99dae9351ffadbba7d66c.jpg",
+          "sha256": "5cb274fcf1efe7c5d63d9117a0d13352d71cbbedc9d99dae9351ffadbba7d66c",
+          "color": "",
+          "source_id": "p39i02"
+        },
+        {
+          "file": "photos/fb595d6ffda676b8d537ba77d8443c932cd44670cb5f1315988f7c9271ac5f8f.jpg",
+          "sha256": "fb595d6ffda676b8d537ba77d8443c932cd44670cb5f1315988f7c9271ac5f8f",
+          "color": "",
+          "source_id": "p39i03"
+        },
+        {
+          "file": "photos/ea8acd0afa8dd39c1aaa0fa4dab8a76da146de0e2b4e649bb52c885701476a58.jpg",
+          "sha256": "ea8acd0afa8dd39c1aaa0fa4dab8a76da146de0e2b4e649bb52c885701476a58",
+          "color": "",
+          "source_id": "p39i04"
+        }
+      ],
+      "aliases": [],
+      "revision": "4781928696234abb78ffd2ba4a4a85ad1a57522a314c60227b67ceb76eeba4df"
+    },
+    {
+      "code": "pdf26-rasteiras-040",
+      "name": "Flatform feminina — modelo 040",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        40
+      ],
+      "photos": [
+        {
+          "file": "photos/7b52e43b12e15122d41f97ecd05c7347e40ba05e9d98e5c2b1d7b0e06da6c573.jpg",
+          "sha256": "7b52e43b12e15122d41f97ecd05c7347e40ba05e9d98e5c2b1d7b0e06da6c573",
+          "color": "",
+          "source_id": "p40i01"
+        },
+        {
+          "file": "photos/b8e82d217734a0b35c602e20bfa1c577fd2b03abb369ce2319ee7d3f5dde15ef.jpg",
+          "sha256": "b8e82d217734a0b35c602e20bfa1c577fd2b03abb369ce2319ee7d3f5dde15ef",
+          "color": "",
+          "source_id": "p40i02"
+        },
+        {
+          "file": "photos/1929297b085c5e9ac79fda1e316be78969471c4fbed8aa92e4dabc13c5eaebfb.jpg",
+          "sha256": "1929297b085c5e9ac79fda1e316be78969471c4fbed8aa92e4dabc13c5eaebfb",
+          "color": "",
+          "source_id": "p40i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f20-p44-i1",
+        "rasteiras_papetes_flatforms-f20-p44-i2",
+        "rasteiras_papetes_flatforms-f20-p44-i3"
+      ],
+      "revision": "8644f5e6f6c9cb20902a53dbf787a8ca3f3109787e5d2758e37a5e60d69e0b2c"
+    },
+    {
+      "code": "pdf26-rasteiras-041",
+      "name": "Flatform feminina — modelo 041",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        41
+      ],
+      "photos": [
+        {
+          "file": "photos/6e2d5c20b4f0dafcfb9d00da365d008e117e352fcbc8032d6e581fbf006a67d0.jpg",
+          "sha256": "6e2d5c20b4f0dafcfb9d00da365d008e117e352fcbc8032d6e581fbf006a67d0",
+          "color": "",
+          "source_id": "p41i01"
+        },
+        {
+          "file": "photos/fe67ed917de662c16278e208542a254b7628ee47a91819ca9c800da4f108302f.jpg",
+          "sha256": "fe67ed917de662c16278e208542a254b7628ee47a91819ca9c800da4f108302f",
+          "color": "",
+          "source_id": "p41i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "af02f26761af6e4363a6d4d695abee9a703b4a223d222a6450220c3c6661e142"
+    },
+    {
+      "code": "pdf26-rasteiras-042",
+      "name": "Flatform feminina — modelo 042",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 16,
+      "retail": "119.90",
+      "price": "139.90",
+      "cost": "83.93",
+      "pages": [
+        42
+      ],
+      "photos": [
+        {
+          "file": "photos/5a9529853c559160fab9cc07ffe123a59f8be9c92ad44187e08ba1b544a65383.jpg",
+          "sha256": "5a9529853c559160fab9cc07ffe123a59f8be9c92ad44187e08ba1b544a65383",
+          "color": "",
+          "source_id": "p42i01"
+        },
+        {
+          "file": "photos/b3a80590ab48b4a08d2099172389871b1718a6efa384fcef06cc857bd7836953.jpg",
+          "sha256": "b3a80590ab48b4a08d2099172389871b1718a6efa384fcef06cc857bd7836953",
+          "color": "",
+          "source_id": "p42i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "c8bc1823df973cfc51bb4c8753da5fd7f401377dd29d10db37aefefc1ffd10b9"
+    },
+    {
+      "code": "pdf26-rasteiras-043",
+      "name": "Flatform feminina — modelo 043",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        43
+      ],
+      "photos": [
+        {
+          "file": "photos/1bb1f1569d4820f56f476a92f063812cf6d0e9a152a7160ecaa471c971b7cbc6.jpg",
+          "sha256": "1bb1f1569d4820f56f476a92f063812cf6d0e9a152a7160ecaa471c971b7cbc6",
+          "color": "",
+          "source_id": "p43i01"
+        },
+        {
+          "file": "photos/7b9a1a0b885b8921a1326f83e0c82d673de163311dd38c8bc6fdd74acaefc2a3.jpg",
+          "sha256": "7b9a1a0b885b8921a1326f83e0c82d673de163311dd38c8bc6fdd74acaefc2a3",
+          "color": "",
+          "source_id": "p43i02"
+        },
+        {
+          "file": "photos/7028209f897ffc408b256b14cea9856c6fab7f0359b27fb05e7ed6e60c8addc5.jpg",
+          "sha256": "7028209f897ffc408b256b14cea9856c6fab7f0359b27fb05e7ed6e60c8addc5",
+          "color": "",
+          "source_id": "p43i03"
+        },
+        {
+          "file": "photos/b081f9aa2affbec18d0bc2cab14d800a8036e59f8b4ab616914c2d086c402d73.jpg",
+          "sha256": "b081f9aa2affbec18d0bc2cab14d800a8036e59f8b4ab616914c2d086c402d73",
+          "color": "",
+          "source_id": "p43i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f20-p48-i1",
+        "rasteiras_papetes_flatforms-f20-p48-i2",
+        "rasteiras_papetes_flatforms-f20-p48-i3",
+        "rasteiras_papetes_flatforms-f20-p48-i4"
+      ],
+      "revision": "6fe37359ad0e0ee37dbd79160bcef8a908ec904d93adaf39e2c3a33e5722a51d"
+    },
+    {
+      "code": "pdf26-rasteiras-044",
+      "name": "Flatform feminina — modelo 044",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 16,
+      "retail": "119.90",
+      "price": "139.90",
+      "cost": "83.93",
+      "pages": [
+        44
+      ],
+      "photos": [
+        {
+          "file": "photos/15c593a35fbc414cb8e988db0c117a873dc449311406809fca7b66ee07b38a90.jpg",
+          "sha256": "15c593a35fbc414cb8e988db0c117a873dc449311406809fca7b66ee07b38a90",
+          "color": "",
+          "source_id": "p44i01"
+        },
+        {
+          "file": "photos/ddcb7b51ba6511c91761ac22de8948fc1eaa038e07a0a06445097a66bb12fe47.jpg",
+          "sha256": "ddcb7b51ba6511c91761ac22de8948fc1eaa038e07a0a06445097a66bb12fe47",
+          "color": "",
+          "source_id": "p44i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "a725108bb773b32f33f01bd35ea545c18fd662f21d9231317167cfaaed11d579"
+    },
+    {
+      "code": "pdf26-rasteiras-045",
+      "name": "Flatform feminina Dijean — modelo 045",
+      "brand": "Dijean",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        45
+      ],
+      "photos": [
+        {
+          "file": "photos/6eea82b069bf7aec2fa2fb2789d246b61cefea6346d0a4e87ee71d7530c9d6a0.jpg",
+          "sha256": "6eea82b069bf7aec2fa2fb2789d246b61cefea6346d0a4e87ee71d7530c9d6a0",
+          "color": "",
+          "source_id": "p45i01"
+        },
+        {
+          "file": "photos/0191c903e0eb60ea3fe21e9c93a49d83f03e187e9a29be1eb6f329364cda1147.jpg",
+          "sha256": "0191c903e0eb60ea3fe21e9c93a49d83f03e187e9a29be1eb6f329364cda1147",
+          "color": "",
+          "source_id": "p45i02"
+        },
+        {
+          "file": "photos/f2a03b9e469668f80e5a3abb9e4362fd6d89ae3d9d4cca98c10beb805c56a239.jpg",
+          "sha256": "f2a03b9e469668f80e5a3abb9e4362fd6d89ae3d9d4cca98c10beb805c56a239",
+          "color": "",
+          "source_id": "p45i03"
+        },
+        {
+          "file": "photos/d434a1c002b4142c8872dcff819498771ae5078ebab53cfe951055b964caa120.jpg",
+          "sha256": "d434a1c002b4142c8872dcff819498771ae5078ebab53cfe951055b964caa120",
+          "color": "",
+          "source_id": "p45i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f13-p51-i1",
+        "rasteiras_papetes_flatforms-f13-p51-i2",
+        "rasteiras_papetes_flatforms-f13-p51-i3"
+      ],
+      "revision": "4af1b683f9ee25cd04bac2727bb11f0f61006304821ca3a069972b43d3294c2e"
+    },
+    {
+      "code": "pdf26-rasteiras-046",
+      "name": "Flatform feminina — modelo 046",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        46
+      ],
+      "photos": [
+        {
+          "file": "photos/25cae1ec40c66780e097ba6ffe1bcfa10e97f8e2577d56839f8a7290fdf9123b.jpg",
+          "sha256": "25cae1ec40c66780e097ba6ffe1bcfa10e97f8e2577d56839f8a7290fdf9123b",
+          "color": "",
+          "source_id": "p46i01"
+        },
+        {
+          "file": "photos/9d2712287a6cb2f9560398fc79fbac0d4cfc2c9b9283be3f97423983d3ec78e4.jpg",
+          "sha256": "9d2712287a6cb2f9560398fc79fbac0d4cfc2c9b9283be3f97423983d3ec78e4",
+          "color": "",
+          "source_id": "p46i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f20-p52-i1",
+        "rasteiras_papetes_flatforms-f20-p52-i2"
+      ],
+      "revision": "3c90b19e48a3e55ae3aaa1c24a0cab610ca2e9f700fa6badb9693ccbc954c007"
+    },
+    {
+      "code": "pdf26-rasteiras-047",
+      "name": "Flatform feminina Miu Miu — modelo 047",
+      "brand": "Miu Miu",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        47
+      ],
+      "photos": [
+        {
+          "file": "photos/169b235d7cdef9c2852e59effe464efb96d06e89d6f38d1fb0676b16f0c2e1b7.jpg",
+          "sha256": "169b235d7cdef9c2852e59effe464efb96d06e89d6f38d1fb0676b16f0c2e1b7",
+          "color": "",
+          "source_id": "p47i01"
+        },
+        {
+          "file": "photos/fb96c0603c2fa8100e1f0bdd893f3c3e8277a844ea2bfeafb078b917dff3cfc7.jpg",
+          "sha256": "fb96c0603c2fa8100e1f0bdd893f3c3e8277a844ea2bfeafb078b917dff3cfc7",
+          "color": "",
+          "source_id": "p47i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "c1bc7f089680011a856e941b45fd0b6c7155f8fdbca21ce60c155424db464097"
+    },
+    {
+      "code": "pdf26-rasteiras-048",
+      "name": "Flatform feminina — modelo 048",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        48
+      ],
+      "photos": [
+        {
+          "file": "photos/6bab8908ece0cda1861f6b3f70e7a8be6d1607ccfcfe26ec43ad455b6bcb02f9.jpg",
+          "sha256": "6bab8908ece0cda1861f6b3f70e7a8be6d1607ccfcfe26ec43ad455b6bcb02f9",
+          "color": "",
+          "source_id": "p48i01"
+        },
+        {
+          "file": "photos/c00ef4de39fcbd78fde2ce1481f46edc99dfb7a70eda645cd00e3597c6f77504.jpg",
+          "sha256": "c00ef4de39fcbd78fde2ce1481f46edc99dfb7a70eda645cd00e3597c6f77504",
+          "color": "",
+          "source_id": "p48i02"
+        },
+        {
+          "file": "photos/65ecfd4f569fc0bfa10e67cdea79d043d087e509ea9a7277ca779ddb33ba9746.jpg",
+          "sha256": "65ecfd4f569fc0bfa10e67cdea79d043d087e509ea9a7277ca779ddb33ba9746",
+          "color": "",
+          "source_id": "p48i03"
+        },
+        {
+          "file": "photos/6c02a948117594cb77d8ea353fb6114fe5f1400e9ea09b0b188e292a17d4f269.jpg",
+          "sha256": "6c02a948117594cb77d8ea353fb6114fe5f1400e9ea09b0b188e292a17d4f269",
+          "color": "",
+          "source_id": "p48i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f20-p57-i1",
+        "rasteiras_papetes_flatforms-f20-p57-i2",
+        "rasteiras_papetes_flatforms-f20-p57-i3",
+        "rasteiras_papetes_flatforms-f20-p57-i4"
+      ],
+      "revision": "afa6edfc6e176db124c1144f0fb9dcb3b4419405e3b5644923525a4e6254c6a5"
+    },
+    {
+      "code": "pdf26-rasteiras-049",
+      "name": "Flatform feminina Dijean — modelo 049",
+      "brand": "Dijean",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        49
+      ],
+      "photos": [
+        {
+          "file": "photos/d873e6781190c83c63d1a1dfe1f12d3941fa3e68688b5307f54acf41bd256679.jpg",
+          "sha256": "d873e6781190c83c63d1a1dfe1f12d3941fa3e68688b5307f54acf41bd256679",
+          "color": "",
+          "source_id": "p49i01"
+        },
+        {
+          "file": "photos/7af3866046ca55cb8b374fb63674a708bb6152184407f99b1cc7db2bfc1a0aa7.jpg",
+          "sha256": "7af3866046ca55cb8b374fb63674a708bb6152184407f99b1cc7db2bfc1a0aa7",
+          "color": "",
+          "source_id": "p49i02"
+        },
+        {
+          "file": "photos/c202a73d859bb61653d851f706b73a6aa4c2535fd8c5f1e8718cc04cef72879a.jpg",
+          "sha256": "c202a73d859bb61653d851f706b73a6aa4c2535fd8c5f1e8718cc04cef72879a",
+          "color": "",
+          "source_id": "p49i03"
+        },
+        {
+          "file": "photos/10f1cff02735437792f5b051341e65c178e12b4cbf428c849e86384f6d19f4f5.jpg",
+          "sha256": "10f1cff02735437792f5b051341e65c178e12b4cbf428c849e86384f6d19f4f5",
+          "color": "",
+          "source_id": "p49i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f14-p59-i1",
+        "rasteiras_papetes_flatforms-f14-p59-i2",
+        "rasteiras_papetes_flatforms-f14-p59-i3",
+        "rasteiras_papetes_flatforms-f14-p59-i4"
+      ],
+      "revision": "536ca1f530d4d5b260e447bc44e3d2a4be3ce7568fe57a18c4b0b2ef945ad0a6"
+    },
+    {
+      "code": "pdf26-rasteiras-050",
+      "name": "Flatform feminina — modelo 050 faixa 17",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        50
+      ],
+      "photos": [
+        {
+          "file": "photos/d670392b4b6de942cdd4df43c0650f04b46ee073d9b5e35b3ffaf7e2dbde00a4.jpg",
+          "sha256": "d670392b4b6de942cdd4df43c0650f04b46ee073d9b5e35b3ffaf7e2dbde00a4",
+          "color": "",
+          "source_id": "p50i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "c83182e46cb26cd54f53dbca896e5ffce556eeb4e7022c46858a1fd4a60bc939"
+    },
+    {
+      "code": "pdf26-rasteiras-051",
+      "name": "Flatform feminina — modelo 050 faixa 18",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        50
+      ],
+      "photos": [
+        {
+          "file": "photos/d0fa393ca97e9708ba75fbd261ed40bdbf3b55818194ee9a635b5d58d1efab30.jpg",
+          "sha256": "d0fa393ca97e9708ba75fbd261ed40bdbf3b55818194ee9a635b5d58d1efab30",
+          "color": "",
+          "source_id": "p50i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "8a7b2610899d6666c1002a2d89e879e1105202ba61d0f197a7abec24440765a7"
+    },
+    {
+      "code": "pdf26-rasteiras-052",
+      "name": "Flatform feminina — modelo 051",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        51
+      ],
+      "photos": [
+        {
+          "file": "photos/56dbc69c80c551af0960b6c739d3111aa737cef15c695bcf1131d9773cb693f3.jpg",
+          "sha256": "56dbc69c80c551af0960b6c739d3111aa737cef15c695bcf1131d9773cb693f3",
+          "color": "",
+          "source_id": "p51i01"
+        },
+        {
+          "file": "photos/7db1b00a27e2cf87c2b016488ecf3f810a1a278bd7df34622f172543b2ec6ee5.jpg",
+          "sha256": "7db1b00a27e2cf87c2b016488ecf3f810a1a278bd7df34622f172543b2ec6ee5",
+          "color": "",
+          "source_id": "p51i02"
+        },
+        {
+          "file": "photos/1ea7d820b12e2e83a7f46bfb3d7c2b56e4c2d7d4c3d6d670ef136335387efda5.jpg",
+          "sha256": "1ea7d820b12e2e83a7f46bfb3d7c2b56e4c2d7d4c3d6d670ef136335387efda5",
+          "color": "",
+          "source_id": "p51i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f26-p61-i1",
+        "rasteiras_papetes_flatforms-f26-p61-i2",
+        "rasteiras_papetes_flatforms-f26-p61-i3"
+      ],
+      "revision": "b80bfdfb800a47d26a2cf2bfd532d8e79e0c71180eeef7d7746c06d50d43ce71"
+    },
+    {
+      "code": "pdf26-rasteiras-053",
+      "name": "Flatform feminina — modelo 052",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        52
+      ],
+      "photos": [
+        {
+          "file": "photos/d9548436fa3011e21cdccaca2959e987fce9d00e586623eb71276a0af125f548.jpg",
+          "sha256": "d9548436fa3011e21cdccaca2959e987fce9d00e586623eb71276a0af125f548",
+          "color": "",
+          "source_id": "p52i01"
+        },
+        {
+          "file": "photos/6a501e0c892220858e4614516e66130a8fdccc67b03dd7bb2af3ae0d7110ae8c.jpg",
+          "sha256": "6a501e0c892220858e4614516e66130a8fdccc67b03dd7bb2af3ae0d7110ae8c",
+          "color": "",
+          "source_id": "p52i02"
+        },
+        {
+          "file": "photos/4cc19e6fbefc93602032ef4968ef8bc4b9a076b2a667521c9b6a1cc1949a590d.jpg",
+          "sha256": "4cc19e6fbefc93602032ef4968ef8bc4b9a076b2a667521c9b6a1cc1949a590d",
+          "color": "",
+          "source_id": "p52i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f20-p63-i1",
+        "rasteiras_papetes_flatforms-f20-p63-i2",
+        "rasteiras_papetes_flatforms-f20-p63-i3"
+      ],
+      "revision": "01b8fea8cd76a84c2649aa0fa500d8e00903d9c962a9090bbdff6ec2ba1fdb8c"
+    },
+    {
+      "code": "pdf26-rasteiras-054",
+      "name": "Flatform feminina — modelo 053",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        53
+      ],
+      "photos": [
+        {
+          "file": "photos/c1ca1aa5f53687f2f06eb8f25dac4f67e910056b92a2494107d0f3e49cc1f6a5.jpg",
+          "sha256": "c1ca1aa5f53687f2f06eb8f25dac4f67e910056b92a2494107d0f3e49cc1f6a5",
+          "color": "",
+          "source_id": "p53i01"
+        },
+        {
+          "file": "photos/4ff530c92755933c0ac66be39eb23070c0cf115593f4cf27ab1d1d5bd5541ea2.jpg",
+          "sha256": "4ff530c92755933c0ac66be39eb23070c0cf115593f4cf27ab1d1d5bd5541ea2",
+          "color": "",
+          "source_id": "p53i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "1bc97b447afcb195ce715fe7d7a3c467c9e6bf92170a4e598057ae8d806fefdd"
+    },
+    {
+      "code": "pdf26-rasteiras-055",
+      "name": "Flatform feminina — modelo 054",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        54
+      ],
+      "photos": [
+        {
+          "file": "photos/4b00b67090668ba7afc24c6f243ddff41aca471af74d6b804067301330a54ad9.jpg",
+          "sha256": "4b00b67090668ba7afc24c6f243ddff41aca471af74d6b804067301330a54ad9",
+          "color": "",
+          "source_id": "p54i01"
+        },
+        {
+          "file": "photos/5fd5d453a3be205a22873d99c0e1299df605241ef509281e9a333fb5c438c9ae.jpg",
+          "sha256": "5fd5d453a3be205a22873d99c0e1299df605241ef509281e9a333fb5c438c9ae",
+          "color": "",
+          "source_id": "p54i02"
+        },
+        {
+          "file": "photos/d2160f8d37def01bc21ef07598a22a2bd737be1766f45f6a7f394e263e2387bd.jpg",
+          "sha256": "d2160f8d37def01bc21ef07598a22a2bd737be1766f45f6a7f394e263e2387bd",
+          "color": "",
+          "source_id": "p54i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f20-p65-i1",
+        "rasteiras_papetes_flatforms-f20-p65-i3",
+        "rasteiras_papetes_flatforms-f20-p65-i4"
+      ],
+      "revision": "bfc67ee8318c7b5a8b99acab61ed8b7a6f7881b7697eee8e3556f5c2c471323a"
+    },
+    {
+      "code": "pdf26-rasteiras-056",
+      "name": "Flatform feminina — modelo 055",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        55
+      ],
+      "photos": [
+        {
+          "file": "photos/2b6c675231e88428e90bbb48ecd829aa2315a217f4acaa1db2ffceebab1c4a25.jpg",
+          "sha256": "2b6c675231e88428e90bbb48ecd829aa2315a217f4acaa1db2ffceebab1c4a25",
+          "color": "",
+          "source_id": "p55i01"
+        },
+        {
+          "file": "photos/3fec0d1fe9c735760b37e0329841393664482ea740d3ffd15d81ed5ca11fd0ac.jpg",
+          "sha256": "3fec0d1fe9c735760b37e0329841393664482ea740d3ffd15d81ed5ca11fd0ac",
+          "color": "",
+          "source_id": "p55i02"
+        },
+        {
+          "file": "photos/b51804536cab3aef95e4f9f22dcb024be4bd8c997cc02c337307bb014b0aec83.jpg",
+          "sha256": "b51804536cab3aef95e4f9f22dcb024be4bd8c997cc02c337307bb014b0aec83",
+          "color": "",
+          "source_id": "p55i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p68-i1",
+        "rasteiras_papetes_flatforms-f18-p68-i2",
+        "rasteiras_papetes_flatforms-f18-p68-i3"
+      ],
+      "revision": "5430812a9d583e84cc0a27c6874ff715148f6cdd8218a6919f03b5aa48b14236"
+    },
+    {
+      "code": "pdf26-rasteiras-057",
+      "name": "Flatform feminina — modelo 056",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        56
+      ],
+      "photos": [
+        {
+          "file": "photos/fdaa4add37d261eb0ce1c93b6bca7c6f6cbb8a976409128f9f58d29132f2ddc3.jpg",
+          "sha256": "fdaa4add37d261eb0ce1c93b6bca7c6f6cbb8a976409128f9f58d29132f2ddc3",
+          "color": "",
+          "source_id": "p56i01"
+        },
+        {
+          "file": "photos/3b2b5ea79cf2b2b6d762bd4ce97741faf745ab58c9e94b978b8e000a3cfabe2e.jpg",
+          "sha256": "3b2b5ea79cf2b2b6d762bd4ce97741faf745ab58c9e94b978b8e000a3cfabe2e",
+          "color": "",
+          "source_id": "p56i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "451ecf9c6aebc8641650bdd2a9ed666fb02aca87a0c1e3bdf5c531f4b10ae3a4"
+    },
+    {
+      "code": "pdf26-rasteiras-058",
+      "name": "Flatform feminina — modelo 057 faixa 17",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        57
+      ],
+      "photos": [
+        {
+          "file": "photos/4574d30859e93dab0e0f28c2aaf4db6f77b88204989c716c57f01194966f2d09.jpg",
+          "sha256": "4574d30859e93dab0e0f28c2aaf4db6f77b88204989c716c57f01194966f2d09",
+          "color": "",
+          "source_id": "p57i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "4967bf0e9ed1654c792dff231fe63d71db7ece7bd6e2c869a51bb981eb8215c1"
+    },
+    {
+      "code": "pdf26-rasteiras-059",
+      "name": "Flatform feminina — modelo 057 faixa 18",
+      "brand": "",
+      "category": "Flatforms Femininas",
+      "description": "Flatform feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        57
+      ],
+      "photos": [
+        {
+          "file": "photos/c7c0717be016de921836439a645891eb0c804baf6df348fc5f34919451615470.jpg",
+          "sha256": "c7c0717be016de921836439a645891eb0c804baf6df348fc5f34919451615470",
+          "color": "",
+          "source_id": "p57i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "17496f253a1e8952db6df011ecd48af1920ea12d7c13893dd408abaca69f13d9"
+    },
+    {
+      "code": "pdf26-rasteiras-060",
+      "name": "Papete feminina — modelo 059",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        59
+      ],
+      "photos": [
+        {
+          "file": "photos/a7ef43535e96eecd6b6edc44e38bdb683d11bcbf2e6ef23d1ad676c1b086062b.jpg",
+          "sha256": "a7ef43535e96eecd6b6edc44e38bdb683d11bcbf2e6ef23d1ad676c1b086062b",
+          "color": "",
+          "source_id": "p59i01"
+        },
+        {
+          "file": "photos/e6ae622c97ad728decd76330f0bbc41f8f6a60360482d722bd3e3cac6bdf075c.jpg",
+          "sha256": "e6ae622c97ad728decd76330f0bbc41f8f6a60360482d722bd3e3cac6bdf075c",
+          "color": "",
+          "source_id": "p59i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "12e1acf5db6024dc3ab8f51a9d601fa5488a059843745ce011895323975cf272"
+    },
+    {
+      "code": "pdf26-rasteiras-061",
+      "name": "Papete feminina — modelo 060",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        60
+      ],
+      "photos": [
+        {
+          "file": "photos/63be69acd4203fd7dd3c17f80678bebd86b30839ee149a5e85e5ea35ef3ebc9f.jpg",
+          "sha256": "63be69acd4203fd7dd3c17f80678bebd86b30839ee149a5e85e5ea35ef3ebc9f",
+          "color": "",
+          "source_id": "p60i01"
+        },
+        {
+          "file": "photos/80d471effd8c41be4345271bc776e610d60952f779501fe74200f46578c1fda5.jpg",
+          "sha256": "80d471effd8c41be4345271bc776e610d60952f779501fe74200f46578c1fda5",
+          "color": "",
+          "source_id": "p60i02"
+        },
+        {
+          "file": "photos/26ac989b208e007f180bcbdf74610069cfd41044eaef187c01144a9f8f4fdc6b.jpg",
+          "sha256": "26ac989b208e007f180bcbdf74610069cfd41044eaef187c01144a9f8f4fdc6b",
+          "color": "",
+          "source_id": "p60i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f17-p74-i1",
+        "rasteiras_papetes_flatforms-f17-p74-i2",
+        "rasteiras_papetes_flatforms-f17-p74-i3"
+      ],
+      "revision": "c44ee84500434dcb48ca3e6076efd57a6814413694b5964a283b9834870cf73a"
+    },
+    {
+      "code": "pdf26-rasteiras-062",
+      "name": "Papete feminina — modelo 061",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        61
+      ],
+      "photos": [
+        {
+          "file": "photos/31eeb980353cfdb775b5cc570eb0b34f18ac7a78aec7050d20e6ea15ee66ec9c.jpg",
+          "sha256": "31eeb980353cfdb775b5cc570eb0b34f18ac7a78aec7050d20e6ea15ee66ec9c",
+          "color": "",
+          "source_id": "p61i01"
+        },
+        {
+          "file": "photos/9461268f4ad3d28672c1fb2b988a63d822d9eacd1d3d0ef335b9638047d3ecbf.jpg",
+          "sha256": "9461268f4ad3d28672c1fb2b988a63d822d9eacd1d3d0ef335b9638047d3ecbf",
+          "color": "",
+          "source_id": "p61i02"
+        },
+        {
+          "file": "photos/f28c16b55c49bc12e2df293f49b783fdc756b08fd7a590563dec08e08b4848b2.jpg",
+          "sha256": "f28c16b55c49bc12e2df293f49b783fdc756b08fd7a590563dec08e08b4848b2",
+          "color": "",
+          "source_id": "p61i03"
+        },
+        {
+          "file": "photos/c118af412b576da3915b17ce7bdde2a9a577b0a3371052c8590847a31eb5b929.jpg",
+          "sha256": "c118af412b576da3915b17ce7bdde2a9a577b0a3371052c8590847a31eb5b929",
+          "color": "",
+          "source_id": "p61i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f13-p72-i1",
+        "rasteiras_papetes_flatforms-f13-p72-i2",
+        "rasteiras_papetes_flatforms-f13-p72-i3",
+        "rasteiras_papetes_flatforms-f13-p72-i4"
+      ],
+      "revision": "1e58fcfc5b3350df8dda41aee657f61b590e8dab6e76259eb4dae2472a466b78"
+    },
+    {
+      "code": "pdf26-rasteiras-063",
+      "name": "Papete feminina — modelo 062",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        62
+      ],
+      "photos": [
+        {
+          "file": "photos/1121899600046acce402b8482e32986ba07bb4a50952fc92693050202290521c.jpg",
+          "sha256": "1121899600046acce402b8482e32986ba07bb4a50952fc92693050202290521c",
+          "color": "",
+          "source_id": "p62i01"
+        },
+        {
+          "file": "photos/520153e9efd912abecdb112575823e55a16a084fd303ae11a7c7788e8e380965.jpg",
+          "sha256": "520153e9efd912abecdb112575823e55a16a084fd303ae11a7c7788e8e380965",
+          "color": "",
+          "source_id": "p62i02"
+        },
+        {
+          "file": "photos/8f41a9fceea643db1654341303101cef95b5557b90f64bc9fd8b3d1f9e8b4ec0.jpg",
+          "sha256": "8f41a9fceea643db1654341303101cef95b5557b90f64bc9fd8b3d1f9e8b4ec0",
+          "color": "",
+          "source_id": "p62i03"
+        },
+        {
+          "file": "photos/3cf3b23c398a2556ff22acf8b8548004d68131c23a36662aad46681aa3e3194e.jpg",
+          "sha256": "3cf3b23c398a2556ff22acf8b8548004d68131c23a36662aad46681aa3e3194e",
+          "color": "",
+          "source_id": "p62i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f17-p75-i1",
+        "rasteiras_papetes_flatforms-f17-p75-i2",
+        "rasteiras_papetes_flatforms-f17-p75-i3",
+        "rasteiras_papetes_flatforms-f17-p75-i4"
+      ],
+      "revision": "406fb0935018e851ff1e940e0cfc36271ef1215b8df1e1da0dbb9dea2850d3f8"
+    },
+    {
+      "code": "pdf26-rasteiras-064",
+      "name": "Papete feminina — modelo 063",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        63
+      ],
+      "photos": [
+        {
+          "file": "photos/8deef4b7d08b44a53710f74036265b7acaec2d706717a9532886ef3eb8033fc2.jpg",
+          "sha256": "8deef4b7d08b44a53710f74036265b7acaec2d706717a9532886ef3eb8033fc2",
+          "color": "",
+          "source_id": "p63i01"
+        },
+        {
+          "file": "photos/1c88cbcc6ac663851d90ae893de89499a57e4b737b50284cd5092ae99a62aff1.jpg",
+          "sha256": "1c88cbcc6ac663851d90ae893de89499a57e4b737b50284cd5092ae99a62aff1",
+          "color": "",
+          "source_id": "p63i02"
+        },
+        {
+          "file": "photos/7293fb1bfc65990fdc1fb1cc503df46744517a427d4d9a0cec5f2e9186b33b85.jpg",
+          "sha256": "7293fb1bfc65990fdc1fb1cc503df46744517a427d4d9a0cec5f2e9186b33b85",
+          "color": "",
+          "source_id": "p63i03"
+        },
+        {
+          "file": "photos/56d255268693f036b7b8cd57d4a6a180ee48aad9c8c670d6a44916fc1b3bdda4.jpg",
+          "sha256": "56d255268693f036b7b8cd57d4a6a180ee48aad9c8c670d6a44916fc1b3bdda4",
+          "color": "",
+          "source_id": "p63i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f13-p76-i1",
+        "rasteiras_papetes_flatforms-f13-p76-i2",
+        "rasteiras_papetes_flatforms-f13-p76-i3",
+        "rasteiras_papetes_flatforms-f13-p76-i4"
+      ],
+      "revision": "141c4df4188ce25ee33d93d20300871ce33d6a1a2a08e9692f4b91c9667501ed"
+    },
+    {
+      "code": "pdf26-rasteiras-065",
+      "name": "Papete feminina — modelo 064",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        64
+      ],
+      "photos": [
+        {
+          "file": "photos/71cd059a80b664c29b9594ef992905c27853cdc644618594f16742bd11e9bcc3.jpg",
+          "sha256": "71cd059a80b664c29b9594ef992905c27853cdc644618594f16742bd11e9bcc3",
+          "color": "",
+          "source_id": "p64i01"
+        },
+        {
+          "file": "photos/fa3cd6c5389ae964431c687187c7b30ce74223ab8c053396526ab1a011b86cc8.jpg",
+          "sha256": "fa3cd6c5389ae964431c687187c7b30ce74223ab8c053396526ab1a011b86cc8",
+          "color": "",
+          "source_id": "p64i02"
+        },
+        {
+          "file": "photos/ce32b1f1075d69ef4eff1678790e793c5aa7f45cca8985b7cf012503e6dcc21a.jpg",
+          "sha256": "ce32b1f1075d69ef4eff1678790e793c5aa7f45cca8985b7cf012503e6dcc21a",
+          "color": "",
+          "source_id": "p64i03"
+        },
+        {
+          "file": "photos/11b21c9a9d76697568294bf9c15bda3551adeb1ef625c0cc066bea75df40b433.jpg",
+          "sha256": "11b21c9a9d76697568294bf9c15bda3551adeb1ef625c0cc066bea75df40b433",
+          "color": "",
+          "source_id": "p64i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f23-p77-i1",
+        "rasteiras_papetes_flatforms-f23-p77-i2",
+        "rasteiras_papetes_flatforms-f23-p77-i3",
+        "rasteiras_papetes_flatforms-f23-p77-i4"
+      ],
+      "revision": "5d1e2d140829dfe9a7810f21d4c7e03e383335213a59a59cdb805348424f477b"
+    },
+    {
+      "code": "pdf26-rasteiras-066",
+      "name": "Papete feminina — modelo 065",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        65
+      ],
+      "photos": [
+        {
+          "file": "photos/6f08b560c423d6942fc03ec587377c9751716790e4278f22257065376731d124.jpg",
+          "sha256": "6f08b560c423d6942fc03ec587377c9751716790e4278f22257065376731d124",
+          "color": "",
+          "source_id": "p65i01"
+        },
+        {
+          "file": "photos/2ffec6ef6fdeb14fb78eee736e9afa8790e66dd22ef726bbdf4bc3b2f1acf9eb.jpg",
+          "sha256": "2ffec6ef6fdeb14fb78eee736e9afa8790e66dd22ef726bbdf4bc3b2f1acf9eb",
+          "color": "",
+          "source_id": "p65i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f13-p78-i1",
+        "rasteiras_papetes_flatforms-f13-p78-i2"
+      ],
+      "revision": "3015fd7bf92371232211cb91cb3b7dadf1056df463515f9b509fd2cd41daa297"
+    },
+    {
+      "code": "pdf26-rasteiras-067",
+      "name": "Papete feminina — modelo 066",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        66
+      ],
+      "photos": [
+        {
+          "file": "photos/b4a0fd034dade0f2e088817388ce7862276e8f820c8faf90cb537ed2adc45700.jpg",
+          "sha256": "b4a0fd034dade0f2e088817388ce7862276e8f820c8faf90cb537ed2adc45700",
+          "color": "",
+          "source_id": "p66i01"
+        },
+        {
+          "file": "photos/c5c3251e1f95454eea4e14be49e355328c8525730b2b238e3a6ab9158f257655.jpg",
+          "sha256": "c5c3251e1f95454eea4e14be49e355328c8525730b2b238e3a6ab9158f257655",
+          "color": "",
+          "source_id": "p66i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f24-p79-i1",
+        "rasteiras_papetes_flatforms-f24-p79-i2"
+      ],
+      "revision": "720b08851834de7922ba1d9cf27fcde7ea4679075bc19b92470bce7bed5e8c97"
+    },
+    {
+      "code": "pdf26-rasteiras-068",
+      "name": "Papete feminina — modelo 067",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        67
+      ],
+      "photos": [
+        {
+          "file": "photos/02b63d9116c45eb85de96f0d9b5bcacf9f8b012969d506e21cb5a2c4805a2fd7.jpg",
+          "sha256": "02b63d9116c45eb85de96f0d9b5bcacf9f8b012969d506e21cb5a2c4805a2fd7",
+          "color": "",
+          "source_id": "p67i01"
+        },
+        {
+          "file": "photos/0c8396f159231e96db3fb4d48b0cde9d5779fcfe41330eae1a15d9f5a07378be.jpg",
+          "sha256": "0c8396f159231e96db3fb4d48b0cde9d5779fcfe41330eae1a15d9f5a07378be",
+          "color": "",
+          "source_id": "p67i02"
+        },
+        {
+          "file": "photos/bcc5694046ef5ea6ae9264e47a1a679cb25ab157c13816546311a73c5fc96c3a.jpg",
+          "sha256": "bcc5694046ef5ea6ae9264e47a1a679cb25ab157c13816546311a73c5fc96c3a",
+          "color": "",
+          "source_id": "p67i03"
+        },
+        {
+          "file": "photos/ef8adbe7c10644abe6dbffa4db5db4c4e7470c979e0797d3a99801150f72280f.jpg",
+          "sha256": "ef8adbe7c10644abe6dbffa4db5db4c4e7470c979e0797d3a99801150f72280f",
+          "color": "",
+          "source_id": "p67i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f17-p80-i1",
+        "rasteiras_papetes_flatforms-f17-p80-i2",
+        "rasteiras_papetes_flatforms-f17-p80-i3",
+        "rasteiras_papetes_flatforms-f17-p80-i4"
+      ],
+      "revision": "4a9e62387850c5812f60356a31479d088fc4983d9a23d17c42df37faf0706c92"
+    },
+    {
+      "code": "pdf26-rasteiras-069",
+      "name": "Papete feminina — modelo 068",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        68
+      ],
+      "photos": [
+        {
+          "file": "photos/97d9858881e8d6ad46a9c9fe37ce11882fc5ac5edbdf6b1a448f453a7497f08b.jpg",
+          "sha256": "97d9858881e8d6ad46a9c9fe37ce11882fc5ac5edbdf6b1a448f453a7497f08b",
+          "color": "",
+          "source_id": "p68i01"
+        },
+        {
+          "file": "photos/0de2d1b33f4aa93f56ebff2652ed45729ba8c4d0af6cd01358036e8e4f67b857.jpg",
+          "sha256": "0de2d1b33f4aa93f56ebff2652ed45729ba8c4d0af6cd01358036e8e4f67b857",
+          "color": "",
+          "source_id": "p68i02"
+        },
+        {
+          "file": "photos/f23dc124edb943971e0d0e02eeadbb27b9ba376b52b1abaa93b017980bbf767f.jpg",
+          "sha256": "f23dc124edb943971e0d0e02eeadbb27b9ba376b52b1abaa93b017980bbf767f",
+          "color": "",
+          "source_id": "p68i03"
+        },
+        {
+          "file": "photos/6590f357c1e5fb5e471117868a3907387ba6afbbb8cd508c88a226810a6a17a8.jpg",
+          "sha256": "6590f357c1e5fb5e471117868a3907387ba6afbbb8cd508c88a226810a6a17a8",
+          "color": "",
+          "source_id": "p68i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p81-i1",
+        "rasteiras_papetes_flatforms-f18-p81-i2",
+        "rasteiras_papetes_flatforms-f18-p81-i3",
+        "rasteiras_papetes_flatforms-f18-p81-i4"
+      ],
+      "revision": "5359cfe19847c24833efac0de31af1a5563e6e2b7dd59a713c0325c73fc3e4ca"
+    },
+    {
+      "code": "pdf26-rasteiras-070",
+      "name": "Papete feminina — modelo 069",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        69
+      ],
+      "photos": [
+        {
+          "file": "photos/ad3fec3b204570610c3e86c10155aa27d2c570fe428f80c138484b4eb135a0a6.jpg",
+          "sha256": "ad3fec3b204570610c3e86c10155aa27d2c570fe428f80c138484b4eb135a0a6",
+          "color": "",
+          "source_id": "p69i01"
+        },
+        {
+          "file": "photos/f7c35e46ca79127571a7e1ebc8c8d5104a7217c6fc9e15ddefde8126f78901ed.jpg",
+          "sha256": "f7c35e46ca79127571a7e1ebc8c8d5104a7217c6fc9e15ddefde8126f78901ed",
+          "color": "",
+          "source_id": "p69i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f17-p82-i1",
+        "rasteiras_papetes_flatforms-f17-p82-i2"
+      ],
+      "revision": "532213db4e3f49f7f5763aea456ddd39472db2abc36ec7b7716d0a3b34a7cac2"
+    },
+    {
+      "code": "pdf26-rasteiras-071",
+      "name": "Papete feminina — modelo 070",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 31,
+      "retail": "269.90",
+      "price": "289.90",
+      "cost": "188.93",
+      "pages": [
+        70
+      ],
+      "photos": [
+        {
+          "file": "photos/1ea1e0d08ba7ca40b75fb5832762eabcc8b67264b0cd893eb30573ccff162a69.jpg",
+          "sha256": "1ea1e0d08ba7ca40b75fb5832762eabcc8b67264b0cd893eb30573ccff162a69",
+          "color": "",
+          "source_id": "p70i01"
+        },
+        {
+          "file": "photos/c5d87a1ffe8ff961f939699cd95ae4e1bf01de2ae3cf22447a2b3e159bd5107a.jpg",
+          "sha256": "c5d87a1ffe8ff961f939699cd95ae4e1bf01de2ae3cf22447a2b3e159bd5107a",
+          "color": "",
+          "source_id": "p70i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "bb5ec42808c2a34203a6359db0e2d3d4f40561a3ddf33b81a64330148819a2f6"
+    },
+    {
+      "code": "pdf26-rasteiras-072",
+      "name": "Papete feminina — modelo 071",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        71
+      ],
+      "photos": [
+        {
+          "file": "photos/b78dfd5be51c3e99da55cf8901afa803a5516b6aead60dbd125fe4ee5e9538a4.jpg",
+          "sha256": "b78dfd5be51c3e99da55cf8901afa803a5516b6aead60dbd125fe4ee5e9538a4",
+          "color": "",
+          "source_id": "p71i01"
+        },
+        {
+          "file": "photos/97f2f4cf7d4925f19bb127f2cb5e8995fd1cae228267bba6184476cf6bf50928.jpg",
+          "sha256": "97f2f4cf7d4925f19bb127f2cb5e8995fd1cae228267bba6184476cf6bf50928",
+          "color": "",
+          "source_id": "p71i02"
+        },
+        {
+          "file": "photos/78975ced8cf5a8d044f43214428abd953e660291ac39a250b818aaa51c54baae.jpg",
+          "sha256": "78975ced8cf5a8d044f43214428abd953e660291ac39a250b818aaa51c54baae",
+          "color": "",
+          "source_id": "p71i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f13-p84-i1",
+        "rasteiras_papetes_flatforms-f13-p84-i2",
+        "rasteiras_papetes_flatforms-f13-p84-i3"
+      ],
+      "revision": "fe9336dc4c4a1f0a974ad43c6be54ca58b37e75bb7c0c0575201b23fd5515a45"
+    },
+    {
+      "code": "pdf26-rasteiras-073",
+      "name": "Papete feminina — modelo 072",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        72
+      ],
+      "photos": [
+        {
+          "file": "photos/84c92e4bc82564522d21f381f8b1730f947d6c41dd814ece4643d4a19f86eaa9.jpg",
+          "sha256": "84c92e4bc82564522d21f381f8b1730f947d6c41dd814ece4643d4a19f86eaa9",
+          "color": "",
+          "source_id": "p72i01"
+        },
+        {
+          "file": "photos/d3587476f101af472a14351a6e96d4d7a2c2a6f30e0470e595e3eb16b642fce6.jpg",
+          "sha256": "d3587476f101af472a14351a6e96d4d7a2c2a6f30e0470e595e3eb16b642fce6",
+          "color": "",
+          "source_id": "p72i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p85-i1",
+        "rasteiras_papetes_flatforms-f18-p85-i2"
+      ],
+      "revision": "66d0ff40ddff553fc7768e3d5ed162942d794f71bc268029cc11f0a2aec58bc0"
+    },
+    {
+      "code": "pdf26-rasteiras-074",
+      "name": "Papete feminina — modelo 073",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        73
+      ],
+      "photos": [
+        {
+          "file": "photos/169b235d7cdef9c2852e59effe464efb96d06e89d6f38d1fb0676b16f0c2e1b7.jpg",
+          "sha256": "169b235d7cdef9c2852e59effe464efb96d06e89d6f38d1fb0676b16f0c2e1b7",
+          "color": "",
+          "source_id": "p73i01"
+        },
+        {
+          "file": "photos/fb96c0603c2fa8100e1f0bdd893f3c3e8277a844ea2bfeafb078b917dff3cfc7.jpg",
+          "sha256": "fb96c0603c2fa8100e1f0bdd893f3c3e8277a844ea2bfeafb078b917dff3cfc7",
+          "color": "",
+          "source_id": "p73i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "223829015dfe1598d12db0e4221d79dbf8c3a189784ac32a3d39c862c93b4fe5"
+    },
+    {
+      "code": "pdf26-rasteiras-075",
+      "name": "Papete feminina — modelo 074",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        74
+      ],
+      "photos": [
+        {
+          "file": "photos/e014e65b6389e402266cf286c556ee4ae92e1f85bd0ab64eb4ab83c57505469c.jpg",
+          "sha256": "e014e65b6389e402266cf286c556ee4ae92e1f85bd0ab64eb4ab83c57505469c",
+          "color": "",
+          "source_id": "p74i01"
+        },
+        {
+          "file": "photos/569412edb9ecef42831f8b0290319056b3610a088dedd219e3b2f9786e36a989.jpg",
+          "sha256": "569412edb9ecef42831f8b0290319056b3610a088dedd219e3b2f9786e36a989",
+          "color": "",
+          "source_id": "p74i02"
+        },
+        {
+          "file": "photos/9c5e76f621e2a35f19f7ee9dece00a5a09612393848d4d5d39e8aeecc603323e.jpg",
+          "sha256": "9c5e76f621e2a35f19f7ee9dece00a5a09612393848d4d5d39e8aeecc603323e",
+          "color": "",
+          "source_id": "p74i03"
+        },
+        {
+          "file": "photos/e14a0df22877f42e45782fdba1000ee20a928f0eca4a5ead75ece4fbd2329463.jpg",
+          "sha256": "e14a0df22877f42e45782fdba1000ee20a928f0eca4a5ead75ece4fbd2329463",
+          "color": "",
+          "source_id": "p74i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f13-p86-i1",
+        "rasteiras_papetes_flatforms-f13-p86-i2",
+        "rasteiras_papetes_flatforms-f13-p86-i3",
+        "rasteiras_papetes_flatforms-f13-p86-i4"
+      ],
+      "revision": "4de3083b4f7fe1f6fa7ceec832006de47e8bf99713c2bd52e8a6c84432239f8d"
+    },
+    {
+      "code": "pdf26-rasteiras-076",
+      "name": "Papete feminina — modelo 075",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        75
+      ],
+      "photos": [
+        {
+          "file": "photos/da4b148d12e63ff9d3c5a0008c2f254966e04b8caa6a90620f449627f2dc7868.jpg",
+          "sha256": "da4b148d12e63ff9d3c5a0008c2f254966e04b8caa6a90620f449627f2dc7868",
+          "color": "",
+          "source_id": "p75i01"
+        },
+        {
+          "file": "photos/34058bb9b3abd31f217e9986a0aedc04c1db51f9640f07597ad3306940558e2c.jpg",
+          "sha256": "34058bb9b3abd31f217e9986a0aedc04c1db51f9640f07597ad3306940558e2c",
+          "color": "",
+          "source_id": "p75i02"
+        },
+        {
+          "file": "photos/ca5db4b8253d0fb62f62f9ce1c8dbfdc33821b9081364c3dd499ce176fc46a46.jpg",
+          "sha256": "ca5db4b8253d0fb62f62f9ce1c8dbfdc33821b9081364c3dd499ce176fc46a46",
+          "color": "",
+          "source_id": "p75i03"
+        },
+        {
+          "file": "photos/b858584226fd2569a79d70e614111b3ab40e517227abd20c1f15bb24e252e8e2.jpg",
+          "sha256": "b858584226fd2569a79d70e614111b3ab40e517227abd20c1f15bb24e252e8e2",
+          "color": "",
+          "source_id": "p75i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p87-i1",
+        "rasteiras_papetes_flatforms-f18-p87-i2",
+        "rasteiras_papetes_flatforms-f18-p87-i3",
+        "rasteiras_papetes_flatforms-f18-p87-i4"
+      ],
+      "revision": "a8b4ccb1633c8df7ddc18da4b3f069e52a74936ccbccc291c68d76f2e3a2edd5"
+    },
+    {
+      "code": "pdf26-rasteiras-077",
+      "name": "Papete feminina — modelo 076",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        76
+      ],
+      "photos": [
+        {
+          "file": "photos/b931ace211dab2e9a99fb07a71e90570f85f40b888043e4288effcc858ac6ad4.jpg",
+          "sha256": "b931ace211dab2e9a99fb07a71e90570f85f40b888043e4288effcc858ac6ad4",
+          "color": "",
+          "source_id": "p76i01"
+        },
+        {
+          "file": "photos/790a3afc1b9b8481f29027ee5309a889acf62cc6dd237782ef996e93091d1e50.jpg",
+          "sha256": "790a3afc1b9b8481f29027ee5309a889acf62cc6dd237782ef996e93091d1e50",
+          "color": "",
+          "source_id": "p76i02"
+        },
+        {
+          "file": "photos/26b7b177fba7853001096d9d08e16301b405db90a69e645332dc14ff4d1e5734.jpg",
+          "sha256": "26b7b177fba7853001096d9d08e16301b405db90a69e645332dc14ff4d1e5734",
+          "color": "",
+          "source_id": "p76i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p88-i1",
+        "rasteiras_papetes_flatforms-f18-p88-i2",
+        "rasteiras_papetes_flatforms-f18-p88-i3"
+      ],
+      "revision": "8d0facbd7f70e6a17e8b23be4fa97ffd3b119fb945c77188af99d1905fc0e4eb"
+    },
+    {
+      "code": "pdf26-rasteiras-078",
+      "name": "Papete feminina — modelo 077",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        77
+      ],
+      "photos": [
+        {
+          "file": "photos/55442720e9728bc2d8ee2723b17bee993a6743aaa77f93b2347e67f42ce8def0.jpg",
+          "sha256": "55442720e9728bc2d8ee2723b17bee993a6743aaa77f93b2347e67f42ce8def0",
+          "color": "",
+          "source_id": "p77i01"
+        },
+        {
+          "file": "photos/473672975dd4e964e6af2242b2bd1242a0208f445a87e6f1d45a2486a3f2b069.jpg",
+          "sha256": "473672975dd4e964e6af2242b2bd1242a0208f445a87e6f1d45a2486a3f2b069",
+          "color": "",
+          "source_id": "p77i02"
+        },
+        {
+          "file": "photos/139bc7829e37e710d0266fdbf7781011b53b8ac7d3c838fcbb4976633d854d4c.jpg",
+          "sha256": "139bc7829e37e710d0266fdbf7781011b53b8ac7d3c838fcbb4976633d854d4c",
+          "color": "",
+          "source_id": "p77i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f23-p90-i1",
+        "rasteiras_papetes_flatforms-f23-p90-i2",
+        "rasteiras_papetes_flatforms-f23-p90-i3"
+      ],
+      "revision": "188201ad30e62cf3fd3958f0405c008e5c94435e65cfe4ca8ea067f978bb9653"
+    },
+    {
+      "code": "pdf26-rasteiras-079",
+      "name": "Papete feminina — modelo 078",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        78
+      ],
+      "photos": [
+        {
+          "file": "photos/be2d7fa53ed08a00e96e00f5348935e0cee4c6d4a32643d822fbd2c76c11c83d.jpg",
+          "sha256": "be2d7fa53ed08a00e96e00f5348935e0cee4c6d4a32643d822fbd2c76c11c83d",
+          "color": "",
+          "source_id": "p78i01"
+        },
+        {
+          "file": "photos/d67c566a5e63a0cc0f84fc1b7618d146d28fd15ca18088916735af8d1c638a1d.jpg",
+          "sha256": "d67c566a5e63a0cc0f84fc1b7618d146d28fd15ca18088916735af8d1c638a1d",
+          "color": "",
+          "source_id": "p78i02"
+        },
+        {
+          "file": "photos/3da0872ac02ba597bfeaa6229d6e1efa6cddf4a8d8564dc98326f9034f5e815b.jpg",
+          "sha256": "3da0872ac02ba597bfeaa6229d6e1efa6cddf4a8d8564dc98326f9034f5e815b",
+          "color": "",
+          "source_id": "p78i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p91-i1",
+        "rasteiras_papetes_flatforms-f18-p91-i2",
+        "rasteiras_papetes_flatforms-f18-p91-i3"
+      ],
+      "revision": "45ea8c1dcea3dd2b61f77266747875147738e77b016cb975350fb1c2f0ba5456"
+    },
+    {
+      "code": "pdf26-rasteiras-080",
+      "name": "Papete feminina — modelo 079",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        79
+      ],
+      "photos": [
+        {
+          "file": "photos/2015dbd2a687c8233d71c1222567419333facfced53e9ef235a135ac8ebdba40.jpg",
+          "sha256": "2015dbd2a687c8233d71c1222567419333facfced53e9ef235a135ac8ebdba40",
+          "color": "",
+          "source_id": "p79i01"
+        },
+        {
+          "file": "photos/bfbf4c2968e7c78139c492dfa495205c613627ab4c51e687187a3244aaf2d2dc.jpg",
+          "sha256": "bfbf4c2968e7c78139c492dfa495205c613627ab4c51e687187a3244aaf2d2dc",
+          "color": "",
+          "source_id": "p79i02"
+        },
+        {
+          "file": "photos/74f8dfb8a17898ef4a8bb219ee16157cd78aea502ce67663e7ff0f1154e67c55.jpg",
+          "sha256": "74f8dfb8a17898ef4a8bb219ee16157cd78aea502ce67663e7ff0f1154e67c55",
+          "color": "",
+          "source_id": "p79i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p92-i1",
+        "rasteiras_papetes_flatforms-f18-p92-i2",
+        "rasteiras_papetes_flatforms-f18-p92-i3"
+      ],
+      "revision": "5fee7ab8c7804b90bc1d0fd7e4c0e01ca2b90e2658f0f20903d8c00fdaf5bfc0"
+    },
+    {
+      "code": "pdf26-rasteiras-081",
+      "name": "Papete feminina — modelo 080",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        80
+      ],
+      "photos": [
+        {
+          "file": "photos/79c96936c2e604528732841421f3973a3bfa6f6c98a5a925a970f2883591b685.jpg",
+          "sha256": "79c96936c2e604528732841421f3973a3bfa6f6c98a5a925a970f2883591b685",
+          "color": "",
+          "source_id": "p80i01"
+        },
+        {
+          "file": "photos/57a41bf67b6393237f27c70e56390327decab96b84d73d28dce0455c5ce4fef1.jpg",
+          "sha256": "57a41bf67b6393237f27c70e56390327decab96b84d73d28dce0455c5ce4fef1",
+          "color": "",
+          "source_id": "p80i02"
+        },
+        {
+          "file": "photos/ad21f5545acdeb9ca1adacec21af55e0cb870335a3eeb03c9d1016c282573f28.jpg",
+          "sha256": "ad21f5545acdeb9ca1adacec21af55e0cb870335a3eeb03c9d1016c282573f28",
+          "color": "",
+          "source_id": "p80i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p93-i1",
+        "rasteiras_papetes_flatforms-f18-p93-i2",
+        "rasteiras_papetes_flatforms-f18-p93-i3"
+      ],
+      "revision": "05b619edcae58e27ce27f8105ee0dce577a7331bf8a91b29bc4927c74800794e"
+    },
+    {
+      "code": "pdf26-rasteiras-082",
+      "name": "Papete feminina — modelo 081",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        81
+      ],
+      "photos": [
+        {
+          "file": "photos/d6a0a132ce45430f7d5e03cc1630fddbb4b84c325e72ee6a90bf87b5e838ea52.jpg",
+          "sha256": "d6a0a132ce45430f7d5e03cc1630fddbb4b84c325e72ee6a90bf87b5e838ea52",
+          "color": "",
+          "source_id": "p81i01"
+        },
+        {
+          "file": "photos/ff689ec62acf5108a60282aebe931092791caf9f9e454d7e401433abf8259793.jpg",
+          "sha256": "ff689ec62acf5108a60282aebe931092791caf9f9e454d7e401433abf8259793",
+          "color": "",
+          "source_id": "p81i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f23-p95-i1",
+        "rasteiras_papetes_flatforms-f23-p95-i2"
+      ],
+      "revision": "1e41653e41762d51e94c7a64ee01b2cb992005fa7bf9ffe7bfb860eaaf65fe5b"
+    },
+    {
+      "code": "pdf26-rasteiras-083",
+      "name": "Papete feminina — modelo 082",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        82
+      ],
+      "photos": [
+        {
+          "file": "photos/e0abb758befcd8a2903e51c539c53f27e88bd8800a176517c7a0862dd0c3b772.jpg",
+          "sha256": "e0abb758befcd8a2903e51c539c53f27e88bd8800a176517c7a0862dd0c3b772",
+          "color": "",
+          "source_id": "p82i01"
+        },
+        {
+          "file": "photos/10f69de2c9765c3d91f5f0f4a5e3868e222518db62671e8dd321d6942272a831.jpg",
+          "sha256": "10f69de2c9765c3d91f5f0f4a5e3868e222518db62671e8dd321d6942272a831",
+          "color": "",
+          "source_id": "p82i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p96-i1"
+      ],
+      "revision": "fa6b29eff96d9f0a5cc4a25bdd9b7fa9ee610ad212239022b5622d221755c361"
+    },
+    {
+      "code": "pdf26-rasteiras-084",
+      "name": "Papete feminina — modelo 083",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        83
+      ],
+      "photos": [
+        {
+          "file": "photos/94c3f24e80c6803dd1a7cc163c52aac9b3bd5d7879bed0ca7fdb83c48fedbce4.jpg",
+          "sha256": "94c3f24e80c6803dd1a7cc163c52aac9b3bd5d7879bed0ca7fdb83c48fedbce4",
+          "color": "",
+          "source_id": "p83i01"
+        },
+        {
+          "file": "photos/bcd24d87a2fe8eaf6031e9c9c3f9d2e396a86e60cd56d4d27945ddb73f98d97c.jpg",
+          "sha256": "bcd24d87a2fe8eaf6031e9c9c3f9d2e396a86e60cd56d4d27945ddb73f98d97c",
+          "color": "",
+          "source_id": "p83i02"
+        },
+        {
+          "file": "photos/f7a4691f10e76881d3078f589e946bc15f465db5598bbb942f34fac1be8fa7db.jpg",
+          "sha256": "f7a4691f10e76881d3078f589e946bc15f465db5598bbb942f34fac1be8fa7db",
+          "color": "",
+          "source_id": "p83i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p98-i1",
+        "rasteiras_papetes_flatforms-f18-p98-i2",
+        "rasteiras_papetes_flatforms-f18-p98-i3"
+      ],
+      "revision": "d8564ee7e81fcef93b595184a3e1e95c1df4bc0360a9faf2e097dd311b9c04a2"
+    },
+    {
+      "code": "pdf26-rasteiras-085",
+      "name": "Papete feminina — modelo 084",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        84
+      ],
+      "photos": [
+        {
+          "file": "photos/a40afa5b64e9acd3436ca3693edbb96c0507d38c2e30bda2c1f070acbcc07436.jpg",
+          "sha256": "a40afa5b64e9acd3436ca3693edbb96c0507d38c2e30bda2c1f070acbcc07436",
+          "color": "",
+          "source_id": "p84i01"
+        },
+        {
+          "file": "photos/8fff4fe69f5b6d728749fc8ae0b12d1b02a740db6f0636bc89910169bb38e366.jpg",
+          "sha256": "8fff4fe69f5b6d728749fc8ae0b12d1b02a740db6f0636bc89910169bb38e366",
+          "color": "",
+          "source_id": "p84i02"
+        },
+        {
+          "file": "photos/b6792098ae760ad1b8060c544824479e62e4c12f8302af22857a2d697eeb49d3.jpg",
+          "sha256": "b6792098ae760ad1b8060c544824479e62e4c12f8302af22857a2d697eeb49d3",
+          "color": "",
+          "source_id": "p84i03"
+        },
+        {
+          "file": "photos/f2317cf5e9c21e7d89d99ca549320eec5f4b2a9fe3458ebd52426b7e21ad3df4.jpg",
+          "sha256": "f2317cf5e9c21e7d89d99ca549320eec5f4b2a9fe3458ebd52426b7e21ad3df4",
+          "color": "",
+          "source_id": "p84i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f23-p99-i1",
+        "rasteiras_papetes_flatforms-f23-p99-i2",
+        "rasteiras_papetes_flatforms-f23-p99-i3",
+        "rasteiras_papetes_flatforms-f23-p99-i4"
+      ],
+      "revision": "eb4db0a6551267fd28674705516af278d6793974217b9ad79114de8caf9d0f2e"
+    },
+    {
+      "code": "pdf26-rasteiras-086",
+      "name": "Papete feminina — modelo 085",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        85
+      ],
+      "photos": [
+        {
+          "file": "photos/e24908aad5c549b88bc842cb5ff9f46b5294444b6b985be05c3a37cf3e0222bb.jpg",
+          "sha256": "e24908aad5c549b88bc842cb5ff9f46b5294444b6b985be05c3a37cf3e0222bb",
+          "color": "",
+          "source_id": "p85i01"
+        },
+        {
+          "file": "photos/85bd066c321fdf8de0e82b249f5866e3e7a7f1b2afeae62d8c405a742e064aff.jpg",
+          "sha256": "85bd066c321fdf8de0e82b249f5866e3e7a7f1b2afeae62d8c405a742e064aff",
+          "color": "",
+          "source_id": "p85i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "179ecca8e6639323eabb7854d80942b6ceb823b95fc9e27069768e2762fa7a88"
+    },
+    {
+      "code": "pdf26-rasteiras-087",
+      "name": "Papete feminina — modelo 086",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        86
+      ],
+      "photos": [
+        {
+          "file": "photos/9bb4cc2fb3677e61e872cccdfdf55ff0e01d7dffb52925d56a750ed386e3f3ac.jpg",
+          "sha256": "9bb4cc2fb3677e61e872cccdfdf55ff0e01d7dffb52925d56a750ed386e3f3ac",
+          "color": "",
+          "source_id": "p86i01"
+        },
+        {
+          "file": "photos/7141500383bf0233b62b286294e827e311119eb922ae430638ac3bda39a1aec3.jpg",
+          "sha256": "7141500383bf0233b62b286294e827e311119eb922ae430638ac3bda39a1aec3",
+          "color": "",
+          "source_id": "p86i02"
+        },
+        {
+          "file": "photos/e6a79c4e817f18b90d6225967f2d9a9f413f1d570c3e5f48493f938cb178387f.jpg",
+          "sha256": "e6a79c4e817f18b90d6225967f2d9a9f413f1d570c3e5f48493f938cb178387f",
+          "color": "",
+          "source_id": "p86i03"
+        },
+        {
+          "file": "photos/562e978908dfb97b56d2416f028c580b2ab6c5ff223cc7f98b2511d1d4b236c7.jpg",
+          "sha256": "562e978908dfb97b56d2416f028c580b2ab6c5ff223cc7f98b2511d1d4b236c7",
+          "color": "",
+          "source_id": "p86i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p101-i1",
+        "rasteiras_papetes_flatforms-f18-p101-i2"
+      ],
+      "revision": "ca162ea47e7f76e3dc8a93f068052306e39ab5f828ec89b142216f70318dfe97"
+    },
+    {
+      "code": "pdf26-rasteiras-088",
+      "name": "Papete feminina — modelo 087 faixa 18",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        87
+      ],
+      "photos": [
+        {
+          "file": "photos/1c7d3a3e703a0b896d1f3bf40c9349bf9c3de08671a649ebb1258679e7bb286c.jpg",
+          "sha256": "1c7d3a3e703a0b896d1f3bf40c9349bf9c3de08671a649ebb1258679e7bb286c",
+          "color": "",
+          "source_id": "p87i01"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p102-i2"
+      ],
+      "revision": "7902fd0c6c2ac8eb64b6069c89ed7918624c3184a6451b32126553904f5f812f"
+    },
+    {
+      "code": "pdf26-rasteiras-089",
+      "name": "Papete feminina — modelo 087 faixa 20",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        87
+      ],
+      "photos": [
+        {
+          "file": "photos/8188dc188860ae08b48310082cda3bb3a2ebfd71eb3851ae43e1087fa346020a.jpg",
+          "sha256": "8188dc188860ae08b48310082cda3bb3a2ebfd71eb3851ae43e1087fa346020a",
+          "color": "",
+          "source_id": "p87i02"
+        },
+        {
+          "file": "photos/64ab5ec2302252eacfe30ffe3f79fe1f2c0d143d1dfe1851b6e9f8ec1c2bd5b4.jpg",
+          "sha256": "64ab5ec2302252eacfe30ffe3f79fe1f2c0d143d1dfe1851b6e9f8ec1c2bd5b4",
+          "color": "",
+          "source_id": "p87i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p102-i3",
+        "rasteiras_papetes_flatforms-f18-p102-i4"
+      ],
+      "revision": "b6602d6af9a8ef7022bf22ad9ad0238704824f556a88e0a7c886a5a8985b9057"
+    },
+    {
+      "code": "pdf26-rasteiras-090",
+      "name": "Papete feminina — modelo 088",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        88
+      ],
+      "photos": [
+        {
+          "file": "photos/2b362c118f66b040499d74a1833734bcdc9ea360649bab866920d9114a073006.jpg",
+          "sha256": "2b362c118f66b040499d74a1833734bcdc9ea360649bab866920d9114a073006",
+          "color": "",
+          "source_id": "p88i01"
+        },
+        {
+          "file": "photos/ad1d55594d9f4196b6f27e3e9031b8ef490d88bf45fb658f7c02947d3f7417ac.jpg",
+          "sha256": "ad1d55594d9f4196b6f27e3e9031b8ef490d88bf45fb658f7c02947d3f7417ac",
+          "color": "",
+          "source_id": "p88i02"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f20-p103-i1",
+        "rasteiras_papetes_flatforms-f20-p103-i2"
+      ],
+      "revision": "cf23e79c3dccf0703944c0a03aec1df08f4008ee9563d93f83b65db3245f2404"
+    },
+    {
+      "code": "pdf26-rasteiras-091",
+      "name": "Papete feminina — modelo 089",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        89
+      ],
+      "photos": [
+        {
+          "file": "photos/2771e9b36aabe67501efa9c6f91665b55e99f2798ce25de29a70d14e37130884.jpg",
+          "sha256": "2771e9b36aabe67501efa9c6f91665b55e99f2798ce25de29a70d14e37130884",
+          "color": "",
+          "source_id": "p89i01"
+        },
+        {
+          "file": "photos/60a5fe7a478cbcad30821ead3fe6ddd426d4fa8ca5ce404615b4397395921073.jpg",
+          "sha256": "60a5fe7a478cbcad30821ead3fe6ddd426d4fa8ca5ce404615b4397395921073",
+          "color": "",
+          "source_id": "p89i02"
+        },
+        {
+          "file": "photos/875a3d89cdb4d26f2ab3be941af97f6723be5a8734b30a295f27717ed54a7a5e.jpg",
+          "sha256": "875a3d89cdb4d26f2ab3be941af97f6723be5a8734b30a295f27717ed54a7a5e",
+          "color": "",
+          "source_id": "p89i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p104-i1",
+        "rasteiras_papetes_flatforms-f18-p104-i2"
+      ],
+      "revision": "4274653b6032868e2ee599f021f68e874db5af002cd4ddcb3cb2f20d68d759f3"
+    },
+    {
+      "code": "pdf26-rasteiras-092",
+      "name": "Papete feminina — modelo 090",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        90
+      ],
+      "photos": [
+        {
+          "file": "photos/227db2f456ed9cd50e435446b2b0266e5d173881ba988696c42f5cac9c211538.jpg",
+          "sha256": "227db2f456ed9cd50e435446b2b0266e5d173881ba988696c42f5cac9c211538",
+          "color": "",
+          "source_id": "p90i01"
+        },
+        {
+          "file": "photos/32d49b4ab473c3b5d0124b7ae66d445f77631bba3a797856845c85bf893ce8ef.jpg",
+          "sha256": "32d49b4ab473c3b5d0124b7ae66d445f77631bba3a797856845c85bf893ce8ef",
+          "color": "",
+          "source_id": "p90i02"
+        },
+        {
+          "file": "photos/7b4da74a626c720f0b3fc2fa6c8f94f13a1fcce852cd31bda73d4e4e4b489d01.jpg",
+          "sha256": "7b4da74a626c720f0b3fc2fa6c8f94f13a1fcce852cd31bda73d4e4e4b489d01",
+          "color": "",
+          "source_id": "p90i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p105-i1"
+      ],
+      "revision": "f57b0c709be99865aae867d9004877d991ee8b5e4662a1b8722c3860e55caeca"
+    },
+    {
+      "code": "pdf26-rasteiras-093",
+      "name": "Papete feminina — modelo 091",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        91
+      ],
+      "photos": [
+        {
+          "file": "photos/57682a50ce90072d12fcddd891f711945d8e407112659bbae9babfe071047fc4.jpg",
+          "sha256": "57682a50ce90072d12fcddd891f711945d8e407112659bbae9babfe071047fc4",
+          "color": "",
+          "source_id": "p91i01"
+        },
+        {
+          "file": "photos/fe217bd94175c383de61e561c0b2a073aa33755b58840ff384e9027fff6bc78e.jpg",
+          "sha256": "fe217bd94175c383de61e561c0b2a073aa33755b58840ff384e9027fff6bc78e",
+          "color": "",
+          "source_id": "p91i02"
+        },
+        {
+          "file": "photos/bd025b3edb4ecccc912325dad48cc3c824591811d4930d6511d917a7f47eeb0b.jpg",
+          "sha256": "bd025b3edb4ecccc912325dad48cc3c824591811d4930d6511d917a7f47eeb0b",
+          "color": "",
+          "source_id": "p91i03"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f20-p106-i1",
+        "rasteiras_papetes_flatforms-f20-p106-i2",
+        "rasteiras_papetes_flatforms-f20-p106-i3"
+      ],
+      "revision": "2ff051645a634c99d4f73f64e2a307bb336993814e63bb59e7306a429a080399"
+    },
+    {
+      "code": "pdf26-rasteiras-094",
+      "name": "Papete feminina — modelo 092",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        92
+      ],
+      "photos": [
+        {
+          "file": "photos/9699f006edd39e02335e3681e9f511a6f8c2c503e078edb757e167b1596ff460.jpg",
+          "sha256": "9699f006edd39e02335e3681e9f511a6f8c2c503e078edb757e167b1596ff460",
+          "color": "",
+          "source_id": "p92i01"
+        },
+        {
+          "file": "photos/5da9d65a7fd6785e71ed78c16e93f19f992f73142e95c644b9cc2adea3c25421.jpg",
+          "sha256": "5da9d65a7fd6785e71ed78c16e93f19f992f73142e95c644b9cc2adea3c25421",
+          "color": "",
+          "source_id": "p92i02"
+        },
+        {
+          "file": "photos/b6327e2d33e794a059d746ee4cbac4c75af3e6cb91d03c585a4073df01401c9f.jpg",
+          "sha256": "b6327e2d33e794a059d746ee4cbac4c75af3e6cb91d03c585a4073df01401c9f",
+          "color": "",
+          "source_id": "p92i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "e9763f29fb57d7e8fa64bf9fd6d20550bb5577a48edfdc838bb73cba9f893e3b"
+    },
+    {
+      "code": "pdf26-rasteiras-095",
+      "name": "Papete feminina — modelo 093",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 10,
+      "retail": "59.90",
+      "price": "69.90",
+      "cost": "41.93",
+      "pages": [
+        93
+      ],
+      "photos": [
+        {
+          "file": "photos/061659eabb9527e8357f49657950bc4cf4cd6124c31d30b822752ea007c6922f.jpg",
+          "sha256": "061659eabb9527e8357f49657950bc4cf4cd6124c31d30b822752ea007c6922f",
+          "color": "",
+          "source_id": "p93i01"
+        },
+        {
+          "file": "photos/b61bcb2465ebd836f6eafe74903234390a940afa23cfe60a62a2ef895ff99056.jpg",
+          "sha256": "b61bcb2465ebd836f6eafe74903234390a940afa23cfe60a62a2ef895ff99056",
+          "color": "",
+          "source_id": "p93i02"
+        },
+        {
+          "file": "photos/cef53bc21b53df9369c02f0e20570974c8c5f135fd9bd8867f2eaa27065bd9bc.jpg",
+          "sha256": "cef53bc21b53df9369c02f0e20570974c8c5f135fd9bd8867f2eaa27065bd9bc",
+          "color": "",
+          "source_id": "p93i03"
+        },
+        {
+          "file": "photos/9be6d7080388a3fcd788c6d9120ef5663ef5bf6fe534b7b86af580c9a8cc55b2.jpg",
+          "sha256": "9be6d7080388a3fcd788c6d9120ef5663ef5bf6fe534b7b86af580c9a8cc55b2",
+          "color": "",
+          "source_id": "p93i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f10-p108-i1",
+        "rasteiras_papetes_flatforms-f10-p108-i2",
+        "rasteiras_papetes_flatforms-f10-p108-i3",
+        "rasteiras_papetes_flatforms-f10-p108-i4"
+      ],
+      "revision": "c916b7d1393424a317ed1d4eacba0cf6468fe6c176c8db6c43385a713caed800"
+    },
+    {
+      "code": "pdf26-rasteiras-096",
+      "name": "Papete feminina — modelo 094",
+      "brand": "",
+      "category": "Papetes Femininas",
+      "description": "Papete feminina do catálogo do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        94
+      ],
+      "photos": [
+        {
+          "file": "photos/46b1af7d06ac7179b16559bff7c939b269965f822a7432823e1fd0edbaf7eca6.jpg",
+          "sha256": "46b1af7d06ac7179b16559bff7c939b269965f822a7432823e1fd0edbaf7eca6",
+          "color": "",
+          "source_id": "p94i01"
+        },
+        {
+          "file": "photos/849805dd53d45da3bbbd9df6e4e9ff131c8ca2c42a5b2a3e35abd9801245e536.jpg",
+          "sha256": "849805dd53d45da3bbbd9df6e4e9ff131c8ca2c42a5b2a3e35abd9801245e536",
+          "color": "",
+          "source_id": "p94i02"
+        },
+        {
+          "file": "photos/0df7cbc3af8c8cf1c746366a02eb9f3f648cbc89b0b8684b2786a83c617dd706.jpg",
+          "sha256": "0df7cbc3af8c8cf1c746366a02eb9f3f648cbc89b0b8684b2786a83c617dd706",
+          "color": "",
+          "source_id": "p94i03"
+        },
+        {
+          "file": "photos/ef3c62bbdd4f2f22b750e29b433dd7615c5f27980d736b22b45a08dd54d651ef.jpg",
+          "sha256": "ef3c62bbdd4f2f22b750e29b433dd7615c5f27980d736b22b45a08dd54d651ef",
+          "color": "",
+          "source_id": "p94i04"
+        }
+      ],
+      "aliases": [
+        "rasteiras_papetes_flatforms-f18-p109-i1",
+        "rasteiras_papetes_flatforms-f18-p109-i2",
+        "rasteiras_papetes_flatforms-f18-p109-i3",
+        "rasteiras_papetes_flatforms-f18-p109-i4"
+      ],
+      "revision": "55c24301cd1f7787da65107fb6529a91a6eeb01729a2034ecac285c1722b7b0c"
+    }
+  ],
+  "pending": []
+}
