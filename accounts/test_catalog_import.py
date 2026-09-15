@@ -64,6 +64,15 @@ class CatalogImportTests(TestCase):
     def save_manifest(self):
         (self.catalog/'manifest.json').write_text(json.dumps(self.manifest),encoding='utf8')
 
+    def test_shared_legacy_alias_is_rejected_before_import(self):
+        other = copy.deepcopy(self.item)
+        other['code'] = 'pdf26-other-model'
+        self.manifest['products'].append(other)
+        self.save_manifest()
+        with self.assertRaisesMessage(CommandError, 'Equivalência antiga ambígua'):
+            self.run_import()
+        self.assertEqual(SupplierProduct.objects.count(), self.initial_count)
+
     def run_import(self, **kwargs):
         call_command('importar_catalogos_revisados', stdout=StringIO(), **kwargs)
 

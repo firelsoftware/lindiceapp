@@ -17,11 +17,16 @@ ROOT = Path(__file__).resolve().parents[2] / 'seed' / 'catalogos_202609'
 def read_manifest(path):
     data = json.loads(path.read_text(encoding='utf8'))
     seen = set()
+    alias_owners = {}
     for item in data['products']:
         code = item['code']
         if code in seen:
             raise CommandError(f'Código repetido: {code}')
         seen.add(code)
+        for alias in item.get('aliases', []):
+            if alias in alias_owners and alias_owners[alias] != code:
+                raise CommandError(f'Equivalência antiga ambígua: {alias}')
+            alias_owners[alias] = code
         if 'relog' in item['name'].lower() or 'relóg' in item['name'].lower():
             raise CommandError('Relógios não fazem parte desta importação.')
         if pdf_catalog_price(item['retail']) != Decimal(item['price']):

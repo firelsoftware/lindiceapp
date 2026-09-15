@@ -374,18 +374,16 @@
         "tenis_premium_e_original-f20-p89-i2",
         "tenis_premium_e_original-f20-p89-i3",
         "tenis_premium_e_original-f20-p89-i4",
-        "tenis_premium_e_original-f20-p89-i5",
         "tenis_premium_e_original-f20-p89-i6",
         "tenis_premium_e_original-f23-p37-i1",
         "tenis_premium_e_original-f23-p37-i2",
         "tenis_premium_e_original-f23-p46-i3",
-        "tenis_premium_e_original-f23-p46-i4",
         "tenis_premium_e_original-f23-p68-i1",
         "tenis_premium_e_original-f23-p68-i2",
         "tenis_premium_e_original-f23-p68-i3",
         "tenis_premium_e_original-f23-p75-i1"
       ],
-      "revision": "74658cb0d9f7ed70df305aadd4f0f4398968498de4a10117ec6c25d5c3e4879b"
+      "revision": "b5645fc3ae214353f0320f493de070d829f00234ff46cc20c846181b6d709f74"
     },
     {
       "code": "pdf26-tenis-samba-premium",
@@ -2076,11 +2074,9 @@
         }
       ],
       "aliases": [
-        "tenis_premium_e_original-f20-p89-i5",
-        "tenis_premium_e_original-f20-p96-i3",
-        "tenis_premium_e_original-f23-p46-i4"
+        "tenis_premium_e_original-f20-p96-i3"
       ],
-      "revision": "49225f688d9c6d8305b878343c216a7201254e71a4357e722b1da0b98dec6c64"
+      "revision": "e862a4fd289f3141df1da1028671346a2f85ac939a3d26e357bf84668bc81a26"
     },
     {
       "code": "pdf26-tenis-nike-zoom-premium",
