@@ -33,3 +33,11 @@ Foram comparadas fotos e nomes visíveis no PDF com páginas das marcas. Nomes s
 - https://www.westcoast.com.br/produtos
 - https://www.actvitta.com.br/
 - https://www.ferracini.com/colecao/
+
+## Linha infantil (15/09/2026)
+
+O PDF `LINHA INFANTIL (2).pdf` tem 44 páginas. A revisão visual separou 150 recortes; cinco elementos decorativos, duplicados ou montagens sem preço claro foram excluídos. O manifesto `accounts/seed/catalogos_202609/infantil/manifest.json` reúne 113 produtos e 145 fotos. Preços seguem a mesma coluna VAREJO e a regra de 10%/5% com arredondamento para cima. A faixa 9 tem varejo de R$49,90; as faixas 10 a 24 seguem R$59,90 e incrementos de R$10. A faixa mais alta do mesmo modelo foi usada apenas quando fotos de cores do mesmo desenho aparecem com valores diferentes.
+
+Marcas foram atribuídas quando a foto ou embalagem as mostra; os demais nomes descrevem o desenho visível sem presumir código de referência, autenticidade ou material. Algumas páginas informam numeração 17–25 ou 26–36, mas a disponibilidade continua sob consulta. Fotos idênticas ao PDF infantil antigo fornecem 120 equivalências únicas para reaproveitar cadastros sem tocar pedidos anteriores.
+
+A importação local criou 113 produtos, e a segunda execução ignorou os 113. Os nove testes do importador passaram; as 113 fichas locais responderam HTTP 200 com preços e galerias conferidos. Verificar o deploy e as imagens públicas após o envio.

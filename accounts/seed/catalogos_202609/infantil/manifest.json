@@ -1,0 +1,3239 @@
+{
+  "catalog": "infantil-2026-09",
+  "source_pdf": "LINHA INFANTIL (2).pdf",
+  "complete": true,
+  "products": [
+    {
+      "code": "pdf26-infantil-001",
+      "name": "Tênis infantil de lona com biqueira",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        2
+      ],
+      "photos": [
+        {
+          "file": "photos/af4e8174efc14fbc3ee75740a7bae00559f99a8919653d42c342b437db3e6fcb.jpg",
+          "sha256": "af4e8174efc14fbc3ee75740a7bae00559f99a8919653d42c342b437db3e6fcb",
+          "color": "",
+          "source_id": "p02i01"
+        },
+        {
+          "file": "photos/03c56c6a3a3af1b858925eaba5d666c3c4d3a5ca8fd481150cf6de077917bfe6.jpg",
+          "sha256": "03c56c6a3a3af1b858925eaba5d666c3c4d3a5ca8fd481150cf6de077917bfe6",
+          "color": "",
+          "source_id": "p02i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p2-i1",
+        "linha_infantil-f14-p2-i2"
+      ],
+      "revision": "fdb6ed9bd6b022244db7936b71895290d5829784d2263a1363d8cbb5a57baf60"
+    },
+    {
+      "code": "pdf26-infantil-002",
+      "name": "Tênis infantil preto e rosa com tiras aderentes",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        3
+      ],
+      "photos": [
+        {
+          "file": "photos/eea90832abb74d8564bc0d031687b741967685501f244ec6f9b0d8cde740e4e3.jpg",
+          "sha256": "eea90832abb74d8564bc0d031687b741967685501f244ec6f9b0d8cde740e4e3",
+          "color": "",
+          "source_id": "p03i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f18-p3-i1"
+      ],
+      "revision": "026882b862aa0ed5c03eb40d1f45100410e74e45b94c0cb97e3e6facd958081d"
+    },
+    {
+      "code": "pdf26-infantil-003",
+      "name": "Sandália infantil rosa com laço",
+      "brand": "",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        3
+      ],
+      "photos": [
+        {
+          "file": "photos/0329c3f085fc84154323c69943a9284bb2b10d8de787f160eef594b8961c153e.jpg",
+          "sha256": "0329c3f085fc84154323c69943a9284bb2b10d8de787f160eef594b8961c153e",
+          "color": "",
+          "source_id": "p03i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f18-p3-i2"
+      ],
+      "revision": "026bb5732d10f1bd814cb456f26c9d144fc53e816eb9136b36ff5d58f829aef1"
+    },
+    {
+      "code": "pdf26-infantil-004",
+      "name": "Tênis infantil marrom e branco com cadarço",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        4
+      ],
+      "photos": [
+        {
+          "file": "photos/eec8b181f6843cf93c7c1c60e9a3286ce009865f741a52b1800e63516a37b9e4.jpg",
+          "sha256": "eec8b181f6843cf93c7c1c60e9a3286ce009865f741a52b1800e63516a37b9e4",
+          "color": "",
+          "source_id": "p04i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "d5f6d6f03ab9fdec5a9d7894d82f064c0c10a12721d5c377f0384f63638e94dc"
+    },
+    {
+      "code": "pdf26-infantil-005",
+      "name": "Tênis infantil preto com faixa lateral",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        4
+      ],
+      "photos": [
+        {
+          "file": "photos/f1ebdb7d6630363a357c049b86913f8783b8bdb355c5917dfbcde311627cd23f.jpg",
+          "sha256": "f1ebdb7d6630363a357c049b86913f8783b8bdb355c5917dfbcde311627cd23f",
+          "color": "",
+          "source_id": "p04i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "273fccd0adf89f166450b728d08a88574332fcdedfb83eb2e30a74e247f9c11a"
+    },
+    {
+      "code": "pdf26-infantil-006",
+      "name": "Bota infantil com tiras aderentes",
+      "brand": "",
+      "category": "Botas e Calçados Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        5
+      ],
+      "photos": [
+        {
+          "file": "photos/ee49c02c09d3be3e8c8dc5d2306dcf900d403b29eb3a9617853e9b420117c08e.jpg",
+          "sha256": "ee49c02c09d3be3e8c8dc5d2306dcf900d403b29eb3a9617853e9b420117c08e",
+          "color": "",
+          "source_id": "p05i01"
+        },
+        {
+          "file": "photos/8ec2bbe27f3bd328b975d799c259b5506547d3ecebc52a2e2c1a6ff80907b8e1.jpg",
+          "sha256": "8ec2bbe27f3bd328b975d799c259b5506547d3ecebc52a2e2c1a6ff80907b8e1",
+          "color": "",
+          "source_id": "p05i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "f833d8d25a2985ed3c53a2b410a793b733102e5c7331d4ce657554e5f03827af"
+    },
+    {
+      "code": "pdf26-infantil-007",
+      "name": "Tênis infantil de lona com biqueira reforçada",
+      "brand": "Converse",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        6
+      ],
+      "photos": [
+        {
+          "file": "photos/2079149ece37c6df6852e65a24fa9d45b428bc31841466697e494b471de4a03e.jpg",
+          "sha256": "2079149ece37c6df6852e65a24fa9d45b428bc31841466697e494b471de4a03e",
+          "color": "",
+          "source_id": "p06i01"
+        },
+        {
+          "file": "photos/47d6a552459251bd995253aa61234af23950aa198830f14083c883352df5a8d0.jpg",
+          "sha256": "47d6a552459251bd995253aa61234af23950aa198830f14083c883352df5a8d0",
+          "color": "",
+          "source_id": "p06i02"
+        },
+        {
+          "file": "photos/779d3bee4b59c8b5ef8629c2fb52aa304d4c4f84f5b16c35f323d4fcd8767dc0.jpg",
+          "sha256": "779d3bee4b59c8b5ef8629c2fb52aa304d4c4f84f5b16c35f323d4fcd8767dc0",
+          "color": "",
+          "source_id": "p06i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p8-i1",
+        "linha_infantil-f14-p8-i2",
+        "linha_infantil-f14-p8-i3"
+      ],
+      "revision": "7addabdb6e69a6b55067394f6dd96d47990dd7ce8871a369bcbc62436f249c81"
+    },
+    {
+      "code": "pdf26-infantil-008",
+      "name": "Tênis infantil de lona marrom cano alto",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        6
+      ],
+      "photos": [
+        {
+          "file": "photos/c3314d76e7aec82096010f16f1522e653ee658f0dcb2295906a90902f8ccd9b9.jpg",
+          "sha256": "c3314d76e7aec82096010f16f1522e653ee658f0dcb2295906a90902f8ccd9b9",
+          "color": "",
+          "source_id": "p06i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p8-i4"
+      ],
+      "revision": "fc51653f3571e5129758da665d8fa2c707aa08eae473fbb2b9adf485f63256f8"
+    },
+    {
+      "code": "pdf26-infantil-009",
+      "name": "Sandália infantil rosa com laço floral",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        7
+      ],
+      "photos": [
+        {
+          "file": "photos/460b877b0726a1f64c6edfa275bc4ab3e9b4fa20d31b2faa81608953e1edce19.jpg",
+          "sha256": "460b877b0726a1f64c6edfa275bc4ab3e9b4fa20d31b2faa81608953e1edce19",
+          "color": "",
+          "source_id": "p07i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "a7344fc459961774280287e1094b76a4a7d10d0519ca7d701091a9ee75fe2485"
+    },
+    {
+      "code": "pdf26-infantil-010",
+      "name": "Sandália infantil dourada com flores",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        7
+      ],
+      "photos": [
+        {
+          "file": "photos/97b00434fe425ca4a928eebba0d346211d1553fe4de5208de414d7fbd4342782.jpg",
+          "sha256": "97b00434fe425ca4a928eebba0d346211d1553fe4de5208de414d7fbd4342782",
+          "color": "",
+          "source_id": "p07i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "592571c270039931c5ffb15590263acf0bdb02e4e036a76591e1a3bc8e2d89aa"
+    },
+    {
+      "code": "pdf26-infantil-011",
+      "name": "Bota infantil com cadarço e sola robusta",
+      "brand": "",
+      "category": "Botas e Calçados Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        8
+      ],
+      "photos": [
+        {
+          "file": "photos/5d5e31a2fd9025e26f9b199c22f78fcb920aee0ca63370e2e68bb891e9cd6f5d.jpg",
+          "sha256": "5d5e31a2fd9025e26f9b199c22f78fcb920aee0ca63370e2e68bb891e9cd6f5d",
+          "color": "",
+          "source_id": "p08i01"
+        },
+        {
+          "file": "photos/4d3917d894ce626773c5e440765eaca829e74b414a4dd56c9fcb62aeda9b0895.jpg",
+          "sha256": "4d3917d894ce626773c5e440765eaca829e74b414a4dd56c9fcb62aeda9b0895",
+          "color": "",
+          "source_id": "p08i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "6b67ebac1063a8e5937f7efa1d0a2b16b87917dff5d20ee03af62f6409b666ef"
+    },
+    {
+      "code": "pdf26-infantil-012",
+      "name": "Sandália infantil azul com tiras largas",
+      "brand": "Kidy",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 16,
+      "retail": "119.90",
+      "price": "139.90",
+      "cost": "83.93",
+      "pages": [
+        9
+      ],
+      "photos": [
+        {
+          "file": "photos/a9e14d0b7b247779838e826d04959aaea4e5879a8afc8d7b688b8ab625f54c88.jpg",
+          "sha256": "a9e14d0b7b247779838e826d04959aaea4e5879a8afc8d7b688b8ab625f54c88",
+          "color": "",
+          "source_id": "p09i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "2df845992d86adc75a8ad6191c973abb31def02145961bb8f2d2b2fb472af33d"
+    },
+    {
+      "code": "pdf26-infantil-013",
+      "name": "Tênis infantil rosa com tiras aderentes",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 16,
+      "retail": "119.90",
+      "price": "139.90",
+      "cost": "83.93",
+      "pages": [
+        9
+      ],
+      "photos": [
+        {
+          "file": "photos/88984ce83b3add9ffcd185d7681a4f6fce478f9b2f666ba7900e73503be24b6a.jpg",
+          "sha256": "88984ce83b3add9ffcd185d7681a4f6fce478f9b2f666ba7900e73503be24b6a",
+          "color": "",
+          "source_id": "p09i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "a2e0b23a39f4e949c804ee2043b59d402d9c9a3132edec465cd6b0ec229c1953"
+    },
+    {
+      "code": "pdf26-infantil-014",
+      "name": "Tênis infantil de lona cano alto com faixa lateral",
+      "brand": "Converse",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        10
+      ],
+      "photos": [
+        {
+          "file": "photos/9060dc2dcc1c54704ddb4d937a844d30a8f61bc706e73a8383da3c613a15b9fd.jpg",
+          "sha256": "9060dc2dcc1c54704ddb4d937a844d30a8f61bc706e73a8383da3c613a15b9fd",
+          "color": "",
+          "source_id": "p10i01"
+        },
+        {
+          "file": "photos/a66e2f9c3d35f45ff75362ae520d171bff36cf48b9fb7c6333d943fda8831bd9.jpg",
+          "sha256": "a66e2f9c3d35f45ff75362ae520d171bff36cf48b9fb7c6333d943fda8831bd9",
+          "color": "",
+          "source_id": "p10i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p7-i1",
+        "linha_infantil-f14-p7-i2"
+      ],
+      "revision": "8e82df4fa629633bd80874efeef81aeee2b70b4b7dbb19820e42dabe87601240"
+    },
+    {
+      "code": "pdf26-infantil-015",
+      "name": "Bota infantil de cano médio com cadarço",
+      "brand": "",
+      "category": "Botas e Calçados Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        11
+      ],
+      "photos": [
+        {
+          "file": "photos/09d0599079b1b33a4bebda23dd03d52f2989706b410e3afcca2a649718d04b51.jpg",
+          "sha256": "09d0599079b1b33a4bebda23dd03d52f2989706b410e3afcca2a649718d04b51",
+          "color": "",
+          "source_id": "p11i01"
+        },
+        {
+          "file": "photos/c8610d148015c0796d306ef804bf10f4a285c518671e838f957b228639c71117.jpg",
+          "sha256": "c8610d148015c0796d306ef804bf10f4a285c518671e838f957b228639c71117",
+          "color": "",
+          "source_id": "p11i02"
+        },
+        {
+          "file": "photos/ac4b35c844ad43773b0f3c32d0672b470d9ed6a98562a0be733d14c938d02f78.jpg",
+          "sha256": "ac4b35c844ad43773b0f3c32d0672b470d9ed6a98562a0be733d14c938d02f78",
+          "color": "",
+          "source_id": "p11i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "992d3fd62862b4c87cc1084eb81418764f34d60dc2af95b043ac4e07d67694ea"
+    },
+    {
+      "code": "pdf26-infantil-016",
+      "name": "Tênis infantil branco com detalhe lateral",
+      "brand": "Nike",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        12
+      ],
+      "photos": [
+        {
+          "file": "photos/d75b4fe8524278342d7c9cef1e17a2739e9aa23d49954229034441c99f2d2d2e.jpg",
+          "sha256": "d75b4fe8524278342d7c9cef1e17a2739e9aa23d49954229034441c99f2d2d2e",
+          "color": "",
+          "source_id": "p12i01"
+        },
+        {
+          "file": "photos/b1a19d4afbd0860257d6a1163aee67db38993ece83f1f939611ddade073dbd8f.jpg",
+          "sha256": "b1a19d4afbd0860257d6a1163aee67db38993ece83f1f939611ddade073dbd8f",
+          "color": "",
+          "source_id": "p12i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p11-i1",
+        "linha_infantil-f14-p11-i3"
+      ],
+      "revision": "acb3350c40e2baf98cea4b6b8d902039edcd78d72697b91271c03592a409ce77"
+    },
+    {
+      "code": "pdf26-infantil-017",
+      "name": "Tênis infantil preto e branco de cano baixo",
+      "brand": "Nike",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        12
+      ],
+      "photos": [
+        {
+          "file": "photos/e73accba41f8560425bf8738644722bc4b3f64239bb1d7ad856b514b2554f6df.jpg",
+          "sha256": "e73accba41f8560425bf8738644722bc4b3f64239bb1d7ad856b514b2554f6df",
+          "color": "",
+          "source_id": "p12i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p11-i2"
+      ],
+      "revision": "95f25a88dc7948d0ac5af96a3cb23d3ea2c85ee3a2e720daefe8b36d1f90388f"
+    },
+    {
+      "code": "pdf26-infantil-018",
+      "name": "Clog infantil azul com tema do Brasil",
+      "brand": "",
+      "category": "Botas e Calçados Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 10,
+      "retail": "59.90",
+      "price": "69.90",
+      "cost": "41.93",
+      "pages": [
+        13
+      ],
+      "photos": [
+        {
+          "file": "photos/f35a14c0f7fbf6d15d2ee85701fbbfbb6923534eb5dbb6b39999979c71d8667a.jpg",
+          "sha256": "f35a14c0f7fbf6d15d2ee85701fbbfbb6923534eb5dbb6b39999979c71d8667a",
+          "color": "",
+          "source_id": "p13i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f10-p12-i1"
+      ],
+      "revision": "145342607df7d17cb754690a2227658973b93ef451bab9c0a36a2bd8b96d5b4f"
+    },
+    {
+      "code": "pdf26-infantil-019",
+      "name": "Clog infantil azul com tema de aranha",
+      "brand": "",
+      "category": "Botas e Calçados Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 10,
+      "retail": "59.90",
+      "price": "69.90",
+      "cost": "41.93",
+      "pages": [
+        13
+      ],
+      "photos": [
+        {
+          "file": "photos/3ef86cee413e1a02288d8cf5daedf2ef3d5fe75ef1a044dbbfc986a6fd373015.jpg",
+          "sha256": "3ef86cee413e1a02288d8cf5daedf2ef3d5fe75ef1a044dbbfc986a6fd373015",
+          "color": "",
+          "source_id": "p13i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f10-p12-i2"
+      ],
+      "revision": "e2a9b83a8118f77b7d90b1f6355fa7feb98cf7239e96a6edf7826d7f50c5fc9f"
+    },
+    {
+      "code": "pdf26-infantil-020",
+      "name": "Tênis infantil bege de malha",
+      "brand": "Molekinho",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        14
+      ],
+      "photos": [
+        {
+          "file": "photos/845047a466139266542e28c283aa50b4fbaf95f555c969b43022692366da4574.jpg",
+          "sha256": "845047a466139266542e28c283aa50b4fbaf95f555c969b43022692366da4574",
+          "color": "",
+          "source_id": "p14i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "6b673b17d6fa7c2c39e5deb07a1e21450113d43e5eaf2237e06279696dafced4"
+    },
+    {
+      "code": "pdf26-infantil-021",
+      "name": "Tênis infantil preto de malha",
+      "brand": "Molekinho",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        14
+      ],
+      "photos": [
+        {
+          "file": "photos/c923e937185cfb4420c2829a68c04e8e2fbda93e0a918799f24c8f3d7ac083b5.jpg",
+          "sha256": "c923e937185cfb4420c2829a68c04e8e2fbda93e0a918799f24c8f3d7ac083b5",
+          "color": "",
+          "source_id": "p14i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "44a4d44dbfdd00a618569c2ca8c7843fffe7fc8e333f25966ff5d665779b88e6"
+    },
+    {
+      "code": "pdf26-infantil-022",
+      "name": "Tênis infantil preto de calce fácil",
+      "brand": "Molekinho",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        14
+      ],
+      "photos": [
+        {
+          "file": "photos/a1e163cdb327179320e00e50632d5ef4b3d106420ada51858a3c41005f2ca09a.jpg",
+          "sha256": "a1e163cdb327179320e00e50632d5ef4b3d106420ada51858a3c41005f2ca09a",
+          "color": "",
+          "source_id": "p14i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "c2d8a9429912581466a1fae5e2514f18ae7aeb346ea2078f8a9ed2cfb830803d"
+    },
+    {
+      "code": "pdf26-infantil-023",
+      "name": "Sandália infantil com laço e tiras cruzadas",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        15
+      ],
+      "photos": [
+        {
+          "file": "photos/a68f79aceaf8c772a2e62a26c8f9ab8024efa6644d97a3588c4d431bca1d9910.jpg",
+          "sha256": "a68f79aceaf8c772a2e62a26c8f9ab8024efa6644d97a3588c4d431bca1d9910",
+          "color": "",
+          "source_id": "p15i01"
+        },
+        {
+          "file": "photos/a69569b7b30b70b2468788201ec4c9996ac56596352c0193b69855ba91f75f69.jpg",
+          "sha256": "a69569b7b30b70b2468788201ec4c9996ac56596352c0193b69855ba91f75f69",
+          "color": "",
+          "source_id": "p15i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f15-p13-i1",
+        "linha_infantil-f15-p13-i3"
+      ],
+      "revision": "b201785eec30ddc17a65bafbb963900d0eef2c605d6d2550ce699a3141a72047"
+    },
+    {
+      "code": "pdf26-infantil-024",
+      "name": "Chinelo infantil preto com brilho",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        15
+      ],
+      "photos": [
+        {
+          "file": "photos/397f2485b7f2aee81ecc8c932a3d5ee42721a130a01d6cde3c422595c36ad137.jpg",
+          "sha256": "397f2485b7f2aee81ecc8c932a3d5ee42721a130a01d6cde3c422595c36ad137",
+          "color": "",
+          "source_id": "p15i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f15-p13-i2"
+      ],
+      "revision": "3d0b070b3ba230691298a6c6858480bf7c679f6847f22b63703f41afafc9b582"
+    },
+    {
+      "code": "pdf26-infantil-025",
+      "name": "Sandália infantil branca com brilho",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        15
+      ],
+      "photos": [
+        {
+          "file": "photos/f066f110dcd018eb680c48fbce77961c0814e8d78b8b7b86d46861a4079be3b2.jpg",
+          "sha256": "f066f110dcd018eb680c48fbce77961c0814e8d78b8b7b86d46861a4079be3b2",
+          "color": "",
+          "source_id": "p15i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f15-p13-i4"
+      ],
+      "revision": "ecaa7233290b4db88a74cae62bfa36d90b242b7a096fe8ebc8a03bd4e1e6e479"
+    },
+    {
+      "code": "pdf26-infantil-026",
+      "name": "Sandália infantil metalizada com estrela",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        16
+      ],
+      "photos": [
+        {
+          "file": "photos/f9d386f9ac281f855c49bcec7130397bb0ae9c724e5e368e939dbffaee0c71b2.jpg",
+          "sha256": "f9d386f9ac281f855c49bcec7130397bb0ae9c724e5e368e939dbffaee0c71b2",
+          "color": "",
+          "source_id": "p16i01"
+        },
+        {
+          "file": "photos/7ad38b9c3aa3e59dd60e5f84411736156ab5d7f5deda3352c5b7a9217ee884e2.jpg",
+          "sha256": "7ad38b9c3aa3e59dd60e5f84411736156ab5d7f5deda3352c5b7a9217ee884e2",
+          "color": "",
+          "source_id": "p16i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "47ef5ef05700318f5ab32f4671902a699db1da4d3ce3def4018d5d0071dc5a5c"
+    },
+    {
+      "code": "pdf26-infantil-027",
+      "name": "Sandália infantil caramelo com estrela",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        16
+      ],
+      "photos": [
+        {
+          "file": "photos/e779e58321fb4e64d0408a368c883d69eab5da17f2ec2a0cf70fe5537238ef31.jpg",
+          "sha256": "e779e58321fb4e64d0408a368c883d69eab5da17f2ec2a0cf70fe5537238ef31",
+          "color": "",
+          "source_id": "p16i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "cda89baefacefbc35bf0faa4e67da4303f066594258cc101d0737d459994de0e"
+    },
+    {
+      "code": "pdf26-infantil-028",
+      "name": "Tênis infantil 9060 em cores claras",
+      "brand": "New Balance",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        17
+      ],
+      "photos": [
+        {
+          "file": "photos/b7bdc67d2d80ae8eab2f8de5b1f8003d1b814430edaea38e1daf31284bdd3840.jpg",
+          "sha256": "b7bdc67d2d80ae8eab2f8de5b1f8003d1b814430edaea38e1daf31284bdd3840",
+          "color": "",
+          "source_id": "p17i01"
+        },
+        {
+          "file": "photos/98d1c5466264a8464101cfec285c32b3b1df558cf1383f161d3aff9e6fefd765.jpg",
+          "sha256": "98d1c5466264a8464101cfec285c32b3b1df558cf1383f161d3aff9e6fefd765",
+          "color": "",
+          "source_id": "p17i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p14-i1",
+        "linha_infantil-f14-p14-i3"
+      ],
+      "revision": "9d9e2f3e7436347f8040e0f6ef25a70cc18ebbaaf160c4c846c893cf58d09d3b"
+    },
+    {
+      "code": "pdf26-infantil-029",
+      "name": "Tênis infantil bege com três faixas",
+      "brand": "Adidas",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        17
+      ],
+      "photos": [
+        {
+          "file": "photos/ba3581426051b8fbc2f5d1870ec7e3584daa3e711f94676d4035e024cfe57b10.jpg",
+          "sha256": "ba3581426051b8fbc2f5d1870ec7e3584daa3e711f94676d4035e024cfe57b10",
+          "color": "",
+          "source_id": "p17i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p14-i2"
+      ],
+      "revision": "45d6a1e617e51a499c51507300555f860363b76a4a9c9da83e59e3e53b427a8d"
+    },
+    {
+      "code": "pdf26-infantil-030",
+      "name": "Bota de chuva infantil azul com tema de aranha",
+      "brand": "",
+      "category": "Botas e Calçados Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        18
+      ],
+      "photos": [
+        {
+          "file": "photos/6063856c1c0939047645011332de31bae0f4a3aa831d04be8dd4ac51267f3d2f.jpg",
+          "sha256": "6063856c1c0939047645011332de31bae0f4a3aa831d04be8dd4ac51267f3d2f",
+          "color": "",
+          "source_id": "p18i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f15-p15-i1"
+      ],
+      "revision": "d952ab453c3ae3214d5f0c340e70920916dc431eab09eb43d72618dab2556081"
+    },
+    {
+      "code": "pdf26-infantil-031",
+      "name": "Bota de chuva infantil cinza com tema de tubarão",
+      "brand": "",
+      "category": "Botas e Calçados Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        18
+      ],
+      "photos": [
+        {
+          "file": "photos/c98a981187de50447482aee63b9e2a32e73ef05d2e78a656499f238cfbfc5109.jpg",
+          "sha256": "c98a981187de50447482aee63b9e2a32e73ef05d2e78a656499f238cfbfc5109",
+          "color": "",
+          "source_id": "p18i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f15-p15-i3"
+      ],
+      "revision": "6d9082bb6ad7a34fe5d893e851d48203d6d5e944880224467f5b796022e108be"
+    },
+    {
+      "code": "pdf26-infantil-032",
+      "name": "Tênis infantil com faixa aderente e sola branca",
+      "brand": "Molekinho",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        19
+      ],
+      "photos": [
+        {
+          "file": "photos/7b639a450c439154e654e027660ef4b66fe703631bfd29537cab3998b4aa6a1e.jpg",
+          "sha256": "7b639a450c439154e654e027660ef4b66fe703631bfd29537cab3998b4aa6a1e",
+          "color": "",
+          "source_id": "p19i01"
+        },
+        {
+          "file": "photos/3b0f3c1c731b11da4e4edb59a6dfa77213a81cfe05099975d15ded393961a8f4.jpg",
+          "sha256": "3b0f3c1c731b11da4e4edb59a6dfa77213a81cfe05099975d15ded393961a8f4",
+          "color": "",
+          "source_id": "p19i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f20-p16-i1",
+        "linha_infantil-f20-p16-i3"
+      ],
+      "revision": "ad23c9548662a1bde26a06a4f293937f52d55e0e16beced5daafe43428fa07f9"
+    },
+    {
+      "code": "pdf26-infantil-033",
+      "name": "Tênis infantil preto com detalhes verdes",
+      "brand": "Molekinho",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        19
+      ],
+      "photos": [
+        {
+          "file": "photos/dc48cbf08b01e172823b4f92a613e7e231bbd3d5b416a928e9c91eae0170c51c.jpg",
+          "sha256": "dc48cbf08b01e172823b4f92a613e7e231bbd3d5b416a928e9c91eae0170c51c",
+          "color": "",
+          "source_id": "p19i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f20-p16-i2"
+      ],
+      "revision": "883f0cdf9d2e6dabe1f56806351cb946f25c18ef9e5ce1d30cd189dd50ebbc62"
+    },
+    {
+      "code": "pdf26-infantil-034",
+      "name": "Tênis infantil azul escuro esportivo",
+      "brand": "Molekinho",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        19
+      ],
+      "photos": [
+        {
+          "file": "photos/3d10b7f8db36e8da5040fb3f893b4aa53bd1aa2b3ed9331c42cf330882acc741.jpg",
+          "sha256": "3d10b7f8db36e8da5040fb3f893b4aa53bd1aa2b3ed9331c42cf330882acc741",
+          "color": "",
+          "source_id": "p19i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f20-p16-i4"
+      ],
+      "revision": "8487eb000268a6050ca08f6105c127e1e0c9c2ba405906820754887633479f17"
+    },
+    {
+      "code": "pdf26-infantil-035",
+      "name": "Tênis infantil preto e branco esportivo",
+      "brand": "Molekinho",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        19
+      ],
+      "photos": [
+        {
+          "file": "photos/8669925e6b6dad44e330e0f9c729f3112fdc2202d155d0b9ed630bcd4421a6e6.jpg",
+          "sha256": "8669925e6b6dad44e330e0f9c729f3112fdc2202d155d0b9ed630bcd4421a6e6",
+          "color": "",
+          "source_id": "p19i05"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f20-p16-i5"
+      ],
+      "revision": "eeb67ab38710c786c7ce8df37b42fcd337cc93c2157484a1c6fb64ede4612aea"
+    },
+    {
+      "code": "pdf26-infantil-036",
+      "name": "Tênis infantil de calce fácil com sola branca",
+      "brand": "Molekinha",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        20
+      ],
+      "photos": [
+        {
+          "file": "photos/6e01b867cac9da60ec779a70753723313756d8bc43573b4a7cf8b2b5f082a3b6.jpg",
+          "sha256": "6e01b867cac9da60ec779a70753723313756d8bc43573b4a7cf8b2b5f082a3b6",
+          "color": "",
+          "source_id": "p20i01"
+        },
+        {
+          "file": "photos/54f46aa1fbc355a676d9fbab864e15e78efca529c9a25ad7ce8968364e357d77.jpg",
+          "sha256": "54f46aa1fbc355a676d9fbab864e15e78efca529c9a25ad7ce8968364e357d77",
+          "color": "",
+          "source_id": "p20i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f18-p17-i1",
+        "linha_infantil-f18-p17-i2"
+      ],
+      "revision": "97d0373cc36fef91996044663bfcb63c49e650bf30896d79cd02e1bd1f29f250"
+    },
+    {
+      "code": "pdf26-infantil-037",
+      "name": "Tênis infantil bege com cadarço",
+      "brand": "Molekinha",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        20
+      ],
+      "photos": [
+        {
+          "file": "photos/f6d76815bfb11d286cff21c656b2ebfd97f1f2040516b7a55b47fcb575d71bd6.jpg",
+          "sha256": "f6d76815bfb11d286cff21c656b2ebfd97f1f2040516b7a55b47fcb575d71bd6",
+          "color": "",
+          "source_id": "p20i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f18-p17-i3"
+      ],
+      "revision": "67bb238a0f2e567ee10cdb2e30ab491c4b085f2a6907b8b4439e7fede3ba9ded"
+    },
+    {
+      "code": "pdf26-infantil-038",
+      "name": "Tênis infantil rosa com cadarço",
+      "brand": "Molekinha",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        20
+      ],
+      "photos": [
+        {
+          "file": "photos/a5eefe86f5fb5e50a0da85edcdf04466f1786b19164143f35bca933abc7bcc78.jpg",
+          "sha256": "a5eefe86f5fb5e50a0da85edcdf04466f1786b19164143f35bca933abc7bcc78",
+          "color": "",
+          "source_id": "p20i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f18-p17-i4"
+      ],
+      "revision": "557b834473952b878f631203701b24a8cf26f579c1b71cff6b5e4b5b324a2086"
+    },
+    {
+      "code": "pdf26-infantil-039",
+      "name": "Tênis infantil esportivo com N lateral",
+      "brand": "New Balance",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        21
+      ],
+      "photos": [
+        {
+          "file": "photos/eb871b70f4278851e9a2486214648eabcd82246dd2f45272af0c11dd91b98da1.jpg",
+          "sha256": "eb871b70f4278851e9a2486214648eabcd82246dd2f45272af0c11dd91b98da1",
+          "color": "",
+          "source_id": "p21i01"
+        },
+        {
+          "file": "photos/6298b0fa4b8db2374b183af1b172cbbd6c1d3606676502b55f25e2aeb2c0dbb8.jpg",
+          "sha256": "6298b0fa4b8db2374b183af1b172cbbd6c1d3606676502b55f25e2aeb2c0dbb8",
+          "color": "",
+          "source_id": "p21i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p18-i1",
+        "linha_infantil-f14-p18-i2"
+      ],
+      "revision": "ecc8ef8debda2f0b3c694def55297af9bccdb5bd8cb6af9963c7e904198fd4e6"
+    },
+    {
+      "code": "pdf26-infantil-040",
+      "name": "Sandália infantil rosa de tiras finas",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        22
+      ],
+      "photos": [
+        {
+          "file": "photos/87b540aa089822350a775cfff37bfc36e08e4461c4dc2b2987b93563f443db58.jpg",
+          "sha256": "87b540aa089822350a775cfff37bfc36e08e4461c4dc2b2987b93563f443db58",
+          "color": "",
+          "source_id": "p22i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f15-p19-i1"
+      ],
+      "revision": "8450aa27ca39a489dc79e53a528f0dfaa61f32af09bbd47fced67573bbe6cde7"
+    },
+    {
+      "code": "pdf26-infantil-041",
+      "name": "Sandália infantil bege de tiras cruzadas",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        22
+      ],
+      "photos": [
+        {
+          "file": "photos/5a516323514ddf21bb1ef5c83dd788d201d508e809b6b144cc9a06cb0443f6ae.jpg",
+          "sha256": "5a516323514ddf21bb1ef5c83dd788d201d508e809b6b144cc9a06cb0443f6ae",
+          "color": "",
+          "source_id": "p22i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f15-p19-i2"
+      ],
+      "revision": "72019ae486f9886f45a3d922df4515b2ccbd9b8fe934e57603dbf74d08d8eb8b"
+    },
+    {
+      "code": "pdf26-infantil-042",
+      "name": "Chinelo infantil rosa com franjas",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        22
+      ],
+      "photos": [
+        {
+          "file": "photos/0f1e3feb6e5b81b2723cfbdaeae9ca341232fe9f51161ec65e6d0813ab1e703c.jpg",
+          "sha256": "0f1e3feb6e5b81b2723cfbdaeae9ca341232fe9f51161ec65e6d0813ab1e703c",
+          "color": "",
+          "source_id": "p22i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f15-p19-i3"
+      ],
+      "revision": "2046eec84d31199da2e406d301ba30201a94167a77f3b5b1313fc0acea9be6ba"
+    },
+    {
+      "code": "pdf26-infantil-043",
+      "name": "Sandália infantil dourada com flor",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        23
+      ],
+      "photos": [
+        {
+          "file": "photos/4ed01cbf0cd02d9a9f210fd08759df86ecbb51f86de8924f8efa372291dc66fa.jpg",
+          "sha256": "4ed01cbf0cd02d9a9f210fd08759df86ecbb51f86de8924f8efa372291dc66fa",
+          "color": "",
+          "source_id": "p23i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "9f15faebf3704b9c0618d3874ace942ee6d0a51c25e895aed4b129b1f0b5155e"
+    },
+    {
+      "code": "pdf26-infantil-044",
+      "name": "Sandália infantil metalizada de salto baixo",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 16,
+      "retail": "119.90",
+      "price": "139.90",
+      "cost": "83.93",
+      "pages": [
+        23
+      ],
+      "photos": [
+        {
+          "file": "photos/aeaa72c27c6cf101dc2ab02a3d1c72cc65c80eb59863e0ee06fbd72c984b6a85.jpg",
+          "sha256": "aeaa72c27c6cf101dc2ab02a3d1c72cc65c80eb59863e0ee06fbd72c984b6a85",
+          "color": "",
+          "source_id": "p23i03"
+        },
+        {
+          "file": "photos/701971c4f96e63e49327275be6e7d2762ba7a9ae555b3ff39be68f55a283c08d.jpg",
+          "sha256": "701971c4f96e63e49327275be6e7d2762ba7a9ae555b3ff39be68f55a283c08d",
+          "color": "",
+          "source_id": "p23i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f16-p20-i1",
+        "linha_infantil-f16-p20-i2"
+      ],
+      "revision": "f6b9db53acca2a8e521355a65f0fd1e32f6ad47d8a74b88efaa2167daddf955f"
+    },
+    {
+      "code": "pdf26-infantil-045",
+      "name": "Sandália infantil com coração na tira",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        24
+      ],
+      "photos": [
+        {
+          "file": "photos/3c7fca5de27178f20802b6fb684f694562c639c2003d99b076d29e5715209ff2.jpg",
+          "sha256": "3c7fca5de27178f20802b6fb684f694562c639c2003d99b076d29e5715209ff2",
+          "color": "",
+          "source_id": "p24i01"
+        },
+        {
+          "file": "photos/d94e259ad9193173d9612812d3c84a30c9c5e2db6d507057627cd1258201c32f.jpg",
+          "sha256": "d94e259ad9193173d9612812d3c84a30c9c5e2db6d507057627cd1258201c32f",
+          "color": "",
+          "source_id": "p24i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f12-p22-i1",
+        "linha_infantil-f12-p22-i2"
+      ],
+      "revision": "186770236efd3e55a952b54d48c3401c1a7b6d4c094e803729015df4bcc4cda5"
+    },
+    {
+      "code": "pdf26-infantil-046",
+      "name": "Sapato infantil rosa com tira aderente",
+      "brand": "Molekinha",
+      "category": "Sapatos Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        24
+      ],
+      "photos": [
+        {
+          "file": "photos/b4533452af772bdbdef37e3fad3e783d53128d8f61c07f2735877cf2de283f8b.jpg",
+          "sha256": "b4533452af772bdbdef37e3fad3e783d53128d8f61c07f2735877cf2de283f8b",
+          "color": "",
+          "source_id": "p24i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f12-p22-i3"
+      ],
+      "revision": "8255901029106f3055a0a54a0d6b54a6e670d4d6ae61a0dc4dcb62375aa16ec9"
+    },
+    {
+      "code": "pdf26-infantil-047",
+      "name": "Sandália infantil rosa com flores e tiras coloridas",
+      "brand": "Molekinha",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        24
+      ],
+      "photos": [
+        {
+          "file": "photos/bac3c5f859d729cffb7a8654fbb8f92a58a7762b4e833add9d838e9951897566.jpg",
+          "sha256": "bac3c5f859d729cffb7a8654fbb8f92a58a7762b4e833add9d838e9951897566",
+          "color": "",
+          "source_id": "p24i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f12-p22-i4"
+      ],
+      "revision": "b6df607ea1e1efb90c7e640f4d8c24589d18508359823777afd21929adc2eb54"
+    },
+    {
+      "code": "pdf26-infantil-048",
+      "name": "Tênis infantil preto com detalhes rosa",
+      "brand": "Kidy",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        25
+      ],
+      "photos": [
+        {
+          "file": "photos/bce6ed0c1a1c72d63051815eeb4c03d6173b75324cdbfeea27be8dffd2b1c70d.jpg",
+          "sha256": "bce6ed0c1a1c72d63051815eeb4c03d6173b75324cdbfeea27be8dffd2b1c70d",
+          "color": "",
+          "source_id": "p25i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f20-p23-i1"
+      ],
+      "revision": "629f428a43aa389c14816fff24c35d084ae2673add4c776f69f076b76e158ba5"
+    },
+    {
+      "code": "pdf26-infantil-049",
+      "name": "Tênis infantil azul com tiras aderentes",
+      "brand": "Kidy",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        25
+      ],
+      "photos": [
+        {
+          "file": "photos/005de89898b82949373c4c32bd228c3d524617aecf65f51941292fa930cb121e.jpg",
+          "sha256": "005de89898b82949373c4c32bd228c3d524617aecf65f51941292fa930cb121e",
+          "color": "",
+          "source_id": "p25i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f20-p23-i2"
+      ],
+      "revision": "e2ff93314bdda95683c7c07a7f1e9c3a0bb975ecad2cd9a93a144b3a159669c5"
+    },
+    {
+      "code": "pdf26-infantil-050",
+      "name": "Tênis infantil casual com recortes laterais",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        26
+      ],
+      "photos": [
+        {
+          "file": "photos/5772979cedcd070253feee6891c5100c2519d0b5731478af9f5ef64b4ef8cf26.jpg",
+          "sha256": "5772979cedcd070253feee6891c5100c2519d0b5731478af9f5ef64b4ef8cf26",
+          "color": "",
+          "source_id": "p26i01"
+        },
+        {
+          "file": "photos/170af8371d4175c229bea7b26705fa38434e4899dbe1823183726ac3583bea77.jpg",
+          "sha256": "170af8371d4175c229bea7b26705fa38434e4899dbe1823183726ac3583bea77",
+          "color": "",
+          "source_id": "p26i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p24-i1",
+        "linha_infantil-f17-p24-i2"
+      ],
+      "revision": "297164ebb9ebcd84cb7ebe18d7fd3adb1c6bb105170d64779cf8cde084293b73"
+    },
+    {
+      "code": "pdf26-infantil-051",
+      "name": "Tênis infantil preto com faixa branca",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        27
+      ],
+      "photos": [
+        {
+          "file": "photos/be562a8bcb46853ede362a0c875488407eeaa3398a805e8d61386e6d4ec2ac29.jpg",
+          "sha256": "be562a8bcb46853ede362a0c875488407eeaa3398a805e8d61386e6d4ec2ac29",
+          "color": "",
+          "source_id": "p27i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "859a17f411806e75d841064a204c8baa4fb3489785187718f2b4ff30f9631ac0"
+    },
+    {
+      "code": "pdf26-infantil-052",
+      "name": "Tênis infantil branco com detalhes rosa",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        27
+      ],
+      "photos": [
+        {
+          "file": "photos/c7b7ca2fdb67f72178a335e98017f6bd025dd6014c127b62fe1971dca47e4130.jpg",
+          "sha256": "c7b7ca2fdb67f72178a335e98017f6bd025dd6014c127b62fe1971dca47e4130",
+          "color": "",
+          "source_id": "p27i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "d910f561da2209b24b234c2f04161b6798201c76b72ba09a52a872a34e2d2cee"
+    },
+    {
+      "code": "pdf26-infantil-053",
+      "name": "Tênis infantil claro com sola iluminada",
+      "brand": "Kidy",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        28
+      ],
+      "photos": [
+        {
+          "file": "photos/39aedeb60092e5657914434c757532e49caae6781d4bbe9c14fc750f7942996e.jpg",
+          "sha256": "39aedeb60092e5657914434c757532e49caae6781d4bbe9c14fc750f7942996e",
+          "color": "",
+          "source_id": "p28i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f20-p25-i1"
+      ],
+      "revision": "d66b91988e3a13fa93ba0faa2e338da3f5e093a62af727a290c282e2190a9c01"
+    },
+    {
+      "code": "pdf26-infantil-054",
+      "name": "Tênis infantil com tiras aderentes e sola iluminada",
+      "brand": "Kidy",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        28
+      ],
+      "photos": [
+        {
+          "file": "photos/33debdad9691530d18fbec4f5d213871d2fefa5453dc602fea1c3279f98f5620.jpg",
+          "sha256": "33debdad9691530d18fbec4f5d213871d2fefa5453dc602fea1c3279f98f5620",
+          "color": "",
+          "source_id": "p28i02"
+        },
+        {
+          "file": "photos/9798d8963a4f3b57b6aed9442b4f131c8d21a6d92f52c3835290937345b38f07.jpg",
+          "sha256": "9798d8963a4f3b57b6aed9442b4f131c8d21a6d92f52c3835290937345b38f07",
+          "color": "",
+          "source_id": "p28i03"
+        },
+        {
+          "file": "photos/9c57be8486a51526da9e0f4845a637e25948c7776507ef0e8c75cf49566be4bc.jpg",
+          "sha256": "9c57be8486a51526da9e0f4845a637e25948c7776507ef0e8c75cf49566be4bc",
+          "color": "",
+          "source_id": "p28i04"
+        },
+        {
+          "file": "photos/1553f9b0286593c37f663dda429864d156bc1f24ce07a7d5214bf0993c8d5957.jpg",
+          "sha256": "1553f9b0286593c37f663dda429864d156bc1f24ce07a7d5214bf0993c8d5957",
+          "color": "",
+          "source_id": "p28i05"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f20-p25-i2",
+        "linha_infantil-f20-p25-i3",
+        "linha_infantil-f20-p25-i4",
+        "linha_infantil-f20-p25-i5"
+      ],
+      "revision": "4d6f52c338805a03a11fd7ec3b2655791d72beec411772f71f10a51137a38ca4"
+    },
+    {
+      "code": "pdf26-infantil-055",
+      "name": "Tênis infantil preto de calce fácil e sola rosa",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        29
+      ],
+      "photos": [
+        {
+          "file": "photos/048e072a363916c62c294173eb6d0c6c3bfffeb8cf88aa7219029cf90ef831b1.jpg",
+          "sha256": "048e072a363916c62c294173eb6d0c6c3bfffeb8cf88aa7219029cf90ef831b1",
+          "color": "",
+          "source_id": "p29i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p26-i1"
+      ],
+      "revision": "51545cdcbe460304b373e508ee3c953b2d7ed4eadbc9bc74ab065a6094fc8cce"
+    },
+    {
+      "code": "pdf26-infantil-056",
+      "name": "Tênis infantil azul claro de lona",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        29
+      ],
+      "photos": [
+        {
+          "file": "photos/93f911ca216a5220fa8992c666e855d5f0be617749b63a859d73ea28f008f2a0.jpg",
+          "sha256": "93f911ca216a5220fa8992c666e855d5f0be617749b63a859d73ea28f008f2a0",
+          "color": "",
+          "source_id": "p29i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p26-i2"
+      ],
+      "revision": "83f2575d91482e5321b337cb995fd4881fe8f76ff27c639f17964a11bc31915a"
+    },
+    {
+      "code": "pdf26-infantil-057",
+      "name": "Sandália infantil azul escuro com tiras largas",
+      "brand": "Kidy",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        30
+      ],
+      "photos": [
+        {
+          "file": "photos/dc916e31cb5f141f81f17e43026a62b5459cf59bed62ff2d7e5a70369d12bb2f.jpg",
+          "sha256": "dc916e31cb5f141f81f17e43026a62b5459cf59bed62ff2d7e5a70369d12bb2f",
+          "color": "",
+          "source_id": "p30i01"
+        },
+        {
+          "file": "photos/d9668cbdf876c4f342909a176b84e9f39915dd5436b71ac184a4ab2010a31919.jpg",
+          "sha256": "d9668cbdf876c4f342909a176b84e9f39915dd5436b71ac184a4ab2010a31919",
+          "color": "",
+          "source_id": "p30i05"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p27-i1",
+        "linha_infantil-f14-p27-i5"
+      ],
+      "revision": "e16356ecd43e58b22704f229440e3ea56f49fd051c4cb99ad3af61fcb6b22e77"
+    },
+    {
+      "code": "pdf26-infantil-058",
+      "name": "Sandália infantil rosa com tiras largas",
+      "brand": "Kidy",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        30
+      ],
+      "photos": [
+        {
+          "file": "photos/17cdf85406727cbaff9b084fca416fcf3b1d579c12bb7613f0fa6bebb277544e.jpg",
+          "sha256": "17cdf85406727cbaff9b084fca416fcf3b1d579c12bb7613f0fa6bebb277544e",
+          "color": "",
+          "source_id": "p30i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p27-i2"
+      ],
+      "revision": "5ca2fe71f47750483dea9ff3a2fb363ecd97e71982270520d6087f6e4ed5f940"
+    },
+    {
+      "code": "pdf26-infantil-059",
+      "name": "Sandália infantil azul com tiras aderentes",
+      "brand": "Kidy",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        30
+      ],
+      "photos": [
+        {
+          "file": "photos/913508a798328e03429e88123387206fa9ac9819e19e6266fa0a6e28ce80bc82.jpg",
+          "sha256": "913508a798328e03429e88123387206fa9ac9819e19e6266fa0a6e28ce80bc82",
+          "color": "",
+          "source_id": "p30i03"
+        },
+        {
+          "file": "photos/aec81fe60e0a34c57dcaefb15ed6ba02e1fe16dfddad83c863c98aed1e72847c.jpg",
+          "sha256": "aec81fe60e0a34c57dcaefb15ed6ba02e1fe16dfddad83c863c98aed1e72847c",
+          "color": "",
+          "source_id": "p30i06"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p27-i3",
+        "linha_infantil-f14-p27-i6"
+      ],
+      "revision": "deab5e422cb1af4adb14d06753efbc0e85b8934a8f56279dced9968b9973eacf"
+    },
+    {
+      "code": "pdf26-infantil-060",
+      "name": "Sandália infantil rosa forte com tiras aderentes",
+      "brand": "Kidy",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        30
+      ],
+      "photos": [
+        {
+          "file": "photos/a7e1d6c8bd692de272593a254bbb7163d4190d8499ad75666c384960bc00ed83.jpg",
+          "sha256": "a7e1d6c8bd692de272593a254bbb7163d4190d8499ad75666c384960bc00ed83",
+          "color": "",
+          "source_id": "p30i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p27-i4"
+      ],
+      "revision": "86f57161571d075060c2d29b0ecc11ee43b64df14f904c9077fe777c96a93220"
+    },
+    {
+      "code": "pdf26-infantil-061",
+      "name": "Tênis infantil branco para colorir",
+      "brand": "Molekinha",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        31
+      ],
+      "photos": [
+        {
+          "file": "photos/67765df53240233c4e08a34292cbf3d308cfda0444e26f64693dfec989fa9267.jpg",
+          "sha256": "67765df53240233c4e08a34292cbf3d308cfda0444e26f64693dfec989fa9267",
+          "color": "",
+          "source_id": "p31i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f20-p28-i1"
+      ],
+      "revision": "19fcacc0407c132e6cd0c7b0dfd03a8bc2ff9fb4764a63682fdfba91e3ef4298"
+    },
+    {
+      "code": "pdf26-infantil-062",
+      "name": "Tênis infantil preto com tiras aderentes",
+      "brand": "Kidy",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        31
+      ],
+      "photos": [
+        {
+          "file": "photos/e5223a4e7eb9298d37ea16d31774d8f6cc101f7941e321c9ba2d45fb61a7c7c3.jpg",
+          "sha256": "e5223a4e7eb9298d37ea16d31774d8f6cc101f7941e321c9ba2d45fb61a7c7c3",
+          "color": "",
+          "source_id": "p31i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f20-p28-i2"
+      ],
+      "revision": "9edd96b919edf6e4240c8ff3ce73010e063d1c9bf5bb7729656babbd582ced55"
+    },
+    {
+      "code": "pdf26-infantil-063",
+      "name": "Tênis infantil vermelho de lona",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        31
+      ],
+      "photos": [
+        {
+          "file": "photos/f7207db6da6dfbffce12fd3712bef928c801c16d7ce6e0a4d7379ee4ea9be1db.jpg",
+          "sha256": "f7207db6da6dfbffce12fd3712bef928c801c16d7ce6e0a4d7379ee4ea9be1db",
+          "color": "",
+          "source_id": "p31i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f20-p28-i3"
+      ],
+      "revision": "789baa1cf0268e856237b6c0b88384d939365db60eb52d86577fc95533172567"
+    },
+    {
+      "code": "pdf26-infantil-064",
+      "name": "Tênis infantil preto de lona com tiras aderentes",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        31
+      ],
+      "photos": [
+        {
+          "file": "photos/ac1b9dd6a5d1eb0dd4c150edf57cfd902be4e45f1744176c9556c5c186b1405d.jpg",
+          "sha256": "ac1b9dd6a5d1eb0dd4c150edf57cfd902be4e45f1744176c9556c5c186b1405d",
+          "color": "",
+          "source_id": "p31i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f20-p28-i4"
+      ],
+      "revision": "1a2821e7d48f32f7b6487aa32bf5cb0330d017425ff0ff573a4b679b07a715fb"
+    },
+    {
+      "code": "pdf26-infantil-065",
+      "name": "Tênis infantil rosa com desenhos",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        32
+      ],
+      "photos": [
+        {
+          "file": "photos/a691019621abbffbd7328e3731f8da41b99a8d70c4720872a7e2d4d0c2464a21.jpg",
+          "sha256": "a691019621abbffbd7328e3731f8da41b99a8d70c4720872a7e2d4d0c2464a21",
+          "color": "",
+          "source_id": "p32i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p29-i1"
+      ],
+      "revision": "324f6e0cb81978d1856c1ea7023a8b235d13b3e3e8b94af72d1d92004231ca7e"
+    },
+    {
+      "code": "pdf26-infantil-066",
+      "name": "Tênis infantil preto com detalhe branco",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        32
+      ],
+      "photos": [
+        {
+          "file": "photos/7b031ccc183451cc2e3d983e88196a3c980d742585eb45b4931e44ff40f4a11a.jpg",
+          "sha256": "7b031ccc183451cc2e3d983e88196a3c980d742585eb45b4931e44ff40f4a11a",
+          "color": "",
+          "source_id": "p32i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p29-i2"
+      ],
+      "revision": "be6506301361b14c6922dfe8383f29689b0e97fa5cf7a92a5f1fc32bb3e647ee"
+    },
+    {
+      "code": "pdf26-infantil-067",
+      "name": "Sandália infantil preta de tira larga",
+      "brand": "",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        32
+      ],
+      "photos": [
+        {
+          "file": "photos/8ca9bb0295a99a7f23f3a03cfdda1bd7fbaec427bc7b1e7f0d120436301fe2a9.jpg",
+          "sha256": "8ca9bb0295a99a7f23f3a03cfdda1bd7fbaec427bc7b1e7f0d120436301fe2a9",
+          "color": "",
+          "source_id": "p32i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p29-i3"
+      ],
+      "revision": "b6e984e05a08de9f78f75e80023c17f105999cf13edff5f08a00d2db29404dd9"
+    },
+    {
+      "code": "pdf26-infantil-068",
+      "name": "Tênis infantil preto casual",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        32
+      ],
+      "photos": [
+        {
+          "file": "photos/d38ab98d3ac0314b7eb499d887d824003f329df6f2654bc1763dcc2a9fe4a6de.jpg",
+          "sha256": "d38ab98d3ac0314b7eb499d887d824003f329df6f2654bc1763dcc2a9fe4a6de",
+          "color": "",
+          "source_id": "p32i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p29-i4"
+      ],
+      "revision": "232ea916bbb4de12247bf28050ba3f17bad355cd96568fbd50fd976377d29a9d"
+    },
+    {
+      "code": "pdf26-infantil-069",
+      "name": "Tênis infantil branco com detalhes metalizados",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        32
+      ],
+      "photos": [
+        {
+          "file": "photos/19c46a3fb2ee90a0e3a0ef5ec63d6d1c592aa9592adcfdb15e18a45745bd5a64.jpg",
+          "sha256": "19c46a3fb2ee90a0e3a0ef5ec63d6d1c592aa9592adcfdb15e18a45745bd5a64",
+          "color": "",
+          "source_id": "p32i05"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p29-i5"
+      ],
+      "revision": "0e952fda813e9899b955f6ae6cbcd7b182755e6974393c2e8de5bf2b313b8428"
+    },
+    {
+      "code": "pdf26-infantil-070",
+      "name": "Chinelo infantil rosa com tiras largas",
+      "brand": "Rider",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 9,
+      "retail": "49.90",
+      "price": "59.90",
+      "cost": "34.93",
+      "pages": [
+        33
+      ],
+      "photos": [
+        {
+          "file": "photos/020bf4c58628b7985574e30b50c68aa7894775db4b5b6123ba5db4f6d75a3438.jpg",
+          "sha256": "020bf4c58628b7985574e30b50c68aa7894775db4b5b6123ba5db4f6d75a3438",
+          "color": "",
+          "source_id": "p33i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f9-p30-i1"
+      ],
+      "revision": "526b3ebc6fce2e86e19f6b2e1dc8993215822164cb7bd653fdbcfa4e6717d379"
+    },
+    {
+      "code": "pdf26-infantil-071",
+      "name": "Chinelo infantil preto e azul estampado",
+      "brand": "Ipanema",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 9,
+      "retail": "49.90",
+      "price": "59.90",
+      "cost": "34.93",
+      "pages": [
+        33
+      ],
+      "photos": [
+        {
+          "file": "photos/5dceb1c0c9b69af2fceaddcc52fbf3e0e0aba8acb36358d600742ca69fa820ac.jpg",
+          "sha256": "5dceb1c0c9b69af2fceaddcc52fbf3e0e0aba8acb36358d600742ca69fa820ac",
+          "color": "",
+          "source_id": "p33i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f9-p30-i2"
+      ],
+      "revision": "5d19b518c4f361c6ed87a7c13ef91a5eef422cbc9cdc2bdcf5a67f58fba988b3"
+    },
+    {
+      "code": "pdf26-infantil-072",
+      "name": "Chinelo infantil rosa floral",
+      "brand": "Ipanema",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 9,
+      "retail": "49.90",
+      "price": "59.90",
+      "cost": "34.93",
+      "pages": [
+        33
+      ],
+      "photos": [
+        {
+          "file": "photos/f9704e6b85042134d9e61bff5bfdda47ba6e03ae9ac507bfe6504f2c94326f48.jpg",
+          "sha256": "f9704e6b85042134d9e61bff5bfdda47ba6e03ae9ac507bfe6504f2c94326f48",
+          "color": "",
+          "source_id": "p33i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f9-p30-i3"
+      ],
+      "revision": "23f82f13bd32f94c333844f6c584aa1fd7eff0ca9fc8dea20445121d8f66590f"
+    },
+    {
+      "code": "pdf26-infantil-073",
+      "name": "Sandália infantil rosa com tira no calcanhar",
+      "brand": "Ipanema",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 9,
+      "retail": "49.90",
+      "price": "59.90",
+      "cost": "34.93",
+      "pages": [
+        33
+      ],
+      "photos": [
+        {
+          "file": "photos/a26c91ae30a36b5eb89e2680c3a71474443dc331e49fabb1edb3628a0ed1d25a.jpg",
+          "sha256": "a26c91ae30a36b5eb89e2680c3a71474443dc331e49fabb1edb3628a0ed1d25a",
+          "color": "",
+          "source_id": "p33i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f9-p30-i4"
+      ],
+      "revision": "e97592512c4c1cc99fd7c74078ea50f63750eea31db8efdd662381ae596a4b4b"
+    },
+    {
+      "code": "pdf26-infantil-074",
+      "name": "Chinelo infantil azul e amarelo",
+      "brand": "Rider",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 9,
+      "retail": "49.90",
+      "price": "59.90",
+      "cost": "34.93",
+      "pages": [
+        33
+      ],
+      "photos": [
+        {
+          "file": "photos/8528324abcf7adfb5b03f53e92bffd3d8fc89fd5ab8d9a607608cf4c96c695f6.jpg",
+          "sha256": "8528324abcf7adfb5b03f53e92bffd3d8fc89fd5ab8d9a607608cf4c96c695f6",
+          "color": "",
+          "source_id": "p33i05"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f9-p30-i5"
+      ],
+      "revision": "430ff355faafc74291255388a6bc4698a4c77e80d52d0a52d189c6aa1ff60e30"
+    },
+    {
+      "code": "pdf26-infantil-075",
+      "name": "Chinelo infantil azul estampado",
+      "brand": "Ipanema",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 9,
+      "retail": "49.90",
+      "price": "59.90",
+      "cost": "34.93",
+      "pages": [
+        33
+      ],
+      "photos": [
+        {
+          "file": "photos/718ead47dd4c5168bac2be2572baee65f9675a482f3851833febe643b09e0040.jpg",
+          "sha256": "718ead47dd4c5168bac2be2572baee65f9675a482f3851833febe643b09e0040",
+          "color": "",
+          "source_id": "p33i06"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f9-p30-i6"
+      ],
+      "revision": "d6695033dc0bfde27b565066f31aa34dfb934231e63e630252366821d6fa7156"
+    },
+    {
+      "code": "pdf26-infantil-076",
+      "name": "Tênis infantil preto de lona com faixa aderente",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        34
+      ],
+      "photos": [
+        {
+          "file": "photos/e88190f97f836ebbd8d9f8a55a7077d45b3c0078b408c56acfbeebee23f42b46.jpg",
+          "sha256": "e88190f97f836ebbd8d9f8a55a7077d45b3c0078b408c56acfbeebee23f42b46",
+          "color": "",
+          "source_id": "p34i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p31-i1"
+      ],
+      "revision": "2e920f36181d2a8aa35b3164ede78b415ac72291b9dcbe68f518c45bdfda5fa9"
+    },
+    {
+      "code": "pdf26-infantil-077",
+      "name": "Tênis infantil branco floral com tiras aderentes",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        34
+      ],
+      "photos": [
+        {
+          "file": "photos/d280275fe6f59b16e3925b4a14eac9add1f7af420bc1dc277811a0b4f23db1ff.jpg",
+          "sha256": "d280275fe6f59b16e3925b4a14eac9add1f7af420bc1dc277811a0b4f23db1ff",
+          "color": "",
+          "source_id": "p34i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p31-i2"
+      ],
+      "revision": "d518ba25479e9c8f35d57503daebb44824659ae0924e1e99e53367d4252636e0"
+    },
+    {
+      "code": "pdf26-infantil-078",
+      "name": "Tênis infantil de lona com duas tiras aderentes",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        34
+      ],
+      "photos": [
+        {
+          "file": "photos/0d94e544d9bcb6f88128ae9732dcc5dd36331ff3ef8d04af2e9f4152d5cdb4b6.jpg",
+          "sha256": "0d94e544d9bcb6f88128ae9732dcc5dd36331ff3ef8d04af2e9f4152d5cdb4b6",
+          "color": "",
+          "source_id": "p34i03"
+        },
+        {
+          "file": "photos/bb7534e3fd4579773c99d8dc9fd97a9a3568cbab2c518caa5393f97c52c428a3.jpg",
+          "sha256": "bb7534e3fd4579773c99d8dc9fd97a9a3568cbab2c518caa5393f97c52c428a3",
+          "color": "",
+          "source_id": "p34i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p31-i3",
+        "linha_infantil-f14-p31-i4"
+      ],
+      "revision": "457cec8198bafc41db4b3b9018da14c9c7f44ab7e34e97e66828f653e3dadd1a"
+    },
+    {
+      "code": "pdf26-infantil-079",
+      "name": "Sandália infantil azul com faixas claras",
+      "brand": "",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        35
+      ],
+      "photos": [
+        {
+          "file": "photos/0eef8f38c782ee3ccea111f9014eec04495265aa23a7c7e92961687d3c05091c.jpg",
+          "sha256": "0eef8f38c782ee3ccea111f9014eec04495265aa23a7c7e92961687d3c05091c",
+          "color": "",
+          "source_id": "p35i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f12-p32-i1"
+      ],
+      "revision": "f1282a34a448525c40b8a5c45db191f73761d3deb7f0e5381923c41a0b9b268f"
+    },
+    {
+      "code": "pdf26-infantil-080",
+      "name": "Sandália infantil azul de tiras cruzadas",
+      "brand": "",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        35
+      ],
+      "photos": [
+        {
+          "file": "photos/df01058d7780592e4cd971f2ed26ffb275b2cd1969db86407969783a668f0c3f.jpg",
+          "sha256": "df01058d7780592e4cd971f2ed26ffb275b2cd1969db86407969783a668f0c3f",
+          "color": "",
+          "source_id": "p35i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f12-p32-i2"
+      ],
+      "revision": "f57d02bb85d2966b980199815f46c8b9b2881864f5fd18643fa9cb49988e2ca1"
+    },
+    {
+      "code": "pdf26-infantil-081",
+      "name": "Sandália infantil preta com faixas claras",
+      "brand": "",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        35
+      ],
+      "photos": [
+        {
+          "file": "photos/49ff7588e2d7033ada292ffd5191a0c8016d2c94f19f40790606544c0329bc45.jpg",
+          "sha256": "49ff7588e2d7033ada292ffd5191a0c8016d2c94f19f40790606544c0329bc45",
+          "color": "",
+          "source_id": "p35i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f12-p32-i3"
+      ],
+      "revision": "ec1ececef898a37ec23daa27b11cf6de729d04ed02629592e11cfb86237ca132"
+    },
+    {
+      "code": "pdf26-infantil-082",
+      "name": "Sandália infantil verde com tiras aderentes",
+      "brand": "",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        35
+      ],
+      "photos": [
+        {
+          "file": "photos/134e0f620c0fd2fa204ec5adbebc9c72f72638088963dafc28d6b802e8de9582.jpg",
+          "sha256": "134e0f620c0fd2fa204ec5adbebc9c72f72638088963dafc28d6b802e8de9582",
+          "color": "",
+          "source_id": "p35i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f12-p32-i4"
+      ],
+      "revision": "3e9859023a4e171bfde2dd4635047f9628b8c8e3d0592a6ec3896466a282dc00"
+    },
+    {
+      "code": "pdf26-infantil-083",
+      "name": "Sandália infantil verde de tira larga",
+      "brand": "Rider",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 9,
+      "retail": "49.90",
+      "price": "59.90",
+      "cost": "34.93",
+      "pages": [
+        36
+      ],
+      "photos": [
+        {
+          "file": "photos/f466c8c6b7460fc8af72ed37af8d12856433641c3a9442d6fd936febf4af0000.jpg",
+          "sha256": "f466c8c6b7460fc8af72ed37af8d12856433641c3a9442d6fd936febf4af0000",
+          "color": "",
+          "source_id": "p36i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p33-i1"
+      ],
+      "revision": "09f5592222ac06ecd8f7fcf77e8a967cf8b6c1c04a7f572a5c805a8287bddb94"
+    },
+    {
+      "code": "pdf26-infantil-084",
+      "name": "Sandália infantil marrom com tira clara",
+      "brand": "",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        36
+      ],
+      "photos": [
+        {
+          "file": "photos/a6413f390c3200dec399866448f5b5095af011de60f9335e89521d65cb0c9d3f.jpg",
+          "sha256": "a6413f390c3200dec399866448f5b5095af011de60f9335e89521d65cb0c9d3f",
+          "color": "",
+          "source_id": "p36i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p33-i2"
+      ],
+      "revision": "de8cd387f791ac492cb6d979f838503fb5e0a287020d6c4a0bbca28cc3e44136"
+    },
+    {
+      "code": "pdf26-infantil-085",
+      "name": "Sandália infantil azul de tira larga",
+      "brand": "Rider",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 9,
+      "retail": "49.90",
+      "price": "59.90",
+      "cost": "34.93",
+      "pages": [
+        36
+      ],
+      "photos": [
+        {
+          "file": "photos/8ec40d7db7163cac370b482468372c659a2d5924329b1bb62cffe7c2b17c17d3.jpg",
+          "sha256": "8ec40d7db7163cac370b482468372c659a2d5924329b1bb62cffe7c2b17c17d3",
+          "color": "",
+          "source_id": "p36i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p33-i3"
+      ],
+      "revision": "7f2f0a37ff4707b2e9c7784ebc37cf9ba07cd28378f5be8b0012e00ea6338504"
+    },
+    {
+      "code": "pdf26-infantil-086",
+      "name": "Tênis infantil azul com tira aderente",
+      "brand": "Kidy",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        36
+      ],
+      "photos": [
+        {
+          "file": "photos/d2ecbc41179b59850d841335cf16af694be99219e1489e10f0497e0732cab26b.jpg",
+          "sha256": "d2ecbc41179b59850d841335cf16af694be99219e1489e10f0497e0732cab26b",
+          "color": "",
+          "source_id": "p36i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p33-i4"
+      ],
+      "revision": "0f59c87008b15596f2b03a9bf43b80aa13ec766ae0c52b9e9bbd382847a240f1"
+    },
+    {
+      "code": "pdf26-infantil-087",
+      "name": "Tênis infantil branco com recortes laterais",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        37
+      ],
+      "photos": [
+        {
+          "file": "photos/aebe07d9f8e03e790e68f82e774c66f49c8e658ba6340bbebaf16cb492b8f0d9.jpg",
+          "sha256": "aebe07d9f8e03e790e68f82e774c66f49c8e658ba6340bbebaf16cb492b8f0d9",
+          "color": "",
+          "source_id": "p37i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p34-i1"
+      ],
+      "revision": "5636797a98a42bf8c9c6549fc43bfc7312385ed6c8ea450bf485ee9f91bd2bdd"
+    },
+    {
+      "code": "pdf26-infantil-088",
+      "name": "Tênis infantil preto esportivo",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        37
+      ],
+      "photos": [
+        {
+          "file": "photos/65e19d4fc3453dea152da8b2a3ba7dd943f544a94d25906ba2d0d029d45048c2.jpg",
+          "sha256": "65e19d4fc3453dea152da8b2a3ba7dd943f544a94d25906ba2d0d029d45048c2",
+          "color": "",
+          "source_id": "p37i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p34-i2"
+      ],
+      "revision": "e006a67e806767ed127c2759e5cfc8621ad00b6b02a22012fcc52c324ca93924"
+    },
+    {
+      "code": "pdf26-infantil-089",
+      "name": "Clog infantil colorido com apliques",
+      "brand": "Disney",
+      "category": "Botas e Calçados Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        37
+      ],
+      "photos": [
+        {
+          "file": "photos/0cca555268997a7df7eecd6e4e71432b0f3f0ecd10540b18ab0b9275730995f9.jpg",
+          "sha256": "0cca555268997a7df7eecd6e4e71432b0f3f0ecd10540b18ab0b9275730995f9",
+          "color": "",
+          "source_id": "p37i03"
+        },
+        {
+          "file": "photos/001978bf1170b21a05c9def70dbd0bdf6b7af834c5b8d0f625ba1fd871e639f2.jpg",
+          "sha256": "001978bf1170b21a05c9def70dbd0bdf6b7af834c5b8d0f625ba1fd871e639f2",
+          "color": "",
+          "source_id": "p37i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p34-i3",
+        "linha_infantil-f17-p34-i4"
+      ],
+      "revision": "d388f3ca2b6ae2488942ec4af5d2a5c409a3707c75224836269540110aa893f2"
+    },
+    {
+      "code": "pdf26-infantil-090",
+      "name": "Tênis infantil bege de cano baixo",
+      "brand": "Molekinho",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        37
+      ],
+      "photos": [
+        {
+          "file": "photos/80445c66bc5888997028adf945c44e7f1e5eccf977e71c0b09e34f2a45720cfe.jpg",
+          "sha256": "80445c66bc5888997028adf945c44e7f1e5eccf977e71c0b09e34f2a45720cfe",
+          "color": "",
+          "source_id": "p37i05"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p34-i5"
+      ],
+      "revision": "b35c2c2c7870064552d2b0f5ac6bdd6c2463acdd849b085b35d30d4a498a25fa"
+    },
+    {
+      "code": "pdf26-infantil-091",
+      "name": "Tênis infantil azul estampado para futsal",
+      "brand": "Molekinho",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        37
+      ],
+      "photos": [
+        {
+          "file": "photos/3aad2d3fdb3f58f3d125fa7cdcf4cb4d392b3b21ad70e50f44dba6b030555f73.jpg",
+          "sha256": "3aad2d3fdb3f58f3d125fa7cdcf4cb4d392b3b21ad70e50f44dba6b030555f73",
+          "color": "",
+          "source_id": "p37i06"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p34-i6"
+      ],
+      "revision": "9a6be6793f898c7c5abff91f4848497076b6b018aac401cbb5be5c932a58b800"
+    },
+    {
+      "code": "pdf26-infantil-092",
+      "name": "Tênis infantil azul de calce fácil",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        38
+      ],
+      "photos": [
+        {
+          "file": "photos/b1c3e3196b53c3282e4a21a3346f11e2d9b3dcf66767513e093b52ae3841b36b.jpg",
+          "sha256": "b1c3e3196b53c3282e4a21a3346f11e2d9b3dcf66767513e093b52ae3841b36b",
+          "color": "",
+          "source_id": "p38i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p35-i1"
+      ],
+      "revision": "acfac5c64920a66eac3520a6f92e27004713140a62724b82864d585e3529eb44"
+    },
+    {
+      "code": "pdf26-infantil-093",
+      "name": "Tênis infantil preto texturizado de calce fácil",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        38
+      ],
+      "photos": [
+        {
+          "file": "photos/99854c8ec8deadf31aca08b608da5b39029765b0271b66f76951dcaa6b48be90.jpg",
+          "sha256": "99854c8ec8deadf31aca08b608da5b39029765b0271b66f76951dcaa6b48be90",
+          "color": "",
+          "source_id": "p38i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p35-i2"
+      ],
+      "revision": "95aa837173a754106a9626f90a48de53ff780c6f32cf65121bf33a52f96265b4"
+    },
+    {
+      "code": "pdf26-infantil-094",
+      "name": "Tênis infantil preto e rosa de calce fácil",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        38
+      ],
+      "photos": [
+        {
+          "file": "photos/07786120d462f803e9b540ffecc1edaf4fdabb01994b83a057f1fe0aec49639d.jpg",
+          "sha256": "07786120d462f803e9b540ffecc1edaf4fdabb01994b83a057f1fe0aec49639d",
+          "color": "",
+          "source_id": "p38i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p35-i3"
+      ],
+      "revision": "1b9777c5e0ae262ad750de06ba1add5bdd37b87ff1e728bf900764e3099b7633"
+    },
+    {
+      "code": "pdf26-infantil-095",
+      "name": "Tênis infantil bege com detalhes laranja",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        38
+      ],
+      "photos": [
+        {
+          "file": "photos/294773f9bb6bc52a8c90802f3da843ecca02a069030e7b9cf870a0311da8ee00.jpg",
+          "sha256": "294773f9bb6bc52a8c90802f3da843ecca02a069030e7b9cf870a0311da8ee00",
+          "color": "",
+          "source_id": "p38i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p35-i4"
+      ],
+      "revision": "d3db4e2978789d7c8dcdac97fc91e420dcce1fa34f311857e4cdfef4dc55a68c"
+    },
+    {
+      "code": "pdf26-infantil-096",
+      "name": "Sandália infantil com tiras de brilho",
+      "brand": "",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        39
+      ],
+      "photos": [
+        {
+          "file": "photos/fd3cdb321ba26e29fbbaed7b80742d341cc8aa215d464a878d1a56e2c2eafde2.jpg",
+          "sha256": "fd3cdb321ba26e29fbbaed7b80742d341cc8aa215d464a878d1a56e2c2eafde2",
+          "color": "",
+          "source_id": "p39i01"
+        },
+        {
+          "file": "photos/e870d6b7b72466108be1faf3e6c35a9695c95a92ceacde734879e332752e195a.jpg",
+          "sha256": "e870d6b7b72466108be1faf3e6c35a9695c95a92ceacde734879e332752e195a",
+          "color": "",
+          "source_id": "p39i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p36-i1",
+        "linha_infantil-f14-p36-i4"
+      ],
+      "revision": "4859124982a59f1b39549d40fb68073915b7bba0265db93a9d86963cdbd60283"
+    },
+    {
+      "code": "pdf26-infantil-097",
+      "name": "Sandália infantil bege de duas tiras",
+      "brand": "",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        39
+      ],
+      "photos": [
+        {
+          "file": "photos/2381c8f8fd3cfb77b5e45b26405538fd3ddd93007f17240389437af0b2398f7b.jpg",
+          "sha256": "2381c8f8fd3cfb77b5e45b26405538fd3ddd93007f17240389437af0b2398f7b",
+          "color": "",
+          "source_id": "p39i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p36-i2"
+      ],
+      "revision": "730b49fae047a2f29143f09abb540daafb9611d4ae6986c8bbb1bef9f0a5b226"
+    },
+    {
+      "code": "pdf26-infantil-098",
+      "name": "Sandália infantil rosa com tiras delicadas",
+      "brand": "",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        39
+      ],
+      "photos": [
+        {
+          "file": "photos/9d5c63e3e8cf39e83d6ec0b302de8952a147548c9f18ae65bb862f97ffa185ca.jpg",
+          "sha256": "9d5c63e3e8cf39e83d6ec0b302de8952a147548c9f18ae65bb862f97ffa185ca",
+          "color": "",
+          "source_id": "p39i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f14-p36-i3"
+      ],
+      "revision": "6eb493f5ed722b93d6f8b441271d520884f98d10068b63e6d2df9fb153f25305"
+    },
+    {
+      "code": "pdf26-infantil-099",
+      "name": "Bota infantil de cadarço com sola robusta",
+      "brand": "",
+      "category": "Botas e Calçados Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        40
+      ],
+      "photos": [
+        {
+          "file": "photos/a0bc4c9855b1551b5adc8c09bb17896efb56be1b9034747b05674e037bd2645a.jpg",
+          "sha256": "a0bc4c9855b1551b5adc8c09bb17896efb56be1b9034747b05674e037bd2645a",
+          "color": "",
+          "source_id": "p40i01"
+        },
+        {
+          "file": "photos/b822d5c1e30e193455688f4d31a58a493804c6bfae3fd3977234524aeb4b61a8.jpg",
+          "sha256": "b822d5c1e30e193455688f4d31a58a493804c6bfae3fd3977234524aeb4b61a8",
+          "color": "",
+          "source_id": "p40i03"
+        },
+        {
+          "file": "photos/f9156b54f39290e9395c4f72c55b8dfb412ac118135ae505f15300ad19c65122.jpg",
+          "sha256": "f9156b54f39290e9395c4f72c55b8dfb412ac118135ae505f15300ad19c65122",
+          "color": "",
+          "source_id": "p40i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p37-i1",
+        "linha_infantil-f17-p37-i3",
+        "linha_infantil-f17-p37-i4"
+      ],
+      "revision": "d4edc62ca9f8c0289e6a6743a4c1989c24da675f670f75a6efd120f778e360e4"
+    },
+    {
+      "code": "pdf26-infantil-100",
+      "name": "Bota infantil marrom com tiras aderentes",
+      "brand": "Kidy",
+      "category": "Botas e Calçados Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        40
+      ],
+      "photos": [
+        {
+          "file": "photos/3a34f5f79d79a799166577802d4df2069f81162134e9423a4e26a91fd4f8c228.jpg",
+          "sha256": "3a34f5f79d79a799166577802d4df2069f81162134e9423a4e26a91fd4f8c228",
+          "color": "",
+          "source_id": "p40i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p37-i2"
+      ],
+      "revision": "3b4a84874304f136328fdefde373d9551a7003bb0ac9b166df890d7f281c648c"
+    },
+    {
+      "code": "pdf26-infantil-101",
+      "name": "Tênis infantil preto com detalhe dourado",
+      "brand": "Molekinha",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 21,
+      "retail": "169.90",
+      "price": "189.90",
+      "cost": "118.93",
+      "pages": [
+        41
+      ],
+      "photos": [
+        {
+          "file": "photos/c24327dc1c4cfe8a73aae6d13a8cacc8f4d7a80dd00c3c591f25a0136a10b3ef.jpg",
+          "sha256": "c24327dc1c4cfe8a73aae6d13a8cacc8f4d7a80dd00c3c591f25a0136a10b3ef",
+          "color": "",
+          "source_id": "p41i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "d4f4d913facec4d5441e5e0da89ca69ba85bc8c75ba94d44cf6c0ad39b10101e"
+    },
+    {
+      "code": "pdf26-infantil-102",
+      "name": "Tênis infantil branco com detalhe dourado",
+      "brand": "Molekinha",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 21,
+      "retail": "169.90",
+      "price": "189.90",
+      "cost": "118.93",
+      "pages": [
+        41
+      ],
+      "photos": [
+        {
+          "file": "photos/377d266d69c0d5397dedd556c2ed79dfabd8ee51b85474f2099920afa2cd2d5b.jpg",
+          "sha256": "377d266d69c0d5397dedd556c2ed79dfabd8ee51b85474f2099920afa2cd2d5b",
+          "color": "",
+          "source_id": "p41i02"
+        },
+        {
+          "file": "photos/f07bb73815b50e25c614a1681035c3ebde07ccac5f1422d85862fca3ebe42ffb.jpg",
+          "sha256": "f07bb73815b50e25c614a1681035c3ebde07ccac5f1422d85862fca3ebe42ffb",
+          "color": "",
+          "source_id": "p41i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "d35c812d51c74dc233f0234e86985c0caee933645ae44a3b3376bbe5a42bb202"
+    },
+    {
+      "code": "pdf26-infantil-103",
+      "name": "Tênis infantil azul com estampa para futsal",
+      "brand": "Molekinho",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        42
+      ],
+      "photos": [
+        {
+          "file": "photos/921ee9bf761e02e8f59cd2d8d74d186d298e676ee9404bac4af83fa9308cdca7.jpg",
+          "sha256": "921ee9bf761e02e8f59cd2d8d74d186d298e676ee9404bac4af83fa9308cdca7",
+          "color": "",
+          "source_id": "p42i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p38-i1"
+      ],
+      "revision": "ece8e41c21e323ed2e107d5e4eb3f8993b541ade46e09d34ea2c352d4eb4094b"
+    },
+    {
+      "code": "pdf26-infantil-104",
+      "name": "Chuteira infantil azul para futsal",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        42
+      ],
+      "photos": [
+        {
+          "file": "photos/9179e7371eb8b529ebca399be364c4e53024b52d7b6cc8e34fe16c2c2ad55e18.jpg",
+          "sha256": "9179e7371eb8b529ebca399be364c4e53024b52d7b6cc8e34fe16c2c2ad55e18",
+          "color": "",
+          "source_id": "p42i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p38-i2"
+      ],
+      "revision": "a14c798ac34bb8eba7aacc47e07c50419a8d89143e1362da12f585ef3eb9f2ed"
+    },
+    {
+      "code": "pdf26-infantil-105",
+      "name": "Chuteira infantil verde para futebol",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        42
+      ],
+      "photos": [
+        {
+          "file": "photos/269d645185210a16458a31c1bf4a12f8f4a5f8ce51aee22e62072a8f84089dfa.jpg",
+          "sha256": "269d645185210a16458a31c1bf4a12f8f4a5f8ce51aee22e62072a8f84089dfa",
+          "color": "",
+          "source_id": "p42i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p38-i3"
+      ],
+      "revision": "f730db9e753e94714a2bfe21bbdef6bb24f7e71fc0ef116f8775be92b59dda14"
+    },
+    {
+      "code": "pdf26-infantil-106",
+      "name": "Chuteira infantil amarela para futebol",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        42
+      ],
+      "photos": [
+        {
+          "file": "photos/3a396835c7b7697bf318a2445be1c7a7e911020890284713a3501a23eb4dab88.jpg",
+          "sha256": "3a396835c7b7697bf318a2445be1c7a7e911020890284713a3501a23eb4dab88",
+          "color": "",
+          "source_id": "p42i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p38-i4"
+      ],
+      "revision": "e36c0921dbaa78c6228987f0418ae901f5445b7540a401845741eb173a12f9d5"
+    },
+    {
+      "code": "pdf26-infantil-107",
+      "name": "Chinelo infantil preto com tiras de brilho",
+      "brand": "",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        43
+      ],
+      "photos": [
+        {
+          "file": "photos/8c834858e15aff185145743474cdfd8ca38b48c589af46780f93d7aae9685e6b.jpg",
+          "sha256": "8c834858e15aff185145743474cdfd8ca38b48c589af46780f93d7aae9685e6b",
+          "color": "",
+          "source_id": "p43i01"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p39-i1"
+      ],
+      "revision": "7df3282d8e1ecd56329992daab28b423de7a5611a5822d78dc139cfafbcd8aba"
+    },
+    {
+      "code": "pdf26-infantil-108",
+      "name": "Sapato infantil com laço e tira no peito do pé",
+      "brand": "",
+      "category": "Sapatos Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        43
+      ],
+      "photos": [
+        {
+          "file": "photos/4bd7a7b5d0181cb6390bbfff3a3595434ec47449266bfb85054c4db3da830b2a.jpg",
+          "sha256": "4bd7a7b5d0181cb6390bbfff3a3595434ec47449266bfb85054c4db3da830b2a",
+          "color": "",
+          "source_id": "p43i02"
+        },
+        {
+          "file": "photos/b2ea8838a9a6dbc48ff6c370b23207405ba916968e37d482ac49f83582641e30.jpg",
+          "sha256": "b2ea8838a9a6dbc48ff6c370b23207405ba916968e37d482ac49f83582641e30",
+          "color": "",
+          "source_id": "p43i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p39-i2",
+        "linha_infantil-f17-p39-i3"
+      ],
+      "revision": "c4bd3b17749f83e7fa625b2183fbbb8a3d5ac3168a80b99f861882e72f85d1d2"
+    },
+    {
+      "code": "pdf26-infantil-109",
+      "name": "Sapato infantil com tira no peito do pé",
+      "brand": "",
+      "category": "Sapatos Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        43
+      ],
+      "photos": [
+        {
+          "file": "photos/dfe600fb071f60620dd9faba8fc581e24c105e6fe875b273336c874a63ec03b9.jpg",
+          "sha256": "dfe600fb071f60620dd9faba8fc581e24c105e6fe875b273336c874a63ec03b9",
+          "color": "",
+          "source_id": "p43i04"
+        },
+        {
+          "file": "photos/8d1fc4db510b30b7b68d6e969523c676e399acafb1007e30efd840e21cd10e22.jpg",
+          "sha256": "8d1fc4db510b30b7b68d6e969523c676e399acafb1007e30efd840e21cd10e22",
+          "color": "",
+          "source_id": "p43i06"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p39-i4",
+        "linha_infantil-f17-p39-i6"
+      ],
+      "revision": "0e0cd6c75a16c61e9346c3fe50b531708711c1c85ce3a571dd9c94af169d4920"
+    },
+    {
+      "code": "pdf26-infantil-110",
+      "name": "Sandália infantil azul translúcida",
+      "brand": "Disney",
+      "category": "Sandálias Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        43
+      ],
+      "photos": [
+        {
+          "file": "photos/15cd38c03c09858076ece950cfe3c39584b970bea4ecc0e5b0b1fb9bb1d568e5.jpg",
+          "sha256": "15cd38c03c09858076ece950cfe3c39584b970bea4ecc0e5b0b1fb9bb1d568e5",
+          "color": "",
+          "source_id": "p43i05"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p39-i5"
+      ],
+      "revision": "972291af3ceb47bc6e4b4be6d9a6b68d7b562d2eb55d0b98cac7091481b3e5b6"
+    },
+    {
+      "code": "pdf26-infantil-111",
+      "name": "Clog infantil com detalhes coloridos",
+      "brand": "",
+      "category": "Botas e Calçados Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        44
+      ],
+      "photos": [
+        {
+          "file": "photos/b4dbb34f6494d2483fbb8bf86dfb4d3ab62fcbfa8424ee4d96f047e87567143f.jpg",
+          "sha256": "b4dbb34f6494d2483fbb8bf86dfb4d3ab62fcbfa8424ee4d96f047e87567143f",
+          "color": "",
+          "source_id": "p44i01"
+        },
+        {
+          "file": "photos/5e30c952a72c2c6caba187539c156eeb8745921bbedd399970e9b97be2ff9f06.jpg",
+          "sha256": "5e30c952a72c2c6caba187539c156eeb8745921bbedd399970e9b97be2ff9f06",
+          "color": "",
+          "source_id": "p44i03"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p40-i1",
+        "linha_infantil-f17-p40-i3"
+      ],
+      "revision": "869775799a6b3e3d912b1727eb8c62dda15f159b28a58b09d3eb7f154d027e5e"
+    },
+    {
+      "code": "pdf26-infantil-112",
+      "name": "Tênis infantil verde claro esportivo",
+      "brand": "",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        44
+      ],
+      "photos": [
+        {
+          "file": "photos/9dd5a179ce0122e0a5f06cf6213e2a4d99edfe52f6ee712f62349c497db41383.jpg",
+          "sha256": "9dd5a179ce0122e0a5f06cf6213e2a4d99edfe52f6ee712f62349c497db41383",
+          "color": "",
+          "source_id": "p44i02"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p40-i2"
+      ],
+      "revision": "44f4077096b571c7f20e3125f65e45ad1be115344dae606a3bb149f13c52d610"
+    },
+    {
+      "code": "pdf26-infantil-113",
+      "name": "Tênis infantil preto estampado",
+      "brand": "Mormaii",
+      "category": "Tênis Infantis",
+      "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        44
+      ],
+      "photos": [
+        {
+          "file": "photos/1819b28670b3cdd2db53336e1b4a587a0f1292155b8e33bb8b922814a090a8ab.jpg",
+          "sha256": "1819b28670b3cdd2db53336e1b4a587a0f1292155b8e33bb8b922814a090a8ab",
+          "color": "",
+          "source_id": "p44i04"
+        }
+      ],
+      "aliases": [
+        "linha_infantil-f17-p40-i4"
+      ],
+      "revision": "9b1b01f390a8c8b81229e68f6e722a0c7ec942ece9e3e3c4eb06aee27eaf9669"
+    }
+  ],
+  "pending": []
+}
