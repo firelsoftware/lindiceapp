@@ -1,7 +1,8 @@
 {
   "catalog": "tenis-2026-09",
   "source_pdf": "TÊNIS PREMIUM E ORIGINAL (1).pdf",
-  "complete": false,
+  "complete": true,
+  "price_conflict_policy": "highest_retail_approved_2026-09-15",
   "products": [
     {
       "code": "pdf26-tenis-miu-premium",
@@ -93,6 +94,298 @@
         "tenis_premium_e_original-f18-p5-i4"
       ],
       "revision": "54d8045e915ce0d6f697ec0b1d3d0f6189248c23779e67884a1e330e77f46839"
+    },
+    {
+      "code": "pdf26-tenis-nb9060-premium",
+      "name": "Tênis New Balance 9060 — Premium",
+      "brand": "New Balance",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        6,
+        10,
+        15,
+        17,
+        20,
+        22,
+        23,
+        30,
+        34,
+        37,
+        40,
+        49,
+        50,
+        52,
+        54,
+        59,
+        62,
+        70
+      ],
+      "photos": [
+        {
+          "file": "photos/7b6494c8026441ca85a29c1b3366b0bab87074303df055acfc451e1e96fe25c6.jpg",
+          "sha256": "7b6494c8026441ca85a29c1b3366b0bab87074303df055acfc451e1e96fe25c6",
+          "color": "Cinza",
+          "source_id": "p006-i01"
+        },
+        {
+          "file": "photos/bb3c8eb82706f3a957cd88f2c895f4b163a9ab631c94af473b8cfa965a7add6d.jpg",
+          "sha256": "bb3c8eb82706f3a957cd88f2c895f4b163a9ab631c94af473b8cfa965a7add6d",
+          "color": "Cinza",
+          "source_id": "p006-i02"
+        },
+        {
+          "file": "photos/f0cc3f69500fd5b11797a67c85935230e89b15f5f7bcb0f4bbdb5a0931db8f3d.jpg",
+          "sha256": "f0cc3f69500fd5b11797a67c85935230e89b15f5f7bcb0f4bbdb5a0931db8f3d",
+          "color": "Cinza",
+          "source_id": "p006-i03"
+        },
+        {
+          "file": "photos/1690bc42df910f44aeecb3edb134f848b04d1f19cc6e2822b1832da9751b5c17.jpg",
+          "sha256": "1690bc42df910f44aeecb3edb134f848b04d1f19cc6e2822b1832da9751b5c17",
+          "color": "Preto e branco",
+          "source_id": "p010-i01"
+        },
+        {
+          "file": "photos/313e7ffa59266aec22a8a71c420e1a1010cb569fca7ee5141512f4905dfdba1c.jpg",
+          "sha256": "313e7ffa59266aec22a8a71c420e1a1010cb569fca7ee5141512f4905dfdba1c",
+          "color": "Cinza",
+          "source_id": "p010-i02"
+        },
+        {
+          "file": "photos/ab5a38041987a67f644a38c39922119c463762eccc800dc28a1506c0514b69d8.jpg",
+          "sha256": "ab5a38041987a67f644a38c39922119c463762eccc800dc28a1506c0514b69d8",
+          "color": "Azul",
+          "source_id": "p015-i01"
+        },
+        {
+          "file": "photos/71600683da48b10a6421ab78a9dda7f0b5cff71c82c36ea3a3b8abd0bfe652f1.jpg",
+          "sha256": "71600683da48b10a6421ab78a9dda7f0b5cff71c82c36ea3a3b8abd0bfe652f1",
+          "color": "Azul",
+          "source_id": "p015-i02"
+        },
+        {
+          "file": "photos/713859332d82027674675b36a494907158e6b65bc73cc39483b26bc46efd53d2.jpg",
+          "sha256": "713859332d82027674675b36a494907158e6b65bc73cc39483b26bc46efd53d2",
+          "color": "",
+          "source_id": "p017-i01"
+        },
+        {
+          "file": "photos/29d8a83e458d492d9138efedffa4c0d29aa69933fc573dc7118618566bca2490.jpg",
+          "sha256": "29d8a83e458d492d9138efedffa4c0d29aa69933fc573dc7118618566bca2490",
+          "color": "",
+          "source_id": "p017-i02"
+        },
+        {
+          "file": "photos/a9dcae2141f5c13d506c317b5bed5c01b8b34cc136edacb95c9eb208cf6de537.jpg",
+          "sha256": "a9dcae2141f5c13d506c317b5bed5c01b8b34cc136edacb95c9eb208cf6de537",
+          "color": "",
+          "source_id": "p020-i03"
+        },
+        {
+          "file": "photos/34c40e3a42c754281698ec53bbaf93aeed819dd340c2ddbc85ab5b84d30928b4.jpg",
+          "sha256": "34c40e3a42c754281698ec53bbaf93aeed819dd340c2ddbc85ab5b84d30928b4",
+          "color": "Cinza e azul",
+          "source_id": "p022-i01"
+        },
+        {
+          "file": "photos/60b9244bcfe1840b459cd6539acf066d52738ef174fde662ada4d7a1a2534d55.jpg",
+          "sha256": "60b9244bcfe1840b459cd6539acf066d52738ef174fde662ada4d7a1a2534d55",
+          "color": "Cinza e lilás",
+          "source_id": "p022-i02"
+        },
+        {
+          "file": "photos/c079cf89098f21550ce023ba59a8877c145ef0b791ece13456958abb2e6684fd.jpg",
+          "sha256": "c079cf89098f21550ce023ba59a8877c145ef0b791ece13456958abb2e6684fd",
+          "color": "",
+          "source_id": "p023-i01"
+        },
+        {
+          "file": "photos/7db387d7bade9e4902152592714659477d85d59fb33b03bc4d7e2fe981dd278d.jpg",
+          "sha256": "7db387d7bade9e4902152592714659477d85d59fb33b03bc4d7e2fe981dd278d",
+          "color": "",
+          "source_id": "p023-i02"
+        },
+        {
+          "file": "photos/4688590c7dad1d270cfa528f39fa8b409727faa5f018170b6bedb173eed7211e.jpg",
+          "sha256": "4688590c7dad1d270cfa528f39fa8b409727faa5f018170b6bedb173eed7211e",
+          "color": "Marrom",
+          "source_id": "p034-i01"
+        },
+        {
+          "file": "photos/30346175241ea413d27db141eb342ffc48667565097b2ce264e42cac8b0acf92.jpg",
+          "sha256": "30346175241ea413d27db141eb342ffc48667565097b2ce264e42cac8b0acf92",
+          "color": "Marrom",
+          "source_id": "p034-i02"
+        },
+        {
+          "file": "photos/a770f41ffc48de2bfdd203abd1f4a4b717b2bf46aea95235dd8e5d0370dd4d8a.jpg",
+          "sha256": "a770f41ffc48de2bfdd203abd1f4a4b717b2bf46aea95235dd8e5d0370dd4d8a",
+          "color": "",
+          "source_id": "p040-i02"
+        },
+        {
+          "file": "photos/8bf0da72bc52afd9ca4f9670ca151348b1934bfd5e225cb66d7b282567dacb65.jpg",
+          "sha256": "8bf0da72bc52afd9ca4f9670ca151348b1934bfd5e225cb66d7b282567dacb65",
+          "color": "",
+          "source_id": "p040-i03"
+        },
+        {
+          "file": "photos/41024d2d653f3473f96a1ad19d81ecc144e418a3de1ee99cf5ffd7c552450b19.jpg",
+          "sha256": "41024d2d653f3473f96a1ad19d81ecc144e418a3de1ee99cf5ffd7c552450b19",
+          "color": "",
+          "source_id": "p040-i04"
+        },
+        {
+          "file": "photos/3868bf7b24ef55e9b2ecfb9a6d31d87d0a2fb8ca67c7fc517425fb163e9fa0bb.jpg",
+          "sha256": "3868bf7b24ef55e9b2ecfb9a6d31d87d0a2fb8ca67c7fc517425fb163e9fa0bb",
+          "color": "",
+          "source_id": "p049-i01"
+        },
+        {
+          "file": "photos/0374e0732cd5f4b250b38d20287d7495d4d379c975533d41e03011b6d05664bc.jpg",
+          "sha256": "0374e0732cd5f4b250b38d20287d7495d4d379c975533d41e03011b6d05664bc",
+          "color": "",
+          "source_id": "p049-i02"
+        },
+        {
+          "file": "photos/bb5f02c0485e6b759153d44045b6ac37b5bf9a7c8f97580b5eea7690de3550be.jpg",
+          "sha256": "bb5f02c0485e6b759153d44045b6ac37b5bf9a7c8f97580b5eea7690de3550be",
+          "color": "",
+          "source_id": "p049-i03"
+        },
+        {
+          "file": "photos/59496d45d7a83243a2721b54ac16a9b728cc0ce2fec2797f57652f0f5d628fa8.jpg",
+          "sha256": "59496d45d7a83243a2721b54ac16a9b728cc0ce2fec2797f57652f0f5d628fa8",
+          "color": "",
+          "source_id": "p050-i03"
+        },
+        {
+          "file": "photos/201a0ed108ea4343e9316eb91c48dff64018b3f8a815a9951fad6975d0441324.jpg",
+          "sha256": "201a0ed108ea4343e9316eb91c48dff64018b3f8a815a9951fad6975d0441324",
+          "color": "",
+          "source_id": "p050-i04"
+        },
+        {
+          "file": "photos/7067250d20d419f2e5cb461ec522618fc877235d4504b0aadb9dc0d5b37df176.jpg",
+          "sha256": "7067250d20d419f2e5cb461ec522618fc877235d4504b0aadb9dc0d5b37df176",
+          "color": "",
+          "source_id": "p052-i01"
+        },
+        {
+          "file": "photos/1bfbd99639368f32e34debcea762bd44e045ececf85b4cdcd7652c0e2696cc35.jpg",
+          "sha256": "1bfbd99639368f32e34debcea762bd44e045ececf85b4cdcd7652c0e2696cc35",
+          "color": "",
+          "source_id": "p052-i02"
+        },
+        {
+          "file": "photos/e699db92f51a4ae4c0fd9aaa5d4d00866f807b978cb067f400b7981afb093677.jpg",
+          "sha256": "e699db92f51a4ae4c0fd9aaa5d4d00866f807b978cb067f400b7981afb093677",
+          "color": "",
+          "source_id": "p052-i03"
+        },
+        {
+          "file": "photos/0bd48247f8e3dad530e175d32d098d70b3afc2c4566201b63b57d2a9e341e02d.jpg",
+          "sha256": "0bd48247f8e3dad530e175d32d098d70b3afc2c4566201b63b57d2a9e341e02d",
+          "color": "Verde",
+          "source_id": "p054-i01"
+        },
+        {
+          "file": "photos/87a4e02116fb8bdf080742d8aebf765bff8ae1d0abd21015dafe7271982f1d57.jpg",
+          "sha256": "87a4e02116fb8bdf080742d8aebf765bff8ae1d0abd21015dafe7271982f1d57",
+          "color": "Branco e preto",
+          "source_id": "p054-i02"
+        },
+        {
+          "file": "photos/b5c20a611fcc640a86440c2b1f6359bc70c0be1443915456844131de8bff2b7d.jpg",
+          "sha256": "b5c20a611fcc640a86440c2b1f6359bc70c0be1443915456844131de8bff2b7d",
+          "color": "",
+          "source_id": "p059-i01"
+        },
+        {
+          "file": "photos/438b240d0e5a13581e217ec3d3fb500418a72df3751adb5636d7278381b6fcd8.jpg",
+          "sha256": "438b240d0e5a13581e217ec3d3fb500418a72df3751adb5636d7278381b6fcd8",
+          "color": "",
+          "source_id": "p059-i02"
+        },
+        {
+          "file": "photos/0e3092ec8edbc5238ae947bb6204bb9ff68edbc8d98a42555bb9f5916f2ea488.jpg",
+          "sha256": "0e3092ec8edbc5238ae947bb6204bb9ff68edbc8d98a42555bb9f5916f2ea488",
+          "color": "",
+          "source_id": "p070-i02"
+        },
+        {
+          "file": "photos/6c85a283aa0c58ca9f13f7ac38fd635c32c45bc5be23bd05b728b624cd66165f.jpg",
+          "sha256": "6c85a283aa0c58ca9f13f7ac38fd635c32c45bc5be23bd05b728b624cd66165f",
+          "color": "",
+          "source_id": "p070-i03"
+        },
+        {
+          "file": "photos/e4712f80fe700005eee0e3c5468fb3384b3472e9b75a4fcadfc8f3c244f05791.jpg",
+          "sha256": "e4712f80fe700005eee0e3c5468fb3384b3472e9b75a4fcadfc8f3c244f05791",
+          "color": "",
+          "source_id": "p070-i04"
+        },
+        {
+          "file": "photos/34069bea628faa64cfe2b73cdecc10777daf298ab0c41cc2e93bd89145d1ddaf.jpg",
+          "sha256": "34069bea628faa64cfe2b73cdecc10777daf298ab0c41cc2e93bd89145d1ddaf",
+          "color": "",
+          "source_id": "p070-i07"
+        },
+        {
+          "file": "photos/e5008a7d580d358ff655c0b7fc79f7343f2aa6bda6622eda1efc8aaddc7810e6.jpg",
+          "sha256": "e5008a7d580d358ff655c0b7fc79f7343f2aa6bda6622eda1efc8aaddc7810e6",
+          "color": "",
+          "source_id": "p030-i01"
+        },
+        {
+          "file": "photos/7002e8ff3d408765032cd5e5680424fa81ca4e02a58ac8804f8af6b1cb0b0257.jpg",
+          "sha256": "7002e8ff3d408765032cd5e5680424fa81ca4e02a58ac8804f8af6b1cb0b0257",
+          "color": "",
+          "source_id": "p030-i02"
+        },
+        {
+          "file": "photos/3550116a77fb26a4ed1682bdcc03ef6d4f7d583506e0ac159530eec52de69242.jpg",
+          "sha256": "3550116a77fb26a4ed1682bdcc03ef6d4f7d583506e0ac159530eec52de69242",
+          "color": "",
+          "source_id": "p030-i03"
+        },
+        {
+          "file": "photos/c241656d4a87a35bb0239fab16d550d30ca955934d4d5f5d7e97dd19035e01c6.jpg",
+          "sha256": "c241656d4a87a35bb0239fab16d550d30ca955934d4d5f5d7e97dd19035e01c6",
+          "color": "",
+          "source_id": "p037-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p17-i3",
+        "tenis_premium_e_original-f20-p18-i1",
+        "tenis_premium_e_original-f20-p18-i2",
+        "tenis_premium_e_original-f20-p64-i1",
+        "tenis_premium_e_original-f20-p64-i2",
+        "tenis_premium_e_original-f20-p64-i3",
+        "tenis_premium_e_original-f20-p79-i3",
+        "tenis_premium_e_original-f20-p89-i1",
+        "tenis_premium_e_original-f20-p89-i2",
+        "tenis_premium_e_original-f20-p89-i3",
+        "tenis_premium_e_original-f20-p89-i4",
+        "tenis_premium_e_original-f20-p89-i5",
+        "tenis_premium_e_original-f20-p89-i6",
+        "tenis_premium_e_original-f23-p37-i1",
+        "tenis_premium_e_original-f23-p37-i2",
+        "tenis_premium_e_original-f23-p46-i3",
+        "tenis_premium_e_original-f23-p46-i4",
+        "tenis_premium_e_original-f23-p68-i1",
+        "tenis_premium_e_original-f23-p68-i2",
+        "tenis_premium_e_original-f23-p68-i3",
+        "tenis_premium_e_original-f23-p75-i1"
+      ],
+      "revision": "74658cb0d9f7ed70df305aadd4f0f4398968498de4a10117ec6c25d5c3e4879b"
     },
     {
       "code": "pdf26-tenis-samba-premium",
@@ -329,6 +622,96 @@
         "tenis_premium_e_original-f20-p8-i4"
       ],
       "revision": "8399dcdceea98a597de3aafe57522f3136436a6df746add20a557c62a2c437da"
+    },
+    {
+      "code": "pdf26-tenis-oldskool-premium",
+      "name": "Tênis Vans Old Skool — Premium",
+      "brand": "Vans",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        13,
+        72
+      ],
+      "photos": [
+        {
+          "file": "photos/e2bbea5cc0722672bcef84e674e115a025a3f06775e75555a958a4fb3c6adad4.jpg",
+          "sha256": "e2bbea5cc0722672bcef84e674e115a025a3f06775e75555a958a4fb3c6adad4",
+          "color": "",
+          "source_id": "p013-i01"
+        },
+        {
+          "file": "photos/fe57ffd853d131af4d2a914c1cfbfca5bf24c01fe2b1e007f59cd779b858e924.jpg",
+          "sha256": "fe57ffd853d131af4d2a914c1cfbfca5bf24c01fe2b1e007f59cd779b858e924",
+          "color": "",
+          "source_id": "p013-i02"
+        },
+        {
+          "file": "photos/cadab1816846d18d7e141341bd9b0b0c6ee1fbc6ed4d44c01e1c07188d127a11.jpg",
+          "sha256": "cadab1816846d18d7e141341bd9b0b0c6ee1fbc6ed4d44c01e1c07188d127a11",
+          "color": "",
+          "source_id": "p013-i04"
+        },
+        {
+          "file": "photos/19f0faf9c3116248be913095f167afdfc93ee4ee56134180419510d8436ac9e9.jpg",
+          "sha256": "19f0faf9c3116248be913095f167afdfc93ee4ee56134180419510d8436ac9e9",
+          "color": "",
+          "source_id": "p072-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p49-i1",
+        "tenis_premium_e_original-f18-p49-i2",
+        "tenis_premium_e_original-f18-p49-i4",
+        "tenis_premium_e_original-f18-p93-i1",
+        "tenis_premium_e_original-f18-p93-i2",
+        "tenis_premium_e_original-f18-p93-i4"
+      ],
+      "revision": "4ceb82ce82cce917a3715d4421425acd7b41a1c301a9888fc74c000f58f0e778"
+    },
+    {
+      "code": "pdf26-tenis-vans-alto-premium",
+      "name": "Tênis Vans casual de solado alto — Premium",
+      "brand": "Vans",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        13,
+        45,
+        71,
+        72
+      ],
+      "photos": [
+        {
+          "file": "photos/557867de88752314c74d35e028ac223f2e03a3c7a86549fd6211dca4fe89c337.jpg",
+          "sha256": "557867de88752314c74d35e028ac223f2e03a3c7a86549fd6211dca4fe89c337",
+          "color": "",
+          "source_id": "p013-i03"
+        },
+        {
+          "file": "photos/f1be7663d199227c381febba470c574fc4e2cbd47dffb5ae514258a83e99d957.jpg",
+          "sha256": "f1be7663d199227c381febba470c574fc4e2cbd47dffb5ae514258a83e99d957",
+          "color": "",
+          "source_id": "p045-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p49-i3",
+        "tenis_premium_e_original-f18-p58-i3",
+        "tenis_premium_e_original-f18-p92-i3",
+        "tenis_premium_e_original-f18-p93-i3"
+      ],
+      "revision": "042d407428cb5824e770bff8ddc3f8558c4d6e31be91433faed5f90236473992"
     },
     {
       "code": "pdf26-tenis-adidas-tela-premium",
@@ -580,6 +963,71 @@
       "revision": "32f9abbe5e00edb43e78755e67504b7dfb4d7b7a033e567f0abb5926eeaeb811"
     },
     {
+      "code": "pdf26-tenis-adidas-running-premium",
+      "name": "Tênis Adidas esportivo de solado alto — Premium",
+      "brand": "Adidas",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        21,
+        26,
+        47,
+        56
+      ],
+      "photos": [
+        {
+          "file": "photos/be7028e8174ab7cbef509520a094b5ded51b9d4ef9506647a03762da31a127bd.jpg",
+          "sha256": "be7028e8174ab7cbef509520a094b5ded51b9d4ef9506647a03762da31a127bd",
+          "color": "Branco e rosa",
+          "source_id": "p021-i01"
+        },
+        {
+          "file": "photos/4115cb8300326642d2f486673b5595833bb2e29a176e9ae9fa7a1124e401c643.jpg",
+          "sha256": "4115cb8300326642d2f486673b5595833bb2e29a176e9ae9fa7a1124e401c643",
+          "color": "Branco e cinza",
+          "source_id": "p021-i02"
+        },
+        {
+          "file": "photos/811e54d54153033c43a9b5e66b15f8c2eac4db0d863e97f394e603e6cc47c36f.jpg",
+          "sha256": "811e54d54153033c43a9b5e66b15f8c2eac4db0d863e97f394e603e6cc47c36f",
+          "color": "Branco e preto",
+          "source_id": "p047-i01"
+        },
+        {
+          "file": "photos/66b7c8b04ce3456f8492c82a9b69590212ddf72e30deb9e8e8fd789201c59674.jpg",
+          "sha256": "66b7c8b04ce3456f8492c82a9b69590212ddf72e30deb9e8e8fd789201c59674",
+          "color": "Branco e vermelho",
+          "source_id": "p047-i02"
+        },
+        {
+          "file": "photos/10a6eb423416eed5af0e9986a9af74673bc34a7a18d3e907477598e32050cff7.jpg",
+          "sha256": "10a6eb423416eed5af0e9986a9af74673bc34a7a18d3e907477598e32050cff7",
+          "color": "",
+          "source_id": "p056-i02"
+        },
+        {
+          "file": "photos/41a510aaff36aa9e3c6d451f053240a04ba3e0299b3042df494446a586a6ffa8.jpg",
+          "sha256": "41a510aaff36aa9e3c6d451f053240a04ba3e0299b3042df494446a586a6ffa8",
+          "color": "",
+          "source_id": "p026-i01"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p19-i1",
+        "tenis_premium_e_original-f18-p19-i2",
+        "tenis_premium_e_original-f18-p25-i1",
+        "tenis_premium_e_original-f18-p72-i4",
+        "tenis_premium_e_original-f20-p61-i2",
+        "tenis_premium_e_original-f20-p61-i3"
+      ],
+      "revision": "dfffbada949b6590a1d7f7d2ad11f24e6ca1d53534e47750dd3865f8afdc6a67"
+    },
+    {
       "code": "pdf26-tenis-nike-curvo-premium",
       "name": "Tênis Nike esportivo de solado curvo — Premium",
       "brand": "Nike",
@@ -667,6 +1115,211 @@
       "revision": "eebb5b670d99cc2270d40eedb74b1aadd103f90578c8bcc9e004225b0175be02"
     },
     {
+      "code": "pdf26-tenis-adidas-corrida-premium",
+      "name": "Tênis Adidas esportivo bicolor — Premium",
+      "brand": "Adidas",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        26,
+        27,
+        56
+      ],
+      "photos": [
+        {
+          "file": "photos/84fce751bf3e8519e36116bc2745959f7099891f5f9fbea2cf3a9ce119a8a1c5.jpg",
+          "sha256": "84fce751bf3e8519e36116bc2745959f7099891f5f9fbea2cf3a9ce119a8a1c5",
+          "color": "Preto",
+          "source_id": "p027-i01"
+        },
+        {
+          "file": "photos/1eaee9a1e50c10b3bb04d8ab4137670d41d1cf763d0a47e766b923599b8bf577.jpg",
+          "sha256": "1eaee9a1e50c10b3bb04d8ab4137670d41d1cf763d0a47e766b923599b8bf577",
+          "color": "Bege",
+          "source_id": "p027-i02"
+        },
+        {
+          "file": "photos/612397a1610a56dc3b4062d3e2540258c5b113a371ce75729050201266f54c29.jpg",
+          "sha256": "612397a1610a56dc3b4062d3e2540258c5b113a371ce75729050201266f54c29",
+          "color": "",
+          "source_id": "p056-i03"
+        },
+        {
+          "file": "photos/38b9c25695494d57c75bb92fc258e140e23afe520fcbe9eb3a30c072276393f3.jpg",
+          "sha256": "38b9c25695494d57c75bb92fc258e140e23afe520fcbe9eb3a30c072276393f3",
+          "color": "",
+          "source_id": "p026-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p26-i1",
+        "tenis_premium_e_original-f18-p26-i2"
+      ],
+      "revision": "8f3e055891796596e56d3288957db2841d4854c8f4d02bf3c0e5be44e1060886"
+    },
+    {
+      "code": "pdf26-tenis-nike-casual-premium",
+      "name": "Tênis Nike casual — Premium",
+      "brand": "Nike",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        29,
+        31,
+        38,
+        64
+      ],
+      "photos": [
+        {
+          "file": "photos/0ebd97de960209394506252389010b65f2ab53e0dec327031842a54a09af7c6d.jpg",
+          "sha256": "0ebd97de960209394506252389010b65f2ab53e0dec327031842a54a09af7c6d",
+          "color": "",
+          "source_id": "p029-i02"
+        },
+        {
+          "file": "photos/88aae035bccc460d3149bcb2ed246338520819fb2fdaf4aba73992ad21fd6dc4.jpg",
+          "sha256": "88aae035bccc460d3149bcb2ed246338520819fb2fdaf4aba73992ad21fd6dc4",
+          "color": "",
+          "source_id": "p031-i02"
+        },
+        {
+          "file": "photos/21ce25436f0310174fdfd6264572e83c0d37adeefaf20c594a1569c0b0c34dd1.jpg",
+          "sha256": "21ce25436f0310174fdfd6264572e83c0d37adeefaf20c594a1569c0b0c34dd1",
+          "color": "",
+          "source_id": "p038-i02"
+        },
+        {
+          "file": "photos/5076833d226d909750900a7714ad9c0a06a47a2a4793d64a040a8604c61b9e48.jpg",
+          "sha256": "5076833d226d909750900a7714ad9c0a06a47a2a4793d64a040a8604c61b9e48",
+          "color": "",
+          "source_id": "p064-i01"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p28-i2",
+        "tenis_premium_e_original-f20-p44-i2"
+      ],
+      "revision": "74734fa355c24e87b8566a7539595fc09c971777c7287842d835bb92ea875797"
+    },
+    {
+      "code": "pdf26-tenis-olympikus-premium",
+      "name": "Tênis Olympikus esportivo — Premium",
+      "brand": "Olympikus",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        19,
+        31
+      ],
+      "photos": [
+        {
+          "file": "photos/a95de8bb75a6b06cd6c5e447788d643077d1f90aef02c23349853209db9082f7.jpg",
+          "sha256": "a95de8bb75a6b06cd6c5e447788d643077d1f90aef02c23349853209db9082f7",
+          "color": "",
+          "source_id": "p031-i01"
+        },
+        {
+          "file": "photos/e2864f010e7779289390ab1563597e81261bb18051bf590efb0d6aa8d789e5fc.jpg",
+          "sha256": "e2864f010e7779289390ab1563597e81261bb18051bf590efb0d6aa8d789e5fc",
+          "color": "",
+          "source_id": "p031-i03"
+        },
+        {
+          "file": "photos/2249be14d298b3542277407bdca92d800ac46c16a3cca48769f323f21cb04b34.jpg",
+          "sha256": "2249be14d298b3542277407bdca92d800ac46c16a3cca48769f323f21cb04b34",
+          "color": "",
+          "source_id": "p019-i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "eb3fa8750c9e8d91f069a0e545b0a9de0e4f57e41549a0f9d8c8672376f59a39"
+    },
+    {
+      "code": "pdf26-tenis-adidas-knit-premium",
+      "name": "Tênis Adidas em malha — Premium",
+      "brand": "Adidas",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        32,
+        60,
+        74
+      ],
+      "photos": [
+        {
+          "file": "photos/23e8675bc4b7545414af623cafa2f2f69f72bab0b7d1405edf5cca0a2742989f.jpg",
+          "sha256": "23e8675bc4b7545414af623cafa2f2f69f72bab0b7d1405edf5cca0a2742989f",
+          "color": "Rosa",
+          "source_id": "p032-i01"
+        },
+        {
+          "file": "photos/b5e451ef3dc88222a9795844dde7c1be86985568b5fc5aea3af81b1c66407947.jpg",
+          "sha256": "b5e451ef3dc88222a9795844dde7c1be86985568b5fc5aea3af81b1c66407947",
+          "color": "Cinza",
+          "source_id": "p032-i02"
+        },
+        {
+          "file": "photos/d81d185ffc8f0f30b038c2cf21af3ceb64faa3272b21e23a5f27074849041109.jpg",
+          "sha256": "d81d185ffc8f0f30b038c2cf21af3ceb64faa3272b21e23a5f27074849041109",
+          "color": "Preto",
+          "source_id": "p032-i03"
+        },
+        {
+          "file": "photos/7641f1c0973e2aa1aff4fa3f7cde832f90c10d51745bc9fea5e8d7d9c088452c.jpg",
+          "sha256": "7641f1c0973e2aa1aff4fa3f7cde832f90c10d51745bc9fea5e8d7d9c088452c",
+          "color": "",
+          "source_id": "p060-i01"
+        },
+        {
+          "file": "photos/3d0503f16c0504da47bb507be504ff128348ed77f84564c5b46957b64f9d3c10.jpg",
+          "sha256": "3d0503f16c0504da47bb507be504ff128348ed77f84564c5b46957b64f9d3c10",
+          "color": "",
+          "source_id": "p060-i02"
+        },
+        {
+          "file": "photos/2a9b2738da0d03c727f87ba5148b6b275e82b72df205074f046df14439f838ff.jpg",
+          "sha256": "2a9b2738da0d03c727f87ba5148b6b275e82b72df205074f046df14439f838ff",
+          "color": "Cinza",
+          "source_id": "p074-i02"
+        },
+        {
+          "file": "photos/f52347d7535045aa104de1aacda4957d0f546e0c2e4089c0922132d9421b6f6b.jpg",
+          "sha256": "f52347d7535045aa104de1aacda4957d0f546e0c2e4089c0922132d9421b6f6b",
+          "color": "Preto",
+          "source_id": "p074-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f18-p77-i1",
+        "tenis_premium_e_original-f18-p77-i2",
+        "tenis_premium_e_original-f20-p31-i1",
+        "tenis_premium_e_original-f20-p31-i2",
+        "tenis_premium_e_original-f20-p31-i3",
+        "tenis_premium_e_original-f20-p66-i1"
+      ],
+      "revision": "cb5e18f015d68040dda2aa4fac3ec349157eded934eb288b904f49129a59593f"
+    },
+    {
       "code": "pdf26-tenis-vans-esportivo-b-premium",
       "name": "Tênis Vans esportivo com recortes — Premium",
       "brand": "Vans",
@@ -706,6 +1359,72 @@
         "tenis_premium_e_original-f20-p33-i4"
       ],
       "revision": "394a13f8fc145754f3f78f2f4ae81d2f6d887990383d60e2c05f7582da985092"
+    },
+    {
+      "code": "pdf26-tenis-campus-premium",
+      "name": "Tênis Adidas Campus — Premium",
+      "brand": "Adidas",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        35,
+        44,
+        78
+      ],
+      "photos": [
+        {
+          "file": "photos/336621acd613f00ed9858622517a55ceab70dbaf4f994a59b5f567057c3e2640.jpg",
+          "sha256": "336621acd613f00ed9858622517a55ceab70dbaf4f994a59b5f567057c3e2640",
+          "color": "Cinza",
+          "source_id": "p035-i01"
+        },
+        {
+          "file": "photos/f5d204239db1e34953d53704c7c7006815f015e6318e3e47ad5814e06def248c.jpg",
+          "sha256": "f5d204239db1e34953d53704c7c7006815f015e6318e3e47ad5814e06def248c",
+          "color": "Bege",
+          "source_id": "p035-i02"
+        },
+        {
+          "file": "photos/78ccae75d1e08b0dfb3330d68b4ef583e2a56ebfe5eb1669060d51b334c8c3a8.jpg",
+          "sha256": "78ccae75d1e08b0dfb3330d68b4ef583e2a56ebfe5eb1669060d51b334c8c3a8",
+          "color": "Verde",
+          "source_id": "p044-i01"
+        },
+        {
+          "file": "photos/3bd91b8eb599a5899d820c116a0340e4e4a4a3e07cb3d5d5469e94d42cce3307.jpg",
+          "sha256": "3bd91b8eb599a5899d820c116a0340e4e4a4a3e07cb3d5d5469e94d42cce3307",
+          "color": "Vermelho",
+          "source_id": "p044-i02"
+        },
+        {
+          "file": "photos/f8c80428ebd6512beb864d8e980e2ef7357e741c22801a7cfe999f99496d1812.jpg",
+          "sha256": "f8c80428ebd6512beb864d8e980e2ef7357e741c22801a7cfe999f99496d1812",
+          "color": "Cinza",
+          "source_id": "p044-i03"
+        },
+        {
+          "file": "photos/3f908fd239442e7f9e79ac193e9cdc48573febbe86b06152beb104c596ca7857.jpg",
+          "sha256": "3f908fd239442e7f9e79ac193e9cdc48573febbe86b06152beb104c596ca7857",
+          "color": "Azul",
+          "source_id": "p044-i04"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f19-p102-i1",
+        "tenis_premium_e_original-f19-p102-i2",
+        "tenis_premium_e_original-f19-p102-i3",
+        "tenis_premium_e_original-f19-p102-i4",
+        "tenis_premium_e_original-f19-p57-i1",
+        "tenis_premium_e_original-f19-p57-i2",
+        "tenis_premium_e_original-f19-p57-i3",
+        "tenis_premium_e_original-f19-p57-i4"
+      ],
+      "revision": "c4d67b93b5000de05fdbae3f68c010414f538403dad0a0f5ee5972fcd7b051aa"
     },
     {
       "code": "pdf26-tenis-nike-off-premium",
@@ -973,6 +1692,173 @@
         "tenis_premium_e_original-f18-p92-i4"
       ],
       "revision": "4fbcbc787a6bb853bc809ad5df4069276d4dc3b6d04283fe65f83a41e4e85499"
+    },
+    {
+      "code": "pdf26-tenis-mizuno-ondas-premium",
+      "name": "Tênis Mizuno de solado ondulado — Premium",
+      "brand": "Mizuno",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        55,
+        61,
+        63,
+        68,
+        77
+      ],
+      "photos": [
+        {
+          "file": "photos/4dfe2d71c85cef64d1eeb830df051f718ac685153b832cfa067c96db68b2b11c.jpg",
+          "sha256": "4dfe2d71c85cef64d1eeb830df051f718ac685153b832cfa067c96db68b2b11c",
+          "color": "",
+          "source_id": "p055-i01"
+        },
+        {
+          "file": "photos/a9b54243dd5073a4f6157e00909c0a12edbb766245b2b0bb0878534001f0a4cb.jpg",
+          "sha256": "a9b54243dd5073a4f6157e00909c0a12edbb766245b2b0bb0878534001f0a4cb",
+          "color": "",
+          "source_id": "p055-i02"
+        },
+        {
+          "file": "photos/b34135499c23ce70673e6af0ab492783f8a14de2fd65587fe27be4265dfa7115.jpg",
+          "sha256": "b34135499c23ce70673e6af0ab492783f8a14de2fd65587fe27be4265dfa7115",
+          "color": "",
+          "source_id": "p055-i03"
+        },
+        {
+          "file": "photos/3a7fe8f609b2212f0e2889c318f823d49c45c349ff485315b1b5389c8471ba3d.jpg",
+          "sha256": "3a7fe8f609b2212f0e2889c318f823d49c45c349ff485315b1b5389c8471ba3d",
+          "color": "",
+          "source_id": "p061-i02"
+        },
+        {
+          "file": "photos/44e1059fc5a7104df343ef06e812438bf3feb7e8e348ec252ab248cd05877c1e.jpg",
+          "sha256": "44e1059fc5a7104df343ef06e812438bf3feb7e8e348ec252ab248cd05877c1e",
+          "color": "",
+          "source_id": "p061-i07"
+        },
+        {
+          "file": "photos/f2a3cf9cc1c115c492cc7aca938fb251d8d2081b0ae6776c21324f2361b6e8c3.jpg",
+          "sha256": "f2a3cf9cc1c115c492cc7aca938fb251d8d2081b0ae6776c21324f2361b6e8c3",
+          "color": "",
+          "source_id": "p063-i01"
+        },
+        {
+          "file": "photos/a0b4288e71a80f3a7d8a8beaefc48822e76e04220f274ff621c858ff737732a9.jpg",
+          "sha256": "a0b4288e71a80f3a7d8a8beaefc48822e76e04220f274ff621c858ff737732a9",
+          "color": "",
+          "source_id": "p063-i02"
+        },
+        {
+          "file": "photos/d264b314e30d99bac8fd57e6183b967ed399ef11fdf2e8546dd7aed4d27f6c3f.jpg",
+          "sha256": "d264b314e30d99bac8fd57e6183b967ed399ef11fdf2e8546dd7aed4d27f6c3f",
+          "color": "Azul e laranja",
+          "source_id": "p068-i01"
+        },
+        {
+          "file": "photos/5a05de20296639b84b0efac27f374fd96e2b5f90487a57fc86843a9ec09c14c9.jpg",
+          "sha256": "5a05de20296639b84b0efac27f374fd96e2b5f90487a57fc86843a9ec09c14c9",
+          "color": "Cinza e azul",
+          "source_id": "p068-i02"
+        },
+        {
+          "file": "photos/43838eba411e38e30f0488cf281779cdd07c2a795cb26d9e2e3cc337234a4368.jpg",
+          "sha256": "43838eba411e38e30f0488cf281779cdd07c2a795cb26d9e2e3cc337234a4368",
+          "color": "Vermelho",
+          "source_id": "p068-i03"
+        },
+        {
+          "file": "photos/5d603c0050c605d4378fb228f8bc7f8203febe2dbe8dbcc1d4e3825def426572.jpg",
+          "sha256": "5d603c0050c605d4378fb228f8bc7f8203febe2dbe8dbcc1d4e3825def426572",
+          "color": "Branco",
+          "source_id": "p068-i04"
+        },
+        {
+          "file": "photos/e196bcedf0735fe1d2d8b6be8294b4ac43b5f9fa9c17a5fa04c85b77d522f4db.jpg",
+          "sha256": "e196bcedf0735fe1d2d8b6be8294b4ac43b5f9fa9c17a5fa04c85b77d522f4db",
+          "color": "Azul e amarelo",
+          "source_id": "p068-i05"
+        },
+        {
+          "file": "photos/bc1d47b3fde872a0f6e8a5235bc6222afe8e0dbed62de68d814f9ac14e938e48.jpg",
+          "sha256": "bc1d47b3fde872a0f6e8a5235bc6222afe8e0dbed62de68d814f9ac14e938e48",
+          "color": "Preto e verde",
+          "source_id": "p068-i06"
+        },
+        {
+          "file": "photos/debf771d43edb87fb55b45a4d7f5fc0523a15dd462e698303fe2322f54185980.jpg",
+          "sha256": "debf771d43edb87fb55b45a4d7f5fc0523a15dd462e698303fe2322f54185980",
+          "color": "",
+          "source_id": "p077-i01"
+        },
+        {
+          "file": "photos/28e286400e9822cb63bf960e196740e22dc99a2ca56e707947dd32b97ade9741.jpg",
+          "sha256": "28e286400e9822cb63bf960e196740e22dc99a2ca56e707947dd32b97ade9741",
+          "color": "",
+          "source_id": "p077-i02"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f20-p78-i1",
+        "tenis_premium_e_original-f20-p78-i6",
+        "tenis_premium_e_original-f23-p100-i1",
+        "tenis_premium_e_original-f23-p100-i2",
+        "tenis_premium_e_original-f23-p71-i1",
+        "tenis_premium_e_original-f23-p71-i2",
+        "tenis_premium_e_original-f23-p71-i3",
+        "tenis_premium_e_original-f23-p80-i1",
+        "tenis_premium_e_original-f23-p80-i2",
+        "tenis_premium_e_original-f23-p85-i1",
+        "tenis_premium_e_original-f23-p85-i2",
+        "tenis_premium_e_original-f23-p85-i3",
+        "tenis_premium_e_original-f23-p85-i4",
+        "tenis_premium_e_original-f23-p85-i5",
+        "tenis_premium_e_original-f23-p85-i6"
+      ],
+      "revision": "2c93218255e512463223a111ab8954e32a33c8b95119be48fc10fd4ae83f094f"
+    },
+    {
+      "code": "pdf26-tenis-nike-sport-premium",
+      "name": "Tênis Nike esportivo bicolor — Premium",
+      "brand": "Nike",
+      "category": "Tênis Premium",
+      "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Premium",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        56,
+        73
+      ],
+      "photos": [
+        {
+          "file": "photos/47f89e6bdf53873885b0be1f8161f823b4888a8bda709f17770a9b19dfb1486b.jpg",
+          "sha256": "47f89e6bdf53873885b0be1f8161f823b4888a8bda709f17770a9b19dfb1486b",
+          "color": "",
+          "source_id": "p056-i01"
+        },
+        {
+          "file": "photos/a3d76a56eca5091d8202e5da21eb609d18031bb9386dd57ffdc5779daaca3a74.jpg",
+          "sha256": "a3d76a56eca5091d8202e5da21eb609d18031bb9386dd57ffdc5779daaca3a74",
+          "color": "",
+          "source_id": "p073-i01"
+        },
+        {
+          "file": "photos/f4a81d7f8fe0a6cd267047ec3432ba4121e8d944d63721cf55cea41be79069a3.jpg",
+          "sha256": "f4a81d7f8fe0a6cd267047ec3432ba4121e8d944d63721cf55cea41be79069a3",
+          "color": "",
+          "source_id": "p073-i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "af7ab512677f2e294ae2c9c3fd2ed5b1a11d41ed7cdf15c7d542bc60fdc529d4"
     },
     {
       "code": "pdf26-tenis-nike-vazado-premium",
@@ -3642,6 +4528,47 @@
       "revision": "d6f6a940fec9c167b78cf0cdd64ec3449e84348dc7e4dc849e21a7a3cdadc661"
     },
     {
+      "code": "pdf26-tenis-casual-masc-original-p99",
+      "name": "Tênis masculino casual com cadarço — Original",
+      "brand": "",
+      "category": "Tênis Originais",
+      "description": "Linha Original do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        99
+      ],
+      "photos": [
+        {
+          "file": "photos/58218c4a63185b71160eeae7429cbfa03b66952a2a1116a3bc58861e3ff895ed.jpg",
+          "sha256": "58218c4a63185b71160eeae7429cbfa03b66952a2a1116a3bc58861e3ff895ed",
+          "color": "Preto e branco",
+          "source_id": "p099-i01"
+        },
+        {
+          "file": "photos/00b435f8265bb05688af995f85157eb8e4bd5ab72357888be5cce52316b69641.jpg",
+          "sha256": "00b435f8265bb05688af995f85157eb8e4bd5ab72357888be5cce52316b69641",
+          "color": "Cinza",
+          "source_id": "p099-i02"
+        },
+        {
+          "file": "photos/dcd526c8122590ff1a5191d718542f1f9796e0fbc4d2c70a10b7ff29ff4fe2f4.jpg",
+          "sha256": "dcd526c8122590ff1a5191d718542f1f9796e0fbc4d2c70a10b7ff29ff4fe2f4",
+          "color": "Preto",
+          "source_id": "p099-i03"
+        }
+      ],
+      "aliases": [
+        "tenis_premium_e_original-f24-p125-i1",
+        "tenis_premium_e_original-f24-p125-i2",
+        "tenis_premium_e_original-f24-p125-i3"
+      ],
+      "revision": "f313e9796c7f35aa9a807e27990fdaaa04112bd2271c7e1e992e59c3a00895ab"
+    },
+    {
       "code": "pdf26-tenis-mormaii-sport-original-p103",
       "name": "Tênis Mormaii esportivo — Original",
       "brand": "Mormaii",
@@ -3780,220 +4707,5 @@
       "revision": "7566f286883eb91b08bed28d429c0b87d21e13a2f93c51ff1835698ee3edc9e2"
     }
   ],
-  "pending": [
-    {
-      "id": "nb9060-premium",
-      "name": "Tênis New Balance 9060 — Premium",
-      "prices": [
-        {
-          "tier": 20,
-          "base": "159.90",
-          "sale": "179.90"
-        },
-        {
-          "tier": 21,
-          "base": "169.90",
-          "sale": "189.90"
-        },
-        {
-          "tier": 23,
-          "base": "189.90",
-          "sale": "209.90"
-        },
-        {
-          "tier": 26,
-          "base": "219.90",
-          "sale": "239.90"
-        }
-      ],
-      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
-    },
-    {
-      "id": "oldskool-premium",
-      "name": "Tênis Vans Old Skool — Premium",
-      "prices": [
-        {
-          "tier": 18,
-          "base": "139.90",
-          "sale": "159.90"
-        },
-        {
-          "tier": 20,
-          "base": "159.90",
-          "sale": "179.90"
-        }
-      ],
-      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
-    },
-    {
-      "id": "vans-alto-premium",
-      "name": "Tênis Vans casual de solado alto — Premium",
-      "prices": [
-        {
-          "tier": 18,
-          "base": "139.90",
-          "sale": "159.90"
-        },
-        {
-          "tier": 20,
-          "base": "159.90",
-          "sale": "179.90"
-        }
-      ],
-      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
-    },
-    {
-      "id": "adidas-running-premium",
-      "name": "Tênis Adidas esportivo de solado alto — Premium",
-      "prices": [
-        {
-          "tier": 18,
-          "base": "139.90",
-          "sale": "159.90"
-        },
-        {
-          "tier": 20,
-          "base": "159.90",
-          "sale": "179.90"
-        }
-      ],
-      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
-    },
-    {
-      "id": "adidas-corrida-premium",
-      "name": "Tênis Adidas esportivo bicolor — Premium",
-      "prices": [
-        {
-          "tier": 18,
-          "base": "139.90",
-          "sale": "159.90"
-        },
-        {
-          "tier": 20,
-          "base": "159.90",
-          "sale": "179.90"
-        }
-      ],
-      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
-    },
-    {
-      "id": "nike-casual-premium",
-      "name": "Tênis Nike casual — Premium",
-      "prices": [
-        {
-          "tier": 18,
-          "base": "139.90",
-          "sale": "159.90"
-        },
-        {
-          "tier": 20,
-          "base": "159.90",
-          "sale": "179.90"
-        }
-      ],
-      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
-    },
-    {
-      "id": "olympikus-premium",
-      "name": "Tênis Olympikus esportivo — Premium",
-      "prices": [
-        {
-          "tier": 18,
-          "base": "139.90",
-          "sale": "159.90"
-        },
-        {
-          "tier": 20,
-          "base": "159.90",
-          "sale": "179.90"
-        }
-      ],
-      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
-    },
-    {
-      "id": "adidas-knit-premium",
-      "name": "Tênis Adidas em malha — Premium",
-      "prices": [
-        {
-          "tier": 18,
-          "base": "139.90",
-          "sale": "159.90"
-        },
-        {
-          "tier": 20,
-          "base": "159.90",
-          "sale": "179.90"
-        }
-      ],
-      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
-    },
-    {
-      "id": "campus-premium",
-      "name": "Tênis Adidas Campus — Premium",
-      "prices": [
-        {
-          "tier": 19,
-          "base": "149.90",
-          "sale": "169.90"
-        },
-        {
-          "tier": 20,
-          "base": "159.90",
-          "sale": "179.90"
-        }
-      ],
-      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
-    },
-    {
-      "id": "mizuno-ondas-premium",
-      "name": "Tênis Mizuno de solado ondulado — Premium",
-      "prices": [
-        {
-          "tier": 20,
-          "base": "159.90",
-          "sale": "179.90"
-        },
-        {
-          "tier": 23,
-          "base": "189.90",
-          "sale": "209.90"
-        }
-      ],
-      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
-    },
-    {
-      "id": "nike-sport-premium",
-      "name": "Tênis Nike esportivo bicolor — Premium",
-      "prices": [
-        {
-          "tier": 17,
-          "base": "129.90",
-          "sale": "149.90"
-        },
-        {
-          "tier": 20,
-          "base": "159.90",
-          "sale": "179.90"
-        }
-      ],
-      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
-    },
-    {
-      "id": "casual-masc-original-p99",
-      "name": "Tênis masculino casual com cadarço — Original",
-      "prices": [
-        {
-          "tier": 21,
-          "base": "169.90",
-          "sale": "189.90"
-        },
-        {
-          "tier": 24,
-          "base": "199.90",
-          "sale": "219.90"
-        }
-      ],
-      "reason": "Mesmo modelo com faixas divergentes no PDF; decisão do administrador pendente."
-    }
-  ]
+  "pending": []
 }

@@ -2,7 +2,7 @@
 
 Importação autorizada pelo administrador, começando por TÊNIS PREMIUM E ORIGINAL (1).pdf, recebido em 14/09/2026. As demais categorias serão publicadas em lotes separados. Relógios excluídos.
 
-O manifesto em `accounts/seed/catalogos_202609/tenis/manifest.json` contém os produtos revisados, fotos recortadas conforme as máscaras do PDF, páginas de origem, faixa, preço base, preço final, cores e equivalências com os códigos antigos. Produtos com faixas conflitantes ficam na lista `pending`, fora da importação, aguardando a decisão do administrador sobre a maior faixa.
+O manifesto em `accounts/seed/catalogos_202609/tenis/manifest.json` contém 115 produtos revisados e 348 fotos, recortadas conforme as máscaras do PDF, páginas de origem, faixa, preço base, preço final, cores e equivalências com os códigos antigos. Em 15/09/2026, a continuação incorporou o aceite do administrador para usar a maior faixa nos 12 grupos com preços conflitantes. Não restam grupos pendentes neste catálogo.
 
 ## Preços
 
