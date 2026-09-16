@@ -59,3 +59,9 @@ O PDF `ORTOPÉDICOS  SCARPIN  MOCASSIM  SAPATILHA (1).pdf` tem 48 páginas: a ca
 A faixa vem do número impresso na página. Só as páginas 40, 41 e 48 trazem mais de uma faixa, e nelas a linha com ponto vermelho liga cada preço à sua foto. O scarpin preto de bico fino aparece na página 40 com faixa 20 e nas páginas 46 e 47 com faixa 23; como é o mesmo modelo em cores diferentes, o grupo usa a faixa maior, conforme a decisão do administrador para preços conflitantes. Marcas só aparecem quando legíveis na foto ou na caixa (Beira Rio, Modare, Vizzano, Moleca, Terra & Água). Fotos idênticas ao PDF antigo deram 73 equivalências únicas para reaproveitar cadastros.
 
 Doze fotos mostravam o monograma "SF" da Santa Fiori impresso na palmilha. A marca foi apagada reconstruindo a palmilha a partir das bordas, e cada área foi conferida ampliada antes de entrar no manifesto; nenhuma foto precisou ser descartada por causa disso. O ensaio passou, a importação local criou os 61 produtos, a repetição preservou os 61 e as 61 fichas locais responderam com preço, nome e galeria corretos.
+
+## Nomes de marca nos anúncios (16/09/2026)
+
+Por decisão do administrador, nenhum anúncio cita marca famosa que não seja a do fabricante real do produto. Foram reescritos 51 anúncios (40 de tênis, 7 infantis e 4 de rasteiras) que traziam Adidas, Nike, Vans, New Balance, Converse, Mizuno, Olympikus, Alo, On, Gucci, Schutz, Miu Miu ou Louis Vuitton no nome ou no campo de marca. Cada nome novo descreve o que aparece na foto (tipo, cor e detalhe), e o campo de marca ficou vazio nesses casos. Marcas brasileiras visíveis no produto ou na caixa, como Beira Rio, Vizzano, Modare, Moleca, Mormaii, Cavalera e Ramarim, continuam registradas.
+
+As fotos ainda mostram logos aplicados no próprio calçado; a limpeza dos anúncios não altera isso. A loja ganhou o filtro de linha (Premium e Original), que usa a classificação do próprio catálogo e não cita marca.

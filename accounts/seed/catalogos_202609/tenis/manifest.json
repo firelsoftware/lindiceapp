@@ -6,8 +6,8 @@
   "products": [
     {
       "code": "pdf26-tenis-miu-premium",
-      "name": "Tênis Miu Miu de solado alto — Premium",
-      "brand": "Miu Miu",
+      "name": "Tênis feminino de lona preto com solado plataforma — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -45,12 +45,12 @@
         }
       ],
       "aliases": [],
-      "revision": "8fd5878bf302a0ce9cc848f223863d9b3e9a3ec93bbac2a3d632b13d26efee3f"
+      "revision": "31ecfb6159692f0424cf401e38f7e9228b762a144232e5dc184f127261ab264a"
     },
     {
       "code": "pdf26-tenis-nike-air-premium",
-      "name": "Tênis Nike esportivo com detalhes coloridos — Premium",
-      "brand": "Nike",
+      "name": "Tênis esportivo off-white em tela com entressola rosa — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -93,12 +93,12 @@
         "tenis_premium_e_original-f18-p5-i3",
         "tenis_premium_e_original-f18-p5-i4"
       ],
-      "revision": "54d8045e915ce0d6f697ec0b1d3d0f6189248c23779e67884a1e330e77f46839"
+      "revision": "1735e3d790973db020f807ab227ee199fd0b03d61293e185340363deac0f283d"
     },
     {
       "code": "pdf26-tenis-nb9060-premium",
-      "name": "Tênis New Balance 9060 — Premium",
-      "brand": "New Balance",
+      "name": "Tênis esportivo off-white com recortes cinza — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -383,12 +383,12 @@
         "tenis_premium_e_original-f23-p68-i3",
         "tenis_premium_e_original-f23-p75-i1"
       ],
-      "revision": "b5645fc3ae214353f0320f493de070d829f00234ff46cc20c846181b6d709f74"
+      "revision": "edc81e50d54c5b0872dea6ecb557c75c600cc30831316774b825587f2c89c7ac"
     },
     {
       "code": "pdf26-tenis-samba-premium",
-      "name": "Tênis Adidas Samba — Premium",
-      "brand": "Adidas",
+      "name": "Tênis casual branco com listras pretas — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -457,12 +457,12 @@
         "tenis_premium_e_original-f20-p17-i4",
         "tenis_premium_e_original-f20-p79-i4"
       ],
-      "revision": "3a67816f377a8b08c0ff3aac3ce6b8bd3709921214a890d773f7806756b968ac"
+      "revision": "6f0998cd8b049903bc59f60a78db4c434df24f08a64d5b64ce05e1817e33abe0"
     },
     {
       "code": "pdf26-tenis-nike-mesh-premium",
-      "name": "Tênis Nike esportivo em tela — Premium",
-      "brand": "Nike",
+      "name": "Tênis esportivo preto em tela — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -513,12 +513,12 @@
         "tenis_premium_e_original-f18-p63-i2",
         "tenis_premium_e_original-f18-p63-i3"
       ],
-      "revision": "ac0ddf5b2f0cfc49a779a5cf260626f02b1827f6307a9ae8f6e393b18a1eafa1"
+      "revision": "a8b801efaa2133472f7c31365e186f72b339dc61937187b78ecd9dc2e5992364"
     },
     {
       "code": "pdf26-tenis-dunk-joia-premium",
-      "name": "Tênis Nike casual com detalhe no cadarço — Premium",
-      "brand": "Nike",
+      "name": "Tênis casual bege de camurça com pingente — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -579,12 +579,12 @@
       "aliases": [
         "tenis_premium_e_original-f20-p28-i4"
       ],
-      "revision": "93338d03266a9895e37978d837c909cbd257cffac7a80177c5e14156c784894e"
+      "revision": "8f8d056c768508a97c928986d98303e7159f73e44310ed7ca909fc90f290de0f"
     },
     {
       "code": "pdf26-tenis-nb-retro-premium",
-      "name": "Tênis New Balance esportivo retrô — Premium",
-      "brand": "New Balance",
+      "name": "Tênis esportivo retrô rosa — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -619,12 +619,12 @@
         "tenis_premium_e_original-f20-p8-i2",
         "tenis_premium_e_original-f20-p8-i4"
       ],
-      "revision": "8399dcdceea98a597de3aafe57522f3136436a6df746add20a557c62a2c437da"
+      "revision": "813ac5d83da2d14f868f3bf335bf534deb457723cfbb7d1d67e6d47ebd5b0630"
     },
     {
       "code": "pdf26-tenis-oldskool-premium",
-      "name": "Tênis Vans Old Skool — Premium",
-      "brand": "Vans",
+      "name": "Tênis casual preto e branco de lona — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -670,12 +670,12 @@
         "tenis_premium_e_original-f18-p93-i2",
         "tenis_premium_e_original-f18-p93-i4"
       ],
-      "revision": "4ceb82ce82cce917a3715d4421425acd7b41a1c301a9888fc74c000f58f0e778"
+      "revision": "1118f0752bc0de76f812cedbf01bea8cf1badafa813bf5338cd01d213d9d6892"
     },
     {
       "code": "pdf26-tenis-vans-alto-premium",
-      "name": "Tênis Vans casual de solado alto — Premium",
-      "brand": "Vans",
+      "name": "Tênis casual preto de lona com solado alto — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -709,12 +709,12 @@
         "tenis_premium_e_original-f18-p92-i3",
         "tenis_premium_e_original-f18-p93-i3"
       ],
-      "revision": "042d407428cb5824e770bff8ddc3f8558c4d6e31be91433faed5f90236473992"
+      "revision": "61297cdbd5b29d8dc9ebc06e1b203824619d8c085a83049dcde439e0081045f0"
     },
     {
       "code": "pdf26-tenis-adidas-tela-premium",
-      "name": "Tênis Adidas esportivo em tela — Premium",
-      "brand": "Adidas",
+      "name": "Tênis esportivo bege em tela — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -743,12 +743,12 @@
         "tenis_premium_e_original-f25-p12-i1",
         "tenis_premium_e_original-f25-p12-i2"
       ],
-      "revision": "6d3bbd074fbedf515440f41dac7107f463f8e6bf24078b15aa422e6a566bd635"
+      "revision": "e0853cb67c11ca104499a9948897c76957a0f760260fef22da05cbfd8ab2f785"
     },
     {
       "code": "pdf26-tenis-vans-robusto-premium",
-      "name": "Tênis Vans de solado robusto — Premium",
-      "brand": "Vans",
+      "name": "Tênis casual preto com solado robusto — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -813,12 +813,12 @@
         "tenis_premium_e_original-f20-p99-i2",
         "tenis_premium_e_original-f20-p99-i3"
       ],
-      "revision": "4f71be3070808f5073803af555c21b4eea9f3adb019a1e4ff9e40b41ba063550"
+      "revision": "dfc47bdc57d099fff60906cc479e9ee5b9c826382a76783afdb36e70dedf109d"
     },
     {
       "code": "pdf26-tenis-alo-premium",
-      "name": "Tênis Alo casual — Premium",
-      "brand": "Alo",
+      "name": "Tênis casual branco com solado plataforma — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -856,12 +856,12 @@
         }
       ],
       "aliases": [],
-      "revision": "6580f3f8ea0a66832cbc4603c12a320191a00e68659c46df5564c179cd737d7f"
+      "revision": "0a0c750d15387d5c634787b1b26c0f91a14d772bb3e4207354793b911a7e0d4e"
     },
     {
       "code": "pdf26-tenis-vans-robusto-b-premium",
-      "name": "Tênis Vans casual com solado texturizado — Premium",
-      "brand": "Vans",
+      "name": "Tênis casual off-white com solado texturizado — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -885,12 +885,12 @@
         "tenis_premium_e_original-f20-p17-i1",
         "tenis_premium_e_original-f20-p79-i1"
       ],
-      "revision": "bbf0cedce5062808bd6c89ec1bcb7f649aad2d91567f325e2a75ef0f5065a770"
+      "revision": "f4844564a40f20e4b79a50a28c3837376b657496f99ab73ba11e13d2cb9c0017"
     },
     {
       "code": "pdf26-tenis-dunk-premium",
-      "name": "Tênis Nike Dunk Low — Premium",
-      "brand": "Nike",
+      "name": "Tênis casual preto e branco de cano baixo — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -958,12 +958,12 @@
         "tenis_premium_e_original-f20-p69-i2",
         "tenis_premium_e_original-f20-p79-i2"
       ],
-      "revision": "32f9abbe5e00edb43e78755e67504b7dfb4d7b7a033e567f0abb5926eeaeb811"
+      "revision": "ae7b2e783ec80c3a7f9b7be4b98f660e298140c8e48285aef4cf93d1b1e05ef9"
     },
     {
       "code": "pdf26-tenis-adidas-running-premium",
-      "name": "Tênis Adidas esportivo de solado alto — Premium",
-      "brand": "Adidas",
+      "name": "Tênis esportivo branco com detalhes rosa — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1023,12 +1023,12 @@
         "tenis_premium_e_original-f20-p61-i2",
         "tenis_premium_e_original-f20-p61-i3"
       ],
-      "revision": "dfffbada949b6590a1d7f7d2ad11f24e6ca1d53534e47750dd3865f8afdc6a67"
+      "revision": "1a38999a224d8484655a55d02ff3aa227dd228e8481772c2286273c647d02f83"
     },
     {
       "code": "pdf26-tenis-nike-curvo-premium",
-      "name": "Tênis Nike esportivo de solado curvo — Premium",
-      "brand": "Nike",
+      "name": "Tênis esportivo preto de solado curvo — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1079,12 +1079,12 @@
         }
       ],
       "aliases": [],
-      "revision": "cec9a7573641b57ade86bf789da9e172c8c549fcd009e7499b5f2ab642cd2f61"
+      "revision": "ed2411a9c8fb40109882869d38d35bd9284572a79f84a102e1fcf4e3bf8b90ba"
     },
     {
       "code": "pdf26-tenis-adidas-retro-premium",
-      "name": "Tênis Adidas retrô de solado baixo — Premium",
-      "brand": "Adidas",
+      "name": "Tênis casual marrom retrô com listras — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1110,12 +1110,12 @@
         }
       ],
       "aliases": [],
-      "revision": "eebb5b670d99cc2270d40eedb74b1aadd103f90578c8bcc9e004225b0175be02"
+      "revision": "f88a1be54c0db4784e14eda58bdedb8637a0a60ec724fefc8de4ffa3e25a4e17"
     },
     {
       "code": "pdf26-tenis-adidas-corrida-premium",
-      "name": "Tênis Adidas esportivo bicolor — Premium",
-      "brand": "Adidas",
+      "name": "Tênis esportivo preto e branco de corrida — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1158,12 +1158,12 @@
         "tenis_premium_e_original-f18-p26-i1",
         "tenis_premium_e_original-f18-p26-i2"
       ],
-      "revision": "8f3e055891796596e56d3288957db2841d4854c8f4d02bf3c0e5be44e1060886"
+      "revision": "bcb0cc6d8c569d04f049909adbbd44dc8e588d57ce453cc734e4c7fb4d82479b"
     },
     {
       "code": "pdf26-tenis-nike-casual-premium",
-      "name": "Tênis Nike casual — Premium",
-      "brand": "Nike",
+      "name": "Tênis casual branco de cano baixo — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1207,12 +1207,12 @@
         "tenis_premium_e_original-f20-p28-i2",
         "tenis_premium_e_original-f20-p44-i2"
       ],
-      "revision": "74734fa355c24e87b8566a7539595fc09c971777c7287842d835bb92ea875797"
+      "revision": "a8e852ed7b6926cb8956bb38107c1480c80a02847eac957d8f5045cd784f3b4d"
     },
     {
       "code": "pdf26-tenis-olympikus-premium",
-      "name": "Tênis Olympikus esportivo — Premium",
-      "brand": "Olympikus",
+      "name": "Tênis esportivo off-white com detalhe azul — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1245,12 +1245,12 @@
         }
       ],
       "aliases": [],
-      "revision": "eb3fa8750c9e8d91f069a0e545b0a9de0e4f57e41549a0f9d8c8672376f59a39"
+      "revision": "a69af235ddf86994e8d861257483ccaa2ba706a0b52f00cbffac116fbd501a24"
     },
     {
       "code": "pdf26-tenis-adidas-knit-premium",
-      "name": "Tênis Adidas em malha — Premium",
-      "brand": "Adidas",
+      "name": "Tênis esportivo rosa em malha — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1315,12 +1315,12 @@
         "tenis_premium_e_original-f20-p31-i3",
         "tenis_premium_e_original-f20-p66-i1"
       ],
-      "revision": "cb5e18f015d68040dda2aa4fac3ec349157eded934eb288b904f49129a59593f"
+      "revision": "ce336bc0ff0df67fd81240a41c12b09554cf64a4ace2e86cc0424d48ce4a14dc"
     },
     {
       "code": "pdf26-tenis-vans-esportivo-b-premium",
-      "name": "Tênis Vans esportivo com recortes — Premium",
-      "brand": "Vans",
+      "name": "Tênis casual marrom com recortes brancos — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1356,12 +1356,12 @@
         "tenis_premium_e_original-f20-p33-i3",
         "tenis_premium_e_original-f20-p33-i4"
       ],
-      "revision": "394a13f8fc145754f3f78f2f4ae81d2f6d887990383d60e2c05f7582da985092"
+      "revision": "605c5706c4958b5fbc4c1dd9fb761a924da0a387ffb775323e7920ff7af1f4a2"
     },
     {
       "code": "pdf26-tenis-campus-premium",
-      "name": "Tênis Adidas Campus — Premium",
-      "brand": "Adidas",
+      "name": "Tênis casual cinza com listras claras — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1422,12 +1422,12 @@
         "tenis_premium_e_original-f19-p57-i3",
         "tenis_premium_e_original-f19-p57-i4"
       ],
-      "revision": "c4d67b93b5000de05fdbae3f68c010414f538403dad0a0f5ee5972fcd7b051aa"
+      "revision": "0549404070be264810e686f67f6fde9f1c37b624d91e6fc3bba67380016e46e1"
     },
     {
       "code": "pdf26-tenis-nike-off-premium",
-      "name": "Tênis Nike casual off-white — Premium",
-      "brand": "Nike",
+      "name": "Tênis esportivo off-white com detalhe bege — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1453,12 +1453,12 @@
         }
       ],
       "aliases": [],
-      "revision": "d3cdc39629fd7eee8639eb3373df849fc397bc88628238ae709e511486835844"
+      "revision": "72bdf037ab9419a67c7ce61efe1a5fc3f852b78ed96722b0f8148c4e48188318"
     },
     {
       "code": "pdf26-tenis-converse-premium",
-      "name": "Tênis Converse de cano baixo — Premium",
-      "brand": "Converse",
+      "name": "Tênis de lona off-white de cano baixo — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1515,12 +1515,12 @@
         "tenis_premium_e_original-f18-p54-i2",
         "tenis_premium_e_original-f18-p54-i6"
       ],
-      "revision": "d06a98e70ce57614d17122bd3669a022c060b302a1ac710f214830b177b8ca16"
+      "revision": "f0dc4173d1b20cdad5460a17994250d436d5f926b84f8a9a21d3f310609c46f4"
     },
     {
       "code": "pdf26-tenis-vans-esportivo-premium",
-      "name": "Tênis Vans esportivo — Premium",
-      "brand": "Vans",
+      "name": "Tênis esportivo off-white em malha — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1592,12 +1592,12 @@
         "tenis_premium_e_original-f20-p47-i3",
         "tenis_premium_e_original-f20-p47-i4"
       ],
-      "revision": "5a42a4a1fc9c67a373be8c6b1458eabc3dac309a6bac40232562884811933035"
+      "revision": "3fe064eff4b116cec15b28200100af4569573c2aa81ef3096c45f0dd7860baa7"
     },
     {
       "code": "pdf26-tenis-converse-alto-premium",
-      "name": "Tênis Converse de solado alto — Premium",
-      "brand": "Converse",
+      "name": "Tênis de lona preto com brilho e solado alto — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1623,7 +1623,7 @@
         }
       ],
       "aliases": [],
-      "revision": "8b79b8629208541725dd6c4866c9a3fe46e6315ffe3853d831bb391d936c2884"
+      "revision": "9ff22ef6935dc6283472b87eb3ccc7e87583a1635c8466ef0268e71b8a834057"
     },
     {
       "code": "pdf26-tenis-vans-tres-premium",
@@ -1693,8 +1693,8 @@
     },
     {
       "code": "pdf26-tenis-mizuno-ondas-premium",
-      "name": "Tênis Mizuno de solado ondulado — Premium",
-      "brand": "Mizuno",
+      "name": "Tênis esportivo bege com solado em ondas — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1818,12 +1818,12 @@
         "tenis_premium_e_original-f23-p85-i5",
         "tenis_premium_e_original-f23-p85-i6"
       ],
-      "revision": "2c93218255e512463223a111ab8954e32a33c8b95119be48fc10fd4ae83f094f"
+      "revision": "6dbdd68d08fa3b999339c442b0f5870c2177e6b9c9f5773b28539ba05615124d"
     },
     {
       "code": "pdf26-tenis-nike-sport-premium",
-      "name": "Tênis Nike esportivo bicolor — Premium",
-      "brand": "Nike",
+      "name": "Tênis esportivo preto com faixa vermelha — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1856,12 +1856,12 @@
         }
       ],
       "aliases": [],
-      "revision": "af7ab512677f2e294ae2c9c3fd2ed5b1a11d41ed7cdf15c7d542bc60fdc529d4"
+      "revision": "3e9d8971ee5fea601295979f5f5318a99e2461680bf662aac26a5e0e0a96e3d7"
     },
     {
       "code": "pdf26-tenis-nike-vazado-premium",
-      "name": "Tênis Nike de solado vazado — Premium",
-      "brand": "Nike",
+      "name": "Tênis esportivo cinza com solado vazado — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1933,12 +1933,12 @@
         "tenis_premium_e_original-f20-p84-i3",
         "tenis_premium_e_original-f20-p84-i4"
       ],
-      "revision": "17b44fe67a47f652db1be9a8272d0e9a514a1096267db687c0c2413b4d39b6b7"
+      "revision": "678701fd7df2c8c803bef4a2eca362c0bbd7ce5c7516e8f3713db76477597750"
     },
     {
       "code": "pdf26-tenis-nb-casual-premium",
-      "name": "Tênis New Balance casual em tela — Premium",
-      "brand": "New Balance",
+      "name": "Tênis casual branco em couro sintético — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -1974,12 +1974,12 @@
         "tenis_premium_e_original-f18-p82-i2",
         "tenis_premium_e_original-f18-p82-i3"
       ],
-      "revision": "d2e19de6d1d242740b40c005724f9ff47578e5a11124b14ceda0a07d1f0ddef8"
+      "revision": "031b9ba66bd06153c9e5f33dcd3025b745aa96bd237ae0a508310b5e93aa775d"
     },
     {
       "code": "pdf26-tenis-nb-retro-casual-premium",
-      "name": "Tênis New Balance casual com recortes — Premium",
-      "brand": "New Balance",
+      "name": "Tênis casual caramelo com recortes — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -2001,12 +2001,12 @@
       "aliases": [
         "tenis_premium_e_original-f18-p82-i4"
       ],
-      "revision": "af30993ec1cb3451e194548cd628eafdb16fa4ca5e1553d9b0e5ed7f907c6915"
+      "revision": "6be0f4993e3ba1c02d2fd12a237ce9a721bcf43d2250c16b6b93a362abe51545"
     },
     {
       "code": "pdf26-tenis-on-premium",
-      "name": "Tênis On esportivo — Premium",
-      "brand": "On",
+      "name": "Tênis esportivo bege com solado vazado — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -2035,12 +2035,12 @@
         "tenis_premium_e_original-f18-p86-i1",
         "tenis_premium_e_original-f18-p86-i2"
       ],
-      "revision": "4918a9c760bc34ff73e9501d56fe6c43aff589b10b38fa6780e75372073f6e96"
+      "revision": "c7d13ad81e97f4dc026cc1f4d66a9470a30140cdedf0d5259dac0187ff869936"
     },
     {
       "code": "pdf26-tenis-nb530-premium",
-      "name": "Tênis New Balance 530 — Premium",
-      "brand": "New Balance",
+      "name": "Tênis esportivo branco com recortes prata — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -2076,12 +2076,12 @@
       "aliases": [
         "tenis_premium_e_original-f20-p96-i3"
       ],
-      "revision": "e862a4fd289f3141df1da1028671346a2f85ac939a3d26e357bf84668bc81a26"
+      "revision": "b6154c067adee097c8e0052dd4a0cbf76655eac30eca8f36bd2936abf2036b3e"
     },
     {
       "code": "pdf26-tenis-nike-zoom-premium",
-      "name": "Tênis Nike esportivo com detalhe lateral — Premium",
-      "brand": "Nike",
+      "name": "Tênis esportivo preto com detalhe azul — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -2103,12 +2103,12 @@
       "aliases": [
         "tenis_premium_e_original-f17-p94-i1"
       ],
-      "revision": "dff0ad6601a3d2e0f4b642714543d76efded07f066ea8a999c48369ebe3eb2b3"
+      "revision": "15c385b24241de7e55fd599797b723497cd5afb49857432787cd8a31e4aefc16"
     },
     {
       "code": "pdf26-tenis-lv-premium",
-      "name": "Tênis Louis Vuitton casual — Premium",
-      "brand": "Louis Vuitton",
+      "name": "Tênis casual off-white texturizado — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -2134,7 +2134,7 @@
         }
       ],
       "aliases": [],
-      "revision": "346e438b1b7d99a3bca4342d29f597672d79c904d6817f9fa9fa54d0e28dd427"
+      "revision": "30335512242abb88ad67eb8671157d0e6c770327045f0280549d76010073d1e8"
     },
     {
       "code": "pdf26-tenis-ramarim-monograma-original-p81",
@@ -4102,8 +4102,8 @@
     },
     {
       "code": "pdf26-tenis-nb-angular-premium",
-      "name": "Tênis New Balance de solado geométrico — Premium",
-      "brand": "New Balance",
+      "name": "Tênis esportivo off-white com recorte marrom — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -4132,12 +4132,12 @@
         "tenis_premium_e_original-f23-p10-i2",
         "tenis_premium_e_original-f23-p9-i2"
       ],
-      "revision": "95d70b82ce3dc550a5a5a40d888148e274be16b2178d13c5eb6e7b61d6c69cce"
+      "revision": "2e99cecda253178a36e142ddd2ba50c4f3597ea06f308f70fb5c917b1f56206a"
     },
     {
       "code": "pdf26-tenis-nikemid-premium",
-      "name": "Tênis Nike de cano médio — Premium",
-      "brand": "Nike",
+      "name": "Tênis esportivo marrom de cano médio — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -4163,12 +4163,12 @@
         }
       ],
       "aliases": [],
-      "revision": "183b70f5ebebe37d5b52539673e744937ebbe9aa4705e60f7ce135ae5a53353e"
+      "revision": "718755d5b83ac6821701b75b86bc905a55619ea833207ab4c311b6804d664b1c"
     },
     {
       "code": "pdf26-tenis-nike-meia-premium",
-      "name": "Tênis Nike esportivo de calce fácil — Premium",
-      "brand": "Nike",
+      "name": "Tênis esportivo cinza de calce fácil — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -4196,7 +4196,7 @@
       "aliases": [
         "tenis_premium_e_original-f20-p66-i3"
       ],
-      "revision": "4fe5ab124e44d1fe7e18e401e06980df03de7f19091b9500eb3ae6f4d25aa546"
+      "revision": "4849ddc7afd9e121648249fbbb4c89c9fecb5c19b935f02cecdadca88f6920aa"
     },
     {
       "code": "pdf26-tenis-esportivo-vazado-premium",
@@ -4225,8 +4225,8 @@
     },
     {
       "code": "pdf26-tenis-mizuno-aro-premium",
-      "name": "Tênis Mizuno de solado com aros — Premium",
-      "brand": "Mizuno",
+      "name": "Tênis esportivo preto com solado de esferas — Premium",
+      "brand": "",
       "category": "Tênis Premium",
       "description": "Linha Premium do catálogo do fornecedor. Confira as fotos e escolha sua cor. Numeração e disponibilidade sob consulta.",
       "quality": "Premium",
@@ -4255,7 +4255,7 @@
         "tenis_premium_e_original-f18-p74-i2",
         "tenis_premium_e_original-f18-p74-i3"
       ],
-      "revision": "2b4a0dd635a8a4f709109599d38409c455315e88b007cc023aff2d2ba0d41610"
+      "revision": "59ba26cb0b2f2e4d9aeadad1f16a15e9302bc2d8b5bed2180f220a366edeb4fc"
     },
     {
       "code": "pdf26-tenis-ramarim-r-original-p92",

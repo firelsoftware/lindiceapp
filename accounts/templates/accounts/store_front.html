@@ -57,6 +57,15 @@
     </nav>
 {% endif %}
 
+{% if line_filters %}
+    <nav class="store-subcategories" aria-label="Linha">
+        <a class="store-subcat-chip{% if not selected_line %} active{% endif %}" href="?{{ filter_querystring }}">Todas as linhas</a>
+        {% for l in line_filters %}
+            <a class="store-subcat-chip{% if l.active %} active{% endif %}" href="?{% if filter_querystring %}{{ filter_querystring }}&amp;{% endif %}linha={{ l.value }}">{{ l.label }}</a>
+        {% endfor %}
+    </nav>
+{% endif %}
+
 {% if featured_strip %}
     <section class="watch-strip">
         <div class="watch-strip-head">

@@ -1004,6 +1004,39 @@ class StoreFlowTests(TestCase):
         # Produtos com imagem entram no carrossel de destaques.
         self.assertContains(response, "Bota Ankle Boot Capa Cano Curto")
 
+    def test_store_front_filters_by_catalog_line(self):
+        premium = self.create_supplier_product(
+            name="Tenis Premium Teste",
+            raw_data={"catalog_quality": "Premium"},
+        )
+        original = self.create_supplier_product(
+            supplier_code="RC090",
+            name="Tenis Original Teste",
+            raw_data={"catalog_quality": "Original"},
+        )
+
+        resposta = self.client.get("/loja/")
+
+        self.assertContains(resposta, 'linha=premium')
+        self.assertContains(resposta, 'linha=original')
+
+        resposta = self.client.get("/loja/", {"linha": "premium"})
+
+        self.assertContains(resposta, premium.name)
+        self.assertNotContains(resposta, original.name)
+
+        resposta = self.client.get("/loja/", {"linha": "qualquer"})
+
+        self.assertContains(resposta, premium.name)
+        self.assertContains(resposta, original.name)
+
+    def test_store_front_hides_line_filter_without_both_lines(self):
+        self.create_supplier_product(name="So Premium", raw_data={"catalog_quality": "Premium"})
+
+        resposta = self.client.get("/loja/")
+
+        self.assertNotContains(resposta, 'linha=premium')
+
     def test_store_front_shows_size_filters_only_inside_footwear_group(self):
         self.create_supplier_product(category="Tênis")
 

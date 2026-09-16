@@ -1736,6 +1736,11 @@ def store_front(request):
     group = request.GET.get("grupo", "").strip()
     size_group = request.GET.get("grupo_tamanho", "").strip()
     size = request.GET.get("tamanho", "").strip()
+    line = request.GET.get("linha", "").strip().lower()
+
+    if line not in ("premium", "original"):
+        line = ""
+
     cart_product_ids = {
         item.get("product_id")
         for item in get_cart(request).values()
@@ -1831,6 +1836,21 @@ def store_front(request):
     groups = [{"name": g, "active": g == active_group} for g in groups_present]
     show_size_filters = active_group in FOOTWEAR_GROUPS
 
+    # Linhas do catalogo do parceiro. So aparecem quando as duas existem no que
+    # esta sendo exibido: com uma linha so, o filtro nao ajuda em nada.
+    line_labels = {"premium": "Premium", "original": "Original"}
+    line_filters = [
+        {"value": value, "label": label, "active": value == line}
+        for value, label in line_labels.items()
+        if products.filter(raw_data__catalog_quality=label).exists()
+    ]
+
+    if len(line_filters) < 2:
+        line_filters, line = [], ""
+
+    if line:
+        products = products.filter(raw_data__catalog_quality=line_labels[line])
+
     if size:
         products = products.filter(sizes__icontains=size)
 
@@ -1910,6 +1930,10 @@ def store_front(request):
     querystring = request.GET.copy()
     querystring.pop("page", None)
     base_querystring = querystring.urlencode()
+    # Mesma busca sem a linha, para os botoes de linha nao se anularem.
+    line_querystring = querystring.copy()
+    line_querystring.pop("linha", None)
+    filter_querystring = line_querystring.urlencode()
 
     for product in page_obj:
         product.gallery = product.gallery_images()
@@ -1937,6 +1961,9 @@ def store_front(request):
             "subcategories": subcategories,
             "active_group": active_group,
             "selected_category": category,
+            "line_filters": line_filters,
+            "selected_line": line,
+            "filter_querystring": filter_querystring,
             "show_size_filters": show_size_filters,
             "size_group": size_group,
             "size": size,

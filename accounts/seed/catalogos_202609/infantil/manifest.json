@@ -175,7 +175,7 @@
     {
       "code": "pdf26-infantil-007",
       "name": "Tênis infantil de lona com biqueira reforçada",
-      "brand": "Converse",
+      "brand": "",
       "category": "Tênis Infantis",
       "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
       "quality": "Original",
@@ -211,7 +211,7 @@
         "linha_infantil-f14-p8-i2",
         "linha_infantil-f14-p8-i3"
       ],
-      "revision": "7addabdb6e69a6b55067394f6dd96d47990dd7ce8871a369bcbc62436f249c81"
+      "revision": "1ba4211835d958690974cca5d62fff23ba5fd430c5f21c9576738d5cbe61a851"
     },
     {
       "code": "pdf26-infantil-008",
@@ -374,7 +374,7 @@
     {
       "code": "pdf26-infantil-014",
       "name": "Tênis infantil de lona cano alto com faixa lateral",
-      "brand": "Converse",
+      "brand": "",
       "category": "Tênis Infantis",
       "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
       "quality": "Original",
@@ -403,7 +403,7 @@
         "linha_infantil-f14-p7-i1",
         "linha_infantil-f14-p7-i2"
       ],
-      "revision": "8e82df4fa629633bd80874efeef81aeee2b70b4b7dbb19820e42dabe87601240"
+      "revision": "790cf53f8a1f73c35b8699ca4449c0110b27d3478a5b778cd47dc6af05705740"
     },
     {
       "code": "pdf26-infantil-015",
@@ -445,7 +445,7 @@
     {
       "code": "pdf26-infantil-016",
       "name": "Tênis infantil branco com detalhe lateral",
-      "brand": "Nike",
+      "brand": "",
       "category": "Tênis Infantis",
       "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
       "quality": "Original",
@@ -474,12 +474,12 @@
         "linha_infantil-f14-p11-i1",
         "linha_infantil-f14-p11-i3"
       ],
-      "revision": "acb3350c40e2baf98cea4b6b8d902039edcd78d72697b91271c03592a409ce77"
+      "revision": "bd426a7c039672c1a37ab9afc77e4a9fa005b35899215ae7d64e87c9afa79c56"
     },
     {
       "code": "pdf26-infantil-017",
       "name": "Tênis infantil preto e branco de cano baixo",
-      "brand": "Nike",
+      "brand": "",
       "category": "Tênis Infantis",
       "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
       "quality": "Original",
@@ -501,7 +501,7 @@
       "aliases": [
         "linha_infantil-f14-p11-i2"
       ],
-      "revision": "95f25a88dc7948d0ac5af96a3cb23d3ea2c85ee3a2e720daefe8b36d1f90388f"
+      "revision": "e13499c6ed0c30d454b45d3d990a6a658350249b04ed3f8d21e2bd381a9cd693"
     },
     {
       "code": "pdf26-infantil-018",
@@ -778,8 +778,8 @@
     },
     {
       "code": "pdf26-infantil-028",
-      "name": "Tênis infantil 9060 em cores claras",
-      "brand": "New Balance",
+      "name": "Tênis infantil esportivo em cores claras",
+      "brand": "",
       "category": "Tênis Infantis",
       "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
       "quality": "Original",
@@ -808,12 +808,12 @@
         "linha_infantil-f14-p14-i1",
         "linha_infantil-f14-p14-i3"
       ],
-      "revision": "9d9e2f3e7436347f8040e0f6ef25a70cc18ebbaaf160c4c846c893cf58d09d3b"
+      "revision": "5ab5448879f4f2bd4ee1608d7e0955a7cfdc6088034c4b9fc8e8c940dac6c6a4"
     },
     {
       "code": "pdf26-infantil-029",
-      "name": "Tênis infantil bege com três faixas",
-      "brand": "Adidas",
+      "name": "Tênis infantil bege com faixas laterais",
+      "brand": "",
       "category": "Tênis Infantis",
       "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
       "quality": "Original",
@@ -835,7 +835,7 @@
       "aliases": [
         "linha_infantil-f14-p14-i2"
       ],
-      "revision": "45d6a1e617e51a499c51507300555f860363b76a4a9c9da83e59e3e53b427a8d"
+      "revision": "68a621936d10150aa03c2a33f4fb73a5a09046802da9f38b9540f5c081cd5c9b"
     },
     {
       "code": "pdf26-infantil-030",
@@ -1096,8 +1096,8 @@
     },
     {
       "code": "pdf26-infantil-039",
-      "name": "Tênis infantil esportivo com N lateral",
-      "brand": "New Balance",
+      "name": "Tênis infantil esportivo branco com detalhe lateral",
+      "brand": "",
       "category": "Tênis Infantis",
       "description": "Produto do catálogo infantil do fornecedor. Confira as fotos. Numeração e disponibilidade sob consulta.",
       "quality": "Original",
@@ -1126,7 +1126,7 @@
         "linha_infantil-f14-p18-i1",
         "linha_infantil-f14-p18-i2"
       ],
-      "revision": "ecc8ef8debda2f0b3c694def55297af9bccdb5bd8cb6af9963c7e904198fd4e6"
+      "revision": "7f049249724e0433c13fb0198de675a5432dc299aad5530c53e56670dd9b43e3"
     },
     {
       "code": "pdf26-infantil-040",
