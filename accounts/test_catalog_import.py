@@ -116,6 +116,77 @@ class CatalogImportTests(TestCase):
         self.assertEqual(SupplierProduct.objects.count(),self.initial_count)
         self.assertFalse((self.root/'media').exists())
 
+    def import_committed(self):
+        with self.captureOnCommitCallbacks(execute=True):
+            self.run_import()
+
+    def catalog_file(self, product, sha):
+        return product.raw_data['catalog_files'][sha]
+
+    def test_revision_swaps_cleaned_photo_and_keeps_manual_one(self):
+        self.import_committed()
+        product=SupplierProduct.objects.get(supplier_code=self.item['code'])
+        old_name=self.catalog_file(product,self.item['photos'][1]['sha256'])
+        manual=SupplierProductPhoto.objects.create(product=product,image='supplier_products/manual.jpg',position=9)
+        content=b'foto sem a marca'
+        (self.catalog/'b-limpa.jpg').write_bytes(content)
+        self.item['photos'][1].update(file='b-limpa.jpg',sha256=hashlib.sha256(content).hexdigest())
+        self.item['revision']='v2';self.save_manifest()
+        self.import_committed()
+        product.refresh_from_db()
+        new_name=self.catalog_file(product,self.item['photos'][1]['sha256'])
+        self.assertEqual(set(product.photos.values_list('image',flat=True)),{new_name,manual.image.name})
+        self.assertEqual(str(product.variants.get(name='Branco').image),new_name)
+        self.assertNotIn(old_name,product.raw_data['catalog_files'].values())
+        self.assertFalse((self.root/'media'/old_name).exists())
+        self.assertTrue((self.root/'media'/new_name).exists())
+
+    def test_removed_cover_is_replaced_and_its_color_dropped(self):
+        self.import_committed()
+        product=SupplierProduct.objects.get(supplier_code=self.item['code'])
+        cover=str(product.image_file)
+        del self.item['photos'][0]
+        self.item['revision']='v2';self.save_manifest()
+        self.import_committed()
+        product.refresh_from_db()
+        self.assertEqual(str(product.image_file),self.catalog_file(product,self.item['photos'][0]['sha256']))
+        self.assertEqual(list(product.variants.values_list('name',flat=True)),['Branco'])
+        self.assertEqual(len(product.gallery_images()),1)
+        self.assertFalse((self.root/'media'/cover).exists())
+
+    def test_removed_file_still_used_elsewhere_stays_in_storage(self):
+        self.import_committed()
+        product=SupplierProduct.objects.get(supplier_code=self.item['code'])
+        shared=self.catalog_file(product,self.item['photos'][1]['sha256'])
+        SupplierProduct.objects.create(source='wearzone',supplier_code='usa-mesma-foto',name='Outro',image_file=shared)
+        del self.item['photos'][1]
+        self.item['revision']='v2';self.save_manifest()
+        self.import_committed()
+        self.assertFalse(product.photos.filter(image=shared).exists())
+        self.assertTrue((self.root/'media'/shared).exists())
+
+    def test_withdrawn_product_leaves_the_store_and_dry_run_does_not(self):
+        self.import_committed()
+        product=SupplierProduct.objects.get(supplier_code=self.item['code'])
+        outro=copy.deepcopy(self.item);outro['code']='pdf26-sem-foto-limpa';outro['aliases']=[]
+        self.manifest['products'].append(outro);self.save_manifest()
+        self.import_committed()
+        self.manifest['products']=[self.item];self.manifest['withdrawn']=['pdf26-sem-foto-limpa']
+        self.save_manifest()
+        self.run_import(ensaio=True)
+        self.assertTrue(SupplierProduct.objects.get(supplier_code='pdf26-sem-foto-limpa').is_visible)
+        self.import_committed()
+        retirado=SupplierProduct.objects.get(supplier_code='pdf26-sem-foto-limpa')
+        self.assertFalse(retirado.is_visible)
+        self.assertFalse(retirado.is_active)
+        product.refresh_from_db()
+        self.assertTrue(product.is_visible)
+
+    def test_withdrawn_code_cannot_also_be_imported(self):
+        self.manifest['withdrawn']=[self.item['code']];self.save_manifest()
+        with self.assertRaisesMessage(CommandError,'retirado e importado'):self.run_import()
+        self.assertEqual(SupplierProduct.objects.count(),self.initial_count)
+
     def test_new_revision_keeps_manual_price_and_reuses_uploads(self):
         self.run_import()
         product=SupplierProduct.objects.get(supplier_code=self.item['code'])

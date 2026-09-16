@@ -39,6 +39,10 @@ def read_manifest(path):
                 raise CommandError(f'Foto ausente ou fora do catálogo: {code}')
             if hashlib.sha256(photo_path.read_bytes()).hexdigest() != photo['sha256']:
                 raise CommandError(f'Foto modificada sem revisão: {code}')
+    for code in data.get('withdrawn', []):
+        # Produto sem nenhuma foto publicável sai do ar, mas continua no banco com seus pedidos.
+        if code in seen:
+            raise CommandError(f'Código retirado e importado ao mesmo tempo: {code}')
     return data
 
 
@@ -67,7 +71,13 @@ class Command(BaseCommand):
                 created += result == 'created'
                 updated += result == 'updated'
                 unchanged += result == 'unchanged'
-            self.stdout.write(f"{data['catalog']}: {created} criados, {updated} atualizados, {unchanged} já importados; {len(data.get('pending', []))} pendentes de revisão.")
+            withdrawn = 0
+            if not options['ensaio'] and data.get('withdrawn'):
+                withdrawn = SupplierProduct.objects.filter(
+                    source=SupplierProduct.SOURCE_PARCEIRO_SOB_CONSULTA,
+                    supplier_code__in=data['withdrawn']).update(is_visible=False, is_active=False)
+            self.stdout.write(f"{data['catalog']}: {created} criados, {updated} atualizados, {unchanged} já importados; "
+                              f"{withdrawn} retirados do ar; {len(data.get('pending', []))} pendentes de revisão.")
 
     @transaction.atomic
     def import_product(self, path, data, item):
@@ -115,9 +125,13 @@ class Command(BaseCommand):
                 name = storage.save(target, ContentFile((path.parent / photo['file']).read_bytes()), max_length=100)
                 known_files[photo['sha256']] = name
             stored.append((photo, name))
-        # A capa atual só muda na primeira importação ou se ainda for a anterior.
+        # Fotos enviadas pelo catálogo que saíram do manifesto revisado (ex.: foto
+        # substituída por versão sem a marca do fornecedor). Fotos manuais não entram aqui.
+        current = {photo['sha256'] for photo in item['photos']}
+        removed = {known_files.pop(sha) for sha in list(known_files) if sha not in current}
+        # A capa atual só muda na primeira importação, se ainda for a anterior ou se saiu do catálogo.
         previous_cover = (product.raw_data or {}).get('catalog_cover')
-        if not previous_cover or str(product.image_file) == previous_cover:
+        if not previous_cover or str(product.image_file) == previous_cover or str(product.image_file) in removed:
             product.image_file = stored[0][1]
         raw = dict(product.raw_data or {})
         raw.update({
@@ -130,15 +144,38 @@ class Command(BaseCommand):
         })
         product.raw_data = raw
         product.save()
+        if removed:
+            SupplierProductPhoto.objects.filter(product=product, image__in=removed).delete()
         for position, (photo, name) in enumerate(stored[1:], 1):
             SupplierProductPhoto.objects.get_or_create(product=product, image=name,
                 defaults={'position': position, 'caption': photo.get('color', '')})
         # Só cores confirmadas em fotos individuais são opções de compra.
+        colors = set()
         for position, (photo, name) in enumerate(stored):
             if photo.get('color'):
-                SupplierProductVariant.objects.get_or_create(product=product, name=photo['color'],
+                colors.add(photo['color'])
+                variant, made = SupplierProductVariant.objects.get_or_create(product=product, name=photo['color'],
                     defaults={'image': name, 'position': position})
+                if not made and str(variant.image) in removed:
+                    variant.image = name
+                    variant.save(update_fields=['image'])
+        if removed:
+            # Cor que só existia na foto retirada deixa de ser opção de compra.
+            product.variants.filter(image__in=removed).exclude(name__in=colors).delete()
+            transaction.on_commit(lambda names=frozenset(removed): self.delete_unused_files(storage, names))
         # Arquiva apenas duplicatas cuja foto foi identificada, preservando pedidos.
         SupplierProduct.objects.filter(source=source, supplier_code__in=item.get('aliases', [])).exclude(
             pk=product.pk).update(is_visible=False, is_active=False)
         return 'created' if created else 'updated'
+
+    def delete_unused_files(self, storage, names):
+        # O storage pode sobrescrever pelo mesmo nome: só apaga arquivo que nenhum cadastro usa.
+        for name in names:
+            if (SupplierProduct.objects.filter(image_file=name).exists()
+                    or SupplierProductPhoto.objects.filter(image=name).exists()
+                    or SupplierProductVariant.objects.filter(image=name).exists()):
+                continue
+            try:
+                storage.delete(name)
+            except Exception as exc:
+                self.stderr.write(f'Não foi possível apagar {name} do storage: {exc}')

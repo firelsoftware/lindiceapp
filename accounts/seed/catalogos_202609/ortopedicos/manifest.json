@@ -1,0 +1,2056 @@
+{
+  "catalog": "ortopedicos-2026-09",
+  "source_pdf": "C:\\Users\\Programador\\Downloads\\ORTOPÉDICOS  SCARPIN  MOCASSIM  SAPATILHA (1).pdf",
+  "complete": true,
+  "products": [
+    {
+      "code": "pdf26-ortopedicos-001",
+      "name": "Sandália ortopédica de dedo com fivela",
+      "brand": "",
+      "category": "Ortopédicos Femininos",
+      "description": "Sandália ortopédica de dedo com fivela. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 16,
+      "retail": "119.90",
+      "price": "139.90",
+      "cost": "83.93",
+      "pages": [
+        3
+      ],
+      "photos": [
+        {
+          "file": "photos/5073b5cc15694ca6a59fd483ee3a2be04a981eccfcc25cec4688b7d87cb55427.jpg",
+          "sha256": "5073b5cc15694ca6a59fd483ee3a2be04a981eccfcc25cec4688b7d87cb55427",
+          "color": "off-white",
+          "source_id": "p03i01"
+        },
+        {
+          "file": "photos/b7876146eb041f101ef803de7da4254d492ab901e92e1d863bb66e7bbf735847.jpg",
+          "sha256": "b7876146eb041f101ef803de7da4254d492ab901e92e1d863bb66e7bbf735847",
+          "color": "marrom",
+          "source_id": "p03i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "e500b62bf3795e05560aa4f1027035b1020988f6d3950f03cef7929edfc717c1"
+    },
+    {
+      "code": "pdf26-ortopedicos-002",
+      "name": "Sandália ortopédica de tiras trançadas",
+      "brand": "",
+      "category": "Ortopédicos Femininos",
+      "description": "Sandália ortopédica de tiras trançadas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 16,
+      "retail": "119.90",
+      "price": "139.90",
+      "cost": "83.93",
+      "pages": [
+        4
+      ],
+      "photos": [
+        {
+          "file": "photos/24eefb2a1eb1870c888384d6c21a5a19a072ff7801bb48456a66ebe95932709e.jpg",
+          "sha256": "24eefb2a1eb1870c888384d6c21a5a19a072ff7801bb48456a66ebe95932709e",
+          "color": "off-white e dourado",
+          "source_id": "p04i01"
+        },
+        {
+          "file": "photos/28a32e601d5cc33433c64e9bc1dd9c0236d56874b1905a009d67a818c40af275.jpg",
+          "sha256": "28a32e601d5cc33433c64e9bc1dd9c0236d56874b1905a009d67a818c40af275",
+          "color": "off-white e dourado",
+          "source_id": "p04i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "151f5beed9c7bb09e49bdd71eb0cdcf13fa1ee8f531d61fa722573686943e162"
+    },
+    {
+      "code": "pdf26-ortopedicos-003",
+      "name": "Tamanco ortopédico de duas tiras com fivela",
+      "brand": "",
+      "category": "Ortopédicos Femininos",
+      "description": "Tamanco ortopédico de duas tiras com fivela. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 16,
+      "retail": "119.90",
+      "price": "139.90",
+      "cost": "83.93",
+      "pages": [
+        5
+      ],
+      "photos": [
+        {
+          "file": "photos/4c421905118bed00f8b93f7d90711c3354e90f5c4915f7fd0cb56e8a3c1a69dc.jpg",
+          "sha256": "4c421905118bed00f8b93f7d90711c3354e90f5c4915f7fd0cb56e8a3c1a69dc",
+          "color": "preto",
+          "source_id": "p05i01"
+        },
+        {
+          "file": "photos/3fb6a30d042bf2e3cf00d68d12374cf9b465d96c39390a4ce1dee3177a16b7d2.jpg",
+          "sha256": "3fb6a30d042bf2e3cf00d68d12374cf9b465d96c39390a4ce1dee3177a16b7d2",
+          "color": "preto",
+          "source_id": "p05i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "5eeaf7a38d2fa8f57aadc6cb143dc8618853ace2ee90774d3c8a1ea550349cf8"
+    },
+    {
+      "code": "pdf26-ortopedicos-004",
+      "name": "Sandália ortopédica texturizada com recorte lateral",
+      "brand": "",
+      "category": "Ortopédicos Femininos",
+      "description": "Sandália ortopédica texturizada com recorte lateral. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        6
+      ],
+      "photos": [
+        {
+          "file": "photos/ea9a47f44c72c72380c37b2f0a37baf25d2de0dd6de92b555623ad0cf4248e34.jpg",
+          "sha256": "ea9a47f44c72c72380c37b2f0a37baf25d2de0dd6de92b555623ad0cf4248e34",
+          "color": "nude",
+          "source_id": "p06i01"
+        },
+        {
+          "file": "photos/adefece6868866593d765baf2a3dd3440875b88282ae3806be97e2fc45de6f1e.jpg",
+          "sha256": "adefece6868866593d765baf2a3dd3440875b88282ae3806be97e2fc45de6f1e",
+          "color": "nude",
+          "source_id": "p06i02"
+        },
+        {
+          "file": "photos/744e620fa3b8c68695d4f6ea0872d11752fd863e39edded12632e68dc9579d1a.jpg",
+          "sha256": "744e620fa3b8c68695d4f6ea0872d11752fd863e39edded12632e68dc9579d1a",
+          "color": "nude",
+          "source_id": "p06i03"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p6-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p6-i2",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p6-i3"
+      ],
+      "revision": "98449f5ca2df1be65ce86b7d3ec4aaf58db9d2007ab52a5864a016a9cea29a5f"
+    },
+    {
+      "code": "pdf26-ortopedicos-005",
+      "name": "Sandália ortopédica com velcro e detalhe dourado",
+      "brand": "",
+      "category": "Ortopédicos Femininos",
+      "description": "Sandália ortopédica com velcro e detalhe dourado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        7
+      ],
+      "photos": [
+        {
+          "file": "photos/a67a12d1f79d8ef853ea3cf53e8d128877352731414637ab201399a4feb09a76.jpg",
+          "sha256": "a67a12d1f79d8ef853ea3cf53e8d128877352731414637ab201399a4feb09a76",
+          "color": "nude",
+          "source_id": "p07i01"
+        },
+        {
+          "file": "photos/6ebb3152f46d6255ab0a520680613b445c79dc79eed7cc4b5782d21acd28a081.jpg",
+          "sha256": "6ebb3152f46d6255ab0a520680613b445c79dc79eed7cc4b5782d21acd28a081",
+          "color": "nude",
+          "source_id": "p07i02"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p4-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p4-i2"
+      ],
+      "revision": "132408379c5c1190434d8409e42421b3c81f5a2a926713eef460dcca097ffb8c"
+    },
+    {
+      "code": "pdf26-ortopedicos-006",
+      "name": "Tamanco Terra & Água com laço",
+      "brand": "Terra & Água",
+      "category": "Ortopédicos Femininos",
+      "description": "Tamanco Terra & Água com laço. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 16,
+      "retail": "119.90",
+      "price": "139.90",
+      "cost": "83.93",
+      "pages": [
+        8
+      ],
+      "photos": [
+        {
+          "file": "photos/06985ccb2334d216e09c099b03f61f6a21a64387c639ba9d5960423bf94438fe.jpg",
+          "sha256": "06985ccb2334d216e09c099b03f61f6a21a64387c639ba9d5960423bf94438fe",
+          "color": "caramelo, off-white e marrom",
+          "source_id": "p08i01"
+        },
+        {
+          "file": "photos/27758c707834fc47528e2526bcd7fdd9624c870c9ccda5aee00792578dafe031.jpg",
+          "sha256": "27758c707834fc47528e2526bcd7fdd9624c870c9ccda5aee00792578dafe031",
+          "color": "marrom",
+          "source_id": "p08i02"
+        },
+        {
+          "file": "photos/22890d3ed1ee1a7e7349c94c6fd54652ad71cba0fdf046f51f1276ea9f739ce3.jpg",
+          "sha256": "22890d3ed1ee1a7e7349c94c6fd54652ad71cba0fdf046f51f1276ea9f739ce3",
+          "color": "off-white",
+          "source_id": "p08i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "f45c6a4b39fb09594c189ce3fa5091a5007293216cdda0545241e831fc33221d"
+    },
+    {
+      "code": "pdf26-ortopedicos-007",
+      "name": "Sandália ortopédica texturizada com velcro e recorte lateral",
+      "brand": "",
+      "category": "Ortopédicos Femininos",
+      "description": "Sandália ortopédica texturizada com velcro e recorte lateral. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        9,
+        11
+      ],
+      "photos": [
+        {
+          "file": "photos/6ab22749dfbf5452ce153458fee16ce5870ca9238a1d6db8b305fe4e39aaca21.jpg",
+          "sha256": "6ab22749dfbf5452ce153458fee16ce5870ca9238a1d6db8b305fe4e39aaca21",
+          "color": "preto",
+          "source_id": "p09i02"
+        },
+        {
+          "file": "photos/8a99539faf7a4b90269b04b54a5c6dc0b2e1727de1a3b2f23b041e197101cd0a.jpg",
+          "sha256": "8a99539faf7a4b90269b04b54a5c6dc0b2e1727de1a3b2f23b041e197101cd0a",
+          "color": "preto",
+          "source_id": "p09i03"
+        },
+        {
+          "file": "photos/0c5a7c0a7b05d66240103271e5d11cfb51eb40ba4a9010f26db6ce5a5922b1e0.jpg",
+          "sha256": "0c5a7c0a7b05d66240103271e5d11cfb51eb40ba4a9010f26db6ce5a5922b1e0",
+          "color": "caramelo",
+          "source_id": "p11i01"
+        },
+        {
+          "file": "photos/d5425f25e1dcce0971dc0064540cdf3437ddbe5ba0be8aa6124b55bca356fdfb.jpg",
+          "sha256": "d5425f25e1dcce0971dc0064540cdf3437ddbe5ba0be8aa6124b55bca356fdfb",
+          "color": "caramelo",
+          "source_id": "p11i02"
+        },
+        {
+          "file": "photos/c8b616d23eed0dec5e1639c728229f6545abffbe62040f16af5e975cae8937b2.jpg",
+          "sha256": "c8b616d23eed0dec5e1639c728229f6545abffbe62040f16af5e975cae8937b2",
+          "color": "preto",
+          "source_id": "p09i01"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p3-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p3-i2",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p7-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p7-i2"
+      ],
+      "revision": "93352912c5b5bf1bdcac569f479e5b95721654efb763bfdf40541e973f5f352d"
+    },
+    {
+      "code": "pdf26-ortopedicos-008",
+      "name": "Sandália anabela chanel com tira de strass",
+      "brand": "",
+      "category": "Ortopédicos Femininos",
+      "description": "Sandália anabela chanel com tira de strass. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        10,
+        12
+      ],
+      "photos": [
+        {
+          "file": "photos/d569fd1b406ec53b52722bf0fa8099673de6b00c3fa52f441cbd89bc27f90825.jpg",
+          "sha256": "d569fd1b406ec53b52722bf0fa8099673de6b00c3fa52f441cbd89bc27f90825",
+          "color": "preto",
+          "source_id": "p10i01"
+        },
+        {
+          "file": "photos/57913a6346c94e4743115df321f139b79a5547b0b76daa32b0a56515f908ab97.jpg",
+          "sha256": "57913a6346c94e4743115df321f139b79a5547b0b76daa32b0a56515f908ab97",
+          "color": "preto",
+          "source_id": "p10i02"
+        },
+        {
+          "file": "photos/e1af2519b5213ba804d9effd2875f55821935a3e68cbe06dfba79d31e846f8b0.jpg",
+          "sha256": "e1af2519b5213ba804d9effd2875f55821935a3e68cbe06dfba79d31e846f8b0",
+          "color": "nude",
+          "source_id": "p12i01"
+        },
+        {
+          "file": "photos/6a40c14e1a139b749a7404e618b5eb2a149b0e77c876e7d9f01909b6604b1610.jpg",
+          "sha256": "6a40c14e1a139b749a7404e618b5eb2a149b0e77c876e7d9f01909b6604b1610",
+          "color": "nude",
+          "source_id": "p12i02"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p5-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p5-i2",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p8-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p8-i2"
+      ],
+      "revision": "db15004deabafbe73cacd1b58e3e289ee37a1b1ef5be1fe180629dd7d8446200"
+    },
+    {
+      "code": "pdf26-ortopedicos-009",
+      "name": "Mocassim matelassê com enfeite metálico",
+      "brand": "",
+      "category": "Mocassins Femininos",
+      "description": "Mocassim matelassê com enfeite metálico. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        14,
+        17
+      ],
+      "photos": [
+        {
+          "file": "photos/b8f3cfb2cd7885a7b5733c363585c1904d5ede43f96951a50d71561a2ff71e66.jpg",
+          "sha256": "b8f3cfb2cd7885a7b5733c363585c1904d5ede43f96951a50d71561a2ff71e66",
+          "color": "prata",
+          "source_id": "p14i01"
+        },
+        {
+          "file": "photos/f4a861e37a80dc05b220b1d168672af47053d01847b5d7e41ab8375baf8928d0.jpg",
+          "sha256": "f4a861e37a80dc05b220b1d168672af47053d01847b5d7e41ab8375baf8928d0",
+          "color": "prata",
+          "source_id": "p17i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "0624319fc7c94a725f3cc427818fe18a43609bf87b53dac14501e31f86b1ffd9"
+    },
+    {
+      "code": "pdf26-ortopedicos-010",
+      "name": "Mocassim Beira Rio com aplique de pedrarias douradas",
+      "brand": "Beira Rio",
+      "category": "Mocassins Femininos",
+      "description": "Mocassim Beira Rio com aplique de pedrarias douradas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        14,
+        17
+      ],
+      "photos": [
+        {
+          "file": "photos/054f6f171ccb9de1f5cc274f9297f41160db5632b2d9bea5d3c0a08652efd7b4.jpg",
+          "sha256": "054f6f171ccb9de1f5cc274f9297f41160db5632b2d9bea5d3c0a08652efd7b4",
+          "color": "preto",
+          "source_id": "p14i02"
+        },
+        {
+          "file": "photos/d9c3c62667dde5fc6495af2867153c1ae87246590ba813125c51b31365c2dc4e.jpg",
+          "sha256": "d9c3c62667dde5fc6495af2867153c1ae87246590ba813125c51b31365c2dc4e",
+          "color": "nude",
+          "source_id": "p17i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "66a87fed00a72092f9f0f59241f852eae71e0b29eed3fa46cdfe864e14e6e7ec"
+    },
+    {
+      "code": "pdf26-ortopedicos-011",
+      "name": "Mocassim tratorado Beira Rio com fivela dourada",
+      "brand": "Beira Rio",
+      "category": "Mocassins Femininos",
+      "description": "Mocassim tratorado Beira Rio com fivela dourada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        15,
+        16,
+        17,
+        18
+      ],
+      "photos": [
+        {
+          "file": "photos/89605a905c877ec6823612035038fe9d062ed0d3a97f63797482be038dde6d9e.jpg",
+          "sha256": "89605a905c877ec6823612035038fe9d062ed0d3a97f63797482be038dde6d9e",
+          "color": "off-white",
+          "source_id": "p15i01"
+        },
+        {
+          "file": "photos/e56d9672089758be2ba035618da4965e9af559558b5e03385a9710c3976d7fbc.jpg",
+          "sha256": "e56d9672089758be2ba035618da4965e9af559558b5e03385a9710c3976d7fbc",
+          "color": "off-white",
+          "source_id": "p18i03"
+        },
+        {
+          "file": "photos/e6cf32ede2131d3bae0eb8b061daf6a93e1362b2e908b515628648db0f6542ad.jpg",
+          "sha256": "e6cf32ede2131d3bae0eb8b061daf6a93e1362b2e908b515628648db0f6542ad",
+          "color": "caramelo",
+          "source_id": "p16i01"
+        },
+        {
+          "file": "photos/d9ddf8eae2416c91a0e67e998e17d8c75eef751a27f808b609f6efc618d7e193.jpg",
+          "sha256": "d9ddf8eae2416c91a0e67e998e17d8c75eef751a27f808b609f6efc618d7e193",
+          "color": "preto",
+          "source_id": "p17i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "4dc2775a687da345c20646c2007a4b8b337a1c955d33e6145ed7889fa7cad4ea"
+    },
+    {
+      "code": "pdf26-ortopedicos-012",
+      "name": "Mocassim tratorado croco com tira lisa",
+      "brand": "",
+      "category": "Mocassins Femininos",
+      "description": "Mocassim tratorado croco com tira lisa. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        15
+      ],
+      "photos": [
+        {
+          "file": "photos/47ab19b12347f134729c4f0669ebaa689126de2459184460760acfbbb35d8322.jpg",
+          "sha256": "47ab19b12347f134729c4f0669ebaa689126de2459184460760acfbbb35d8322",
+          "color": "caramelo",
+          "source_id": "p15i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "6f9c36032c2cf65492dbfcc6c229a4f1071f9738fe40e86f444475b255a39943"
+    },
+    {
+      "code": "pdf26-ortopedicos-013",
+      "name": "Mocassim tratorado com corrente dourada",
+      "brand": "",
+      "category": "Mocassins Femininos",
+      "description": "Mocassim tratorado com corrente dourada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        15,
+        18
+      ],
+      "photos": [
+        {
+          "file": "photos/c7da4f0073ba4808d4cd04e22e46e83f82c1e418a79b04004655ebd984bf198a.jpg",
+          "sha256": "c7da4f0073ba4808d4cd04e22e46e83f82c1e418a79b04004655ebd984bf198a",
+          "color": "preto",
+          "source_id": "p15i03"
+        },
+        {
+          "file": "photos/41840ac46689dff63120a5e19e37d6a800b28818d9964faad81c2d74b0ad6af2.jpg",
+          "sha256": "41840ac46689dff63120a5e19e37d6a800b28818d9964faad81c2d74b0ad6af2",
+          "color": "off-white",
+          "source_id": "p18i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "b68666af566cd8edd0621689c83b6c58d5cd1088567fc6c1892509911ba653aa"
+    },
+    {
+      "code": "pdf26-ortopedicos-014",
+      "name": "Mocassim tratorado metalizado",
+      "brand": "",
+      "category": "Mocassins Femininos",
+      "description": "Mocassim tratorado metalizado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        16
+      ],
+      "photos": [
+        {
+          "file": "photos/73da2b61dadac3932c20c59128c91142dbcb386e35a3b78c30a3e377dc408a4b.jpg",
+          "sha256": "73da2b61dadac3932c20c59128c91142dbcb386e35a3b78c30a3e377dc408a4b",
+          "color": "grafite",
+          "source_id": "p16i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "699c2aff3f2fece07a8dda9829f427006110872133d82e13ef739541daea7f09"
+    },
+    {
+      "code": "pdf26-ortopedicos-015",
+      "name": "Mocassim tratorado com tachas prateadas",
+      "brand": "",
+      "category": "Mocassins Femininos",
+      "description": "Mocassim tratorado com tachas prateadas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        17
+      ],
+      "photos": [
+        {
+          "file": "photos/a2f5748f037eea73459de52e9aeee7db38f4c8a4a5b3bbee65ad8131eb6fe698.jpg",
+          "sha256": "a2f5748f037eea73459de52e9aeee7db38f4c8a4a5b3bbee65ad8131eb6fe698",
+          "color": "branco",
+          "source_id": "p17i04"
+        }
+      ],
+      "aliases": [],
+      "revision": "ad813af7fe4d6c57c6c3cdcc95f3c84b45f0e7ec38b40884c844ac36d8dc970c"
+    },
+    {
+      "code": "pdf26-ortopedicos-016",
+      "name": "Mocassim com tira decorada brilhante",
+      "brand": "",
+      "category": "Mocassins Femininos",
+      "description": "Mocassim com tira decorada brilhante. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        18
+      ],
+      "photos": [
+        {
+          "file": "photos/8c09116c90e90026603fbc928e8da5dc3f085462f95add53bae5926adf8edb45.jpg",
+          "sha256": "8c09116c90e90026603fbc928e8da5dc3f085462f95add53bae5926adf8edb45",
+          "color": "preto",
+          "source_id": "p18i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "8914c5cacdf4adcb1ddac70b9ef96cafb20bf56feed7019c13449766d685f855"
+    },
+    {
+      "code": "pdf26-ortopedicos-017",
+      "name": "Mocassim Moleca com acabamento brilhante",
+      "brand": "Moleca",
+      "category": "Mocassins Femininos",
+      "description": "Mocassim Moleca com acabamento brilhante. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        18
+      ],
+      "photos": [
+        {
+          "file": "photos/2b18b7dec21bd5b1087cf95f91779e69a3034f42ed08f56491aadcf8d19ad56e.jpg",
+          "sha256": "2b18b7dec21bd5b1087cf95f91779e69a3034f42ed08f56491aadcf8d19ad56e",
+          "color": "marrom",
+          "source_id": "p18i04"
+        }
+      ],
+      "aliases": [],
+      "revision": "7ef4dc40df38aae2feb4624e0cd39c97a8bd30ddcf75ea017cf9b46eeecb7384"
+    },
+    {
+      "code": "pdf26-ortopedicos-018",
+      "name": "Mocassim Moleca liso",
+      "brand": "Moleca",
+      "category": "Mocassins Femininos",
+      "description": "Mocassim Moleca liso. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        19
+      ],
+      "photos": [
+        {
+          "file": "photos/8d16a0da7eaf8eed97479d005fd0fdc7d5013bdb4a4fb9d13cc92e53e57d45f8.jpg",
+          "sha256": "8d16a0da7eaf8eed97479d005fd0fdc7d5013bdb4a4fb9d13cc92e53e57d45f8",
+          "color": "off-white",
+          "source_id": "p19i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "657dcc7feb6af32a9ff3dbdf3943e8fe8701353213d73aba26cc6ac0c02f56d2"
+    },
+    {
+      "code": "pdf26-ortopedicos-019",
+      "name": "Mocassim croco solado baixo",
+      "brand": "",
+      "category": "Mocassins Femininos",
+      "description": "Mocassim croco solado baixo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        19
+      ],
+      "photos": [
+        {
+          "file": "photos/b23598ebbeffbad1c7bebf6712eeffc4da9017a718ffc9043648ad284d4294c4.jpg",
+          "sha256": "b23598ebbeffbad1c7bebf6712eeffc4da9017a718ffc9043648ad284d4294c4",
+          "color": "preto",
+          "source_id": "p19i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "f9090626a17db96b0dc1a4baeb83203a95d498964a2b7a65eb233e91fa8aec10"
+    },
+    {
+      "code": "pdf26-ortopedicos-020",
+      "name": "Mocassim tratorado liso",
+      "brand": "",
+      "category": "Mocassins Femininos",
+      "description": "Mocassim tratorado liso. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        19
+      ],
+      "photos": [
+        {
+          "file": "photos/965749a6c779744ab49b833f8f904f413ff4342796632a97f1c8ce60c1cd679e.jpg",
+          "sha256": "965749a6c779744ab49b833f8f904f413ff4342796632a97f1c8ce60c1cd679e",
+          "color": "preto",
+          "source_id": "p19i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "574722d078703f804166011f77c2df1f1610cb37134c8548f9894be0f425700c"
+    },
+    {
+      "code": "pdf26-ortopedicos-021",
+      "name": "Sapatilha bico fino com pesponto decorativo",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Sapatilha bico fino com pesponto decorativo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        21
+      ],
+      "photos": [
+        {
+          "file": "photos/164477752006eaa2d0ced71fad40549b1e77a6734f600ceda0fd4c8f29213077.jpg",
+          "sha256": "164477752006eaa2d0ced71fad40549b1e77a6734f600ceda0fd4c8f29213077",
+          "color": "azul-marinho",
+          "source_id": "p21i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "356dc16e388468d4a295c6b456a3cea57ba49fa249137186474730501916bb98"
+    },
+    {
+      "code": "pdf26-ortopedicos-022",
+      "name": "Sapato bico fino salto baixo com tiras vazadas",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Sapato bico fino salto baixo com tiras vazadas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        21
+      ],
+      "photos": [
+        {
+          "file": "photos/964b726f5d4ad73a3bf85634ebde4ed69bcdbf532faa9799594a473accd2ca1c.jpg",
+          "sha256": "964b726f5d4ad73a3bf85634ebde4ed69bcdbf532faa9799594a473accd2ca1c",
+          "color": "nude",
+          "source_id": "p21i04"
+        }
+      ],
+      "aliases": [],
+      "revision": "2a21304b19e8ee82c83cb87440918e4db7abdd99cf8cdc5ea58821db13a2f190"
+    },
+    {
+      "code": "pdf26-ortopedicos-023",
+      "name": "Sapatilha bico fino com argola dourada",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Sapatilha bico fino com argola dourada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        22
+      ],
+      "photos": [
+        {
+          "file": "photos/d8fd2dff785bcda4e92ee763ef11fe993bea236526387cda93ce2e28c66d722b.jpg",
+          "sha256": "d8fd2dff785bcda4e92ee763ef11fe993bea236526387cda93ce2e28c66d722b",
+          "color": "off-white",
+          "source_id": "p22i05"
+        },
+        {
+          "file": "photos/ab401e036984d24a043d0ef5962c45dc2a90777c8c52c554ae963241dbb1a787.jpg",
+          "sha256": "ab401e036984d24a043d0ef5962c45dc2a90777c8c52c554ae963241dbb1a787",
+          "color": "off-white",
+          "source_id": "p22i03"
+        },
+        {
+          "file": "photos/8ac186dc61023c3e46e64c9e668ff3785fdc0d97d6fe6becb10c3a6076936f87.jpg",
+          "sha256": "8ac186dc61023c3e46e64c9e668ff3785fdc0d97d6fe6becb10c3a6076936f87",
+          "color": "preto",
+          "source_id": "p22i02"
+        },
+        {
+          "file": "photos/2e0fbf04779d96bb8d3432a4df4956a74c9bc8aa65dc1a4b230be25408d7f6da.jpg",
+          "sha256": "2e0fbf04779d96bb8d3432a4df4956a74c9bc8aa65dc1a4b230be25408d7f6da",
+          "color": "preto",
+          "source_id": "p22i04"
+        }
+      ],
+      "aliases": [],
+      "revision": "7116c3711ca4af2e1361fd515b54f754d62b9dcb77a28af0132c8f4d4fe21072"
+    },
+    {
+      "code": "pdf26-ortopedicos-024",
+      "name": "Sapatilha bico fino com drapeado e enfeite oval",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Sapatilha bico fino com drapeado e enfeite oval. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        23,
+        25,
+        28
+      ],
+      "photos": [
+        {
+          "file": "photos/04b64f9d962c9f20ed8705f3f7ea8b1d7d848002f7ef563a7bf80646c1594f11.jpg",
+          "sha256": "04b64f9d962c9f20ed8705f3f7ea8b1d7d848002f7ef563a7bf80646c1594f11",
+          "color": "dourado",
+          "source_id": "p23i02"
+        },
+        {
+          "file": "photos/f8a1e4978670ef48c38a0e6914201671c7da9aea51b224f4fcab7827b0e59fd3.jpg",
+          "sha256": "f8a1e4978670ef48c38a0e6914201671c7da9aea51b224f4fcab7827b0e59fd3",
+          "color": "bronze",
+          "source_id": "p28i02"
+        },
+        {
+          "file": "photos/02a69e5b553598d694fe35e21de7e00639387e8e72e2edf00001c450f82dac4c.jpg",
+          "sha256": "02a69e5b553598d694fe35e21de7e00639387e8e72e2edf00001c450f82dac4c",
+          "color": "bronze",
+          "source_id": "p25i04"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p22-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p24-i4",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p27-i2"
+      ],
+      "revision": "5272bd2879148146fdf44ecdd071e4dcd1fd3595953b5454c216d5962d67188a"
+    },
+    {
+      "code": "pdf26-ortopedicos-025",
+      "name": "Sapatilha bico fino com laço de strass",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Sapatilha bico fino com laço de strass. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        23,
+        27
+      ],
+      "photos": [
+        {
+          "file": "photos/e9800805c3dca8a6c4ab60220d8475dc0c4ca68220c5bd3b566e73a333a57d81.jpg",
+          "sha256": "e9800805c3dca8a6c4ab60220d8475dc0c4ca68220c5bd3b566e73a333a57d81",
+          "color": "nude",
+          "source_id": "p23i04"
+        },
+        {
+          "file": "photos/ac53ebd89df97b495882a9e8e739ab3deb10b19a6c00216c654f18562ef57b08.jpg",
+          "sha256": "ac53ebd89df97b495882a9e8e739ab3deb10b19a6c00216c654f18562ef57b08",
+          "color": "nude",
+          "source_id": "p27i01"
+        },
+        {
+          "file": "photos/43727b472c1c9e81875c9bcf2b59c405e090292f23a026a17f68d22f931df91a.jpg",
+          "sha256": "43727b472c1c9e81875c9bcf2b59c405e090292f23a026a17f68d22f931df91a",
+          "color": "preto",
+          "source_id": "p27i04"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p22-i3",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p26-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p26-i4"
+      ],
+      "revision": "2014eb3ac72a2714165023292938fbb70074016b20eed285d4bb7d6c32ace0bc"
+    },
+    {
+      "code": "pdf26-ortopedicos-026",
+      "name": "Mocassim bico fino vermelho",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Mocassim bico fino vermelho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        24
+      ],
+      "photos": [
+        {
+          "file": "photos/5bb375c06f99da813a7c7ac0a66bf94137005d31ee8f5f7fe614ed928a98f7e4.jpg",
+          "sha256": "5bb375c06f99da813a7c7ac0a66bf94137005d31ee8f5f7fe614ed928a98f7e4",
+          "color": "vermelho",
+          "source_id": "p24i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "5303995741d557b511fd70d817e349eca99fd6e4439f16072615f87c42e60086"
+    },
+    {
+      "code": "pdf26-ortopedicos-027",
+      "name": "Sapatilha bico fino com enfeite oval marrom",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Sapatilha bico fino com enfeite oval marrom. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        24,
+        26
+      ],
+      "photos": [
+        {
+          "file": "photos/c26e5adc27533f0277466755722c67196ec99b8b0b08fcb37f712c98babbcf74.jpg",
+          "sha256": "c26e5adc27533f0277466755722c67196ec99b8b0b08fcb37f712c98babbcf74",
+          "color": "caramelo",
+          "source_id": "p24i02"
+        },
+        {
+          "file": "photos/729e7e5edb2d025f5f4d5d799103d72256786d0be42577a8b951cf3fec08f978.jpg",
+          "sha256": "729e7e5edb2d025f5f4d5d799103d72256786d0be42577a8b951cf3fec08f978",
+          "color": "caramelo",
+          "source_id": "p26i04"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p25-i3"
+      ],
+      "revision": "44d90c4d257d52ef0bb25d5f8568018df680e5080a677335edb66cb09620109e"
+    },
+    {
+      "code": "pdf26-ortopedicos-028",
+      "name": "Mocassim com enfeite dourado de nó e bico texturizado",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Mocassim com enfeite dourado de nó e bico texturizado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        25
+      ],
+      "photos": [
+        {
+          "file": "photos/241b6d942bc8a834411d1dd922be29ee775e8be321afc32553903c2791c923ee.jpg",
+          "sha256": "241b6d942bc8a834411d1dd922be29ee775e8be321afc32553903c2791c923ee",
+          "color": "preto",
+          "source_id": "p25i01"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p24-i1"
+      ],
+      "revision": "e01c8cbf43ae68f542064d6f537d3a2e746bf3e8a8299954114739f6cbe45c11"
+    },
+    {
+      "code": "pdf26-ortopedicos-029",
+      "name": "Sapatilha bico fino texturizada com laço verniz e fivela",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Sapatilha bico fino texturizada com laço verniz e fivela. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        25
+      ],
+      "photos": [
+        {
+          "file": "photos/32024690e1b0b0711c93300983a9b00fb65bf2776a2f5e46e480f008869e2dd1.jpg",
+          "sha256": "32024690e1b0b0711c93300983a9b00fb65bf2776a2f5e46e480f008869e2dd1",
+          "color": "preto",
+          "source_id": "p25i02"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p24-i2"
+      ],
+      "revision": "80ffb7d2a11f59a0b0413fceabb877c0862747b0ed3359a04fa5e0398b8c9964"
+    },
+    {
+      "code": "pdf26-ortopedicos-030",
+      "name": "Sapatilha bico fino com recorte vazado",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Sapatilha bico fino com recorte vazado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        25
+      ],
+      "photos": [
+        {
+          "file": "photos/54b2e78275155fdb6c12b6e574e0d74ccdc5fdcac975a68c918f3661a52a63a5.jpg",
+          "sha256": "54b2e78275155fdb6c12b6e574e0d74ccdc5fdcac975a68c918f3661a52a63a5",
+          "color": "preto",
+          "source_id": "p25i03"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p24-i3"
+      ],
+      "revision": "09ac58b2e6419f3190e44927387fcd36d03b975c0c4d0d85557bcb79185743f1"
+    },
+    {
+      "code": "pdf26-ortopedicos-031",
+      "name": "Mocassim com corrente dourada e bico texturizado",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Mocassim com corrente dourada e bico texturizado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        26,
+        27
+      ],
+      "photos": [
+        {
+          "file": "photos/88aa09b13f82c7325f96209ea0837094b6f927b02015adefd5168d27dc54b206.jpg",
+          "sha256": "88aa09b13f82c7325f96209ea0837094b6f927b02015adefd5168d27dc54b206",
+          "color": "caramelo",
+          "source_id": "p27i03"
+        },
+        {
+          "file": "photos/cd2d130c3f343c05ce88ebe884c4c3d59bea71db9bc3949caeb1434d069ac0e4.jpg",
+          "sha256": "cd2d130c3f343c05ce88ebe884c4c3d59bea71db9bc3949caeb1434d069ac0e4",
+          "color": "caramelo",
+          "source_id": "p26i02"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p25-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p26-i3"
+      ],
+      "revision": "652423691310556a289fbb5665f2a3ca03b4fc0c6beddbdca8c7a0f1f8bb475e"
+    },
+    {
+      "code": "pdf26-ortopedicos-032",
+      "name": "Mocassim com laço e bico texturizado",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Mocassim com laço e bico texturizado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        26
+      ],
+      "photos": [
+        {
+          "file": "photos/18ff330637edfa1c0ff5dc457474f90028c40ade91e86821f7161be287491e59.jpg",
+          "sha256": "18ff330637edfa1c0ff5dc457474f90028c40ade91e86821f7161be287491e59",
+          "color": "caramelo",
+          "source_id": "p26i03"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p25-i2"
+      ],
+      "revision": "29b2e92346a32afc69995c30a409dc50ae2dc81575771a7cad22ecc73b8a51df"
+    },
+    {
+      "code": "pdf26-ortopedicos-033",
+      "name": "Sapatilha verniz bico fino com laço duplo",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Sapatilha verniz bico fino com laço duplo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        26,
+        27
+      ],
+      "photos": [
+        {
+          "file": "photos/9f1aa004a984ceffdff1165cc540b20dfefd72d515a244eb84d6aee0f80fa2e2.jpg",
+          "sha256": "9f1aa004a984ceffdff1165cc540b20dfefd72d515a244eb84d6aee0f80fa2e2",
+          "color": "caramelo",
+          "source_id": "p26i05"
+        },
+        {
+          "file": "photos/00a46cc399764da86c1299a649a6baec103951cda4ab634f2aeb5bab440c2f5f.jpg",
+          "sha256": "00a46cc399764da86c1299a649a6baec103951cda4ab634f2aeb5bab440c2f5f",
+          "color": "preto",
+          "source_id": "p27i02"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p25-i4",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p26-i2"
+      ],
+      "revision": "4c2edccc54f045c39027c91de274d635e3725d6771b54cb5b08b27d3b84c659b"
+    },
+    {
+      "code": "pdf26-ortopedicos-034",
+      "name": "Sapatilha bico fino com cordão de strass",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Sapatilha bico fino com cordão de strass. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        28
+      ],
+      "photos": [
+        {
+          "file": "photos/ca68aaa454f66b0a61f7f7b56159b2edb7e7a7e246cc55cf403f235461cce590.jpg",
+          "sha256": "ca68aaa454f66b0a61f7f7b56159b2edb7e7a7e246cc55cf403f235461cce590",
+          "color": "preto",
+          "source_id": "p28i01"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p27-i1"
+      ],
+      "revision": "f7f3c65800edf06c4ca064d5dfe7db9d39af83cf64a933be6913e3b0ba3b9e42"
+    },
+    {
+      "code": "pdf26-ortopedicos-035",
+      "name": "Mocassim bico fino estampado com fivela prateada",
+      "brand": "",
+      "category": "Sapatilhas Femininas",
+      "description": "Mocassim bico fino estampado com fivela prateada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        28
+      ],
+      "photos": [
+        {
+          "file": "photos/12da7dfdeb9ee4812f431114cb33e9082b8bb308ab86792736208e965a040647.jpg",
+          "sha256": "12da7dfdeb9ee4812f431114cb33e9082b8bb308ab86792736208e965a040647",
+          "color": "nude",
+          "source_id": "p28i03"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p27-i3"
+      ],
+      "revision": "ab110854a1d11cb4acad0b88f7c30c346484fe7a16a85a8675af4e134caa054b"
+    },
+    {
+      "code": "pdf26-ortopedicos-036",
+      "name": "Scarpin com laço salto alto",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin com laço salto alto. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        30
+      ],
+      "photos": [
+        {
+          "file": "photos/9d113116a023ca8f1ebd2a56143f42859df40786ca96ad78d4fb01037d5a90af.jpg",
+          "sha256": "9d113116a023ca8f1ebd2a56143f42859df40786ca96ad78d4fb01037d5a90af",
+          "color": "branco",
+          "source_id": "p30i02"
+        },
+        {
+          "file": "photos/743077d8000d6e1a133ec06c4a5d83676032f52bfd621ce689f1e88cc7dccb95.jpg",
+          "sha256": "743077d8000d6e1a133ec06c4a5d83676032f52bfd621ce689f1e88cc7dccb95",
+          "color": "branco",
+          "source_id": "p30i03"
+        },
+        {
+          "file": "photos/c05f9b2cba70c662f9c05cd9547aa56d7930fcd62029e78110e28aee696078da.jpg",
+          "sha256": "c05f9b2cba70c662f9c05cd9547aa56d7930fcd62029e78110e28aee696078da",
+          "color": "branco",
+          "source_id": "p30i04"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p29-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p29-i2",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p29-i3"
+      ],
+      "revision": "64d00c4b7a623221358d5b74c19be9d7cfe675671ead976ffe36c46f99f2a3f1"
+    },
+    {
+      "code": "pdf26-ortopedicos-037",
+      "name": "Scarpin aberto com tira no tornozelo e filete de brilho",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin aberto com tira no tornozelo e filete de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        30
+      ],
+      "photos": [
+        {
+          "file": "photos/5b87c6edd3342a5f347c6244ed3351d3d961324631f9476deda61a0af638ddb0.jpg",
+          "sha256": "5b87c6edd3342a5f347c6244ed3351d3d961324631f9476deda61a0af638ddb0",
+          "color": "preto",
+          "source_id": "p30i05"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p29-i4"
+      ],
+      "revision": "583c3735ba584bf7d8f340a55a066cc39043e351e4d5139bc584a68dd36abf09"
+    },
+    {
+      "code": "pdf26-ortopedicos-038",
+      "name": "Scarpin slingback com biqueira dourada",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin slingback com biqueira dourada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        31,
+        39
+      ],
+      "photos": [
+        {
+          "file": "photos/0758a3be82b2b6fbd533ba0b2df07cdb27b9c6110f013d9d61c4280fac5c4897.jpg",
+          "sha256": "0758a3be82b2b6fbd533ba0b2df07cdb27b9c6110f013d9d61c4280fac5c4897",
+          "color": "rosa claro",
+          "source_id": "p31i01"
+        },
+        {
+          "file": "photos/c6ff63e390197f2c0146fa313456663eca65dbc40a0a1eb2ecf51c042414e83c.jpg",
+          "sha256": "c6ff63e390197f2c0146fa313456663eca65dbc40a0a1eb2ecf51c042414e83c",
+          "color": "off-white",
+          "source_id": "p31i02"
+        },
+        {
+          "file": "photos/4449c1da8809d64657de74baa208bd6c289a0088c9794f0cf48f9c2a7f6bbafe.jpg",
+          "sha256": "4449c1da8809d64657de74baa208bd6c289a0088c9794f0cf48f9c2a7f6bbafe",
+          "color": "off-white",
+          "source_id": "p31i03"
+        },
+        {
+          "file": "photos/9850535390f286376f0b9b8ccab0e3b7f95c060ead95e8cbdd272120ba5ef825.jpg",
+          "sha256": "9850535390f286376f0b9b8ccab0e3b7f95c060ead95e8cbdd272120ba5ef825",
+          "color": "rosa claro",
+          "source_id": "p31i04"
+        },
+        {
+          "file": "photos/0aa46af14393a0baeb5dc19dfe4f459b367fe093d7e8d8343d38f4dad0d7f564.jpg",
+          "sha256": "0aa46af14393a0baeb5dc19dfe4f459b367fe093d7e8d8343d38f4dad0d7f564",
+          "color": "vermelho",
+          "source_id": "p39i01"
+        },
+        {
+          "file": "photos/20cd91209d5c585da57802fa258801b6fc30dc76e87fae0a4782c79e2aaf2386.jpg",
+          "sha256": "20cd91209d5c585da57802fa258801b6fc30dc76e87fae0a4782c79e2aaf2386",
+          "color": "vermelho",
+          "source_id": "p39i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "65a36e6c2dc6ed784f4a9220002dbc568b9e163dcf31cd69809aaf6b17fbd69d"
+    },
+    {
+      "code": "pdf26-ortopedicos-039",
+      "name": "Scarpin clássico bico fino salto baixo",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin clássico bico fino salto baixo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        32,
+        34,
+        37
+      ],
+      "photos": [
+        {
+          "file": "photos/a29be4ec173aae4574bddb76b41bdea1e0023650599bee5bd86d8cc656690051.jpg",
+          "sha256": "a29be4ec173aae4574bddb76b41bdea1e0023650599bee5bd86d8cc656690051",
+          "color": "vermelho verniz",
+          "source_id": "p32i01"
+        },
+        {
+          "file": "photos/3d356b92c9c11c49f5041692abcef888dae3d8bfb4511f77d7bb8dd1c5e5ee15.jpg",
+          "sha256": "3d356b92c9c11c49f5041692abcef888dae3d8bfb4511f77d7bb8dd1c5e5ee15",
+          "color": "vermelho verniz",
+          "source_id": "p32i02"
+        },
+        {
+          "file": "photos/05d1bbcda2908c161b70a49ac8b4a09856b6d59c9e03cedd88738b873d26cef0.jpg",
+          "sha256": "05d1bbcda2908c161b70a49ac8b4a09856b6d59c9e03cedd88738b873d26cef0",
+          "color": "vermelho verniz",
+          "source_id": "p32i03"
+        },
+        {
+          "file": "photos/cec804682e6ca7ad247d5ad405616736c1282f0e966bc1bbf9397a4e9524d91e.jpg",
+          "sha256": "cec804682e6ca7ad247d5ad405616736c1282f0e966bc1bbf9397a4e9524d91e",
+          "color": "preto",
+          "source_id": "p34i01"
+        },
+        {
+          "file": "photos/3cc1f8f0d56ca91211f7431c8eff970711dd412b0e75a7887876efe3eddbea5d.jpg",
+          "sha256": "3cc1f8f0d56ca91211f7431c8eff970711dd412b0e75a7887876efe3eddbea5d",
+          "color": "preto",
+          "source_id": "p34i02"
+        },
+        {
+          "file": "photos/1a69d8af10875c18aaddf181eb9c1fd3312d630a1f02ae457e9427ed23ddd887.jpg",
+          "sha256": "1a69d8af10875c18aaddf181eb9c1fd3312d630a1f02ae457e9427ed23ddd887",
+          "color": "preto",
+          "source_id": "p34i03"
+        },
+        {
+          "file": "photos/c19a3832dc089b508e5e9054bf9ab6a6fc5ed00e0fef6d4b9b3337cdff25d5ba.jpg",
+          "sha256": "c19a3832dc089b508e5e9054bf9ab6a6fc5ed00e0fef6d4b9b3337cdff25d5ba",
+          "color": "branco",
+          "source_id": "p37i01"
+        },
+        {
+          "file": "photos/292e7146666ff3f0630dd81debf8c83c310b1ec1023a8cb01a0de75acd4ee13a.jpg",
+          "sha256": "292e7146666ff3f0630dd81debf8c83c310b1ec1023a8cb01a0de75acd4ee13a",
+          "color": "caramelo",
+          "source_id": "p37i02"
+        },
+        {
+          "file": "photos/053e92dd6778af46a6feebc10525c1c55c011189f90883201f27ef22c20f268d.jpg",
+          "sha256": "053e92dd6778af46a6feebc10525c1c55c011189f90883201f27ef22c20f268d",
+          "color": "preto verniz",
+          "source_id": "p37i03"
+        },
+        {
+          "file": "photos/2320655fd2f07b3baf6e0ed4959b60906d0dc7872d0f1d033f7301ebfce6f785.jpg",
+          "sha256": "2320655fd2f07b3baf6e0ed4959b60906d0dc7872d0f1d033f7301ebfce6f785",
+          "color": "nude",
+          "source_id": "p37i04"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p30-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p30-i2",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p30-i3",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p32-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p32-i2",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p32-i3",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p33-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p33-i2",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p33-i3",
+        "ortopedicos_scarpin_mocassim_sapatilha-f20-p33-i4"
+      ],
+      "revision": "d65afda265ff5abb422e8fb5b978bb7a9c9904c3a8c02807607596246b8f8643"
+    },
+    {
+      "code": "pdf26-ortopedicos-040",
+      "name": "Scarpin com tira no tornozelo salto baixo",
+      "brand": "Beira Rio",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin com tira no tornozelo salto baixo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        33
+      ],
+      "photos": [
+        {
+          "file": "photos/89583b71910d2f79e6bfbe879750a896945ac0a04907196b0aa5d0ac7e914f73.jpg",
+          "sha256": "89583b71910d2f79e6bfbe879750a896945ac0a04907196b0aa5d0ac7e914f73",
+          "color": "preto e marrom",
+          "source_id": "p33i01"
+        },
+        {
+          "file": "photos/0ce3bcbe323a346fd3715f264439040163c5c099edc8715132b3369375589cb6.jpg",
+          "sha256": "0ce3bcbe323a346fd3715f264439040163c5c099edc8715132b3369375589cb6",
+          "color": "marrom",
+          "source_id": "p33i02"
+        },
+        {
+          "file": "photos/1b5cc7bb52aa587a9fd3c529355a9b667d2da66e5ac31106eafcb856bc729eae.jpg",
+          "sha256": "1b5cc7bb52aa587a9fd3c529355a9b667d2da66e5ac31106eafcb856bc729eae",
+          "color": "preto",
+          "source_id": "p33i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "ccbaf66b3eba2a8cc43d20b71b8740ded98068801ba9284d3af420475ad75c61"
+    },
+    {
+      "code": "pdf26-ortopedicos-041",
+      "name": "Scarpin slingback com salto dourado vazado",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin slingback com salto dourado vazado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        35
+      ],
+      "photos": [
+        {
+          "file": "photos/477de100e9d8c7109814d6cc8d3c6e1e0238a717140d32cd3f42f5921ab5573c.jpg",
+          "sha256": "477de100e9d8c7109814d6cc8d3c6e1e0238a717140d32cd3f42f5921ab5573c",
+          "color": "off-white",
+          "source_id": "p35i01"
+        },
+        {
+          "file": "photos/86e75baaa6f76a221b97d1c58828b8b93f49e5edf0d070a52dba4e290265cf63.jpg",
+          "sha256": "86e75baaa6f76a221b97d1c58828b8b93f49e5edf0d070a52dba4e290265cf63",
+          "color": "preto verniz",
+          "source_id": "p35i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "a40e5d927f8abbfd0b23ed6cfcf09cbb77774eef7c9a1c1f15fd2e0090c26535"
+    },
+    {
+      "code": "pdf26-ortopedicos-042",
+      "name": "Scarpin slingback decote em V salto alto",
+      "brand": "Beira Rio",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin slingback decote em V salto alto. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        36
+      ],
+      "photos": [
+        {
+          "file": "photos/fd51b05871cd63e8f26ff1dc79ee2a9f19f709a2ded0ca5d8bdad614d14ead5f.jpg",
+          "sha256": "fd51b05871cd63e8f26ff1dc79ee2a9f19f709a2ded0ca5d8bdad614d14ead5f",
+          "color": "off-white",
+          "source_id": "p36i01"
+        },
+        {
+          "file": "photos/a4e13abb388f79cfd5a340f349bb335c47e32b3118404ecd23d7869fa3385f49.jpg",
+          "sha256": "a4e13abb388f79cfd5a340f349bb335c47e32b3118404ecd23d7869fa3385f49",
+          "color": "off-white e preto",
+          "source_id": "p36i02"
+        },
+        {
+          "file": "photos/322433cd4087b2528dd83b025c8d64a4cc5178f80b9de31c557104931a000ffc.jpg",
+          "sha256": "322433cd4087b2528dd83b025c8d64a4cc5178f80b9de31c557104931a000ffc",
+          "color": "preto",
+          "source_id": "p36i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "422af11538c3cf4c97834def6ea786f08f622239af0f70ea34b0a28092e66710"
+    },
+    {
+      "code": "pdf26-ortopedicos-043",
+      "name": "Scarpin slingback com enfeite dourado",
+      "brand": "Beira Rio",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin slingback com enfeite dourado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        38
+      ],
+      "photos": [
+        {
+          "file": "photos/81246c7b968f6a25c926fd33ab6aa93c07802b264dd01ac941be1601f5e0ac7e.jpg",
+          "sha256": "81246c7b968f6a25c926fd33ab6aa93c07802b264dd01ac941be1601f5e0ac7e",
+          "color": "preto e off-white",
+          "source_id": "p38i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "8bab4562803b0e5173c6e64289c3ac4a78007a87e93c8e509e7d17d868dff5ce"
+    },
+    {
+      "code": "pdf26-ortopedicos-044",
+      "name": "Scarpin verniz bico fino salto alto",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin verniz bico fino salto alto. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        38
+      ],
+      "photos": [
+        {
+          "file": "photos/57891e807b1c963050fc8a797c31b18ac962310ad8bb7146a3f7731a1349909e.jpg",
+          "sha256": "57891e807b1c963050fc8a797c31b18ac962310ad8bb7146a3f7731a1349909e",
+          "color": "marrom",
+          "source_id": "p38i02"
+        },
+        {
+          "file": "photos/f7f8c3504b910b4bf4cd6b132b974bcc2fb64b8c89dd4960582ab68f47127c68.jpg",
+          "sha256": "f7f8c3504b910b4bf4cd6b132b974bcc2fb64b8c89dd4960582ab68f47127c68",
+          "color": "preto",
+          "source_id": "p38i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "5081477cc03e112481a8d151208e7de0b49e6c37500be78ffe7dd4cc83bf18ab"
+    },
+    {
+      "code": "pdf26-ortopedicos-045",
+      "name": "Scarpin bico redondo salto baixo grosso",
+      "brand": "Modare",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin bico redondo salto baixo grosso. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        40
+      ],
+      "photos": [
+        {
+          "file": "photos/d8115b9b62237cd722cf29b7d41fd46f5d89d3efbdb6a97de3d7c5c0478877e5.jpg",
+          "sha256": "d8115b9b62237cd722cf29b7d41fd46f5d89d3efbdb6a97de3d7c5c0478877e5",
+          "color": "preto",
+          "source_id": "p40i01"
+        },
+        {
+          "file": "photos/700888b6593a3752e7faa464394bb45dafc84ae98dc7a4492ffc75be7b81f348.jpg",
+          "sha256": "700888b6593a3752e7faa464394bb45dafc84ae98dc7a4492ffc75be7b81f348",
+          "color": "preto",
+          "source_id": "p40i03"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f18-p34-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f18-p34-i3"
+      ],
+      "revision": "f965dfad4ce253511d7913a5d8c4a4e36eb31549c573c546f0573e9c0a25c6bb"
+    },
+    {
+      "code": "pdf26-ortopedicos-046",
+      "name": "Scarpin bico fino salto alto",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin bico fino salto alto. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        40,
+        46,
+        47
+      ],
+      "photos": [
+        {
+          "file": "photos/da75f745e6f7ab6ab34f3f28e09179a526e94081728d2c435e0ce20d957c2f8c.jpg",
+          "sha256": "da75f745e6f7ab6ab34f3f28e09179a526e94081728d2c435e0ce20d957c2f8c",
+          "color": "caramelo",
+          "source_id": "p46i01"
+        },
+        {
+          "file": "photos/8ee0b2d1dacf4e27ef08d6e7061ddad4ac1d51080f249afaf64e3f8f7655afcb.jpg",
+          "sha256": "8ee0b2d1dacf4e27ef08d6e7061ddad4ac1d51080f249afaf64e3f8f7655afcb",
+          "color": "preto",
+          "source_id": "p47i04"
+        },
+        {
+          "file": "photos/1b989d0119aebb291ae14a48bb5d72262d3f9a425051e182fcce3b751b34e55b.jpg",
+          "sha256": "1b989d0119aebb291ae14a48bb5d72262d3f9a425051e182fcce3b751b34e55b",
+          "color": "preto",
+          "source_id": "p40i02"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f18-p34-i2",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p41-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p42-i4"
+      ],
+      "revision": "6d4f05cdf19728d7174a7ea0793f75e952389a30fc67d0ea91003a350864092f"
+    },
+    {
+      "code": "pdf26-ortopedicos-047",
+      "name": "Scarpin slingback com tiras e enfeite dourado salto baixo",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin slingback com tiras e enfeite dourado salto baixo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        40,
+        41
+      ],
+      "photos": [
+        {
+          "file": "photos/00f2e40f8d2d56efb4692768e0e7d667dd35c908044ec8290ec7ac7a7d124290.jpg",
+          "sha256": "00f2e40f8d2d56efb4692768e0e7d667dd35c908044ec8290ec7ac7a7d124290",
+          "color": "nude",
+          "source_id": "p41i05"
+        },
+        {
+          "file": "photos/9fabac26f4418df0617dcf2bcf92f4e36942e7020136e207ee6dca5049052dad.jpg",
+          "sha256": "9fabac26f4418df0617dcf2bcf92f4e36942e7020136e207ee6dca5049052dad",
+          "color": "vermelho",
+          "source_id": "p40i04"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f18-p34-i4",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p36-i3"
+      ],
+      "revision": "5f696feaa115cdbb71b43edda30c0079f29cdb8bc1823b5646c0c6e17bf31d66"
+    },
+    {
+      "code": "pdf26-ortopedicos-048",
+      "name": "Scarpin verniz com tiras cruzadas e fivelas",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin verniz com tiras cruzadas e fivelas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        41
+      ],
+      "photos": [
+        {
+          "file": "photos/c1b05779128f1da61277908ac7df45f89df0d65948879628177b3406cb92d45d.jpg",
+          "sha256": "c1b05779128f1da61277908ac7df45f89df0d65948879628177b3406cb92d45d",
+          "color": "preto",
+          "source_id": "p41i03"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p36-i1"
+      ],
+      "revision": "de1cd411fa32d2ebc2d9205d9e2dab9cc8771ed8b2abc4e56aac55e76f7e9345"
+    },
+    {
+      "code": "pdf26-ortopedicos-049",
+      "name": "Scarpin slingback com tira e fivelas douradas",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin slingback com tira e fivelas douradas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 30,
+      "retail": "259.90",
+      "price": "279.90",
+      "cost": "181.93",
+      "pages": [
+        41
+      ],
+      "photos": [
+        {
+          "file": "photos/faedb048ed6a0fc5c66e1999ed06a33b12f841dfe22854262a14541885cbb82f.jpg",
+          "sha256": "faedb048ed6a0fc5c66e1999ed06a33b12f841dfe22854262a14541885cbb82f",
+          "color": "off-white",
+          "source_id": "p41i04"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p36-i2"
+      ],
+      "revision": "1a73552024661784d8781e293d1f8d1f6dd4022ac63b324973d2d6b475a353da"
+    },
+    {
+      "code": "pdf26-ortopedicos-050",
+      "name": "Scarpin jeans com coração de brilho",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin jeans com coração de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        41,
+        47
+      ],
+      "photos": [
+        {
+          "file": "photos/b36371424742087a8336244dd06f55d73b6aa2dc6786f1f4181620c62ad304bc.jpg",
+          "sha256": "b36371424742087a8336244dd06f55d73b6aa2dc6786f1f4181620c62ad304bc",
+          "color": "azul jeans",
+          "source_id": "p41i06"
+        },
+        {
+          "file": "photos/5c92aea1a3f10d18ac1c83d36bbfee775c7624d8935d68afbb65f26ca37f693a.jpg",
+          "sha256": "5c92aea1a3f10d18ac1c83d36bbfee775c7624d8935d68afbb65f26ca37f693a",
+          "color": "azul jeans",
+          "source_id": "p47i01"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p36-i4",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p42-i1"
+      ],
+      "revision": "56bbf12b6bc2947b499b53f8c4e8d618d1f263e335ae57d0567272d3add6488f"
+    },
+    {
+      "code": "pdf26-ortopedicos-051",
+      "name": "Scarpin liso bico fino salto alto",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin liso bico fino salto alto. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        42
+      ],
+      "photos": [
+        {
+          "file": "photos/78afd7f62350c1a4d12ba286228180e6567ce8476f163ac7bdc696f8d60cbe80.jpg",
+          "sha256": "78afd7f62350c1a4d12ba286228180e6567ce8476f163ac7bdc696f8d60cbe80",
+          "color": "preto",
+          "source_id": "p42i02"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f18-p37-i1"
+      ],
+      "revision": "019c0f29b49ad32490677098914a6489ecf32f72fc5bea938b86e6bef5b633c8"
+    },
+    {
+      "code": "pdf26-ortopedicos-052",
+      "name": "Scarpin bico redondo salto bloco",
+      "brand": "Beira Rio",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin bico redondo salto bloco. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        42
+      ],
+      "photos": [
+        {
+          "file": "photos/6fc77e3f5a33dcd8b9e60684a8ecf56c557b0c299451e55114ef7019f6a3cdcf.jpg",
+          "sha256": "6fc77e3f5a33dcd8b9e60684a8ecf56c557b0c299451e55114ef7019f6a3cdcf",
+          "color": "preto",
+          "source_id": "p42i03"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f18-p37-i2"
+      ],
+      "revision": "e8f792fef4c63a4db097c0d90f5a9e99da151d6be3961b9addfa11e0f360b369"
+    },
+    {
+      "code": "pdf26-ortopedicos-053",
+      "name": "Scarpin croco salto alto",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin croco salto alto. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        43
+      ],
+      "photos": [
+        {
+          "file": "photos/68da78c821bf6eb1e8734fbcface4c6b7a3bb77f67968638825cf45bdd5bb36b.jpg",
+          "sha256": "68da78c821bf6eb1e8734fbcface4c6b7a3bb77f67968638825cf45bdd5bb36b",
+          "color": "nude",
+          "source_id": "p43i01"
+        },
+        {
+          "file": "photos/18bc6b3383e825e49fa9dc8edd9ad80e8544240efa30d073773ac5d86c2a911d.jpg",
+          "sha256": "18bc6b3383e825e49fa9dc8edd9ad80e8544240efa30d073773ac5d86c2a911d",
+          "color": "caramelo",
+          "source_id": "p43i02"
+        },
+        {
+          "file": "photos/1156ee92cf639209f4687d6bf0b56bab66b75229e55229a8dbec12946fee332c.jpg",
+          "sha256": "1156ee92cf639209f4687d6bf0b56bab66b75229e55229a8dbec12946fee332c",
+          "color": "off-white",
+          "source_id": "p43i03"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p38-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p38-i2",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p38-i3"
+      ],
+      "revision": "bcde86e343d357a7f7a5fe4f7d0212950283a980c501f1cd7ed2ff448d689ec2"
+    },
+    {
+      "code": "pdf26-ortopedicos-054",
+      "name": "Scarpin metalizado salto baixo",
+      "brand": "Vizzano",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin metalizado salto baixo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        44,
+        48
+      ],
+      "photos": [
+        {
+          "file": "photos/2e40006ff5a300374a5b61ee8590e4777cea358818450261c381ed3fba223cfb.jpg",
+          "sha256": "2e40006ff5a300374a5b61ee8590e4777cea358818450261c381ed3fba223cfb",
+          "color": "cobre",
+          "source_id": "p44i01"
+        },
+        {
+          "file": "photos/c66b4858668996caca7091b69013ecf46d94f1ced734790f6133488f277ac56c.jpg",
+          "sha256": "c66b4858668996caca7091b69013ecf46d94f1ced734790f6133488f277ac56c",
+          "color": "dourado",
+          "source_id": "p44i02"
+        },
+        {
+          "file": "photos/a05d7ab26d881ececf7c6c2fe28e175064d6bafbc8d03032e562dd2a53660c53.jpg",
+          "sha256": "a05d7ab26d881ececf7c6c2fe28e175064d6bafbc8d03032e562dd2a53660c53",
+          "color": "cobre",
+          "source_id": "p48i04"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p35-i4",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p39-i1",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p39-i2"
+      ],
+      "revision": "3a0a7006008dfe0d19311ff30a48a0fc87d8a6fe6f6dfef609212f7e4cecf6b6"
+    },
+    {
+      "code": "pdf26-ortopedicos-055",
+      "name": "Scarpin verniz salto agulha",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin verniz salto agulha. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        45
+      ],
+      "photos": [
+        {
+          "file": "photos/5b6053768342626eb73f5497a6376174fab498504602e06d3b62e7dd903244e1.jpg",
+          "sha256": "5b6053768342626eb73f5497a6376174fab498504602e06d3b62e7dd903244e1",
+          "color": "nude",
+          "source_id": "p45i01"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p40-i1"
+      ],
+      "revision": "015b2736482a94873a009c7a08813b5b824b2e479df2d69eebac119d6b187a86"
+    },
+    {
+      "code": "pdf26-ortopedicos-056",
+      "name": "Scarpin slingback bico fino salto baixo",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin slingback bico fino salto baixo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        45,
+        46
+      ],
+      "photos": [
+        {
+          "file": "photos/e8e95a1253ad6f417aa53fcfddebf74a660f398a79562c3187e1b86a1ebe0993.jpg",
+          "sha256": "e8e95a1253ad6f417aa53fcfddebf74a660f398a79562c3187e1b86a1ebe0993",
+          "color": "terracota",
+          "source_id": "p45i02"
+        },
+        {
+          "file": "photos/0d6f1e7d881600a5f9875bd0d7e84c17e2f79e33282ccac8f61037042828e60f.jpg",
+          "sha256": "0d6f1e7d881600a5f9875bd0d7e84c17e2f79e33282ccac8f61037042828e60f",
+          "color": "preto",
+          "source_id": "p46i04"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p40-i2",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p41-i4"
+      ],
+      "revision": "9f560f5653fdda087b629f29fca69e2cd0273570ff5686b2aec9c6b97eca2ce1"
+    },
+    {
+      "code": "pdf26-ortopedicos-057",
+      "name": "Scarpin mocassim salto baixo",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin mocassim salto baixo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        45,
+        46
+      ],
+      "photos": [
+        {
+          "file": "photos/12fa1331cb9e10456b064f451ba14c0eb8153c475d6db7116dd0a793d7f56c79.jpg",
+          "sha256": "12fa1331cb9e10456b064f451ba14c0eb8153c475d6db7116dd0a793d7f56c79",
+          "color": "caramelo",
+          "source_id": "p45i03"
+        },
+        {
+          "file": "photos/9ef280095e1e082f69e09e0f6040bde1ce6276988c08fef987cef0a93f71db96.jpg",
+          "sha256": "9ef280095e1e082f69e09e0f6040bde1ce6276988c08fef987cef0a93f71db96",
+          "color": "off-white",
+          "source_id": "p46i02"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p40-i3",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p41-i2"
+      ],
+      "revision": "c7ddad26c495e3042435b927c1d826ea0c993ee34a1e6d98d5ca4647a795bfa5"
+    },
+    {
+      "code": "pdf26-ortopedicos-058",
+      "name": "Scarpin liso bico fino salto baixo",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin liso bico fino salto baixo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        46,
+        47
+      ],
+      "photos": [
+        {
+          "file": "photos/55a74c04c7b94845992c9f86c99a2cf5f45b22c5d16e3bd1fc9b6caedf0ac8fd.jpg",
+          "sha256": "55a74c04c7b94845992c9f86c99a2cf5f45b22c5d16e3bd1fc9b6caedf0ac8fd",
+          "color": "bege",
+          "source_id": "p46i03"
+        },
+        {
+          "file": "photos/e7caa2549b6f2d6f6958bdb8c9c32ec41689441af8487e3df14d5dd3b3101cda.jpg",
+          "sha256": "e7caa2549b6f2d6f6958bdb8c9c32ec41689441af8487e3df14d5dd3b3101cda",
+          "color": "preto",
+          "source_id": "p47i02"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p41-i3",
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p42-i2"
+      ],
+      "revision": "e9fbf8e70f5e5d3c3cc8ba22bfb570c0c7a6045290e13d9554fdec82d2453761"
+    },
+    {
+      "code": "pdf26-ortopedicos-059",
+      "name": "Scarpin slingback verniz salto taça",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin slingback verniz salto taça. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        47
+      ],
+      "photos": [
+        {
+          "file": "photos/07bf311187accbcbd2b2e9fd0c8a3ecc7689922cc0a927f6c426edcb9aca239c.jpg",
+          "sha256": "07bf311187accbcbd2b2e9fd0c8a3ecc7689922cc0a927f6c426edcb9aca239c",
+          "color": "preto",
+          "source_id": "p47i03"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p42-i3"
+      ],
+      "revision": "eac5c44d74bc56771a2a650bcc79ce0b7675f7b6f94907e13d9d4cf1021b1bae"
+    },
+    {
+      "code": "pdf26-ortopedicos-060",
+      "name": "Scarpin slingback metalizado com tiras",
+      "brand": "Ramarim",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin slingback metalizado com tiras. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 30,
+      "retail": "259.90",
+      "price": "279.90",
+      "cost": "181.93",
+      "pages": [
+        48
+      ],
+      "photos": [
+        {
+          "file": "photos/932df5a9e652a0d2237cb4d5e3d0897cb6856c054c9e05f26fbcac178295726b.jpg",
+          "sha256": "932df5a9e652a0d2237cb4d5e3d0897cb6856c054c9e05f26fbcac178295726b",
+          "color": "prata",
+          "source_id": "p48i01"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p35-i1"
+      ],
+      "revision": "3e7cb27b37e4bfc4adcccf68e22267ebdd36721631c0f966e87d0425a5da5831"
+    },
+    {
+      "code": "pdf26-ortopedicos-061",
+      "name": "Scarpin verniz com laço salto alto",
+      "brand": "",
+      "category": "Scarpins Femininos",
+      "description": "Scarpin verniz com laço salto alto. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        48
+      ],
+      "photos": [
+        {
+          "file": "photos/2b21cd25dd98d00d616ca4720a8b2b519b3691ba249ef0df52275a2f7f10c57f.jpg",
+          "sha256": "2b21cd25dd98d00d616ca4720a8b2b519b3691ba249ef0df52275a2f7f10c57f",
+          "color": "preto",
+          "source_id": "p48i02"
+        }
+      ],
+      "aliases": [
+        "ortopedicos_scarpin_mocassim_sapatilha-f23-p35-i2"
+      ],
+      "revision": "79efb42f6f7f5558ed2b03b5693a7306d24acf16660ba5ed12677510c063cd90"
+    }
+  ],
+  "pending": []
+}
