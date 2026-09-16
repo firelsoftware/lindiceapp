@@ -1018,12 +1018,24 @@ class StoreFlowTests(TestCase):
         resposta = self.client.get("/loja/")
 
         self.assertContains(resposta, 'linha=premium')
-        self.assertContains(resposta, 'linha=original')
+        self.assertContains(resposta, 'linha=classica')
+        self.assertContains(resposta, 'Clássica')
 
         resposta = self.client.get("/loja/", {"linha": "premium"})
 
         self.assertContains(resposta, premium.name)
         self.assertNotContains(resposta, original.name)
+
+        resposta = self.client.get("/loja/", {"linha": "classica"})
+
+        self.assertContains(resposta, original.name)
+        self.assertNotContains(resposta, premium.name)
+
+        # Link antigo, com o nome que a linha tinha antes.
+        resposta = self.client.get("/loja/", {"linha": "original"})
+
+        self.assertContains(resposta, original.name)
+        self.assertNotContains(resposta, premium.name)
 
         resposta = self.client.get("/loja/", {"linha": "qualquer"})
 

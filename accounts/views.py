@@ -75,6 +75,12 @@ CATEGORY_SHORT_LABELS = {
     "Numeração Especial": "Num. especial",
 }
 # Grupos onde os filtros de numeracao/tamanho fazem sentido.
+# Linhas do catalogo do parceiro: o cliente ve o nome, o catalogo guarda o valor.
+STORE_LINES = {
+    "premium": {"label": "Premium", "catalog_value": "Premium"},
+    "classica": {"label": "Clássica", "catalog_value": "Original"},
+}
+
 FOOTWEAR_GROUPS = {"Calçados", "Infantil"}
 
 # Palavras que o cliente digita quando quer um smartwatch.
@@ -1737,8 +1743,10 @@ def store_front(request):
     size_group = request.GET.get("grupo_tamanho", "").strip()
     size = request.GET.get("tamanho", "").strip()
     line = request.GET.get("linha", "").strip().lower()
+    # "original" continua valendo: e o nome que a linha tinha nos primeiros links.
+    line = "classica" if line == "original" else line
 
-    if line not in ("premium", "original"):
+    if line not in STORE_LINES:
         line = ""
 
     cart_product_ids = {
@@ -1838,18 +1846,17 @@ def store_front(request):
 
     # Linhas do catalogo do parceiro. So aparecem quando as duas existem no que
     # esta sendo exibido: com uma linha so, o filtro nao ajuda em nada.
-    line_labels = {"premium": "Premium", "original": "Original"}
     line_filters = [
-        {"value": value, "label": label, "active": value == line}
-        for value, label in line_labels.items()
-        if products.filter(raw_data__catalog_quality=label).exists()
+        {"value": value, "label": linha["label"], "active": value == line}
+        for value, linha in STORE_LINES.items()
+        if products.filter(raw_data__catalog_quality=linha["catalog_value"]).exists()
     ]
 
     if len(line_filters) < 2:
         line_filters, line = [], ""
 
     if line:
-        products = products.filter(raw_data__catalog_quality=line_labels[line])
+        products = products.filter(raw_data__catalog_quality=STORE_LINES[line]["catalog_value"])
 
     if size:
         products = products.filter(sizes__icontains=size)
