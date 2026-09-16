@@ -257,6 +257,12 @@
     </div>
 {% endif %}
 
+{% if filtering %}
+    <p class="store-results-count">
+        {{ results_count }} produto{{ results_count|pluralize }} encontrado{{ results_count|pluralize }}{% if query %} para “{{ query }}”{% endif %}.
+    </p>
+{% endif %}
+
 <div class="store-grid">
     {% for product in products %}
         <article class="store-product">

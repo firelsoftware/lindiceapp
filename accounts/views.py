@@ -1885,6 +1885,10 @@ def store_front(request):
     elif size_group == "adult" and size and size not in adult_size_options:
         size = ""
 
+    # Quem busca ou filtra quer ver o resultado, nao a vitrine: sem os carrosseis
+    # a lista de produtos aparece logo abaixo dos filtros, sem rolagem.
+    filtering = bool(query or category or active_group or size or line)
+
     # Carrosseis iniciais: imagens aleatorias de qualquer produto visivel do site.
     # Dois carrosseis lado a lado, com amostras aleatorias diferentes.
     featured_pool = (
@@ -1928,6 +1932,9 @@ def store_front(request):
     ]
     showcase_sections = [section for section in showcase_sections if section["items"]]
 
+    if filtering:
+        showcase_sections, featured_strip = [], []
+
     # Paginacao: a loja pode ter milhares de produtos. Sem paginar, a pagina
     # renderizava todos de uma vez (lenta o suficiente para estourar o timeout
     # do servidor em producao). Processamos apenas os itens da pagina atual.
@@ -1962,7 +1969,13 @@ def store_front(request):
             "base_querystring": base_querystring,
             "showcase_sections": showcase_sections,
             "featured_strip": featured_strip,
-            "store_reels": StoreReel.objects.filter(is_visible=True).select_related("product"),
+            "store_reels": (
+                StoreReel.objects.none()
+                if filtering
+                else StoreReel.objects.filter(is_visible=True).select_related("product")
+            ),
+            "filtering": filtering,
+            "results_count": paginator.count,
             "query": query,
             "groups": groups,
             "subcategories": subcategories,

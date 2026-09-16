@@ -1004,6 +1004,22 @@ class StoreFlowTests(TestCase):
         # Produtos com imagem entram no carrossel de destaques.
         self.assertContains(response, "Bota Ankle Boot Capa Cano Curto")
 
+    def test_search_shows_results_without_the_showcase_carousels(self):
+        procurado = self.create_supplier_product(name="Fone Wearzone WZ06", category="Smartwatches")
+        self.create_supplier_product(supplier_code="RC091", name="Sandalia Azul", category="Sandalia")
+
+        resposta = self.client.get("/loja/", {"q": "fone"})
+        pagina = resposta.content.decode()
+
+        self.assertContains(resposta, procurado.name)
+        self.assertNotContains(resposta, "Você também pode gostar")
+        self.assertIn("1 produto encontrado para", pagina)
+        self.assertNotIn("Sandalia Azul", pagina)
+
+        resposta = self.client.get("/loja/")
+
+        self.assertNotContains(resposta, "produto encontrado para")
+
     def test_store_front_filters_by_catalog_line(self):
         premium = self.create_supplier_product(
             name="Tenis Premium Teste",
