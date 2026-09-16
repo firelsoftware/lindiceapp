@@ -65,3 +65,11 @@ Doze fotos mostravam o monograma "SF" da Santa Fiori impresso na palmilha. A mar
 Por decisão do administrador, nenhum anúncio cita marca famosa que não seja a do fabricante real do produto. Foram reescritos 51 anúncios (40 de tênis, 7 infantis e 4 de rasteiras) que traziam Adidas, Nike, Vans, New Balance, Converse, Mizuno, Olympikus, Alo, On, Gucci, Schutz, Miu Miu ou Louis Vuitton no nome ou no campo de marca. Cada nome novo descreve o que aparece na foto (tipo, cor e detalhe), e o campo de marca ficou vazio nesses casos. Marcas brasileiras visíveis no produto ou na caixa, como Beira Rio, Vizzano, Modare, Moleca, Mormaii, Cavalera e Ramarim, continuam registradas.
 
 As fotos ainda mostram logos aplicados no próprio calçado; a limpeza dos anúncios não altera isso. A loja ganhou o filtro de linha (Premium e Original), que usa a classificação do próprio catálogo e não cita marca.
+
+## Saltos, anabelas e chinelos (16/09/2026)
+
+O PDF `SALTOS  ANABELAS  CHINELOS (1).pdf` tem 76 páginas: capa, índice e as aberturas das três seções (páginas 1, 2, 3, 35 e 66) ficaram de fora. A revisão separou 264 recortes; dez são miniaturas da montagem ou pedaços do fundo decorativo e foram descartados. O manifesto `accounts/seed/catalogos_202609/saltos/manifest.json` reúne 175 produtos e 254 fotos, com 210 equivalências de fotos idênticas do PDF antigo.
+
+Quase toda a seção de anabelas tem várias faixas por página, ligadas às fotos por uma linha com ponto vermelho. A ligação foi calculada pela posição de cada preço (`output/catalogos/saltos/faixas.json`) e as 22 páginas em que a distância deixava dúvida foram conferidas página a página; a única correção foi a sandália dourada da página 32, que é o mesmo modelo da foto ao lado e ficou na faixa 17. Onde o mesmo desenho aparecia com faixas diferentes em páginas distintas, os produtos foram mantidos separados em vez de subir o preço.
+
+Nenhuma foto deste catálogo traz a marca do fornecedor. As marcas visíveis são dos próprios calçados: Beira Rio, Rafitthy, Villa Rosa, Via Uno, Via Scarpa, Dijean, Moleca, Actvitta e Rider. O ensaio passou, a importação local criou os 175 produtos e as 175 fichas locais responderam com preço, nome e galeria corretos.

@@ -1,0 +1,5224 @@
+{
+  "catalog": "saltos-2026-09",
+  "source_pdf": "C:\\Users\\Programador\\Downloads\\SALTOS  ANABELAS  CHINELOS (1).pdf",
+  "complete": true,
+  "products": [
+    {
+      "code": "pdf26-saltos-001",
+      "name": "Tamanco salto bloco com tira de dedo e brilho",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco salto bloco com tira de dedo e brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        4
+      ],
+      "photos": [
+        {
+          "file": "photos/4acc0098c5c9808bdee0eb79350ab4f60faab443950606b9cb104faacc12d87f.jpg",
+          "sha256": "4acc0098c5c9808bdee0eb79350ab4f60faab443950606b9cb104faacc12d87f",
+          "color": "off-white",
+          "source_id": "p04i01"
+        },
+        {
+          "file": "photos/9ccdafe30b096d2e10a461fb1a3ff14085369d1670c1b300f0a4b88dbc994df0.jpg",
+          "sha256": "9ccdafe30b096d2e10a461fb1a3ff14085369d1670c1b300f0a4b88dbc994df0",
+          "color": "preto",
+          "source_id": "p04i02"
+        },
+        {
+          "file": "photos/9824be23cb427cab1df03db24f3a6a9c4a43932672a90ebda75e99bbc4c3f079.jpg",
+          "sha256": "9824be23cb427cab1df03db24f3a6a9c4a43932672a90ebda75e99bbc4c3f079",
+          "color": "várias cores",
+          "source_id": "p04i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "beb37963b62a124f4b234090038acc51200256da49e5456556c412ed0a8bb03c"
+    },
+    {
+      "code": "pdf26-saltos-002",
+      "name": "Tamanco salto bloco de tira larga",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco salto bloco de tira larga. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        5
+      ],
+      "photos": [
+        {
+          "file": "photos/8c03873534c869faa8f162a24d7bc6f80399e26cadb265243af6b8e7660164e2.jpg",
+          "sha256": "8c03873534c869faa8f162a24d7bc6f80399e26cadb265243af6b8e7660164e2",
+          "color": "preto",
+          "source_id": "p05i01"
+        },
+        {
+          "file": "photos/198e671b568d7093e1964c23fb6fb895f4335d245610acfe50db2a57481d156c.jpg",
+          "sha256": "198e671b568d7093e1964c23fb6fb895f4335d245610acfe50db2a57481d156c",
+          "color": "nude",
+          "source_id": "p05i02"
+        },
+        {
+          "file": "photos/0e6332cf323f8f5376b8911eda0ebee0b07392fadc6bcd750d5826eee8f79e05.jpg",
+          "sha256": "0e6332cf323f8f5376b8911eda0ebee0b07392fadc6bcd750d5826eee8f79e05",
+          "color": "várias cores",
+          "source_id": "p05i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "fa7ca49843a38139597b1bf63559a971ad1b18c6c2065a69fbb22e8063ff5599"
+    },
+    {
+      "code": "pdf26-saltos-003",
+      "name": "Tamanco com salto vazado prateado",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco com salto vazado prateado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        6
+      ],
+      "photos": [
+        {
+          "file": "photos/b96975623f61513708018203e969877ad365f7db63bc0cbc415e8562be04f67c.jpg",
+          "sha256": "b96975623f61513708018203e969877ad365f7db63bc0cbc415e8562be04f67c",
+          "color": "off-white",
+          "source_id": "p06i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p5-i1"
+      ],
+      "revision": "adecb3b6fd41d14710d5e0933fc48a96ed306ed960001e2e2b7ed1a0dbcf5372"
+    },
+    {
+      "code": "pdf26-saltos-004",
+      "name": "Sandália de tiras finas com brilho e salto bloco",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália de tiras finas com brilho e salto bloco. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        6
+      ],
+      "photos": [
+        {
+          "file": "photos/74bd396d7ad39f5449a9eb0d6c6341f53f92f43f6c919e98fa1c973d20c4071e.jpg",
+          "sha256": "74bd396d7ad39f5449a9eb0d6c6341f53f92f43f6c919e98fa1c973d20c4071e",
+          "color": "off-white",
+          "source_id": "p06i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "14bb29a25b839dd4136bc32d42131a9b6288632556ffa3b8ea85c9c34d6ec0b9"
+    },
+    {
+      "code": "pdf26-saltos-005",
+      "name": "Tamanco de duas tiras com bico metalizado",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco de duas tiras com bico metalizado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        7
+      ],
+      "photos": [
+        {
+          "file": "photos/41c8fbc0274cd6de1adca36101b745ff48fbab6ef3732e1789c91a994cffb6cb.jpg",
+          "sha256": "41c8fbc0274cd6de1adca36101b745ff48fbab6ef3732e1789c91a994cffb6cb",
+          "color": "off-white",
+          "source_id": "p07i01"
+        },
+        {
+          "file": "photos/058940054c63f5c2d894128b1936f39042ef5663e751583d57f5439bef832d68.jpg",
+          "sha256": "058940054c63f5c2d894128b1936f39042ef5663e751583d57f5439bef832d68",
+          "color": "off-white",
+          "source_id": "p07i04"
+        },
+        {
+          "file": "photos/2dce211c2598a2ee852b87e946899ae8a2851227b1738c965a167dbcde5c1a8e.jpg",
+          "sha256": "2dce211c2598a2ee852b87e946899ae8a2851227b1738c965a167dbcde5c1a8e",
+          "color": "preto",
+          "source_id": "p07i02"
+        },
+        {
+          "file": "photos/a471d572b051f7f8009c8b50aea5e4884bf396d151f5eca0c9a70806d44ff3f5.jpg",
+          "sha256": "a471d572b051f7f8009c8b50aea5e4884bf396d151f5eca0c9a70806d44ff3f5",
+          "color": "preto",
+          "source_id": "p07i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "855ceb6d13e4d1bd64e650124c8b0209c6bc2d14256111075ee4df98257ac0f7"
+    },
+    {
+      "code": "pdf26-saltos-006",
+      "name": "Tamanco de tira transparente com salto dourado",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco de tira transparente com salto dourado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        8
+      ],
+      "photos": [
+        {
+          "file": "photos/11fc491e405108307de7a907318a8f8a5b8c98ee90809a2a81a7fb69cb1d94a7.jpg",
+          "sha256": "11fc491e405108307de7a907318a8f8a5b8c98ee90809a2a81a7fb69cb1d94a7",
+          "color": "transparente",
+          "source_id": "p08i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "d83837f2ad5506e30d8561103787d62afd38f1f0b623fa1e5b5c71e5656b15f3"
+    },
+    {
+      "code": "pdf26-saltos-007",
+      "name": "Sandália de tiras com pedraria colorida",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália de tiras com pedraria colorida. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        8
+      ],
+      "photos": [
+        {
+          "file": "photos/5311b2c77f7872ee96eff44deaae8cf1f856930373532c0af4fe62973600848b.jpg",
+          "sha256": "5311b2c77f7872ee96eff44deaae8cf1f856930373532c0af4fe62973600848b",
+          "color": "caramelo",
+          "source_id": "p08i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "0a1a489f46f666b798fe27957c8aa4ad6a62f6d6c5b6601624b32ded9c313d8d"
+    },
+    {
+      "code": "pdf26-saltos-008",
+      "name": "Tamanco de dedo com tira de brilho",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco de dedo com tira de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        9
+      ],
+      "photos": [
+        {
+          "file": "photos/1a7551f3b096beb2e6bd9cf1ad97964d08512f76c95b5e2bbd5048b4b9f7b093.jpg",
+          "sha256": "1a7551f3b096beb2e6bd9cf1ad97964d08512f76c95b5e2bbd5048b4b9f7b093",
+          "color": "caramelo",
+          "source_id": "p09i01"
+        },
+        {
+          "file": "photos/dae554aab1e19bf20fd8e9485229338146f534675085702cb2b1d0a49ee79ef1.jpg",
+          "sha256": "dae554aab1e19bf20fd8e9485229338146f534675085702cb2b1d0a49ee79ef1",
+          "color": "caramelo",
+          "source_id": "p09i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "5c632b41523f3b3c90d18bab9e0d826987db58c1bc9ac18474f45518747a168c"
+    },
+    {
+      "code": "pdf26-saltos-009",
+      "name": "Tamanco de dedo liso",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco de dedo liso. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        9
+      ],
+      "photos": [
+        {
+          "file": "photos/6aa53e87df047ce86e9563aa333200d7aaddc2ab606240e38873854b0c561b02.jpg",
+          "sha256": "6aa53e87df047ce86e9563aa333200d7aaddc2ab606240e38873854b0c561b02",
+          "color": "marrom",
+          "source_id": "p09i03"
+        },
+        {
+          "file": "photos/e9cc6377212c8a60d6111e28cabcc4001c3fe96357c185fd114d452c36a9bf90.jpg",
+          "sha256": "e9cc6377212c8a60d6111e28cabcc4001c3fe96357c185fd114d452c36a9bf90",
+          "color": "marrom",
+          "source_id": "p09i04"
+        }
+      ],
+      "aliases": [],
+      "revision": "8ddf221611b52e6728de0ab451ed3342e254bca7b24a6e9a69915777f5030e55"
+    },
+    {
+      "code": "pdf26-saltos-010",
+      "name": "Tamanco verniz com laço e salto dourado",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco verniz com laço e salto dourado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        10
+      ],
+      "photos": [
+        {
+          "file": "photos/95145108c0fe52e2be5749d6125505006d92d166466cc31ff1d80c4e74268a17.jpg",
+          "sha256": "95145108c0fe52e2be5749d6125505006d92d166466cc31ff1d80c4e74268a17",
+          "color": "off-white",
+          "source_id": "p10i01"
+        },
+        {
+          "file": "photos/95202ec5e039a27e4f946f05773e9cb796b80fbc2fa05570a409fce7e9f9b5e9.jpg",
+          "sha256": "95202ec5e039a27e4f946f05773e9cb796b80fbc2fa05570a409fce7e9f9b5e9",
+          "color": "off-white",
+          "source_id": "p10i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p7-i1",
+        "saltos_anabelas_chinelos-f20-p7-i2"
+      ],
+      "revision": "214fb02496e1c256c4b7cec690e74ab2ae3208304fd977fc9d941e4a2af28382"
+    },
+    {
+      "code": "pdf26-saltos-011",
+      "name": "Sandália de tiras com pedra e salto dourado",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália de tiras com pedra e salto dourado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        10
+      ],
+      "photos": [
+        {
+          "file": "photos/72cc33a763a77d2d868eb7359856e9625a91b87c01fb43fc264a61912a61e3c5.jpg",
+          "sha256": "72cc33a763a77d2d868eb7359856e9625a91b87c01fb43fc264a61912a61e3c5",
+          "color": "off-white",
+          "source_id": "p10i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p7-i3"
+      ],
+      "revision": "3760aa0e61e8c59a161a94b8cf0ea5a30c650c4302d2ddd2deb9396f16729d47"
+    },
+    {
+      "code": "pdf26-saltos-012",
+      "name": "Tamanco de recorte vazado",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco de recorte vazado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        11
+      ],
+      "photos": [
+        {
+          "file": "photos/b99df4abca92337ffe9c22060119751c3276d70aea5032ed4f5b141675dab036.jpg",
+          "sha256": "b99df4abca92337ffe9c22060119751c3276d70aea5032ed4f5b141675dab036",
+          "color": "off-white",
+          "source_id": "p11i01"
+        },
+        {
+          "file": "photos/ccf6c03178a56669757cf7c8a14c8ffbf8305e3f5af373df9f711352385a2b1b.jpg",
+          "sha256": "ccf6c03178a56669757cf7c8a14c8ffbf8305e3f5af373df9f711352385a2b1b",
+          "color": "off-white",
+          "source_id": "p11i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p8-i1",
+        "saltos_anabelas_chinelos-f20-p8-i2"
+      ],
+      "revision": "8cdf1930a00e9f9a95f1e88c78667ada5cee42ef2f8e44125f8816f531105011"
+    },
+    {
+      "code": "pdf26-saltos-013",
+      "name": "Tamanco de tira transparente com salto acrílico",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco de tira transparente com salto acrílico. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        12
+      ],
+      "photos": [
+        {
+          "file": "photos/719e4e22e93bd07e56e2ba9a5e65778ba5f93cfeaf733d90d8b15455db06ca02.jpg",
+          "sha256": "719e4e22e93bd07e56e2ba9a5e65778ba5f93cfeaf733d90d8b15455db06ca02",
+          "color": "nude",
+          "source_id": "p12i01"
+        },
+        {
+          "file": "photos/17ebf802ccdbd2b712a3ad97e3d4ac6b6456d920f5c4dc8d0b219d3ea2c79963.jpg",
+          "sha256": "17ebf802ccdbd2b712a3ad97e3d4ac6b6456d920f5c4dc8d0b219d3ea2c79963",
+          "color": "nude",
+          "source_id": "p12i02"
+        },
+        {
+          "file": "photos/2af3c72ed87c911e34a49876f8563b6a76a0d3ca0bdf1270ccd4d1f2fe72699c.jpg",
+          "sha256": "2af3c72ed87c911e34a49876f8563b6a76a0d3ca0bdf1270ccd4d1f2fe72699c",
+          "color": "preto",
+          "source_id": "p12i03"
+        },
+        {
+          "file": "photos/fefe4a72c13e00c6a0c4e4e7f70a8cc32e4921a1a201a8b4b567b985789ad8f5.jpg",
+          "sha256": "fefe4a72c13e00c6a0c4e4e7f70a8cc32e4921a1a201a8b4b567b985789ad8f5",
+          "color": "preto",
+          "source_id": "p12i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p19-i4"
+      ],
+      "revision": "24218a654bde06cfd7ba275638d8f3a67881b917d44c71a71432a27b73dc863c"
+    },
+    {
+      "code": "pdf26-saltos-014",
+      "name": "Tamanco transparente com salto acrílico largo",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco transparente com salto acrílico largo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        13
+      ],
+      "photos": [
+        {
+          "file": "photos/9cd0f1bdbc5932f3acf060bb2c2e58e482c84337b1f4f87ab6a2d9f0105bfea2.jpg",
+          "sha256": "9cd0f1bdbc5932f3acf060bb2c2e58e482c84337b1f4f87ab6a2d9f0105bfea2",
+          "color": "off-white",
+          "source_id": "p13i01"
+        },
+        {
+          "file": "photos/73409c18872432339dae0e63808467f4273abf672d92d50d626a03bf2c52e41a.jpg",
+          "sha256": "73409c18872432339dae0e63808467f4273abf672d92d50d626a03bf2c52e41a",
+          "color": "nude",
+          "source_id": "p13i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p9-i1",
+        "saltos_anabelas_chinelos-f18-p9-i2"
+      ],
+      "revision": "f9750d417488bb962b254f39405c13d556f2e00b4abaf55e5073effd64638b73"
+    },
+    {
+      "code": "pdf26-saltos-015",
+      "name": "Tamanco de dedo com fivela oval",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco de dedo com fivela oval. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        14
+      ],
+      "photos": [
+        {
+          "file": "photos/5496c01d70927e3d6f1d3c7e6b2808a980ebe8cbe95c786461b066f2984f9b2d.jpg",
+          "sha256": "5496c01d70927e3d6f1d3c7e6b2808a980ebe8cbe95c786461b066f2984f9b2d",
+          "color": "off-white",
+          "source_id": "p14i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "a9bcc7aa27f0dd1853246de2b81a278dc3916bb5aab37851585480c7153f22c3"
+    },
+    {
+      "code": "pdf26-saltos-016",
+      "name": "Sandália dourada de tiras finas",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália dourada de tiras finas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        14
+      ],
+      "photos": [
+        {
+          "file": "photos/1fc6a46d3c4768bd98ecbe732287f7e9d093d77c85a684165401d06aa2c76fd7.jpg",
+          "sha256": "1fc6a46d3c4768bd98ecbe732287f7e9d093d77c85a684165401d06aa2c76fd7",
+          "color": "dourado",
+          "source_id": "p14i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "c9ef6532db64590a7940728b4a3952517bb3671bf8e9c8121d848a412aa6ca18"
+    },
+    {
+      "code": "pdf26-saltos-017",
+      "name": "Sandália de salto fino com laço",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália de salto fino com laço. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        15
+      ],
+      "photos": [
+        {
+          "file": "photos/922278be0a673d3dec5a08ba088bf6def806d3093b6ca22dafd3ff939cb070a6.jpg",
+          "sha256": "922278be0a673d3dec5a08ba088bf6def806d3093b6ca22dafd3ff939cb070a6",
+          "color": "pink",
+          "source_id": "p15i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p14-i2"
+      ],
+      "revision": "3471b51b63754d05df092889aca7fc568b94e463ee9f8310f10fa9d0dbd7a6f7"
+    },
+    {
+      "code": "pdf26-saltos-018",
+      "name": "Sandália de tiras com fivela dourada",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália de tiras com fivela dourada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        15
+      ],
+      "photos": [
+        {
+          "file": "photos/4dfac8ff7687045edc1230da0e33603c2df14246b414ccdeec3284cbe3860f61.jpg",
+          "sha256": "4dfac8ff7687045edc1230da0e33603c2df14246b414ccdeec3284cbe3860f61",
+          "color": "nude",
+          "source_id": "p15i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "6de8fad72cdc57353b6ba3144b2c6cc30998fa09df6fe78439d2cf9f682beb9f"
+    },
+    {
+      "code": "pdf26-saltos-019",
+      "name": "Sandália metalizada com tiras de brilho",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália metalizada com tiras de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        16
+      ],
+      "photos": [
+        {
+          "file": "photos/e8d2384ccaa1d9b8795ba5ec6473a614d63f48166e27b5d6317a2a986d161101.jpg",
+          "sha256": "e8d2384ccaa1d9b8795ba5ec6473a614d63f48166e27b5d6317a2a986d161101",
+          "color": "prata",
+          "source_id": "p16i01"
+        },
+        {
+          "file": "photos/dba0ea911a5298619882fccfd8f4eefb7caf3303a3f99cf3604523c274779d75.jpg",
+          "sha256": "dba0ea911a5298619882fccfd8f4eefb7caf3303a3f99cf3604523c274779d75",
+          "color": "prata",
+          "source_id": "p16i02"
+        },
+        {
+          "file": "photos/0649ca95f202c40af916411acb6beab8deb10486d1f1e09357fae793a1dc6f00.jpg",
+          "sha256": "0649ca95f202c40af916411acb6beab8deb10486d1f1e09357fae793a1dc6f00",
+          "color": "dourado",
+          "source_id": "p16i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "8753e529e5dd6c4718fc4269b65cb72fa4410e22e037fcb449f14758168daa66"
+    },
+    {
+      "code": "pdf26-saltos-020",
+      "name": "Tamanco com pedra oval",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco com pedra oval. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        17
+      ],
+      "photos": [
+        {
+          "file": "photos/737cb8b7af82e31c02a594220f72e4e24e2e6d5e136fa210268f9454eb40d306.jpg",
+          "sha256": "737cb8b7af82e31c02a594220f72e4e24e2e6d5e136fa210268f9454eb40d306",
+          "color": "preto",
+          "source_id": "p17i01"
+        },
+        {
+          "file": "photos/6393fd00d37e88aedfcce694fa335d22c7fe60c73571710e186dbaac1d940191.jpg",
+          "sha256": "6393fd00d37e88aedfcce694fa335d22c7fe60c73571710e186dbaac1d940191",
+          "color": "preto",
+          "source_id": "p17i02"
+        },
+        {
+          "file": "photos/35c2c29d7e02506c29c259f703a28a66d48c063e00bf8fa9a356e10641e72678.jpg",
+          "sha256": "35c2c29d7e02506c29c259f703a28a66d48c063e00bf8fa9a356e10641e72678",
+          "color": "preto e off-white",
+          "source_id": "p17i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "c1db65046308107fc2534a6c22e3fecb83a1ddec3300274488042a8ce2f531bc"
+    },
+    {
+      "code": "pdf26-saltos-021",
+      "name": "Sandália chanel de salto fino dourado",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália chanel de salto fino dourado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        18
+      ],
+      "photos": [
+        {
+          "file": "photos/9fb1a8b1215ce18c3afafb14d567c0240b3ab66250fbb10cd72d4ae5ae87b3b8.jpg",
+          "sha256": "9fb1a8b1215ce18c3afafb14d567c0240b3ab66250fbb10cd72d4ae5ae87b3b8",
+          "color": "off-white",
+          "source_id": "p18i01"
+        },
+        {
+          "file": "photos/70049b7384525dba6091b557936f4d9a3fbc40bc982c9b3950beefd16fa9ef13.jpg",
+          "sha256": "70049b7384525dba6091b557936f4d9a3fbc40bc982c9b3950beefd16fa9ef13",
+          "color": "preto",
+          "source_id": "p18i02"
+        },
+        {
+          "file": "photos/fbc344662ea276c6466ee24c77979296e60ef19c18e63a2e4cd987dad8416fe9.jpg",
+          "sha256": "fbc344662ea276c6466ee24c77979296e60ef19c18e63a2e4cd987dad8416fe9",
+          "color": "nude",
+          "source_id": "p18i03"
+        },
+        {
+          "file": "photos/9b4f8e887e4e5f6fb3f590f021adf0b8b7a9ed7b53ec6b3d84cfa5b120fa1006.jpg",
+          "sha256": "9b4f8e887e4e5f6fb3f590f021adf0b8b7a9ed7b53ec6b3d84cfa5b120fa1006",
+          "color": "vermelho",
+          "source_id": "p18i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p18-i1",
+        "saltos_anabelas_chinelos-f20-p18-i2",
+        "saltos_anabelas_chinelos-f20-p18-i3",
+        "saltos_anabelas_chinelos-f20-p18-i4"
+      ],
+      "revision": "192cc08b41f158d75219caa1c6d6fb625d1b57a41e3dedb9f591c719e02d2408"
+    },
+    {
+      "code": "pdf26-saltos-022",
+      "name": "Sandália com laço e salto bloco",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália com laço e salto bloco. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        19
+      ],
+      "photos": [
+        {
+          "file": "photos/61724d0b4b0ba2975992f9430a963e833f54f445d529fb9639d489bca8d28a83.jpg",
+          "sha256": "61724d0b4b0ba2975992f9430a963e833f54f445d529fb9639d489bca8d28a83",
+          "color": "off-white",
+          "source_id": "p19i01"
+        },
+        {
+          "file": "photos/eb0e9eadeb0c6a21944c073d2c2c8bb4d21a347313136e1887dd330ca3a46d62.jpg",
+          "sha256": "eb0e9eadeb0c6a21944c073d2c2c8bb4d21a347313136e1887dd330ca3a46d62",
+          "color": "off-white",
+          "source_id": "p19i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f23-p20-i1"
+      ],
+      "revision": "5170a80b633d54e9a4f382a4c9c18da6a7285fe7e38aadf9a33161e1d079f1f0"
+    },
+    {
+      "code": "pdf26-saltos-023",
+      "name": "Tamanco de duas tiras com fivela quadrada",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco de duas tiras com fivela quadrada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        20
+      ],
+      "photos": [
+        {
+          "file": "photos/027cf7d8a2a136bf054a7119ed19d911e6d84d3771b18f491a4ee9c92b6b451a.jpg",
+          "sha256": "027cf7d8a2a136bf054a7119ed19d911e6d84d3771b18f491a4ee9c92b6b451a",
+          "color": "marrom",
+          "source_id": "p20i01"
+        },
+        {
+          "file": "photos/a56f076cdd58d186c092b3b867abde0e43370fd6913e1b35a1050a82e41b43fa.jpg",
+          "sha256": "a56f076cdd58d186c092b3b867abde0e43370fd6913e1b35a1050a82e41b43fa",
+          "color": "off-white",
+          "source_id": "p20i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f17-p21-i1",
+        "saltos_anabelas_chinelos-f17-p21-i2"
+      ],
+      "revision": "c596882a1dfee68eb60573f45838d2120c8cf6173dada7c939f0a16d88b390b7"
+    },
+    {
+      "code": "pdf26-saltos-024",
+      "name": "Sandália meia-pata com tira trançada brilhante",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália meia-pata com tira trançada brilhante. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        21
+      ],
+      "photos": [
+        {
+          "file": "photos/a36f025ebf45c337a3b2e96a2528bfa96819adcfe2cf8cea38418e06480488cc.jpg",
+          "sha256": "a36f025ebf45c337a3b2e96a2528bfa96819adcfe2cf8cea38418e06480488cc",
+          "color": "nude",
+          "source_id": "p21i01"
+        },
+        {
+          "file": "photos/b3b5a4ff223f375cf1b8ea4a66510fc4f54eaa60e383fb622e6facd02fad595b.jpg",
+          "sha256": "b3b5a4ff223f375cf1b8ea4a66510fc4f54eaa60e383fb622e6facd02fad595b",
+          "color": "preto",
+          "source_id": "p21i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f23-p24-i1",
+        "saltos_anabelas_chinelos-f23-p24-i2"
+      ],
+      "revision": "8d7d29e0d893680ab1fe5c7b3c5e5894ba437fea21af92d72b0f75dad87d5a0f"
+    },
+    {
+      "code": "pdf26-saltos-025",
+      "name": "Sandália de tiras finas com brilho",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália de tiras finas com brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        22
+      ],
+      "photos": [
+        {
+          "file": "photos/5d3776818af9a22f834123bd82ce053ed297989544a2a4d26833efd422d3c35a.jpg",
+          "sha256": "5d3776818af9a22f834123bd82ce053ed297989544a2a4d26833efd422d3c35a",
+          "color": "rosé",
+          "source_id": "p22i01"
+        },
+        {
+          "file": "photos/0719074c368d25cb7921cbcf5e826f4f79900de8cce262073078b83ad0916fe6.jpg",
+          "sha256": "0719074c368d25cb7921cbcf5e826f4f79900de8cce262073078b83ad0916fe6",
+          "color": "off-white",
+          "source_id": "p22i02"
+        },
+        {
+          "file": "photos/d67f6a4ea5c34736c63f2e73816bfb35d06f1d621c4338b89c5a26e1f103e839.jpg",
+          "sha256": "d67f6a4ea5c34736c63f2e73816bfb35d06f1d621c4338b89c5a26e1f103e839",
+          "color": "dourado",
+          "source_id": "p22i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p25-i3"
+      ],
+      "revision": "88f5eef69310b4ed77b994dea7f176f4b578f2987c651cc9815584b120fc4946"
+    },
+    {
+      "code": "pdf26-saltos-026",
+      "name": "Tamanco com pedra oval branca",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco com pedra oval branca. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        23
+      ],
+      "photos": [
+        {
+          "file": "photos/3b24c2465fc495ef58e8ce8eb93a2ca90a829df9bcb5a657e5903735e790b660.jpg",
+          "sha256": "3b24c2465fc495ef58e8ce8eb93a2ca90a829df9bcb5a657e5903735e790b660",
+          "color": "off-white",
+          "source_id": "p23i01"
+        },
+        {
+          "file": "photos/bccc6243982f4759575628d6a6c7bdda9b3620a0359ad8bc72e9f136b03cd1dd.jpg",
+          "sha256": "bccc6243982f4759575628d6a6c7bdda9b3620a0359ad8bc72e9f136b03cd1dd",
+          "color": "off-white",
+          "source_id": "p23i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p27-i1",
+        "saltos_anabelas_chinelos-f20-p27-i2"
+      ],
+      "revision": "8081d51619ac496fab3f6823d9099db012d7b16f2880d820697becb096227c33"
+    },
+    {
+      "code": "pdf26-saltos-027",
+      "name": "Sandália de tira transparente com salto bloco",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália de tira transparente com salto bloco. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        24
+      ],
+      "photos": [
+        {
+          "file": "photos/7cbe31a2c3ff639a67fe538c049ca83c33dba8999e55b503f3afcbab5a4bb718.jpg",
+          "sha256": "7cbe31a2c3ff639a67fe538c049ca83c33dba8999e55b503f3afcbab5a4bb718",
+          "color": "preto",
+          "source_id": "p24i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p30-i1"
+      ],
+      "revision": "8803cd3a7b2a758be3901d8576a7f2c9d47314b8bfe19954a130924ed5580486"
+    },
+    {
+      "code": "pdf26-saltos-028",
+      "name": "Sandália de tira transparente com salto alto",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália de tira transparente com salto alto. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        24
+      ],
+      "photos": [
+        {
+          "file": "photos/bd383f62048b26c10c13dd2ee151cbd645f5c04cbfdfee9ffce675bd5f5fb649.jpg",
+          "sha256": "bd383f62048b26c10c13dd2ee151cbd645f5c04cbfdfee9ffce675bd5f5fb649",
+          "color": "preto",
+          "source_id": "p24i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p30-i2"
+      ],
+      "revision": "6deed74dc63b90e0064272ae097bd6a74f589d703e1eba4388ffa05c1825e750"
+    },
+    {
+      "code": "pdf26-saltos-029",
+      "name": "Sandália metalizada de tiras finas",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália metalizada de tiras finas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        24
+      ],
+      "photos": [
+        {
+          "file": "photos/9fc08c4b55015e1c3b26bd96c18b7c3f1ead8b96b18acee89a289048b3863967.jpg",
+          "sha256": "9fc08c4b55015e1c3b26bd96c18b7c3f1ead8b96b18acee89a289048b3863967",
+          "color": "prata",
+          "source_id": "p24i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p30-i3"
+      ],
+      "revision": "c686520aae4028b9094dcff0bb9c5c7f5edd83b20b085031c870f81c5b93598e"
+    },
+    {
+      "code": "pdf26-saltos-030",
+      "name": "Sandália de tiras trançadas",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália de tiras trançadas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        25
+      ],
+      "photos": [
+        {
+          "file": "photos/34c2cafaa1276de4ec7e7b04a467908cb1fbfc0b4e917b26c574753161d43045.jpg",
+          "sha256": "34c2cafaa1276de4ec7e7b04a467908cb1fbfc0b4e917b26c574753161d43045",
+          "color": "caramelo",
+          "source_id": "p25i01"
+        },
+        {
+          "file": "photos/890a7508e1478863e48f3f402bd1fd69ee4cdc632da307f2999736eb6b00b27a.jpg",
+          "sha256": "890a7508e1478863e48f3f402bd1fd69ee4cdc632da307f2999736eb6b00b27a",
+          "color": "várias cores",
+          "source_id": "p25i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p31-i1",
+        "saltos_anabelas_chinelos-f20-p31-i3"
+      ],
+      "revision": "443c503f75df4239172ac0fb556af0500e1afb95a6729794cc894fc0dbc26ec7"
+    },
+    {
+      "code": "pdf26-saltos-031",
+      "name": "Tamanco de franjas",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco de franjas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        26
+      ],
+      "photos": [
+        {
+          "file": "photos/3d65c7ed43f53e49b83ad09ac7050824f94544b9cedd36ed2415b64db2633fec.jpg",
+          "sha256": "3d65c7ed43f53e49b83ad09ac7050824f94544b9cedd36ed2415b64db2633fec",
+          "color": "caramelo",
+          "source_id": "p26i03"
+        },
+        {
+          "file": "photos/78b6db5f399bfda615c7b4d82e9be03c6362b21b86a577ffc0534516948f4bbb.jpg",
+          "sha256": "78b6db5f399bfda615c7b4d82e9be03c6362b21b86a577ffc0534516948f4bbb",
+          "color": "preto",
+          "source_id": "p26i05"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p32-i1",
+        "saltos_anabelas_chinelos-f20-p32-i3"
+      ],
+      "revision": "9d9aac63e52b9d4989786ac78075683e4995ca2565618938b6e5512809c8a5bd"
+    },
+    {
+      "code": "pdf26-saltos-032",
+      "name": "Tamanco verniz com argolas douradas",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco verniz com argolas douradas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        26
+      ],
+      "photos": [
+        {
+          "file": "photos/500088139c90a095aa759d5d3ccf56e2c648a346133d62ead781966386c9eeeb.jpg",
+          "sha256": "500088139c90a095aa759d5d3ccf56e2c648a346133d62ead781966386c9eeeb",
+          "color": "marrom",
+          "source_id": "p26i04"
+        },
+        {
+          "file": "photos/6c9e46ae51140c12a85fd9e739af82e7d02dbd1121ce6143e62d8536c72360f6.jpg",
+          "sha256": "6c9e46ae51140c12a85fd9e739af82e7d02dbd1121ce6143e62d8536c72360f6",
+          "color": "preto",
+          "source_id": "p26i06"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p32-i2",
+        "saltos_anabelas_chinelos-f20-p32-i4"
+      ],
+      "revision": "d950cbc5aa1293b9cb468d34194ad857d6c9a6af26c2fc67710a4e7f5a3ca890"
+    },
+    {
+      "code": "pdf26-saltos-033",
+      "name": "Sandália metalizada de tiras finas com salto bloco",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália metalizada de tiras finas com salto bloco. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        27
+      ],
+      "photos": [
+        {
+          "file": "photos/0703385fa52246b967a808a6a84015bf73a4f8afecf0910edd720472d1d45b82.jpg",
+          "sha256": "0703385fa52246b967a808a6a84015bf73a4f8afecf0910edd720472d1d45b82",
+          "color": "dourado",
+          "source_id": "p27i03"
+        },
+        {
+          "file": "photos/d393c37b3b6c198d3daff3169f475a8d07183d2d352e5f4e12ed9f826882e634.jpg",
+          "sha256": "d393c37b3b6c198d3daff3169f475a8d07183d2d352e5f4e12ed9f826882e634",
+          "color": "preto e dourado",
+          "source_id": "p27i04"
+        },
+        {
+          "file": "photos/8ce0c59d255ed5eee3628b3e9dbcb9d02580b5976a2ab638c482c65e7f591e75.jpg",
+          "sha256": "8ce0c59d255ed5eee3628b3e9dbcb9d02580b5976a2ab638c482c65e7f591e75",
+          "color": "preto e dourado",
+          "source_id": "p27i06"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f23-p33-i1",
+        "saltos_anabelas_chinelos-f23-p33-i2",
+        "saltos_anabelas_chinelos-f23-p33-i4"
+      ],
+      "revision": "1b591f3b232196fc25866208557b1f7c73ddadf2a5f74c658ea0dbaa18ce4a9c"
+    },
+    {
+      "code": "pdf26-saltos-034",
+      "name": "Sandália de salto fino com tira de brilho",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália de salto fino com tira de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        27
+      ],
+      "photos": [
+        {
+          "file": "photos/f4f41949f022b53a5c4e42503b577718c67ad54e318c67e1dda724edfb8a6e8f.jpg",
+          "sha256": "f4f41949f022b53a5c4e42503b577718c67ad54e318c67e1dda724edfb8a6e8f",
+          "color": "preto",
+          "source_id": "p27i05"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f23-p33-i3"
+      ],
+      "revision": "80f70649b1dee20186365032d3f333646b62ce2fd16511eef9f90e4752a17708"
+    },
+    {
+      "code": "pdf26-saltos-035",
+      "name": "Tamanco de tira larga e salto bloco",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco de tira larga e salto bloco. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        28
+      ],
+      "photos": [
+        {
+          "file": "photos/178ce27002966e6f75b9f6ef3228a29a734f23931c2b519a58b802cb9d7a9ccd.jpg",
+          "sha256": "178ce27002966e6f75b9f6ef3228a29a734f23931c2b519a58b802cb9d7a9ccd",
+          "color": "caramelo",
+          "source_id": "p28i01"
+        },
+        {
+          "file": "photos/0cdc82cb1a9913b0b83569c4a3058a69444918570dd951f5270d544044fdc987.jpg",
+          "sha256": "0cdc82cb1a9913b0b83569c4a3058a69444918570dd951f5270d544044fdc987",
+          "color": "preto",
+          "source_id": "p28i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f23-p35-i1",
+        "saltos_anabelas_chinelos-f23-p35-i2"
+      ],
+      "revision": "4a865fa8b124a0eb034239802caefdcb5f6280552f60065c457666e76406d123"
+    },
+    {
+      "code": "pdf26-saltos-036",
+      "name": "Sandália de tiras finas com salto taça",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália de tiras finas com salto taça. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        28
+      ],
+      "photos": [
+        {
+          "file": "photos/4efe74d87a32ee7712fe37ecd74c1fb441877d0ed47677a6d8157e3f18e9aae6.jpg",
+          "sha256": "4efe74d87a32ee7712fe37ecd74c1fb441877d0ed47677a6d8157e3f18e9aae6",
+          "color": "caramelo",
+          "source_id": "p28i03"
+        },
+        {
+          "file": "photos/aaf358000a804e9140e1e14104d4fb34581cca33c83d5701d2f5f6f5124ea182.jpg",
+          "sha256": "aaf358000a804e9140e1e14104d4fb34581cca33c83d5701d2f5f6f5124ea182",
+          "color": "preto",
+          "source_id": "p28i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f23-p35-i3",
+        "saltos_anabelas_chinelos-f23-p35-i4"
+      ],
+      "revision": "4c4deb7ee10bb7079dff353a18c19826d04a80021c8584a3f669cd60ff19d67d"
+    },
+    {
+      "code": "pdf26-saltos-037",
+      "name": "Sandália vermelha de tiras com fivela",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália vermelha de tiras com fivela. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        29
+      ],
+      "photos": [
+        {
+          "file": "photos/dbc0f84520819a99a6d9a67b04ef3e535e4e72f716399bb3187f472fee985854.jpg",
+          "sha256": "dbc0f84520819a99a6d9a67b04ef3e535e4e72f716399bb3187f472fee985854",
+          "color": "vermelho",
+          "source_id": "p29i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p36-i1"
+      ],
+      "revision": "f21ff7904be88db265ac21399dfefffb59a76d0b70ddcbed960dc0f9921a13d1"
+    },
+    {
+      "code": "pdf26-saltos-038",
+      "name": "Sandália bico fino de tiras finas",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália bico fino de tiras finas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        29
+      ],
+      "photos": [
+        {
+          "file": "photos/b12589e4ba7615f77ef15a9b847d86d8521200d157e71aa4c84aeba4a3438fc2.jpg",
+          "sha256": "b12589e4ba7615f77ef15a9b847d86d8521200d157e71aa4c84aeba4a3438fc2",
+          "color": "vinho",
+          "source_id": "p29i02"
+        },
+        {
+          "file": "photos/e4b449656e4878b67e660341a3ef53b8451d72a397405138990587a6b53bf523.jpg",
+          "sha256": "e4b449656e4878b67e660341a3ef53b8451d72a397405138990587a6b53bf523",
+          "color": "marrom",
+          "source_id": "p29i05"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p36-i2",
+        "saltos_anabelas_chinelos-f20-p36-i5"
+      ],
+      "revision": "31a7307246c43a5f56e2d57910f19c68b715fe02b608c6fc4dc4c5ecfcc75d7b"
+    },
+    {
+      "code": "pdf26-saltos-039",
+      "name": "Sandália amarela com tira de brilho",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália amarela com tira de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        29
+      ],
+      "photos": [
+        {
+          "file": "photos/4e5414c53f27790b9e1504a314bdbc5daaf68101dfec0b5246bd4f8ee3ec5564.jpg",
+          "sha256": "4e5414c53f27790b9e1504a314bdbc5daaf68101dfec0b5246bd4f8ee3ec5564",
+          "color": "amarelo",
+          "source_id": "p29i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p36-i3"
+      ],
+      "revision": "974568a5afda9d1ab954c8c659ac1b0377e86d4284135c5348b7202aadc2b133"
+    },
+    {
+      "code": "pdf26-saltos-040",
+      "name": "Sandália bico fino com tachas",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália bico fino com tachas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        29
+      ],
+      "photos": [
+        {
+          "file": "photos/48cae7222e7f229f10bfa597de99a5918d58dd8dbeb3d384c56fdfc050677a78.jpg",
+          "sha256": "48cae7222e7f229f10bfa597de99a5918d58dd8dbeb3d384c56fdfc050677a78",
+          "color": "preto",
+          "source_id": "p29i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p36-i4"
+      ],
+      "revision": "ff7b3a175312b7fc4f72f0bee10211e77855683f61a9b3cd6c080f0935892ebd"
+    },
+    {
+      "code": "pdf26-saltos-041",
+      "name": "Mule bico fino com recorte",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Mule bico fino com recorte. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        29
+      ],
+      "photos": [
+        {
+          "file": "photos/1478eeed88f96833c2d3a626731fab0b7059dadbb287e38f035cdaa7824fac91.jpg",
+          "sha256": "1478eeed88f96833c2d3a626731fab0b7059dadbb287e38f035cdaa7824fac91",
+          "color": "preto",
+          "source_id": "p29i06"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p36-i6"
+      ],
+      "revision": "7629a00017cc16eb06af9cc3e088330b607ae48cafd3b283afb03ab3df0085b8"
+    },
+    {
+      "code": "pdf26-saltos-042",
+      "name": "Tamanco vinho com fivela",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco vinho com fivela. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        29
+      ],
+      "photos": [
+        {
+          "file": "photos/45ed92cf779cecf055efb8d8ad1fcaf0365927227313e98b98e8693afea1988c.jpg",
+          "sha256": "45ed92cf779cecf055efb8d8ad1fcaf0365927227313e98b98e8693afea1988c",
+          "color": "vinho",
+          "source_id": "p29i07"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p36-i7"
+      ],
+      "revision": "8d97e7eaa9cfc1e4a27c966fecd44db2d4faa0eaa65303f483804e99f54fc12c"
+    },
+    {
+      "code": "pdf26-saltos-043",
+      "name": "Sandália preta com argola dourada",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália preta com argola dourada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        30
+      ],
+      "photos": [
+        {
+          "file": "photos/3d1784048745a1360a11f3969f6540d9c62b7a5d17a62c23f8f5f1c9c814640b.jpg",
+          "sha256": "3d1784048745a1360a11f3969f6540d9c62b7a5d17a62c23f8f5f1c9c814640b",
+          "color": "preto",
+          "source_id": "p30i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p37-i1"
+      ],
+      "revision": "581627768c211ba17ddb7ac6a6bb6b26ca955c0c4a8d13f6adfc96f0cdb79da0"
+    },
+    {
+      "code": "pdf26-saltos-044",
+      "name": "Sandália com tira metalizada e argola",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália com tira metalizada e argola. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        30
+      ],
+      "photos": [
+        {
+          "file": "photos/70b7d444101a30d59af43ddb559896957ddf22ee166a23ad886c6a6cd8d0ec4c.jpg",
+          "sha256": "70b7d444101a30d59af43ddb559896957ddf22ee166a23ad886c6a6cd8d0ec4c",
+          "color": "dourado",
+          "source_id": "p30i02"
+        },
+        {
+          "file": "photos/aa0b5c4d630397d2ccfaffb7d386dbf3870fee2710e605575ed342f0c3178984.jpg",
+          "sha256": "aa0b5c4d630397d2ccfaffb7d386dbf3870fee2710e605575ed342f0c3178984",
+          "color": "caramelo",
+          "source_id": "p30i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p37-i2",
+        "saltos_anabelas_chinelos-f18-p37-i3"
+      ],
+      "revision": "22dad8df9ed3111f5cb62328a1b4c69e44c69a2ebc8873262b44febba056d45f"
+    },
+    {
+      "code": "pdf26-saltos-045",
+      "name": "Sandália nude com tiras cruzadas de brilho",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália nude com tiras cruzadas de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        30
+      ],
+      "photos": [
+        {
+          "file": "photos/abc1588d40bb6ea8609460963eabc76372a14a9f3b3c0ea90c3653059aa3f3c2.jpg",
+          "sha256": "abc1588d40bb6ea8609460963eabc76372a14a9f3b3c0ea90c3653059aa3f3c2",
+          "color": "nude",
+          "source_id": "p30i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p37-i4"
+      ],
+      "revision": "75b8c1581206ae3cefd5c6dfae212d70fdea53da9aca0819264b12d0eee63677"
+    },
+    {
+      "code": "pdf26-saltos-046",
+      "name": "Scarpin peep toe com corrente dourada",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Scarpin peep toe com corrente dourada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        31
+      ],
+      "photos": [
+        {
+          "file": "photos/d3494959e83125fe7361962290f72dcbd847b8daa93a4672cc33fe93c79f6c98.jpg",
+          "sha256": "d3494959e83125fe7361962290f72dcbd847b8daa93a4672cc33fe93c79f6c98",
+          "color": "off-white",
+          "source_id": "p31i01"
+        },
+        {
+          "file": "photos/22a25a97c38287a91cbdafdaa2e454180a1a17758c70e2a330b697bb1b168539.jpg",
+          "sha256": "22a25a97c38287a91cbdafdaa2e454180a1a17758c70e2a330b697bb1b168539",
+          "color": "nude",
+          "source_id": "p31i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f23-p38-i2",
+        "saltos_anabelas_chinelos-f23-p38-i4"
+      ],
+      "revision": "814d1655af14a209cfa30be6bde0a78d94ea6ec1df08e17afbab054c03857e6c"
+    },
+    {
+      "code": "pdf26-saltos-047",
+      "name": "Scarpin peep toe de salto fino",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Scarpin peep toe de salto fino. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        31
+      ],
+      "photos": [
+        {
+          "file": "photos/a94249e2c44644b55caf5f70efd55c6d394e7f569d2cdb27d62961e91b9ab93e.jpg",
+          "sha256": "a94249e2c44644b55caf5f70efd55c6d394e7f569d2cdb27d62961e91b9ab93e",
+          "color": "preto",
+          "source_id": "p31i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f23-p38-i3"
+      ],
+      "revision": "741a81f71b7716357123b259dfb512678c9e8cbe929983bc708828cf6ebf9e33"
+    },
+    {
+      "code": "pdf26-saltos-048",
+      "name": "Scarpin peep toe caramelo",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Scarpin peep toe caramelo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        31
+      ],
+      "photos": [
+        {
+          "file": "photos/f6c6e10424e45be991291cc27fd555d0a574ba08add66412aefcd97f260726f2.jpg",
+          "sha256": "f6c6e10424e45be991291cc27fd555d0a574ba08add66412aefcd97f260726f2",
+          "color": "caramelo",
+          "source_id": "p31i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f23-p38-i6"
+      ],
+      "revision": "9158b27676e431eb81c0cad4191ba26efc5ed3c97b090666d14a24b440539e01"
+    },
+    {
+      "code": "pdf26-saltos-049",
+      "name": "Tamanco com fivela dourada",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco com fivela dourada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        32
+      ],
+      "photos": [
+        {
+          "file": "photos/82d5cd0668dfa0d764f23e8d72269ae3551241410e88b72f48765a54bd1e40ce.jpg",
+          "sha256": "82d5cd0668dfa0d764f23e8d72269ae3551241410e88b72f48765a54bd1e40ce",
+          "color": "preto",
+          "source_id": "p32i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f17-p39-i1"
+      ],
+      "revision": "0db8c0a7543b2ee53fc8e87fc036e1b81afc7669353bedcebf2ed7cd6f449dac"
+    },
+    {
+      "code": "pdf26-saltos-050",
+      "name": "Sandália dourada de tiras com salto bloco",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália dourada de tiras com salto bloco. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        32
+      ],
+      "photos": [
+        {
+          "file": "photos/c13de4b62c2fe119eeb330b246a6c975efc823cb48a8d3951ed130a193423007.jpg",
+          "sha256": "c13de4b62c2fe119eeb330b246a6c975efc823cb48a8d3951ed130a193423007",
+          "color": "dourado",
+          "source_id": "p32i02"
+        },
+        {
+          "file": "photos/a050f816d3921a75139140c47061667d1b3da7cecbbbb225cf6315d6ece40629.jpg",
+          "sha256": "a050f816d3921a75139140c47061667d1b3da7cecbbbb225cf6315d6ece40629",
+          "color": "dourado",
+          "source_id": "p32i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f17-p39-i2",
+        "saltos_anabelas_chinelos-f17-p39-i4"
+      ],
+      "revision": "0695ac47d9be9f9146431eea6690baca9286eb82eb9e16c7951b9f489d219536"
+    },
+    {
+      "code": "pdf26-saltos-051",
+      "name": "Sandália croco com salto bloco",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália croco com salto bloco. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        32
+      ],
+      "photos": [
+        {
+          "file": "photos/b1b1163364562e47514e800ec60675ed7f5e815ae7075d09617645e92a608f37.jpg",
+          "sha256": "b1b1163364562e47514e800ec60675ed7f5e815ae7075d09617645e92a608f37",
+          "color": "preto",
+          "source_id": "p32i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f17-p39-i3"
+      ],
+      "revision": "b24c610f38f898d14795159911829048fb9235485db0def7145a2096f8213343"
+    },
+    {
+      "code": "pdf26-saltos-052",
+      "name": "Tamanco de dedo com tira brilhante",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco de dedo com tira brilhante. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        33
+      ],
+      "photos": [
+        {
+          "file": "photos/2d32812ca71d9e0cb41a6cb494fdd843087fe65bc8341b97735651181392ebaf.jpg",
+          "sha256": "2d32812ca71d9e0cb41a6cb494fdd843087fe65bc8341b97735651181392ebaf",
+          "color": "nude",
+          "source_id": "p33i01"
+        },
+        {
+          "file": "photos/f06d233eb25a71060125aea3bb4691e5dbbaa175754e9f77b9ef62585b2c903a.jpg",
+          "sha256": "f06d233eb25a71060125aea3bb4691e5dbbaa175754e9f77b9ef62585b2c903a",
+          "color": "preto",
+          "source_id": "p33i02"
+        },
+        {
+          "file": "photos/da19ca6df73daae04d257c0a274a657de3691f4b65760e4d6004d8ca21f1f0cc.jpg",
+          "sha256": "da19ca6df73daae04d257c0a274a657de3691f4b65760e4d6004d8ca21f1f0cc",
+          "color": "off-white",
+          "source_id": "p33i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f23-p41-i1",
+        "saltos_anabelas_chinelos-f23-p41-i2",
+        "saltos_anabelas_chinelos-f23-p41-i3"
+      ],
+      "revision": "944ab361496134d72f17903b230cbcfb210414c8925b98e2734f96001618c3a6"
+    },
+    {
+      "code": "pdf26-saltos-053",
+      "name": "Tamanco de dedo com fivela dourada",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco de dedo com fivela dourada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 23,
+      "retail": "189.90",
+      "price": "209.90",
+      "cost": "132.93",
+      "pages": [
+        33
+      ],
+      "photos": [
+        {
+          "file": "photos/d787c222c63c2e3c9eed1878cb579ab142013d3e7fd4ed97b61532a19fff33a3.jpg",
+          "sha256": "d787c222c63c2e3c9eed1878cb579ab142013d3e7fd4ed97b61532a19fff33a3",
+          "color": "off-white",
+          "source_id": "p33i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f23-p41-i4"
+      ],
+      "revision": "fbeb9d0f63dc3c5d790ffa59157ff386e9be2418cf32b16b96132188056da1a6"
+    },
+    {
+      "code": "pdf26-saltos-054",
+      "name": "Sandália chanel com tira de brilho",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália chanel com tira de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        34
+      ],
+      "photos": [
+        {
+          "file": "photos/3566c032288f49f0eadcd83c66cb38daf778763182856f9eb77814f912ecce9a.jpg",
+          "sha256": "3566c032288f49f0eadcd83c66cb38daf778763182856f9eb77814f912ecce9a",
+          "color": "prata",
+          "source_id": "p34i01"
+        },
+        {
+          "file": "photos/9493fa0dfb73dbd1f8998f9d9bc0fc385718d575e7fced6fe715d567624e99c4.jpg",
+          "sha256": "9493fa0dfb73dbd1f8998f9d9bc0fc385718d575e7fced6fe715d567624e99c4",
+          "color": "dourado",
+          "source_id": "p34i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p42-i1",
+        "saltos_anabelas_chinelos-f18-p42-i2"
+      ],
+      "revision": "389c433731f368ed74571425d24fe29f160d328d9715c92e005dd3fa1a0e2c99"
+    },
+    {
+      "code": "pdf26-saltos-055",
+      "name": "Sandália caramelo de tiras cruzadas",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália caramelo de tiras cruzadas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        34
+      ],
+      "photos": [
+        {
+          "file": "photos/89ee50b8be296699ebe18f38a8eb21adbd848ba0f765cdb2ff67d1373eeeb482.jpg",
+          "sha256": "89ee50b8be296699ebe18f38a8eb21adbd848ba0f765cdb2ff67d1373eeeb482",
+          "color": "caramelo",
+          "source_id": "p34i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p42-i3"
+      ],
+      "revision": "2fc048d6dac216ab96b614e2d1279ab6abac94c859bcd3484d3d73d117905bdc"
+    },
+    {
+      "code": "pdf26-saltos-056",
+      "name": "Mule bico fino off-white",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Mule bico fino off-white. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        34
+      ],
+      "photos": [
+        {
+          "file": "photos/5e9bb8b1e92b73d91eff51fcd6fefd164823083f21866254ddb4903c6dd0a578.jpg",
+          "sha256": "5e9bb8b1e92b73d91eff51fcd6fefd164823083f21866254ddb4903c6dd0a578",
+          "color": "off-white",
+          "source_id": "p34i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p42-i4"
+      ],
+      "revision": "82cd41c10e103b81f183d63d2e809a76d8cca6d7f828967831ea3ffb960fd152"
+    },
+    {
+      "code": "pdf26-saltos-057",
+      "name": "Tamanco off-white com enfeite dourado",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco off-white com enfeite dourado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        34
+      ],
+      "photos": [
+        {
+          "file": "photos/5b19a3ec5eb30b3e40bbcb0051d11958f7ef66d5bc999a01491a90bb7976fc14.jpg",
+          "sha256": "5b19a3ec5eb30b3e40bbcb0051d11958f7ef66d5bc999a01491a90bb7976fc14",
+          "color": "off-white",
+          "source_id": "p34i05"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p42-i5"
+      ],
+      "revision": "2aeddf16cac043ceb32ff5c0319310ad289fe2b356f26f6ecf437677229742be"
+    },
+    {
+      "code": "pdf26-saltos-058",
+      "name": "Tamanco vermelho de tira larga",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Tamanco vermelho de tira larga. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        34
+      ],
+      "photos": [
+        {
+          "file": "photos/664d4294d98295c06f5ffdf8a9f3fc4b47148d5437465202ab8843735faef49b.jpg",
+          "sha256": "664d4294d98295c06f5ffdf8a9f3fc4b47148d5437465202ab8843735faef49b",
+          "color": "vermelho",
+          "source_id": "p34i06"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p42-i6"
+      ],
+      "revision": "ea7830052ff1f9e7e7b967ed6ca0b2fee2f4355f37dbec2f69ce821086dd0b99"
+    },
+    {
+      "code": "pdf26-saltos-059",
+      "name": "Sandália prateada com salto bloco",
+      "brand": "",
+      "category": "Saltos Femininos",
+      "description": "Sandália prateada com salto bloco. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        34
+      ],
+      "photos": [
+        {
+          "file": "photos/9750efd55ba808e072c123e5a49be173ecfd309cb0420752181f452ada817ecc.jpg",
+          "sha256": "9750efd55ba808e072c123e5a49be173ecfd309cb0420752181f452ada817ecc",
+          "color": "prata",
+          "source_id": "p34i07"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p42-i7"
+      ],
+      "revision": "4dddfaf7f130f924e2da704a35ada485c1fa98dcb2faf38e97b48253c034633c"
+    },
+    {
+      "code": "pdf26-saltos-060",
+      "name": "Anabela de tiras com pedras ovais",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de tiras com pedras ovais. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 22,
+      "retail": "179.90",
+      "price": "199.90",
+      "cost": "125.93",
+      "pages": [
+        36
+      ],
+      "photos": [
+        {
+          "file": "photos/a8be77fe043c0fd8da646ff6b16b6d397f2fa7cb169d00fac5841bcb187b5b92.jpg",
+          "sha256": "a8be77fe043c0fd8da646ff6b16b6d397f2fa7cb169d00fac5841bcb187b5b92",
+          "color": "preto",
+          "source_id": "p36i01"
+        },
+        {
+          "file": "photos/c3dd1dae637de7d869efd569bed1358e604b6b4f3f192d339da481f970f46842.jpg",
+          "sha256": "c3dd1dae637de7d869efd569bed1358e604b6b4f3f192d339da481f970f46842",
+          "color": "preto",
+          "source_id": "p36i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "30881ade1338bfe9e39df33b0767cd1777fbb528e6fd43420f504e8edf097c69"
+    },
+    {
+      "code": "pdf26-saltos-061",
+      "name": "Anabela de tiras finas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de tiras finas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        37
+      ],
+      "photos": [
+        {
+          "file": "photos/339f6c650c343e47e31a316ea0e0fa341953e7d88672bf7bc2468e807c1927de.jpg",
+          "sha256": "339f6c650c343e47e31a316ea0e0fa341953e7d88672bf7bc2468e807c1927de",
+          "color": "off-white",
+          "source_id": "p37i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "6e9bc29c99b9ea056d604769bc6c7807d76814c37d59a23db2265c98afd1757d"
+    },
+    {
+      "code": "pdf26-saltos-062",
+      "name": "Anabela bico fino de tiras finas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela bico fino de tiras finas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        37
+      ],
+      "photos": [
+        {
+          "file": "photos/1b37844e78764814197ed122d6b17813102a904df0614d8c64d043aa04967de7.jpg",
+          "sha256": "1b37844e78764814197ed122d6b17813102a904df0614d8c64d043aa04967de7",
+          "color": "preto",
+          "source_id": "p37i02"
+        },
+        {
+          "file": "photos/79e3e5873184b8dceab2005117840c30c4e05ea926823136def24f43ac7edf46.jpg",
+          "sha256": "79e3e5873184b8dceab2005117840c30c4e05ea926823136def24f43ac7edf46",
+          "color": "caramelo",
+          "source_id": "p37i03"
+        },
+        {
+          "file": "photos/241936bb9a259cac0024c1c5bde26f0e33e9ad02cf885f78f42e7a76d8e5d2ef.jpg",
+          "sha256": "241936bb9a259cac0024c1c5bde26f0e33e9ad02cf885f78f42e7a76d8e5d2ef",
+          "color": "preto",
+          "source_id": "p37i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p47-i1",
+        "saltos_anabelas_chinelos-f20-p47-i2",
+        "saltos_anabelas_chinelos-f20-p47-i3"
+      ],
+      "revision": "8ddd09a989914ccffa29ea8ad8b89e57bae6133ed44ca5997b6b4ce077264fbf"
+    },
+    {
+      "code": "pdf26-saltos-063",
+      "name": "Anabela com tachas douradas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela com tachas douradas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 22,
+      "retail": "179.90",
+      "price": "199.90",
+      "cost": "125.93",
+      "pages": [
+        38
+      ],
+      "photos": [
+        {
+          "file": "photos/ffcd5c129f8400e0a56a297f0a773f3a55e428eaebf7f54b8a299bee3bcbbd57.jpg",
+          "sha256": "ffcd5c129f8400e0a56a297f0a773f3a55e428eaebf7f54b8a299bee3bcbbd57",
+          "color": "preto",
+          "source_id": "p38i01"
+        }
+      ],
+      "aliases": [],
+      "revision": "500a201fe59a2ae2d74f7c67e16c434bf615b0ddc133affcd78225ccba6d825d"
+    },
+    {
+      "code": "pdf26-saltos-064",
+      "name": "Anabela com pedras ovais",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela com pedras ovais. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 22,
+      "retail": "179.90",
+      "price": "199.90",
+      "cost": "125.93",
+      "pages": [
+        38
+      ],
+      "photos": [
+        {
+          "file": "photos/af9a0281ece8454867636f5166d28cfdf266121bfc1e50387b72dbd99dc7bb7a.jpg",
+          "sha256": "af9a0281ece8454867636f5166d28cfdf266121bfc1e50387b72dbd99dc7bb7a",
+          "color": "off-white",
+          "source_id": "p38i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f22-p48-i3"
+      ],
+      "revision": "06794adf90e5e84eb3af12449f420d93f034ee67be3780f2d569c2485e23b8a5"
+    },
+    {
+      "code": "pdf26-saltos-065",
+      "name": "Flatform de dedo com corrente dourada",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo com corrente dourada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        39
+      ],
+      "photos": [
+        {
+          "file": "photos/e05cf93b8aa5d92f8126a19d1a189d94c251ac60b4fa104856e0172768c3ecda.jpg",
+          "sha256": "e05cf93b8aa5d92f8126a19d1a189d94c251ac60b4fa104856e0172768c3ecda",
+          "color": "rosa",
+          "source_id": "p39i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p49-i1"
+      ],
+      "revision": "d3aa8ebf5ef47a05cabac950d814f5a68e9765019154016b5ff65b2fdf0438c9"
+    },
+    {
+      "code": "pdf26-saltos-066",
+      "name": "Flatform de tiras cruzadas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de tiras cruzadas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        39
+      ],
+      "photos": [
+        {
+          "file": "photos/f1fbaa4198276280a2556fa809da4110ec7393d4811514bcf8d44525366e4bac.jpg",
+          "sha256": "f1fbaa4198276280a2556fa809da4110ec7393d4811514bcf8d44525366e4bac",
+          "color": "nude",
+          "source_id": "p39i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p49-i2"
+      ],
+      "revision": "ee2ee38e5d8dbeface7353baade2f5e2958af76c18c7e04672de359189c8e689"
+    },
+    {
+      "code": "pdf26-saltos-067",
+      "name": "Flatform com tiras de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com tiras de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        39
+      ],
+      "photos": [
+        {
+          "file": "photos/2369790faea7a7668f1092fc734a8df8439eeabd63dc219e5158584ce6eae027.jpg",
+          "sha256": "2369790faea7a7668f1092fc734a8df8439eeabd63dc219e5158584ce6eae027",
+          "color": "nude",
+          "source_id": "p39i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p49-i3"
+      ],
+      "revision": "b338b6f0f3216d81cb5d2476146ba6300d12031a740f9d4c085c6d78fd442e36"
+    },
+    {
+      "code": "pdf26-saltos-068",
+      "name": "Anabela de cordas trançadas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de cordas trançadas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        40
+      ],
+      "photos": [
+        {
+          "file": "photos/2dd7e6e145d6cc4e61c38346cd6ce40bc73da95fddcbf14118c7afbd3838a491.jpg",
+          "sha256": "2dd7e6e145d6cc4e61c38346cd6ce40bc73da95fddcbf14118c7afbd3838a491",
+          "color": "off-white",
+          "source_id": "p40i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p50-i1"
+      ],
+      "revision": "3b8cdc648fb0b3c011bee923350dbcf14e3930d68e9426c1cedbe85a0baedb5f"
+    },
+    {
+      "code": "pdf26-saltos-069",
+      "name": "Anabela de juta com tira larga",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com tira larga. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        40
+      ],
+      "photos": [
+        {
+          "file": "photos/a9d06806b9e7f34b037f32b3d22eaaa1b8ee4ebb7028375a281c134bff69403d.jpg",
+          "sha256": "a9d06806b9e7f34b037f32b3d22eaaa1b8ee4ebb7028375a281c134bff69403d",
+          "color": "preto",
+          "source_id": "p40i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p50-i2"
+      ],
+      "revision": "2982534f3e77189f72c1d04d1cc72e7b8f7432743c9dd95cc31722b31dd500dd"
+    },
+    {
+      "code": "pdf26-saltos-070",
+      "name": "Tamanco flatform com tira trançada brilhante",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Tamanco flatform com tira trançada brilhante. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        40
+      ],
+      "photos": [
+        {
+          "file": "photos/5cb9a8619a8a43a94658655701f21217cc9d0cc10811bd0c48c86960010d4885.jpg",
+          "sha256": "5cb9a8619a8a43a94658655701f21217cc9d0cc10811bd0c48c86960010d4885",
+          "color": "várias cores",
+          "source_id": "p40i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p50-i3"
+      ],
+      "revision": "1874a0ca37b68d05ddffc8c568da2370968ee3ff44062cb4ad1882a9fcc2906a"
+    },
+    {
+      "code": "pdf26-saltos-071",
+      "name": "Anabela de juta com tira larga e fivela",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com tira larga e fivela. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        41
+      ],
+      "photos": [
+        {
+          "file": "photos/83c2c52b857caabe57a3ea91790192f44028a0ff1dc2001d59529099dea42a50.jpg",
+          "sha256": "83c2c52b857caabe57a3ea91790192f44028a0ff1dc2001d59529099dea42a50",
+          "color": "terracota",
+          "source_id": "p41i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p51-i1"
+      ],
+      "revision": "61930e6f78246b24e0a079fc70cb8bc200408243ccd9ecdd76b4cf3ac9e74325"
+    },
+    {
+      "code": "pdf26-saltos-072",
+      "name": "Flatform dourada com tiras de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform dourada com tiras de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        41
+      ],
+      "photos": [
+        {
+          "file": "photos/2401288d987e31e7f05e3f7e18f9bb5c463e1572ea038f34b50c0ecfcfd9cd72.jpg",
+          "sha256": "2401288d987e31e7f05e3f7e18f9bb5c463e1572ea038f34b50c0ecfcfd9cd72",
+          "color": "dourado",
+          "source_id": "p41i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p51-i2"
+      ],
+      "revision": "126955079d0afd404d97ff5b15e9edc58800042395380885f781031fc3c619e0"
+    },
+    {
+      "code": "pdf26-saltos-073",
+      "name": "Peep toe anabela de juta",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Peep toe anabela de juta. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        41
+      ],
+      "photos": [
+        {
+          "file": "photos/06002ac3919499a2ea6620e7eccc562cb4e4934016c5905f3dfe364ddf07f946.jpg",
+          "sha256": "06002ac3919499a2ea6620e7eccc562cb4e4934016c5905f3dfe364ddf07f946",
+          "color": "off-white",
+          "source_id": "p41i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p51-i3"
+      ],
+      "revision": "5d613e78010ed9fdae49f44be084edd7d4c74fa0f93b567cf6b007f830461f5f"
+    },
+    {
+      "code": "pdf26-saltos-074",
+      "name": "Flatform com tira torcida",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com tira torcida. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        41
+      ],
+      "photos": [
+        {
+          "file": "photos/6793fe602533bdddce012feab47eea712249d94443599e7378cff0f1e9967e01.jpg",
+          "sha256": "6793fe602533bdddce012feab47eea712249d94443599e7378cff0f1e9967e01",
+          "color": "off-white",
+          "source_id": "p41i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p51-i4"
+      ],
+      "revision": "4e1606b356963d76e043291c8b015f382ab3fd2ff0d743cabd0677c85b5e7c65"
+    },
+    {
+      "code": "pdf26-saltos-075",
+      "name": "Anabela com tiras finas de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela com tiras finas de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        41
+      ],
+      "photos": [
+        {
+          "file": "photos/5cc57a60020ec24a29fcce5b4f1d028f291b1f01df43a8c561ba5f9b18743022.jpg",
+          "sha256": "5cc57a60020ec24a29fcce5b4f1d028f291b1f01df43a8c561ba5f9b18743022",
+          "color": "preto",
+          "source_id": "p41i05"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p51-i5"
+      ],
+      "revision": "408f37c332891afc144eac84411211a2af7d2aebf91529bfa6e259df1c431da2"
+    },
+    {
+      "code": "pdf26-saltos-076",
+      "name": "Anabela de juta com tira trançada",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com tira trançada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        41
+      ],
+      "photos": [
+        {
+          "file": "photos/e1cd4066afa1382d33ce5687f254677755693f77d9405436090676df4206ef77.jpg",
+          "sha256": "e1cd4066afa1382d33ce5687f254677755693f77d9405436090676df4206ef77",
+          "color": "rosa",
+          "source_id": "p41i06"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p51-i6"
+      ],
+      "revision": "f0a08edc287f6ebcd548be97d2c96a85d299f5346302fd14c943f478e035e806"
+    },
+    {
+      "code": "pdf26-saltos-077",
+      "name": "Flatform com tiras finas e amarração",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com tiras finas e amarração. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        42
+      ],
+      "photos": [
+        {
+          "file": "photos/e05a6a3cddd8cbd06621143d8e522b768d5f5a770362bcb55f6511141edca93a.jpg",
+          "sha256": "e05a6a3cddd8cbd06621143d8e522b768d5f5a770362bcb55f6511141edca93a",
+          "color": "laranja",
+          "source_id": "p42i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p52-i1"
+      ],
+      "revision": "7a19d249f50ff248032b124ebed6fd9e42901372383714b57acbc1f9d918557e"
+    },
+    {
+      "code": "pdf26-saltos-078",
+      "name": "Flatform caramelo com amarração",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform caramelo com amarração. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        42
+      ],
+      "photos": [
+        {
+          "file": "photos/dc9ddea8454f2164bf692a569685c535e339b36cb0af420df73d4308d68b837b.jpg",
+          "sha256": "dc9ddea8454f2164bf692a569685c535e339b36cb0af420df73d4308d68b837b",
+          "color": "caramelo",
+          "source_id": "p42i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p52-i2"
+      ],
+      "revision": "7bdc0545927463c940fdc7a0a73f77cce6a150a131ee776052b68342fa380920"
+    },
+    {
+      "code": "pdf26-saltos-079",
+      "name": "Flatform com tiras de brilho e fivela",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com tiras de brilho e fivela. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        42
+      ],
+      "photos": [
+        {
+          "file": "photos/5a36850ebc76452d1064b0cbee00d98edb35678eb1355a4d6c8a1e57d17e9a5a.jpg",
+          "sha256": "5a36850ebc76452d1064b0cbee00d98edb35678eb1355a4d6c8a1e57d17e9a5a",
+          "color": "nude",
+          "source_id": "p42i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p52-i3"
+      ],
+      "revision": "3c3bd11ff93266c7398dc1da3bff5b7c15ad238ab7c9108a89f20f54be332824"
+    },
+    {
+      "code": "pdf26-saltos-080",
+      "name": "Anabela de juta com fivela grande",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com fivela grande. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        43
+      ],
+      "photos": [
+        {
+          "file": "photos/8a242f6a03bee4eee39f87555019d4c9f88211a2e5cd8fe59de05259714fb5ac.jpg",
+          "sha256": "8a242f6a03bee4eee39f87555019d4c9f88211a2e5cd8fe59de05259714fb5ac",
+          "color": "marrom",
+          "source_id": "p43i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p53-i1"
+      ],
+      "revision": "13648e432d0de2e80856d2b1d04719f639a4cd3e3fbad9503cd946a153f577a0"
+    },
+    {
+      "code": "pdf26-saltos-081",
+      "name": "Flatform branca com tiras de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform branca com tiras de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        43
+      ],
+      "photos": [
+        {
+          "file": "photos/f42d03967ef4814806d39979508349c3680105aaa8b6122895dfe18851afb8ee.jpg",
+          "sha256": "f42d03967ef4814806d39979508349c3680105aaa8b6122895dfe18851afb8ee",
+          "color": "off-white",
+          "source_id": "p43i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p53-i2"
+      ],
+      "revision": "bc5e3577d6c2b8a4d471d070eaa761df19334d9dbf37f67639c9cb4e0118b417"
+    },
+    {
+      "code": "pdf26-saltos-082",
+      "name": "Flatform nude de tiras finas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform nude de tiras finas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        43
+      ],
+      "photos": [
+        {
+          "file": "photos/0a73867861ed7d08d2c702fc013f0ba2c39135d6cdcc1485a181165ec4724389.jpg",
+          "sha256": "0a73867861ed7d08d2c702fc013f0ba2c39135d6cdcc1485a181165ec4724389",
+          "color": "nude",
+          "source_id": "p43i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p53-i3"
+      ],
+      "revision": "3268c458bb1a35e0c63111c90fb4dc764a1b025054f3ab5fc02fd7568e024720"
+    },
+    {
+      "code": "pdf26-saltos-083",
+      "name": "Anabela de juta com tira cruzada",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com tira cruzada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        43
+      ],
+      "photos": [
+        {
+          "file": "photos/6f9d7d3ffcb1b4d77c90e77f6d53db3fda941e26ad61b75d88c2a25b2a4e964a.jpg",
+          "sha256": "6f9d7d3ffcb1b4d77c90e77f6d53db3fda941e26ad61b75d88c2a25b2a4e964a",
+          "color": "preto",
+          "source_id": "p43i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p53-i4"
+      ],
+      "revision": "e43bb5f4f0a3474ceeb48ffb64f397881204b77f7016f8809c217193212a5f9a"
+    },
+    {
+      "code": "pdf26-saltos-084",
+      "name": "Anabela de juta com tira larga e tornozeleira",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com tira larga e tornozeleira. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        44
+      ],
+      "photos": [
+        {
+          "file": "photos/32df7afd2a6b0fe5576aa5176c6da06fbdabd752f8162699ed2f8aac529df570.jpg",
+          "sha256": "32df7afd2a6b0fe5576aa5176c6da06fbdabd752f8162699ed2f8aac529df570",
+          "color": "vermelho",
+          "source_id": "p44i02"
+        },
+        {
+          "file": "photos/483f81be1381377b101c75788ce148fa4280d8b410a9f7a2da95f942c50ec9f6.jpg",
+          "sha256": "483f81be1381377b101c75788ce148fa4280d8b410a9f7a2da95f942c50ec9f6",
+          "color": "off-white",
+          "source_id": "p44i03"
+        },
+        {
+          "file": "photos/2aabfd8e2d0100c9802db9bf0d754471cf03003d1bc71e477e2d0fbdafb567b4.jpg",
+          "sha256": "2aabfd8e2d0100c9802db9bf0d754471cf03003d1bc71e477e2d0fbdafb567b4",
+          "color": "nude",
+          "source_id": "p44i04"
+        },
+        {
+          "file": "photos/414b27d33f9754514e04168c25c578500f5b2afb55a4b6136fef963f97639936.jpg",
+          "sha256": "414b27d33f9754514e04168c25c578500f5b2afb55a4b6136fef963f97639936",
+          "color": "nude",
+          "source_id": "p44i05"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p54-i1",
+        "saltos_anabelas_chinelos-f18-p54-i2",
+        "saltos_anabelas_chinelos-f18-p54-i3",
+        "saltos_anabelas_chinelos-f18-p54-i4"
+      ],
+      "revision": "4d82ad4061ec481492069ee7e96f411a91fe94b8ca54cb68f757edceae395daa"
+    },
+    {
+      "code": "pdf26-saltos-085",
+      "name": "Flatform com tira torcida larga",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com tira torcida larga. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        45
+      ],
+      "photos": [
+        {
+          "file": "photos/d1e840dd14bedb6a31dcdff433c1e98a008f01348d8242be83f4d4e058c818fe.jpg",
+          "sha256": "d1e840dd14bedb6a31dcdff433c1e98a008f01348d8242be83f4d4e058c818fe",
+          "color": "preto",
+          "source_id": "p45i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p55-i1"
+      ],
+      "revision": "1929fc16522db658b809f7b16bd043fed6df8ea4294e74889fe259198cc2761c"
+    },
+    {
+      "code": "pdf26-saltos-086",
+      "name": "Anabela de juta com tira lisa",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com tira lisa. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        45
+      ],
+      "photos": [
+        {
+          "file": "photos/96d3af656f164c0019a30a317548c9d92c9484d43cb1ef86ed78e4edcf9fdb22.jpg",
+          "sha256": "96d3af656f164c0019a30a317548c9d92c9484d43cb1ef86ed78e4edcf9fdb22",
+          "color": "nude",
+          "source_id": "p45i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p55-i2"
+      ],
+      "revision": "8e3498e7e056f5558941116aef8d6ef61bf7a9488c272a4878d6f26105a61582"
+    },
+    {
+      "code": "pdf26-saltos-087",
+      "name": "Flatform pink com amarração",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform pink com amarração. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        45
+      ],
+      "photos": [
+        {
+          "file": "photos/de662c5704c3c53a73f5b21c1d8e98b9f977ea59470941026769f458dedb8825.jpg",
+          "sha256": "de662c5704c3c53a73f5b21c1d8e98b9f977ea59470941026769f458dedb8825",
+          "color": "pink",
+          "source_id": "p45i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p55-i3"
+      ],
+      "revision": "8660a2f51c00c87919bfcb9d0d81e464dc8eb43b3cacc26afb289bff8d4fa2b1"
+    },
+    {
+      "code": "pdf26-saltos-088",
+      "name": "Flatform de duas tiras",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de duas tiras. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        45
+      ],
+      "photos": [
+        {
+          "file": "photos/604b4fc2271a1c1acf73497e05e86e2f2a339c6b98a6519deba295fe700b81f8.jpg",
+          "sha256": "604b4fc2271a1c1acf73497e05e86e2f2a339c6b98a6519deba295fe700b81f8",
+          "color": "off-white",
+          "source_id": "p45i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p55-i4"
+      ],
+      "revision": "5774799db97ffd416ef567aa2ccdf9a11c8cc11254345ce4518df5bee9669bd9"
+    },
+    {
+      "code": "pdf26-saltos-089",
+      "name": "Anabela de juta com tira transparente e tachas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com tira transparente e tachas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 24,
+      "retail": "199.90",
+      "price": "219.90",
+      "cost": "139.93",
+      "pages": [
+        46
+      ],
+      "photos": [
+        {
+          "file": "photos/c3a24c2287e27132e163df8a5ec2f34ed8ae99d5c5d381d2acb28edc300c4868.jpg",
+          "sha256": "c3a24c2287e27132e163df8a5ec2f34ed8ae99d5c5d381d2acb28edc300c4868",
+          "color": "transparente",
+          "source_id": "p46i01"
+        },
+        {
+          "file": "photos/ff1275b09e93f53af04190b93ac70fe8dc8b2ee8b95ebfd502b12a938db1ca67.jpg",
+          "sha256": "ff1275b09e93f53af04190b93ac70fe8dc8b2ee8b95ebfd502b12a938db1ca67",
+          "color": "transparente",
+          "source_id": "p46i02"
+        },
+        {
+          "file": "photos/f8bb2f3e62f53c39dcd9f491aa22e27a7aa3cb9f44f1eaf4941a5f9fe6119ade.jpg",
+          "sha256": "f8bb2f3e62f53c39dcd9f491aa22e27a7aa3cb9f44f1eaf4941a5f9fe6119ade",
+          "color": "transparente",
+          "source_id": "p46i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f24-p45-i1",
+        "saltos_anabelas_chinelos-f24-p45-i2",
+        "saltos_anabelas_chinelos-f24-p45-i3"
+      ],
+      "revision": "d24beb3ec08bf61a7ec9f2577fe1571e263b8ffe1d8b94214c0bad2536585ff9"
+    },
+    {
+      "code": "pdf26-saltos-090",
+      "name": "Flatform de tiras finas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de tiras finas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        47
+      ],
+      "photos": [
+        {
+          "file": "photos/6bcee71f924fe6bb52d724b4d1417c3f08a437805adc9dae1db1ace6052bcb70.jpg",
+          "sha256": "6bcee71f924fe6bb52d724b4d1417c3f08a437805adc9dae1db1ace6052bcb70",
+          "color": "várias cores",
+          "source_id": "p47i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p56-i1"
+      ],
+      "revision": "3dbc2b06faeea57ef7a65afa424a9043250bbbdf520930295052336c4bc32dcd"
+    },
+    {
+      "code": "pdf26-saltos-091",
+      "name": "Anabela de camurça com cordas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de camurça com cordas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        47
+      ],
+      "photos": [
+        {
+          "file": "photos/64595e266160b481ecb240f17dba370594dcacdd3261e34205b32adb705142d5.jpg",
+          "sha256": "64595e266160b481ecb240f17dba370594dcacdd3261e34205b32adb705142d5",
+          "color": "caramelo",
+          "source_id": "p47i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p56-i2"
+      ],
+      "revision": "36be51f415f504613dc45fa54648d4db9081fcea140f02fc76dab863bf8f472a"
+    },
+    {
+      "code": "pdf26-saltos-092",
+      "name": "Flatform de juta com laço de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de juta com laço de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        47
+      ],
+      "photos": [
+        {
+          "file": "photos/2d33027d359a419793e2cd7b728f7f642470252c1eba7928bbea55cb2b0787a9.jpg",
+          "sha256": "2d33027d359a419793e2cd7b728f7f642470252c1eba7928bbea55cb2b0787a9",
+          "color": "bege",
+          "source_id": "p47i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p56-i3"
+      ],
+      "revision": "1a1431f1a976765ef3afe0589de63c0b4c33b89e3a4afacd1d5cffbda32b005d"
+    },
+    {
+      "code": "pdf26-saltos-093",
+      "name": "Flatform de dedo com laço de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo com laço de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        47
+      ],
+      "photos": [
+        {
+          "file": "photos/e5134e80c6c9e56ef874ba451af4116f049a876cd30effea7d55e7033eae9782.jpg",
+          "sha256": "e5134e80c6c9e56ef874ba451af4116f049a876cd30effea7d55e7033eae9782",
+          "color": "off-white",
+          "source_id": "p47i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p56-i4"
+      ],
+      "revision": "8474f313894f6c4cbdc0cf7ac802698a508a08e0c23c8d0e581f2c486db23e30"
+    },
+    {
+      "code": "pdf26-saltos-094",
+      "name": "Flatform de juta com tiras de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de juta com tiras de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        48
+      ],
+      "photos": [
+        {
+          "file": "photos/7f74b3009ac131a1d780f9e395db8eba9bd7109e83de0ce3d1d78988aac0e524.jpg",
+          "sha256": "7f74b3009ac131a1d780f9e395db8eba9bd7109e83de0ce3d1d78988aac0e524",
+          "color": "bege",
+          "source_id": "p48i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p57-i1"
+      ],
+      "revision": "120b01e8a490317dc1e51e2042018442cef4e8d209ceb4b7d0c1dc0ae780c2fe"
+    },
+    {
+      "code": "pdf26-saltos-095",
+      "name": "Flatform pink com tiras de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform pink com tiras de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        48
+      ],
+      "photos": [
+        {
+          "file": "photos/f26cdbfc352526b7af2d83f93fef74d6a6680b9e9aebcb3299c933e813c34aa3.jpg",
+          "sha256": "f26cdbfc352526b7af2d83f93fef74d6a6680b9e9aebcb3299c933e813c34aa3",
+          "color": "pink",
+          "source_id": "p48i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p57-i2"
+      ],
+      "revision": "6daf40f3ca7f6e250a6a098b88b32fa33230a5187f2d1149be0e023e5f98a60a"
+    },
+    {
+      "code": "pdf26-saltos-096",
+      "name": "Flatform dourada com tiras de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform dourada com tiras de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        48
+      ],
+      "photos": [
+        {
+          "file": "photos/9b78f34a6b11937b8d91ff1c63246b539bc150897900b7d0ddd5c0f893ecb55a.jpg",
+          "sha256": "9b78f34a6b11937b8d91ff1c63246b539bc150897900b7d0ddd5c0f893ecb55a",
+          "color": "dourado",
+          "source_id": "p48i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p57-i3"
+      ],
+      "revision": "9b06920b2bc6b650c2fe2a52937332d68e621ab6b628dc6b66882783a7b95b0b"
+    },
+    {
+      "code": "pdf26-saltos-097",
+      "name": "Flatform com amarração e tira de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com amarração e tira de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        48
+      ],
+      "photos": [
+        {
+          "file": "photos/4e0ef592ea4a075f9abd58fb5ff9db7feb3d7ee801be9af2ead6d797a2d3500e.jpg",
+          "sha256": "4e0ef592ea4a075f9abd58fb5ff9db7feb3d7ee801be9af2ead6d797a2d3500e",
+          "color": "off-white",
+          "source_id": "p48i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p57-i4"
+      ],
+      "revision": "b02b1714609e8919429d75696941fe9a2a07a90824ecdf595b0ec2f28e663704"
+    },
+    {
+      "code": "pdf26-saltos-098",
+      "name": "Flatform de duas tiras com brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de duas tiras com brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        49
+      ],
+      "photos": [
+        {
+          "file": "photos/5c48237756f5b4242d9582ee8477b382295407e891cfdc387d2edfa5511de643.jpg",
+          "sha256": "5c48237756f5b4242d9582ee8477b382295407e891cfdc387d2edfa5511de643",
+          "color": "nude e off-white",
+          "source_id": "p49i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p58-i1"
+      ],
+      "revision": "6ca29f2f5973d6825b66d3a47c80689e0495c66b5fdd92d58d50397a34e52b11"
+    },
+    {
+      "code": "pdf26-saltos-099",
+      "name": "Flatform pink com tiras cruzadas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform pink com tiras cruzadas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        49
+      ],
+      "photos": [
+        {
+          "file": "photos/a7d63400382f34b8f8d0c649a99272fb4a7909b4f6954d715bb00bb7aa4cb6d5.jpg",
+          "sha256": "a7d63400382f34b8f8d0c649a99272fb4a7909b4f6954d715bb00bb7aa4cb6d5",
+          "color": "pink",
+          "source_id": "p49i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p58-i2"
+      ],
+      "revision": "d7c3f2dd3ac78de6907e1db9df6a67e3239ade8ff0ac0ef9c5830c15fa91c544"
+    },
+    {
+      "code": "pdf26-saltos-100",
+      "name": "Flatform de dedo com tira de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo com tira de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        49
+      ],
+      "photos": [
+        {
+          "file": "photos/2e1cbe2b738230cbf8dd89fcf9ebc3145b6185c89fd7d1cc12bce7c219a1df6a.jpg",
+          "sha256": "2e1cbe2b738230cbf8dd89fcf9ebc3145b6185c89fd7d1cc12bce7c219a1df6a",
+          "color": "preto",
+          "source_id": "p49i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p58-i3"
+      ],
+      "revision": "b67bdb4f2bc4a350bcb30b6121682eedb70dec6ff44a587cec093a238e5cb382"
+    },
+    {
+      "code": "pdf26-saltos-101",
+      "name": "Flatform com amarração de cordas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com amarração de cordas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        49
+      ],
+      "photos": [
+        {
+          "file": "photos/6e98cb488d324fce5aafd3a174180bef0e4f3fd4115edcb5653e8adc4830445d.jpg",
+          "sha256": "6e98cb488d324fce5aafd3a174180bef0e4f3fd4115edcb5653e8adc4830445d",
+          "color": "off-white",
+          "source_id": "p49i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p58-i4"
+      ],
+      "revision": "102de3edf459b76a764399a454c5be740572cf6406211d710e7b56b9da5f5bbc"
+    },
+    {
+      "code": "pdf26-saltos-102",
+      "name": "Flatform com amarração fina",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com amarração fina. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        50
+      ],
+      "photos": [
+        {
+          "file": "photos/f5ef7c62022a3ab2b3be3cbaa382ea1283008a3d305ac7990c067e8cdc5c315c.jpg",
+          "sha256": "f5ef7c62022a3ab2b3be3cbaa382ea1283008a3d305ac7990c067e8cdc5c315c",
+          "color": "off-white",
+          "source_id": "p50i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p59-i1"
+      ],
+      "revision": "74601238e0c29071030c7fc87ff7bcca5934b5bdec77de4e323dc3c89a23f6ea"
+    },
+    {
+      "code": "pdf26-saltos-103",
+      "name": "Tamanco flatform com bordado",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Tamanco flatform com bordado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        50
+      ],
+      "photos": [
+        {
+          "file": "photos/8242174d1ab801d5c17738cf6915669ae61d18942c5b78fd706df667186dc2f0.jpg",
+          "sha256": "8242174d1ab801d5c17738cf6915669ae61d18942c5b78fd706df667186dc2f0",
+          "color": "rosé, dourado e prata",
+          "source_id": "p50i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p59-i2"
+      ],
+      "revision": "528f26cb5535ad25fa9a5462c0c4171bf1c5f26c6d9ebfca8385340519ee51df"
+    },
+    {
+      "code": "pdf26-saltos-104",
+      "name": "Flatform amarela com amarração",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform amarela com amarração. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        50
+      ],
+      "photos": [
+        {
+          "file": "photos/f2643709230e2cd9d3997e2da94645290b2d5f13a98cb2ee3540f77098174fea.jpg",
+          "sha256": "f2643709230e2cd9d3997e2da94645290b2d5f13a98cb2ee3540f77098174fea",
+          "color": "amarelo neon",
+          "source_id": "p50i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p59-i3"
+      ],
+      "revision": "f12c670388183029d3c88ca6d35826c34901edee918b29cced4df8949aa7a8d1"
+    },
+    {
+      "code": "pdf26-saltos-105",
+      "name": "Flatform de tiras de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de tiras de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        51
+      ],
+      "photos": [
+        {
+          "file": "photos/b75ed9d9eb84cc5a3b6db9514903c47a7355ea4978c2848c7c19b29c55da2752.jpg",
+          "sha256": "b75ed9d9eb84cc5a3b6db9514903c47a7355ea4978c2848c7c19b29c55da2752",
+          "color": "off-white",
+          "source_id": "p51i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p60-i1"
+      ],
+      "revision": "9e0c05d5dd77a5a24d3d13879efcbc4aae19b04bc7e6112fadc75ac37a6b29de"
+    },
+    {
+      "code": "pdf26-saltos-106",
+      "name": "Flatform de dedo lisa",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo lisa. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        51
+      ],
+      "photos": [
+        {
+          "file": "photos/dc0f85c0da2b3f71b3325e516a1b2ded7833a0ee44d18da8e2df9479f395276c.jpg",
+          "sha256": "dc0f85c0da2b3f71b3325e516a1b2ded7833a0ee44d18da8e2df9479f395276c",
+          "color": "off-white",
+          "source_id": "p51i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p60-i2"
+      ],
+      "revision": "03241431d906fd24bdccfe96c026b527aad8f4b67a1fe1c30124347292e9cee7"
+    },
+    {
+      "code": "pdf26-saltos-107",
+      "name": "Anabela de camurça com cordas e tassel",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de camurça com cordas e tassel. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        51
+      ],
+      "photos": [
+        {
+          "file": "photos/a319df939fd77d917dfda92d94b0fb75e11aecd00a5b5011c579dff0a0dac762.jpg",
+          "sha256": "a319df939fd77d917dfda92d94b0fb75e11aecd00a5b5011c579dff0a0dac762",
+          "color": "preto",
+          "source_id": "p51i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p60-i3"
+      ],
+      "revision": "8b17882dffd51b4d17f69456256b19db540ca42b63f8ccdb914d6405ccc6decf"
+    },
+    {
+      "code": "pdf26-saltos-108",
+      "name": "Flatform de dedo com tira de brilho pink",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo com tira de brilho pink. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        51
+      ],
+      "photos": [
+        {
+          "file": "photos/4b82fdfd7dcaee476a96be49feaf776087f1c08090357f3dd14d3fc72bb3b4d3.jpg",
+          "sha256": "4b82fdfd7dcaee476a96be49feaf776087f1c08090357f3dd14d3fc72bb3b4d3",
+          "color": "pink",
+          "source_id": "p51i05"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p60-i4"
+      ],
+      "revision": "ee1ded79f4cd250dfa4cabdde066fb8379bdbec4a5e1347bf0e91d1a86ae194b"
+    },
+    {
+      "code": "pdf26-saltos-109",
+      "name": "Anabela de tira larga",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de tira larga. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        51
+      ],
+      "photos": [
+        {
+          "file": "photos/b2d669d3c249d93970ab574a5278cd25f8d506ca41a083504d42001e7fe37efe.jpg",
+          "sha256": "b2d669d3c249d93970ab574a5278cd25f8d506ca41a083504d42001e7fe37efe",
+          "color": "preto",
+          "source_id": "p51i06"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p60-i5"
+      ],
+      "revision": "2b62e402f5d94f762edc0ca1a7b7ac4c0ec3715137e943c0e30f0cf0b0d4c381"
+    },
+    {
+      "code": "pdf26-saltos-110",
+      "name": "Flatform de tiras de brilho em várias cores",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de tiras de brilho em várias cores. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        51,
+        62
+      ],
+      "photos": [
+        {
+          "file": "photos/98fe92401f63061ea612768781835d38121e68eea0e9572262ed3214fb49d530.jpg",
+          "sha256": "98fe92401f63061ea612768781835d38121e68eea0e9572262ed3214fb49d530",
+          "color": "várias cores",
+          "source_id": "p51i08"
+        },
+        {
+          "file": "photos/5ab0bc7d89437577e20838bc3b97f463593eaa48fcc97c1f342fdcd476ef01ed.jpg",
+          "sha256": "5ab0bc7d89437577e20838bc3b97f463593eaa48fcc97c1f342fdcd476ef01ed",
+          "color": "várias cores",
+          "source_id": "p62i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p60-i6",
+        "saltos_anabelas_chinelos-f14-p71-i1"
+      ],
+      "revision": "dbd68e68d8192ca816634637e297de0b43569bb6d244e5ee55481a7173100aae"
+    },
+    {
+      "code": "pdf26-saltos-111",
+      "name": "Flatform com tiras de strass",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com tiras de strass. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        52
+      ],
+      "photos": [
+        {
+          "file": "photos/a212c9a402e9db66e44565164661ef4588174b05785f25c69ba77c0208d5f48d.jpg",
+          "sha256": "a212c9a402e9db66e44565164661ef4588174b05785f25c69ba77c0208d5f48d",
+          "color": "off-white",
+          "source_id": "p52i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f17-p61-i1"
+      ],
+      "revision": "5106c1d0ef06cacdac74145bb332d6b9e40fa8e6f6e36b0135fe782f4e4d85d9"
+    },
+    {
+      "code": "pdf26-saltos-112",
+      "name": "Anabela de camurça com amarração",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de camurça com amarração. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        52
+      ],
+      "photos": [
+        {
+          "file": "photos/7fc08960958815700d6af411402286d2155c3778fb3ccbf5c44c35646e64d8d0.jpg",
+          "sha256": "7fc08960958815700d6af411402286d2155c3778fb3ccbf5c44c35646e64d8d0",
+          "color": "marrom",
+          "source_id": "p52i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f17-p61-i3"
+      ],
+      "revision": "17e46c9e72bbe6e4c8dc4ec57ba98989a2685271a9feb35c55a048d610f17880"
+    },
+    {
+      "code": "pdf26-saltos-113",
+      "name": "Flatform caramelo com amarração de tiras",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform caramelo com amarração de tiras. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        52
+      ],
+      "photos": [
+        {
+          "file": "photos/8539d1cced2c14cc6fe2143342ec336a197bda7f48415c37a013c796bb345b3a.jpg",
+          "sha256": "8539d1cced2c14cc6fe2143342ec336a197bda7f48415c37a013c796bb345b3a",
+          "color": "caramelo",
+          "source_id": "p52i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f17-p61-i4"
+      ],
+      "revision": "703de9070e38363d29e12d39f3e885f6de1c85343716584c3b35e74270e1c4ba"
+    },
+    {
+      "code": "pdf26-saltos-114",
+      "name": "Flatform com tira de brilho e tornozeleira",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com tira de brilho e tornozeleira. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        53
+      ],
+      "photos": [
+        {
+          "file": "photos/3b79b1a7f2ecdcc7bed55873d0599ce7762b3aec97a626fddafc38370fb2d943.jpg",
+          "sha256": "3b79b1a7f2ecdcc7bed55873d0599ce7762b3aec97a626fddafc38370fb2d943",
+          "color": "off-white",
+          "source_id": "p53i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p62-i2"
+      ],
+      "revision": "76a72ed5f40ac39fd2fff42020a8310ef1b03a11a27d90946b8405154d8160c5"
+    },
+    {
+      "code": "pdf26-saltos-115",
+      "name": "Flatform de dedo dourada com amarração",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo dourada com amarração. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        53
+      ],
+      "photos": [
+        {
+          "file": "photos/ed5df75d1bb6450c111b62a535138fac06c21aa5b818386ea751481591bd8c6d.jpg",
+          "sha256": "ed5df75d1bb6450c111b62a535138fac06c21aa5b818386ea751481591bd8c6d",
+          "color": "dourado",
+          "source_id": "p53i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "6ffccab937099e0c7c595a960891137cebc2e9bdaf8be1630a09245683e8b3d4"
+    },
+    {
+      "code": "pdf26-saltos-116",
+      "name": "Flatform com tira torcida metalizada",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com tira torcida metalizada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        53
+      ],
+      "photos": [
+        {
+          "file": "photos/877b6db1d33b61568559d9859fa90a0f7746fb500d2ec80282442e7309d2dd9b.jpg",
+          "sha256": "877b6db1d33b61568559d9859fa90a0f7746fb500d2ec80282442e7309d2dd9b",
+          "color": "dourado",
+          "source_id": "p53i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p62-i4"
+      ],
+      "revision": "df938671037161f323fb751d387012091f8a016e6f1f4e47bffe56a01c1e2b59"
+    },
+    {
+      "code": "pdf26-saltos-117",
+      "name": "Flatform com tiras de strass largas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com tiras de strass largas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        54
+      ],
+      "photos": [
+        {
+          "file": "photos/54d18d01476299a8b5d8b82ee150f2bc8a0ceb30c73f0be4cf0a17fcccdc3300.jpg",
+          "sha256": "54d18d01476299a8b5d8b82ee150f2bc8a0ceb30c73f0be4cf0a17fcccdc3300",
+          "color": "preto",
+          "source_id": "p54i02"
+        },
+        {
+          "file": "photos/7f5c58e4a585b17aa02f2234fcb18a22a063e49dc8f14adfc55d8b657c089d44.jpg",
+          "sha256": "7f5c58e4a585b17aa02f2234fcb18a22a063e49dc8f14adfc55d8b657c089d44",
+          "color": "preto",
+          "source_id": "p54i05"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p63-i1",
+        "saltos_anabelas_chinelos-f20-p63-i4"
+      ],
+      "revision": "d9d1a0e3f39741b4ba70033c77a15acaf5aac243ef00d2e97634ebdcf18c435d"
+    },
+    {
+      "code": "pdf26-saltos-118",
+      "name": "Flatform de tiras finas cruzadas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de tiras finas cruzadas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        54
+      ],
+      "photos": [
+        {
+          "file": "photos/ee13dd79159262be85580e889d77ad2c04102537a129e9e63699cfdcd8ab64dd.jpg",
+          "sha256": "ee13dd79159262be85580e889d77ad2c04102537a129e9e63699cfdcd8ab64dd",
+          "color": "preto",
+          "source_id": "p54i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p63-i2"
+      ],
+      "revision": "b8bda15e6c19a76ce422ae55a603a0536ab8bd3cc07a2250fb50f98324b2bff9"
+    },
+    {
+      "code": "pdf26-saltos-119",
+      "name": "Flatform de juta com tira de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de juta com tira de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        54
+      ],
+      "photos": [
+        {
+          "file": "photos/af988e47b88e0e7494ee020eb33107212c4933dabb3b547354ecc5cd7e21639c.jpg",
+          "sha256": "af988e47b88e0e7494ee020eb33107212c4933dabb3b547354ecc5cd7e21639c",
+          "color": "off-white",
+          "source_id": "p54i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p63-i3"
+      ],
+      "revision": "9cb18d272c45dd694a0a0f59f58b0b8e7bc40e1b348cc04896f0550f5dbfa128"
+    },
+    {
+      "code": "pdf26-saltos-120",
+      "name": "Flatform de dedo com tira de brilho caramelo",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo com tira de brilho caramelo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        54
+      ],
+      "photos": [
+        {
+          "file": "photos/ffa4e60c4c2c838bca055ca42537da64f2b6a43d062e7f2e91274fe2dd155af7.jpg",
+          "sha256": "ffa4e60c4c2c838bca055ca42537da64f2b6a43d062e7f2e91274fe2dd155af7",
+          "color": "caramelo",
+          "source_id": "p54i06"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p63-i5"
+      ],
+      "revision": "29e08a1e6ef356281c55dd121232fb9108ab23d88b8cd9a18bf9fa57e14f49d1"
+    },
+    {
+      "code": "pdf26-saltos-121",
+      "name": "Anabela de cordas trançadas clara",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de cordas trançadas clara. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        54
+      ],
+      "photos": [
+        {
+          "file": "photos/d2f6e31109b2f0e5df728320178fa553479f512577d26da2363c61801dfb6eb9.jpg",
+          "sha256": "d2f6e31109b2f0e5df728320178fa553479f512577d26da2363c61801dfb6eb9",
+          "color": "off-white",
+          "source_id": "p54i08"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p63-i6"
+      ],
+      "revision": "4378b9e0a561daf7291a485da40f394de2f72722464b3dd5c4c2626e948e8138"
+    },
+    {
+      "code": "pdf26-saltos-122",
+      "name": "Flatform com tira fina de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com tira fina de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        55
+      ],
+      "photos": [
+        {
+          "file": "photos/15388fe5eaf0a79b34a567f6570ee56be1b8c1db299931855e812a9dc8c82cad.jpg",
+          "sha256": "15388fe5eaf0a79b34a567f6570ee56be1b8c1db299931855e812a9dc8c82cad",
+          "color": "preto",
+          "source_id": "p55i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p64-i1"
+      ],
+      "revision": "08c5de66f6d347f5639e21189b64d573d4b44537e87b67f2171695f7d92162dc"
+    },
+    {
+      "code": "pdf26-saltos-123",
+      "name": "Peep toe anabela de juta preto",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Peep toe anabela de juta preto. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        55
+      ],
+      "photos": [
+        {
+          "file": "photos/84f55f424fa9a74d12325e227edf46fde622d0d21029ba6bcca08ad0938fa35f.jpg",
+          "sha256": "84f55f424fa9a74d12325e227edf46fde622d0d21029ba6bcca08ad0938fa35f",
+          "color": "preto",
+          "source_id": "p55i02"
+        },
+        {
+          "file": "photos/df1a27f16cddc05fc25f8e57c2c39a8c63738cdffa8a116bd4f85e113ecd54a5.jpg",
+          "sha256": "df1a27f16cddc05fc25f8e57c2c39a8c63738cdffa8a116bd4f85e113ecd54a5",
+          "color": "preto",
+          "source_id": "p55i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p64-i2",
+        "saltos_anabelas_chinelos-f18-p64-i3"
+      ],
+      "revision": "49e56d5fb396ce277d13a6ec35b25c35dfa22db0e1bfdcbf004929f4780cb999"
+    },
+    {
+      "code": "pdf26-saltos-124",
+      "name": "Flatform de tiras finas com fivela",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de tiras finas com fivela. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        55
+      ],
+      "photos": [
+        {
+          "file": "photos/0cae440cc74fb768db5d3902b0a865ec59a4d3e50e46756bd8e56aacd491f5af.jpg",
+          "sha256": "0cae440cc74fb768db5d3902b0a865ec59a4d3e50e46756bd8e56aacd491f5af",
+          "color": "preto",
+          "source_id": "p55i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p64-i4"
+      ],
+      "revision": "ff690372ab356e657ac9a6a5c563410cf008079c04b911fcfdf17edde5d71ade"
+    },
+    {
+      "code": "pdf26-saltos-125",
+      "name": "Flatform de dedo caramelo",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo caramelo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        56
+      ],
+      "photos": [
+        {
+          "file": "photos/09551bdaa560814976cf6e241dbfc2c3e326c41e2b0ecd416bd73660a0ab2bf6.jpg",
+          "sha256": "09551bdaa560814976cf6e241dbfc2c3e326c41e2b0ecd416bd73660a0ab2bf6",
+          "color": "caramelo",
+          "source_id": "p56i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p65-i1"
+      ],
+      "revision": "751a9b1fed1c62e9344862676264e3b7911c8a554f2d2d89375335456efc02a2"
+    },
+    {
+      "code": "pdf26-saltos-126",
+      "name": "Flatform com amarração de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com amarração de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        56
+      ],
+      "photos": [
+        {
+          "file": "photos/74617f93ecb79fcc79dcb3efbf04fecc77efbaff1c3753762bd5431fbf5d3848.jpg",
+          "sha256": "74617f93ecb79fcc79dcb3efbf04fecc77efbaff1c3753762bd5431fbf5d3848",
+          "color": "off-white",
+          "source_id": "p56i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p65-i2"
+      ],
+      "revision": "4778ed71017b385deffa03415a43900935c0e9a5c40edbbf1050d2d727f366d0"
+    },
+    {
+      "code": "pdf26-saltos-127",
+      "name": "Flatform com amarração fina preta",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com amarração fina preta. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        56
+      ],
+      "photos": [
+        {
+          "file": "photos/26b422821ff919f217c120f90134859e5924b3064ca735e964818948dd19faed.jpg",
+          "sha256": "26b422821ff919f217c120f90134859e5924b3064ca735e964818948dd19faed",
+          "color": "preto",
+          "source_id": "p56i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p65-i3"
+      ],
+      "revision": "944fa7aabdf51a6b1f6375a6c86e05dd0063f12fcf2798302475da131f980ea4"
+    },
+    {
+      "code": "pdf26-saltos-128",
+      "name": "Flatform laranja com amarração",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform laranja com amarração. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        56
+      ],
+      "photos": [
+        {
+          "file": "photos/7e6b420cc62c3ac1a87010c82ba7f97ec417fac0d32d4feec93eb3ce92e48498.jpg",
+          "sha256": "7e6b420cc62c3ac1a87010c82ba7f97ec417fac0d32d4feec93eb3ce92e48498",
+          "color": "laranja",
+          "source_id": "p56i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p65-i4"
+      ],
+      "revision": "7937d9cabb9af1268b6c6b892b49ff9ccd1070ff56d8a62d62d98a88f90f2a20"
+    },
+    {
+      "code": "pdf26-saltos-129",
+      "name": "Anabela de juta com fivela",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com fivela. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        57
+      ],
+      "photos": [
+        {
+          "file": "photos/86c2f2b463a5e0e410985a40a0314012842afa59828bbc0610c0c5e8ef853e06.jpg",
+          "sha256": "86c2f2b463a5e0e410985a40a0314012842afa59828bbc0610c0c5e8ef853e06",
+          "color": "caramelo",
+          "source_id": "p57i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p66-i1"
+      ],
+      "revision": "fc831c112b92fa4429e1d5db146457ad7bf6414b4ace98b809e53ac1748fe1c4"
+    },
+    {
+      "code": "pdf26-saltos-130",
+      "name": "Anabela de juta com tiras finas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com tiras finas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        57
+      ],
+      "photos": [
+        {
+          "file": "photos/a41965ce9a812e93114d4f03cd194b782f1e86f0c758beea32e006cb2e354d3f.jpg",
+          "sha256": "a41965ce9a812e93114d4f03cd194b782f1e86f0c758beea32e006cb2e354d3f",
+          "color": "preto",
+          "source_id": "p57i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p66-i2"
+      ],
+      "revision": "3cc9d167261c49eb491db761af7b48ba7a676c02163d1f174ad9ccd1cef75dfa"
+    },
+    {
+      "code": "pdf26-saltos-131",
+      "name": "Peep toe anabela de juta nude",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Peep toe anabela de juta nude. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        57
+      ],
+      "photos": [
+        {
+          "file": "photos/3620b146ad882d2e07e50e618e9246be02a5f3bb14c3418e1ec8bcfa0df34772.jpg",
+          "sha256": "3620b146ad882d2e07e50e618e9246be02a5f3bb14c3418e1ec8bcfa0df34772",
+          "color": "nude",
+          "source_id": "p57i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p66-i3"
+      ],
+      "revision": "af7cd91c8746d7279f90d5714055656598aa8e3e78611a4e4904ec5cb0bcd109"
+    },
+    {
+      "code": "pdf26-saltos-132",
+      "name": "Flatform com tira de brilho cruzada",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com tira de brilho cruzada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        58
+      ],
+      "photos": [
+        {
+          "file": "photos/cd54c5f3a88843d217c7a06666f8368f179494ea7d197b2e8f2b3fe4ea133c30.jpg",
+          "sha256": "cd54c5f3a88843d217c7a06666f8368f179494ea7d197b2e8f2b3fe4ea133c30",
+          "color": "off-white",
+          "source_id": "p58i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p67-i1"
+      ],
+      "revision": "3f8400bde8ad6d51cb9252235f3d30558a51659e19a5e6ba295994cc756585a9"
+    },
+    {
+      "code": "pdf26-saltos-133",
+      "name": "Flatform com amarração e tira de strass",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com amarração e tira de strass. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        58
+      ],
+      "photos": [
+        {
+          "file": "photos/0f74dfc1b789cdada5a2a5d10f97a38d93e99b0b6459607e1fb894b7003ff579.jpg",
+          "sha256": "0f74dfc1b789cdada5a2a5d10f97a38d93e99b0b6459607e1fb894b7003ff579",
+          "color": "nude",
+          "source_id": "p58i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p67-i2"
+      ],
+      "revision": "38108187ed8178131caf9f6ae00befc9a66924d660351c003c7ad5cf1728faf5"
+    },
+    {
+      "code": "pdf26-saltos-134",
+      "name": "Flatform preta com amarração de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform preta com amarração de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        59
+      ],
+      "photos": [
+        {
+          "file": "photos/bc87abefe8d7e1125e62cd33e5362e7eba14902bfc7e363a116e872bfbb53b7a.jpg",
+          "sha256": "bc87abefe8d7e1125e62cd33e5362e7eba14902bfc7e363a116e872bfbb53b7a",
+          "color": "preto",
+          "source_id": "p59i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p68-i1"
+      ],
+      "revision": "b59a08e6faa9c4c5d9f5b96ab39c17df3854934171727ce7648ed378bf0cf343"
+    },
+    {
+      "code": "pdf26-saltos-135",
+      "name": "Flatform de tiras finas coloridas",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de tiras finas coloridas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        59,
+        60
+      ],
+      "photos": [
+        {
+          "file": "photos/607827c2e2c9d201da096d29cba531dc1b3a592423dc21138521926b4c654be5.jpg",
+          "sha256": "607827c2e2c9d201da096d29cba531dc1b3a592423dc21138521926b4c654be5",
+          "color": "verde limão",
+          "source_id": "p59i02"
+        },
+        {
+          "file": "photos/367bc1a1a3cf0d8247e4d879ab2777ef1671081367eeaabc1d8f8594bf4b3b1a.jpg",
+          "sha256": "367bc1a1a3cf0d8247e4d879ab2777ef1671081367eeaabc1d8f8594bf4b3b1a",
+          "color": "laranja",
+          "source_id": "p60i01"
+        },
+        {
+          "file": "photos/7acc9d59f05f2e7fb6cab33f82656d77da4ca5e90d05fe4b1f5ab2a8f82b93e2.jpg",
+          "sha256": "7acc9d59f05f2e7fb6cab33f82656d77da4ca5e90d05fe4b1f5ab2a8f82b93e2",
+          "color": "pink",
+          "source_id": "p60i05"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p68-i2",
+        "saltos_anabelas_chinelos-f11-p69-i1",
+        "saltos_anabelas_chinelos-f11-p69-i6"
+      ],
+      "revision": "22f9d270066c42985e111f75c4567d98348cd32e82228b1cdab6b15ef4e8cbef"
+    },
+    {
+      "code": "pdf26-saltos-136",
+      "name": "Anabela de juta com tira bordada",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com tira bordada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        59
+      ],
+      "photos": [
+        {
+          "file": "photos/dfcdfa8dfe966a8d4fbd379a0ba4e89f5eaa0dfa1613e4dfcb1fd152eb98fafd.jpg",
+          "sha256": "dfcdfa8dfe966a8d4fbd379a0ba4e89f5eaa0dfa1613e4dfcb1fd152eb98fafd",
+          "color": "preto",
+          "source_id": "p59i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p68-i3"
+      ],
+      "revision": "c241ef8a48d61bcc684882f4e750a5c34a5d2a9c5f66e74d5527dcafd5d3ab95"
+    },
+    {
+      "code": "pdf26-saltos-137",
+      "name": "Flatform verde limão com amarração",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform verde limão com amarração. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        59
+      ],
+      "photos": [
+        {
+          "file": "photos/0c14bc7e373b5f4ecda662e2d3d2a78ece4f731c1298cf05ea3808ded143a663.jpg",
+          "sha256": "0c14bc7e373b5f4ecda662e2d3d2a78ece4f731c1298cf05ea3808ded143a663",
+          "color": "verde limão",
+          "source_id": "p59i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p68-i4"
+      ],
+      "revision": "d87a9f643f23a027fd843759d2084d12e9ba46a7a52029079ef8d512e07bdb99"
+    },
+    {
+      "code": "pdf26-saltos-138",
+      "name": "Flatform com tira torcida clara",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform com tira torcida clara. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        60
+      ],
+      "photos": [
+        {
+          "file": "photos/113441d2a983156148f9c3d2f6ac09239e78a46fbfa99876c1fe03592237ee94.jpg",
+          "sha256": "113441d2a983156148f9c3d2f6ac09239e78a46fbfa99876c1fe03592237ee94",
+          "color": "off-white",
+          "source_id": "p60i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p69-i3"
+      ],
+      "revision": "1318278e6debd4dd7874f6347631184a089f16acf6b3e87678fe75797decb9a6"
+    },
+    {
+      "code": "pdf26-saltos-139",
+      "name": "Anabela de juta com tira cruzada branca",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com tira cruzada branca. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        60
+      ],
+      "photos": [
+        {
+          "file": "photos/25eba8aa28c068700f40d47bed3b5dd9e3ff009b40d5551f0f0190d6ce43f3a4.jpg",
+          "sha256": "25eba8aa28c068700f40d47bed3b5dd9e3ff009b40d5551f0f0190d6ce43f3a4",
+          "color": "off-white",
+          "source_id": "p60i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p69-i4"
+      ],
+      "revision": "3aeebba1c4624e7bd02e208f88b4711755795e9021b338de687de557c724f606"
+    },
+    {
+      "code": "pdf26-saltos-140",
+      "name": "Peep toe anabela de juta taupe",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Peep toe anabela de juta taupe. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        60
+      ],
+      "photos": [
+        {
+          "file": "photos/982fbf96ed133b430c4e238356696b4074087758a9e13e78a438fa4c16a48a06.jpg",
+          "sha256": "982fbf96ed133b430c4e238356696b4074087758a9e13e78a438fa4c16a48a06",
+          "color": "taupe",
+          "source_id": "p60i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p69-i5"
+      ],
+      "revision": "35173d58815631a03265819c9521e1efea4bde6f431feaa61fe9c87e4218c0fc"
+    },
+    {
+      "code": "pdf26-saltos-141",
+      "name": "Anabela de camurça com cordas marrom",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de camurça com cordas marrom. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        60
+      ],
+      "photos": [
+        {
+          "file": "photos/0da1c54b68644ca05cc53e3fc8e94c82597a65a6bdd09bbb5df3c57ef8acc0f9.jpg",
+          "sha256": "0da1c54b68644ca05cc53e3fc8e94c82597a65a6bdd09bbb5df3c57ef8acc0f9",
+          "color": "marrom",
+          "source_id": "p60i06"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f11-p69-i7"
+      ],
+      "revision": "ff384a4f67976ff0c095db125abfeaabd51bc3ef9453ec396eb174ec8d878fee"
+    },
+    {
+      "code": "pdf26-saltos-142",
+      "name": "Flatform nude com tiras de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform nude com tiras de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        61
+      ],
+      "photos": [
+        {
+          "file": "photos/3e2dabd48572e7eda7cfe77716db55b33973d5d7a6d731e158aea3aca9185ddd.jpg",
+          "sha256": "3e2dabd48572e7eda7cfe77716db55b33973d5d7a6d731e158aea3aca9185ddd",
+          "color": "nude",
+          "source_id": "p61i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p70-i1"
+      ],
+      "revision": "0840fc8adeecd954a6d44a39019ac209d0cc1acf8574077793f03948182656aa"
+    },
+    {
+      "code": "pdf26-saltos-143",
+      "name": "Peep toe anabela de juta marrom",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Peep toe anabela de juta marrom. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        61
+      ],
+      "photos": [
+        {
+          "file": "photos/29ed5214e8b20bcffc04f7616cda6b07d9cdcbe0fb4c30d51414291d69d5dd15.jpg",
+          "sha256": "29ed5214e8b20bcffc04f7616cda6b07d9cdcbe0fb4c30d51414291d69d5dd15",
+          "color": "marrom",
+          "source_id": "p61i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p70-i2"
+      ],
+      "revision": "35078278fe5b9b4828c62158bedb7ce25eb63f8b172597bd609e26797d57c091"
+    },
+    {
+      "code": "pdf26-saltos-144",
+      "name": "Peep toe anabela de juta caramelo",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Peep toe anabela de juta caramelo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        61
+      ],
+      "photos": [
+        {
+          "file": "photos/d39e868da7482e2d573c8982028abe313ffcc4bbe11b02c5659873f01923c31a.jpg",
+          "sha256": "d39e868da7482e2d573c8982028abe313ffcc4bbe11b02c5659873f01923c31a",
+          "color": "caramelo",
+          "source_id": "p61i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p70-i3"
+      ],
+      "revision": "39873655dfe1c3f5252c2cf3d3ff1b60353bbdb4a67a143078188f4a6d20ed19"
+    },
+    {
+      "code": "pdf26-saltos-145",
+      "name": "Tamanco flatform bordado em várias cores",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Tamanco flatform bordado em várias cores. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        61
+      ],
+      "photos": [
+        {
+          "file": "photos/e7af6143ff2ba8d5e0d81b7450b5f6c1b1537b6e78aa9b7b1be68553c60e45f1.jpg",
+          "sha256": "e7af6143ff2ba8d5e0d81b7450b5f6c1b1537b6e78aa9b7b1be68553c60e45f1",
+          "color": "preto, prata, caramelo e dourado",
+          "source_id": "p61i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p70-i4"
+      ],
+      "revision": "6331653cf5a841bfdfe2db7fa4a961debc79a64746aaf5bd672bb03dbd515a30"
+    },
+    {
+      "code": "pdf26-saltos-146",
+      "name": "Flatform de dedo com tira de strass",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo com tira de strass. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        62
+      ],
+      "photos": [
+        {
+          "file": "photos/10b14a1858d57cf16bf500caffe060b27a2d21e48bcb64c0c029811edb45db69.jpg",
+          "sha256": "10b14a1858d57cf16bf500caffe060b27a2d21e48bcb64c0c029811edb45db69",
+          "color": "nude",
+          "source_id": "p62i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p71-i2"
+      ],
+      "revision": "20fa1fee1ab48a76859ef0877ec6ba8d43ce0ae93f7ddf41c731ae752ff7ab51"
+    },
+    {
+      "code": "pdf26-saltos-147",
+      "name": "Flatform de dedo com corrente dourada",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo com corrente dourada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        62
+      ],
+      "photos": [
+        {
+          "file": "photos/0cd8567da9413db2e7c279f6a1927d685ceeadbf65d44b0fc6ba8a10a67133d7.jpg",
+          "sha256": "0cd8567da9413db2e7c279f6a1927d685ceeadbf65d44b0fc6ba8a10a67133d7",
+          "color": "off-white",
+          "source_id": "p62i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p71-i3"
+      ],
+      "revision": "2c29c619806939ec94838f21de7c873b71a67982180c7601f4ee710bba2e5746"
+    },
+    {
+      "code": "pdf26-saltos-148",
+      "name": "Tamanco flatform de tira larga",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Tamanco flatform de tira larga. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        62,
+        64
+      ],
+      "photos": [
+        {
+          "file": "photos/aa5bc82f9a33b5b21db8d255bf0a66f8098828d6aec4f6c37f5e0318a630067f.jpg",
+          "sha256": "aa5bc82f9a33b5b21db8d255bf0a66f8098828d6aec4f6c37f5e0318a630067f",
+          "color": "várias cores",
+          "source_id": "p62i04"
+        },
+        {
+          "file": "photos/1aa0d6cecc93d9b1e067e32593c2d484247ff0a448cff1d65ca7010b401803b4.jpg",
+          "sha256": "1aa0d6cecc93d9b1e067e32593c2d484247ff0a448cff1d65ca7010b401803b4",
+          "color": "várias cores",
+          "source_id": "p64i05"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p71-i4",
+        "saltos_anabelas_chinelos-f14-p74-i6"
+      ],
+      "revision": "6457f0321cbaef5daf9d30a9d969147a2fa51e10cabc33576a9c79826256612c"
+    },
+    {
+      "code": "pdf26-saltos-149",
+      "name": "Anabela de juta com tira larga nude",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com tira larga nude. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        63
+      ],
+      "photos": [
+        {
+          "file": "photos/e45c85a597b699cd448998cbdfeddd5e8cbd79963783b3045bcb5c35f9321206.jpg",
+          "sha256": "e45c85a597b699cd448998cbdfeddd5e8cbd79963783b3045bcb5c35f9321206",
+          "color": "nude",
+          "source_id": "p63i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p73-i1"
+      ],
+      "revision": "a0515967d86e919c8e4d2eaed042cad0d5f55d98bc2e6561044baffe0b175e04"
+    },
+    {
+      "code": "pdf26-saltos-150",
+      "name": "Peep toe anabela de juta com bico preto",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Peep toe anabela de juta com bico preto. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        63
+      ],
+      "photos": [
+        {
+          "file": "photos/0fbc1392707e8150e207c41474bdfb36282df651c2f4cf9278585d0600a4ce8f.jpg",
+          "sha256": "0fbc1392707e8150e207c41474bdfb36282df651c2f4cf9278585d0600a4ce8f",
+          "color": "preto",
+          "source_id": "p63i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p73-i2"
+      ],
+      "revision": "83242d45367802aeab3981c793610da2bd11cb6029a91cc9141eaf6cf3138ab6"
+    },
+    {
+      "code": "pdf26-saltos-151",
+      "name": "Flatform de dedo metalizada com amarração",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo metalizada com amarração. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        63
+      ],
+      "photos": [
+        {
+          "file": "photos/8f06bb559cdaf198f3d48074a32f39c962d86f7b4194fcc0558a89c05afe4a53.jpg",
+          "sha256": "8f06bb559cdaf198f3d48074a32f39c962d86f7b4194fcc0558a89c05afe4a53",
+          "color": "dourado",
+          "source_id": "p63i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "ced6fdbf1cc13db9cae0e50d736a481f3d7974577f3f80f167040e735b4625ee"
+    },
+    {
+      "code": "pdf26-saltos-152",
+      "name": "Flatform de tiras finas com tornozeleira",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de tiras finas com tornozeleira. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        63
+      ],
+      "photos": [
+        {
+          "file": "photos/0bb3ff57ead8b268dbaf08aa87b346698dafd3832d43a5e26e4bf64606db963c.jpg",
+          "sha256": "0bb3ff57ead8b268dbaf08aa87b346698dafd3832d43a5e26e4bf64606db963c",
+          "color": "preto",
+          "source_id": "p63i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p73-i4"
+      ],
+      "revision": "eeddda89a229d5ee3e48b169b5c291ca95fdb31eda438b675428955215cea53b"
+    },
+    {
+      "code": "pdf26-saltos-153",
+      "name": "Flatform de dedo com amarração clara",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo com amarração clara. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        64
+      ],
+      "photos": [
+        {
+          "file": "photos/cd6a69fa116966d22fa8313765f3590cb3ffb18b22e043ad9f8ca9801ba94dd7.jpg",
+          "sha256": "cd6a69fa116966d22fa8313765f3590cb3ffb18b22e043ad9f8ca9801ba94dd7",
+          "color": "off-white",
+          "source_id": "p64i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p74-i2"
+      ],
+      "revision": "4e720069a68923b37cd57db6dc61a0d7c72b229c47b91cd1c107d996d8ae99f5"
+    },
+    {
+      "code": "pdf26-saltos-154",
+      "name": "Anabela de cordas com amarração",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de cordas com amarração. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        64
+      ],
+      "photos": [
+        {
+          "file": "photos/b6d547bf54e34b7926729bdabab86c30ec80f8a3a372a966e132ce06d9df9226.jpg",
+          "sha256": "b6d547bf54e34b7926729bdabab86c30ec80f8a3a372a966e132ce06d9df9226",
+          "color": "preto",
+          "source_id": "p64i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p74-i3"
+      ],
+      "revision": "66c3caa15a4fec5866c22bb0cd1e0920061e537062bcd9c191af2162e7faabab"
+    },
+    {
+      "code": "pdf26-saltos-155",
+      "name": "Tamanco flatform bordado marrom",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Tamanco flatform bordado marrom. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        64
+      ],
+      "photos": [
+        {
+          "file": "photos/79d3f80c97b597558da0eb2be0733980ef09876207aedb317878477c224392db.jpg",
+          "sha256": "79d3f80c97b597558da0eb2be0733980ef09876207aedb317878477c224392db",
+          "color": "marrom",
+          "source_id": "p64i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p74-i4"
+      ],
+      "revision": "600dde6e71447f5b1ea9834a5a232d33b9da6f576cd4dbe6f3c69b3be5e4acd6"
+    },
+    {
+      "code": "pdf26-saltos-156",
+      "name": "Flatform de dedo com tira de strass preta",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform de dedo com tira de strass preta. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 11,
+      "retail": "69.90",
+      "price": "79.90",
+      "cost": "48.93",
+      "pages": [
+        64
+      ],
+      "photos": [
+        {
+          "file": "photos/6848da025ca954f1a230e49877c587d774f602a8631b66ff1c6b88075074a621.jpg",
+          "sha256": "6848da025ca954f1a230e49877c587d774f602a8631b66ff1c6b88075074a621",
+          "color": "preto",
+          "source_id": "p64i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f14-p74-i5"
+      ],
+      "revision": "36308499fb28fcc6f0424530ac8f9294438992d2e7cd3dca5cfd1e36ba6680e0"
+    },
+    {
+      "code": "pdf26-saltos-157",
+      "name": "Anabela de juta com tiras finas nude",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Anabela de juta com tiras finas nude. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 18,
+      "retail": "139.90",
+      "price": "159.90",
+      "cost": "97.93",
+      "pages": [
+        65
+      ],
+      "photos": [
+        {
+          "file": "photos/8e1c1276a5216e5d8ce99ed7ba0a914401ede41f77cb1ca2fb39986df68bc8d3.jpg",
+          "sha256": "8e1c1276a5216e5d8ce99ed7ba0a914401ede41f77cb1ca2fb39986df68bc8d3",
+          "color": "nude",
+          "source_id": "p65i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p75-i1"
+      ],
+      "revision": "7408bd1efbee2151aa4e577e997f1828edf3ad8f140ccaaa61a99c4aef1e5aaa"
+    },
+    {
+      "code": "pdf26-saltos-158",
+      "name": "Flatform caramelo com tiras de brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform caramelo com tiras de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        65
+      ],
+      "photos": [
+        {
+          "file": "photos/a6b9d5f98bf2ae92629a385ae58db07d8c9739333c5b21732ef99767043b60c2.jpg",
+          "sha256": "a6b9d5f98bf2ae92629a385ae58db07d8c9739333c5b21732ef99767043b60c2",
+          "color": "caramelo",
+          "source_id": "p65i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p75-i2"
+      ],
+      "revision": "4ab6af73e777459d737bad8d24757ac246278b76fe870fd32ce2589b236ae87a"
+    },
+    {
+      "code": "pdf26-saltos-159",
+      "name": "Flatform caramelo de tiras largas com brilho",
+      "brand": "",
+      "category": "Anabelas Femininas",
+      "description": "Flatform caramelo de tiras largas com brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        65
+      ],
+      "photos": [
+        {
+          "file": "photos/defba1868bab261e860d5daceaac80a10d179b480ef3665f9407c93c3742f6f1.jpg",
+          "sha256": "defba1868bab261e860d5daceaac80a10d179b480ef3665f9407c93c3742f6f1",
+          "color": "caramelo",
+          "source_id": "p65i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f18-p75-i3"
+      ],
+      "revision": "3f8c485adca5da005be3faf52e8dc5e76f772cac5e47dc6a7cfce802d8695aa7"
+    },
+    {
+      "code": "pdf26-saltos-160",
+      "name": "Chinelo de dedo com tira de brilho",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo de dedo com tira de brilho. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        67
+      ],
+      "photos": [
+        {
+          "file": "photos/027f5b628a1c6cdea800ef67d302ea6d7a7d5876e50d593de4ca6a7ad5dc420d.jpg",
+          "sha256": "027f5b628a1c6cdea800ef67d302ea6d7a7d5876e50d593de4ca6a7ad5dc420d",
+          "color": "várias cores",
+          "source_id": "p67i01"
+        },
+        {
+          "file": "photos/2050539b5a37081d946ed331271d2ff77b3b3b0b57d910e7990b9a9802351829.jpg",
+          "sha256": "2050539b5a37081d946ed331271d2ff77b3b3b0b57d910e7990b9a9802351829",
+          "color": "várias cores",
+          "source_id": "p67i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f13-p77-i1",
+        "saltos_anabelas_chinelos-f13-p77-i4"
+      ],
+      "revision": "9746bb7de0bd9f18f72fd51e9db1d30bd040e0599f8ed9134f4d9139576e8e0d"
+    },
+    {
+      "code": "pdf26-saltos-161",
+      "name": "Rasteira de dedo com discos metálicos",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Rasteira de dedo com discos metálicos. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        67
+      ],
+      "photos": [
+        {
+          "file": "photos/8f674aef7a73bf13c8837949b3efdb87c67bc8328600ed194e5a5687870d6038.jpg",
+          "sha256": "8f674aef7a73bf13c8837949b3efdb87c67bc8328600ed194e5a5687870d6038",
+          "color": "caramelo",
+          "source_id": "p67i02"
+        },
+        {
+          "file": "photos/ff9b22c89a2edec9f8716803a7281dc8f938912515b3a459ee0644899f4b488e.jpg",
+          "sha256": "ff9b22c89a2edec9f8716803a7281dc8f938912515b3a459ee0644899f4b488e",
+          "color": "preto",
+          "source_id": "p67i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f13-p77-i2",
+        "saltos_anabelas_chinelos-f13-p77-i3"
+      ],
+      "revision": "05d3f0e46cc50c874a4d7e96ca327995544b5467ca3e51fc769a3ee802e1d2b6"
+    },
+    {
+      "code": "pdf26-saltos-162",
+      "name": "Chinelo de dedo matelassê",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo de dedo matelassê. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 10,
+      "retail": "59.90",
+      "price": "69.90",
+      "cost": "41.93",
+      "pages": [
+        68
+      ],
+      "photos": [
+        {
+          "file": "photos/43b6c4d8b6efbc377237a270ad85be1aeb3aa71578213c01bd726531b6eb0a7b.jpg",
+          "sha256": "43b6c4d8b6efbc377237a270ad85be1aeb3aa71578213c01bd726531b6eb0a7b",
+          "color": "off-white",
+          "source_id": "p68i01"
+        },
+        {
+          "file": "photos/5fca6079a1bda04b8c01ed11bde513b39e96d74251e964368bc8197e8ebb59d3.jpg",
+          "sha256": "5fca6079a1bda04b8c01ed11bde513b39e96d74251e964368bc8197e8ebb59d3",
+          "color": "preto",
+          "source_id": "p68i02"
+        },
+        {
+          "file": "photos/0ba7f4fd1fdbe7715aaf237637d01d0e7e1f9b624e7a40c6cdc93d80584203d7.jpg",
+          "sha256": "0ba7f4fd1fdbe7715aaf237637d01d0e7e1f9b624e7a40c6cdc93d80584203d7",
+          "color": "preto",
+          "source_id": "p68i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f10-p79-i1",
+        "saltos_anabelas_chinelos-f10-p79-i2",
+        "saltos_anabelas_chinelos-f10-p79-i3"
+      ],
+      "revision": "d69ba0267ec837c21820edd4029a9a6b3bd1871b236d5e3dd3fccc687d33d7d8"
+    },
+    {
+      "code": "pdf26-saltos-163",
+      "name": "Chinelo de dedo com corrente dourada",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo de dedo com corrente dourada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 10,
+      "retail": "59.90",
+      "price": "69.90",
+      "cost": "41.93",
+      "pages": [
+        69
+      ],
+      "photos": [
+        {
+          "file": "photos/4b6efafcfca97a629d0cd77053d5a60e51af055698229587272d5a0e62733e28.jpg",
+          "sha256": "4b6efafcfca97a629d0cd77053d5a60e51af055698229587272d5a0e62733e28",
+          "color": "marrom",
+          "source_id": "p69i01"
+        },
+        {
+          "file": "photos/f27a1f871ec377b3dd22eab4f402f649aae994cab49be1db3c7615e49c4ef345.jpg",
+          "sha256": "f27a1f871ec377b3dd22eab4f402f649aae994cab49be1db3c7615e49c4ef345",
+          "color": "off-white",
+          "source_id": "p69i02"
+        }
+      ],
+      "aliases": [],
+      "revision": "ad2627c32f0e7e58538bb4c45e43e9a0854306c138113ad6f9599d9124d9c8f7"
+    },
+    {
+      "code": "pdf26-saltos-164",
+      "name": "Chinelo de dedo com corrente e verniz",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo de dedo com corrente e verniz. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 10,
+      "retail": "59.90",
+      "price": "69.90",
+      "cost": "41.93",
+      "pages": [
+        69
+      ],
+      "photos": [
+        {
+          "file": "photos/062c30bc84cf31125c0fd28edcd7348d13d5b85316cd1e4a1f084e3bb1c04b6d.jpg",
+          "sha256": "062c30bc84cf31125c0fd28edcd7348d13d5b85316cd1e4a1f084e3bb1c04b6d",
+          "color": "preto",
+          "source_id": "p69i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "fd6dd28533b59a711e9c5807fc78915396c5ded44281c76efe85e828a1ba2096"
+    },
+    {
+      "code": "pdf26-saltos-165",
+      "name": "Babuche com enfeites",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Babuche com enfeites. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 20,
+      "retail": "159.90",
+      "price": "179.90",
+      "cost": "111.93",
+      "pages": [
+        70
+      ],
+      "photos": [
+        {
+          "file": "photos/e05b976c8da7e2117f62206cc40a5b0a59fda350973f08da7e2e1651f08b1553.jpg",
+          "sha256": "e05b976c8da7e2117f62206cc40a5b0a59fda350973f08da7e2e1651f08b1553",
+          "color": "off-white",
+          "source_id": "p70i01"
+        },
+        {
+          "file": "photos/0bf423083285f709112d349c8964f2b0358209caaf8690857ae3578a1e2c3ba6.jpg",
+          "sha256": "0bf423083285f709112d349c8964f2b0358209caaf8690857ae3578a1e2c3ba6",
+          "color": "preto",
+          "source_id": "p70i02"
+        },
+        {
+          "file": "photos/08341e67a865c5d1c25b0f87a689935f14bafcb9d66faf7c2ead2f9cc13c3372.jpg",
+          "sha256": "08341e67a865c5d1c25b0f87a689935f14bafcb9d66faf7c2ead2f9cc13c3372",
+          "color": "off-white e preto",
+          "source_id": "p70i03"
+        },
+        {
+          "file": "photos/cbc5a33566526d786a7db419cdc127631723c238b12638963809e82dfbd048cd.jpg",
+          "sha256": "cbc5a33566526d786a7db419cdc127631723c238b12638963809e82dfbd048cd",
+          "color": "marrom",
+          "source_id": "p70i04"
+        },
+        {
+          "file": "photos/d42816bab15ea297a8254598307479c643cef1bb406d473e461bca653c940759.jpg",
+          "sha256": "d42816bab15ea297a8254598307479c643cef1bb406d473e461bca653c940759",
+          "color": "várias cores",
+          "source_id": "p70i05"
+        },
+        {
+          "file": "photos/b2b5d5c6e0114ebfb3b9bd1eb531ab3aceb8f0f50ff85c73a6e086eb8b6980d8.jpg",
+          "sha256": "b2b5d5c6e0114ebfb3b9bd1eb531ab3aceb8f0f50ff85c73a6e086eb8b6980d8",
+          "color": "off-white",
+          "source_id": "p70i06"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f20-p86-i1",
+        "saltos_anabelas_chinelos-f20-p86-i2",
+        "saltos_anabelas_chinelos-f20-p86-i3",
+        "saltos_anabelas_chinelos-f20-p86-i4",
+        "saltos_anabelas_chinelos-f20-p86-i5",
+        "saltos_anabelas_chinelos-f20-p86-i6"
+      ],
+      "revision": "ccd82ff8ad492ccc75a2695a39ab2440ff0b04a54304c95803292623eb96c90e"
+    },
+    {
+      "code": "pdf26-saltos-166",
+      "name": "Chinelo de dedo com solado anatômico",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo de dedo com solado anatômico. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 9,
+      "retail": "49.90",
+      "price": "59.90",
+      "cost": "34.93",
+      "pages": [
+        71
+      ],
+      "photos": [
+        {
+          "file": "photos/29a1df50258ba4cbd39efdaf3f48ed260eabfe50ed437a573595552f38e640ae.jpg",
+          "sha256": "29a1df50258ba4cbd39efdaf3f48ed260eabfe50ed437a573595552f38e640ae",
+          "color": "caramelo",
+          "source_id": "p71i01"
+        },
+        {
+          "file": "photos/49687b259147ae13a699fcb4edd1729d9879293574247b90049545f96250644a.jpg",
+          "sha256": "49687b259147ae13a699fcb4edd1729d9879293574247b90049545f96250644a",
+          "color": "off-white",
+          "source_id": "p71i02"
+        },
+        {
+          "file": "photos/c7d4d1e0c60abd0ef217b61214f09c72dcac7e3b699a31c36062f9f933043052.jpg",
+          "sha256": "c7d4d1e0c60abd0ef217b61214f09c72dcac7e3b699a31c36062f9f933043052",
+          "color": "várias cores",
+          "source_id": "p71i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f9-p87-i1",
+        "saltos_anabelas_chinelos-f9-p87-i2",
+        "saltos_anabelas_chinelos-f9-p87-i3"
+      ],
+      "revision": "48cad4c7053d98b2e07d10441ba5d3d1a89164b87d82767b1b72770fd79bf621"
+    },
+    {
+      "code": "pdf26-saltos-167",
+      "name": "Chinelo slide macio",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo slide macio. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 17,
+      "retail": "129.90",
+      "price": "149.90",
+      "cost": "90.93",
+      "pages": [
+        72
+      ],
+      "photos": [
+        {
+          "file": "photos/a204d1238f9ee669c87c5073204906e5b339f3ab2cd5f582360906cab3476bff.jpg",
+          "sha256": "a204d1238f9ee669c87c5073204906e5b339f3ab2cd5f582360906cab3476bff",
+          "color": "várias cores",
+          "source_id": "p72i01"
+        },
+        {
+          "file": "photos/47a7dd08f539e7f90e8357525a91fbaf60429af85d2617b1ca7d1cad5ee24373.jpg",
+          "sha256": "47a7dd08f539e7f90e8357525a91fbaf60429af85d2617b1ca7d1cad5ee24373",
+          "color": "várias cores",
+          "source_id": "p72i02"
+        },
+        {
+          "file": "photos/bfc8d53153d1236141db5e7de92841724a7fb87b25b588d5b02ffb168a55e0b2.jpg",
+          "sha256": "bfc8d53153d1236141db5e7de92841724a7fb87b25b588d5b02ffb168a55e0b2",
+          "color": "várias cores",
+          "source_id": "p72i03"
+        }
+      ],
+      "aliases": [],
+      "revision": "1c34cd0b6272058b2f15a32c79fbeaf1650938adcb3d85b1b81ad73d0b409864"
+    },
+    {
+      "code": "pdf26-saltos-168",
+      "name": "Chinelo slide acolchoado",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo slide acolchoado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        73
+      ],
+      "photos": [
+        {
+          "file": "photos/41506967794e85cbfcc19d44d6177c276e701c3b0c5c490fef31a91d3d410b9d.jpg",
+          "sha256": "41506967794e85cbfcc19d44d6177c276e701c3b0c5c490fef31a91d3d410b9d",
+          "color": "várias cores",
+          "source_id": "p73i01"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f13-p92-i1"
+      ],
+      "revision": "b3607e34ef7e2a41fd8f206d538c868c7470b57f3e0ac75e211b8d50c3bfe3f9"
+    },
+    {
+      "code": "pdf26-saltos-169",
+      "name": "Chinelo slide de solado alto",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo slide de solado alto. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 14,
+      "retail": "99.90",
+      "price": "109.90",
+      "cost": "69.93",
+      "pages": [
+        73
+      ],
+      "photos": [
+        {
+          "file": "photos/18ae305523b78ce2eb5a9c17cf77125c87ef27b8404095934a56838a69bacab2.jpg",
+          "sha256": "18ae305523b78ce2eb5a9c17cf77125c87ef27b8404095934a56838a69bacab2",
+          "color": "várias cores",
+          "source_id": "p73i02"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f13-p92-i2"
+      ],
+      "revision": "0e5cb6a665eca961ca9940ef6f34f0d5c52fb5d6d74be9932882e80c7f6bacc6"
+    },
+    {
+      "code": "pdf26-saltos-170",
+      "name": "Chinelo de dedo com solado macio",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo de dedo com solado macio. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        73
+      ],
+      "photos": [
+        {
+          "file": "photos/56877e46d32f6ae15a0a8a2797d38958dc8dd924551e95054c388ab2d21f3746.jpg",
+          "sha256": "56877e46d32f6ae15a0a8a2797d38958dc8dd924551e95054c388ab2d21f3746",
+          "color": "várias cores",
+          "source_id": "p73i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f13-p92-i3"
+      ],
+      "revision": "e6351b2e4411d32b26ff3b76afb611cf04360fa97b620fcaae6ca15359967f14"
+    },
+    {
+      "code": "pdf26-saltos-171",
+      "name": "Chinelo slide de duas tiras",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo slide de duas tiras. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        74
+      ],
+      "photos": [
+        {
+          "file": "photos/c5c45216f1bc91d6fff9e59ca128743fb59bb859b7750f9a0477b609d5c27a7a.jpg",
+          "sha256": "c5c45216f1bc91d6fff9e59ca128743fb59bb859b7750f9a0477b609d5c27a7a",
+          "color": "preto",
+          "source_id": "p74i01"
+        },
+        {
+          "file": "photos/6a1bf329b8ed79927fe28ead19ac45f77a834eff2a20c34c60d509a8db6b5c27.jpg",
+          "sha256": "6a1bf329b8ed79927fe28ead19ac45f77a834eff2a20c34c60d509a8db6b5c27",
+          "color": "preto",
+          "source_id": "p74i03"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f12-p95-i1",
+        "saltos_anabelas_chinelos-f12-p95-i3"
+      ],
+      "revision": "cb0595189fb09c8a6bb6024bca21a15f94e63b2b515e9ab18c0f94d283e53486"
+    },
+    {
+      "code": "pdf26-saltos-172",
+      "name": "Chinelo de dedo esportivo",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo de dedo esportivo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 12,
+      "retail": "79.90",
+      "price": "89.90",
+      "cost": "55.93",
+      "pages": [
+        74
+      ],
+      "photos": [
+        {
+          "file": "photos/e557abb047f5516334e68c271eec127c0280036de1836f04bff33fe3a318f97e.jpg",
+          "sha256": "e557abb047f5516334e68c271eec127c0280036de1836f04bff33fe3a318f97e",
+          "color": "preto e amarelo",
+          "source_id": "p74i02"
+        },
+        {
+          "file": "photos/52c235d80f049e4255e15ff3833eac8676c9eded19cdb0cf64fbd6ee037dd47a.jpg",
+          "sha256": "52c235d80f049e4255e15ff3833eac8676c9eded19cdb0cf64fbd6ee037dd47a",
+          "color": "off-white e azul",
+          "source_id": "p74i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f12-p95-i2",
+        "saltos_anabelas_chinelos-f12-p95-i4"
+      ],
+      "revision": "df7849b056281a488df35b0492d768bb919cc19cb7935d13860e288a4f71f5d2"
+    },
+    {
+      "code": "pdf26-saltos-173",
+      "name": "Chinelo de dedo acolchoado",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo de dedo acolchoado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        75
+      ],
+      "photos": [
+        {
+          "file": "photos/3e1559bc82d1ff45b53a989b73f7cda54c8f2ff5a4f83132d2e8432e236d99d6.jpg",
+          "sha256": "3e1559bc82d1ff45b53a989b73f7cda54c8f2ff5a4f83132d2e8432e236d99d6",
+          "color": "bege",
+          "source_id": "p75i01"
+        },
+        {
+          "file": "photos/7117b320e39646aa3ded2b30e51eb71b9e4def75a6be2fd46040ba890d4f740e.jpg",
+          "sha256": "7117b320e39646aa3ded2b30e51eb71b9e4def75a6be2fd46040ba890d4f740e",
+          "color": "marrom",
+          "source_id": "p75i02"
+        },
+        {
+          "file": "photos/6a9cc620f26743e12bf5cc5d3f0d1791ebbe04b9ac2b639158a2275601e3e54c.jpg",
+          "sha256": "6a9cc620f26743e12bf5cc5d3f0d1791ebbe04b9ac2b639158a2275601e3e54c",
+          "color": "rosé",
+          "source_id": "p75i03"
+        },
+        {
+          "file": "photos/271c0a3e7e9e8a75a37cd9a8cfb86de7971341cf05250b72f2260c121673a9c7.jpg",
+          "sha256": "271c0a3e7e9e8a75a37cd9a8cfb86de7971341cf05250b72f2260c121673a9c7",
+          "color": "off-white",
+          "source_id": "p75i04"
+        },
+        {
+          "file": "photos/a0ec652a40621f7ff44f7bf3fda8d4caa490731c5d6df9a1a23aaf7a64d97b62.jpg",
+          "sha256": "a0ec652a40621f7ff44f7bf3fda8d4caa490731c5d6df9a1a23aaf7a64d97b62",
+          "color": "preto",
+          "source_id": "p75i05"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f13-p97-i1",
+        "saltos_anabelas_chinelos-f13-p97-i2",
+        "saltos_anabelas_chinelos-f13-p97-i3",
+        "saltos_anabelas_chinelos-f13-p97-i4",
+        "saltos_anabelas_chinelos-f13-p97-i5"
+      ],
+      "revision": "d66c582632ff10d6f73830aaaf6d299a996f70e240d51a960c50fd5a4699f227"
+    },
+    {
+      "code": "pdf26-saltos-174",
+      "name": "Chinelo de dedo de corda",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo de dedo de corda. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 13,
+      "retail": "89.90",
+      "price": "99.90",
+      "cost": "62.93",
+      "pages": [
+        75
+      ],
+      "photos": [
+        {
+          "file": "photos/d1aab0bdbb43da68744b4b5145fb667329e7aaf0a63def522bb4eda90e6bc5ad.jpg",
+          "sha256": "d1aab0bdbb43da68744b4b5145fb667329e7aaf0a63def522bb4eda90e6bc5ad",
+          "color": "rosa",
+          "source_id": "p75i06"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f13-p97-i6"
+      ],
+      "revision": "6b082a1915528a693f24dbdc88e2f8a8b8b067bf0027bfa282217dd715e1bf70"
+    },
+    {
+      "code": "pdf26-saltos-175",
+      "name": "Chinelo slide esportivo",
+      "brand": "",
+      "category": "Chinelos",
+      "description": "Chinelo slide esportivo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 9,
+      "retail": "49.90",
+      "price": "59.90",
+      "cost": "34.93",
+      "pages": [
+        76
+      ],
+      "photos": [
+        {
+          "file": "photos/9393d68ee95c3eda7c154153e513d9b29208d42864083738c1c1a473d361e221.jpg",
+          "sha256": "9393d68ee95c3eda7c154153e513d9b29208d42864083738c1c1a473d361e221",
+          "color": "off-white e preto",
+          "source_id": "p76i01"
+        },
+        {
+          "file": "photos/e5639dbe4900a94fc81ec3d492f5e8348fde9bc720e3b88606b95ec6203ea6b5.jpg",
+          "sha256": "e5639dbe4900a94fc81ec3d492f5e8348fde9bc720e3b88606b95ec6203ea6b5",
+          "color": "azul",
+          "source_id": "p76i02"
+        },
+        {
+          "file": "photos/9aaf515e374894ea640a9b1e54c47534183cbc737a208d477279c9302777e2ac.jpg",
+          "sha256": "9aaf515e374894ea640a9b1e54c47534183cbc737a208d477279c9302777e2ac",
+          "color": "preto",
+          "source_id": "p76i03"
+        },
+        {
+          "file": "photos/ef0fbcbe8f4a02a6e0122dccb734e10da1c0c3ed327d8f9ddaa6d6e8a76727dd.jpg",
+          "sha256": "ef0fbcbe8f4a02a6e0122dccb734e10da1c0c3ed327d8f9ddaa6d6e8a76727dd",
+          "color": "preto",
+          "source_id": "p76i04"
+        }
+      ],
+      "aliases": [
+        "saltos_anabelas_chinelos-f9-p98-i1",
+        "saltos_anabelas_chinelos-f9-p98-i2",
+        "saltos_anabelas_chinelos-f9-p98-i3",
+        "saltos_anabelas_chinelos-f9-p98-i4"
+      ],
+      "revision": "cdbcfe7441bb53596814a8e0170233e051e629d84a703694afa77b59ea6881b1"
+    }
+  ],
+  "pending": []
+}
