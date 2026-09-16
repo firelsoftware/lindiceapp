@@ -73,3 +73,9 @@ O PDF `SALTOS  ANABELAS  CHINELOS (1).pdf` tem 76 páginas: capa, índice e as a
 Quase toda a seção de anabelas tem várias faixas por página, ligadas às fotos por uma linha com ponto vermelho. A ligação foi calculada pela posição de cada preço (`output/catalogos/saltos/faixas.json`) e as 22 páginas em que a distância deixava dúvida foram conferidas página a página; a única correção foi a sandália dourada da página 32, que é o mesmo modelo da foto ao lado e ficou na faixa 17. Onde o mesmo desenho aparecia com faixas diferentes em páginas distintas, os produtos foram mantidos separados em vez de subir o preço.
 
 Nenhuma foto deste catálogo traz a marca do fornecedor. As marcas visíveis são dos próprios calçados: Beira Rio, Rafitthy, Villa Rosa, Via Uno, Via Scarpa, Dijean, Moleca, Actvitta e Rider. O ensaio passou, a importação local criou os 175 produtos e as 175 fichas locais responderam com preço, nome e galeria corretos.
+
+## Bolsas (16/09/2026)
+
+Do PDF `BOLSAS  RELÓGIOS (1).pdf`, de 51 páginas, entraram apenas as páginas 3 a 30, que formam a seção de bolsas; a seção de relógios, que começa na página 31, ficou de fora conforme a orientação do administrador, e o próprio comando recusa nome com "relógio". A revisão separou 77 recortes, todos aproveitados, e o manifesto `accounts/seed/catalogos_202609/bolsas/manifest.json` reúne 41 produtos com 75 equivalências do PDF antigo.
+
+Só as páginas 7 e 14 têm mais de uma faixa, e as duas foram conferidas pela linha que liga o preço à foto. As marcas visíveis nas peças, Rafitthy e Pavão de Ouro, foram mantidas. O ensaio passou, a importação local criou os 41 produtos e as 41 fichas locais responderam com preço, nome e galeria corretos.

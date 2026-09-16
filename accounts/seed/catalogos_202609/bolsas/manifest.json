@@ -1,0 +1,1368 @@
+{
+  "catalog": "bolsas-2026-09",
+  "source_pdf": "C:\\Users\\Programador\\Downloads\\BOLSAS  RELÓGIOS (1).pdf",
+  "complete": true,
+  "products": [
+    {
+      "code": "pdf26-bolsas-001",
+      "name": "Bolsa sacola de couro com alças duplas",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa sacola de couro com alças duplas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 27,
+      "retail": "229.90",
+      "price": "249.90",
+      "cost": "160.93",
+      "pages": [
+        3
+      ],
+      "photos": [
+        {
+          "file": "photos/89cdd2c558e5d97c5870dbbb773a4080cc542bd35bd1936dc3096ac1ad235c49.jpg",
+          "sha256": "89cdd2c558e5d97c5870dbbb773a4080cc542bd35bd1936dc3096ac1ad235c49",
+          "color": "várias cores",
+          "source_id": "p03i01"
+        },
+        {
+          "file": "photos/fa9eae7b4ce41efa64892ffe8377b635fe7fd43177afe357b5d7dddb610b6d22.jpg",
+          "sha256": "fa9eae7b4ce41efa64892ffe8377b635fe7fd43177afe357b5d7dddb610b6d22",
+          "color": "preto",
+          "source_id": "p03i02"
+        },
+        {
+          "file": "photos/b674cb79c9cf3631e7081492374694b44a512e890e7d3bd1d57dae1e8308c1a1.jpg",
+          "sha256": "b674cb79c9cf3631e7081492374694b44a512e890e7d3bd1d57dae1e8308c1a1",
+          "color": "caramelo",
+          "source_id": "p03i03"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f27-p3-i1",
+        "bolsas_e_relogios-f27-p3-i2",
+        "bolsas_e_relogios-f27-p3-i3"
+      ],
+      "revision": "9b855f681c74807020a4f4d8e31b1d588a05691c3baeac1f3696a70be8ddf3cf"
+    },
+    {
+      "code": "pdf26-bolsas-002",
+      "name": "Bolsa transversal com tachas",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa transversal com tachas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        4
+      ],
+      "photos": [
+        {
+          "file": "photos/e24d530f87a36f3120be6c3f199d7206e8a38eb473bfa2fb2b96ff2aff6d1249.jpg",
+          "sha256": "e24d530f87a36f3120be6c3f199d7206e8a38eb473bfa2fb2b96ff2aff6d1249",
+          "color": "marrom",
+          "source_id": "p04i01"
+        },
+        {
+          "file": "photos/859cbbeaba5aecb2a0ab4a3634251b9d337cae2c2915ce8d4ccc7b08296f8e63.jpg",
+          "sha256": "859cbbeaba5aecb2a0ab4a3634251b9d337cae2c2915ce8d4ccc7b08296f8e63",
+          "color": "preto",
+          "source_id": "p04i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f26-p4-i1",
+        "bolsas_e_relogios-f26-p4-i2"
+      ],
+      "revision": "b10ca6c40b4966d3e18b9c9896b1e7d75d216828e5ee7b4272fe6b56deed9fd9"
+    },
+    {
+      "code": "pdf26-bolsas-003",
+      "name": "Bolsa baguete com fecho metálico",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa baguete com fecho metálico. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 15,
+      "retail": "109.90",
+      "price": "129.90",
+      "cost": "76.93",
+      "pages": [
+        5
+      ],
+      "photos": [
+        {
+          "file": "photos/eab3c949e37e452c16873a4f7e1e116540d26a6b312d16007c86bf21d1eeb7dc.jpg",
+          "sha256": "eab3c949e37e452c16873a4f7e1e116540d26a6b312d16007c86bf21d1eeb7dc",
+          "color": "várias cores",
+          "source_id": "p05i01"
+        },
+        {
+          "file": "photos/92bbbf88791c1be8fb4b1469959979212f46c5936fe58958988ea554900fb5d3.jpg",
+          "sha256": "92bbbf88791c1be8fb4b1469959979212f46c5936fe58958988ea554900fb5d3",
+          "color": "várias cores",
+          "source_id": "p05i02"
+        },
+        {
+          "file": "photos/a13f5d659747dba799c58e72c9fe10e78799052824637241ba3d7af3bef3f3f1.jpg",
+          "sha256": "a13f5d659747dba799c58e72c9fe10e78799052824637241ba3d7af3bef3f3f1",
+          "color": "caramelo",
+          "source_id": "p05i03"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f15-p5-i1",
+        "bolsas_e_relogios-f15-p5-i2",
+        "bolsas_e_relogios-f15-p5-i3"
+      ],
+      "revision": "bdc74c2c170ae1625e94bb47d2313be0e69f8d819b94e92b1321fc5a9a76912a"
+    },
+    {
+      "code": "pdf26-bolsas-004",
+      "name": "Bolsa hobo com corrente",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa hobo com corrente. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 27,
+      "retail": "229.90",
+      "price": "249.90",
+      "cost": "160.93",
+      "pages": [
+        6
+      ],
+      "photos": [
+        {
+          "file": "photos/6e3f78d68dbb19414fc56537ca8db6c4a3b415032f9c2a5663cc1c8455243b20.jpg",
+          "sha256": "6e3f78d68dbb19414fc56537ca8db6c4a3b415032f9c2a5663cc1c8455243b20",
+          "color": "marrom",
+          "source_id": "p06i01"
+        },
+        {
+          "file": "photos/6c3b78c4586191c24f9b02178c9de23f28953e40ea210fdf649740199bbd702e.jpg",
+          "sha256": "6c3b78c4586191c24f9b02178c9de23f28953e40ea210fdf649740199bbd702e",
+          "color": "marrom",
+          "source_id": "p06i02"
+        },
+        {
+          "file": "photos/a017920bb38051d18a43afa6d42c8732a873f4b025b2bc37c81112ad1fd9dbff.jpg",
+          "sha256": "a017920bb38051d18a43afa6d42c8732a873f4b025b2bc37c81112ad1fd9dbff",
+          "color": "marrom",
+          "source_id": "p06i03"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f27-p6-i1",
+        "bolsas_e_relogios-f27-p6-i2",
+        "bolsas_e_relogios-f27-p6-i3"
+      ],
+      "revision": "051885726d988066011f0169ccca3b2be05c3ff7c070841cd13deb3e5d784eca"
+    },
+    {
+      "code": "pdf26-bolsas-005",
+      "name": "Bolsa de mão croco com fecho dourado",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa de mão croco com fecho dourado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        7
+      ],
+      "photos": [
+        {
+          "file": "photos/fdbeb9d12efef4a1070f17e65c7f64c5d3dd436f952901a9959856ac227e6852.jpg",
+          "sha256": "fdbeb9d12efef4a1070f17e65c7f64c5d3dd436f952901a9959856ac227e6852",
+          "color": "preto",
+          "source_id": "p07i01"
+        },
+        {
+          "file": "photos/8941fbcbbc518eeeb5c76a3f865cde346b73e6d5f1e0a190ff4afd2f3a250295.jpg",
+          "sha256": "8941fbcbbc518eeeb5c76a3f865cde346b73e6d5f1e0a190ff4afd2f3a250295",
+          "color": "marrom",
+          "source_id": "p07i03"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p7-i1",
+        "bolsas_e_relogios-f29-p7-i3"
+      ],
+      "revision": "b35b20339823d77330383cd0b35a254c1b5edc48faa655c590b0c53dd147bf3a"
+    },
+    {
+      "code": "pdf26-bolsas-006",
+      "name": "Bolsa sacola matelassê",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa sacola matelassê. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        7
+      ],
+      "photos": [
+        {
+          "file": "photos/eb2dd22224c3eeec659a289c5a0c3a6f3490bc63b1ea37a892e4766eedef5b5b.jpg",
+          "sha256": "eb2dd22224c3eeec659a289c5a0c3a6f3490bc63b1ea37a892e4766eedef5b5b",
+          "color": "off-white",
+          "source_id": "p07i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p7-i2"
+      ],
+      "revision": "1053a7beec9df0ce53c314219df57a2671015c5e466d498d7d8d034e5ea44911"
+    },
+    {
+      "code": "pdf26-bolsas-007",
+      "name": "Bolsa transversal com cinto e fivela",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa transversal com cinto e fivela. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        7,
+        14
+      ],
+      "photos": [
+        {
+          "file": "photos/d065d3f723e455889739d38ef1e2bec8f983383988f998306e56c0fbb2909b9e.jpg",
+          "sha256": "d065d3f723e455889739d38ef1e2bec8f983383988f998306e56c0fbb2909b9e",
+          "color": "caramelo",
+          "source_id": "p07i04"
+        },
+        {
+          "file": "photos/3011d1527458cad417faa8f7a5346490ff7e6710d6e4534a19ca0a91a8a689a6.jpg",
+          "sha256": "3011d1527458cad417faa8f7a5346490ff7e6710d6e4534a19ca0a91a8a689a6",
+          "color": "off-white",
+          "source_id": "p14i03"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p14-i3",
+        "bolsas_e_relogios-f29-p7-i4"
+      ],
+      "revision": "25d3b329de89f60ea0135587f72b86c0b023389a589f5fca25f611618ebea6d2"
+    },
+    {
+      "code": "pdf26-bolsas-008",
+      "name": "Bolsa hobo com ilhoses e tachas",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa hobo com ilhoses e tachas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        8
+      ],
+      "photos": [
+        {
+          "file": "photos/d641f10d29c152b8b5ed121a7496f8c9f045f21b43d1fab815dee7c2e3a6483a.jpg",
+          "sha256": "d641f10d29c152b8b5ed121a7496f8c9f045f21b43d1fab815dee7c2e3a6483a",
+          "color": "marrom",
+          "source_id": "p08i01"
+        },
+        {
+          "file": "photos/6a5f356251c2ca8ba1aab350f23918db8095a560ebdb0f20606c174f0218aa75.jpg",
+          "sha256": "6a5f356251c2ca8ba1aab350f23918db8095a560ebdb0f20606c174f0218aa75",
+          "color": "off-white",
+          "source_id": "p08i02"
+        },
+        {
+          "file": "photos/5b624fe5faf9093795ef11203884b2d71a8eb551d0aece96f0a0ec82849de284.jpg",
+          "sha256": "5b624fe5faf9093795ef11203884b2d71a8eb551d0aece96f0a0ec82849de284",
+          "color": "bronze",
+          "source_id": "p08i03"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f26-p8-i1",
+        "bolsas_e_relogios-f26-p8-i2",
+        "bolsas_e_relogios-f26-p8-i3"
+      ],
+      "revision": "5a2f18ef0f91d230860f9ad84a53fb203c684c7c6d66770466893ef2f175d503"
+    },
+    {
+      "code": "pdf26-bolsas-009",
+      "name": "Bolsa sacola com placa metálica",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa sacola com placa metálica. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        9
+      ],
+      "photos": [
+        {
+          "file": "photos/90d785a9987598b9a3772d1272d81a6b50c8297b56be6083453ec47a31dad540.jpg",
+          "sha256": "90d785a9987598b9a3772d1272d81a6b50c8297b56be6083453ec47a31dad540",
+          "color": "preto",
+          "source_id": "p09i01"
+        },
+        {
+          "file": "photos/f3496598fe0cec25ed81f99e835a6e7ae4a77877eaebedb3b930b84d0b0f9576.jpg",
+          "sha256": "f3496598fe0cec25ed81f99e835a6e7ae4a77877eaebedb3b930b84d0b0f9576",
+          "color": "preto",
+          "source_id": "p09i02"
+        },
+        {
+          "file": "photos/f1b2b6a0e3a7fd2f636bedfac7ce133d49360768779b6ac9b15e218b6bf87a30.jpg",
+          "sha256": "f1b2b6a0e3a7fd2f636bedfac7ce133d49360768779b6ac9b15e218b6bf87a30",
+          "color": "preto",
+          "source_id": "p09i03"
+        },
+        {
+          "file": "photos/7be3f1d46ce2e8f89d9e01eff15678f6a8a7a523c8abc2b594b771e9e847a2fd.jpg",
+          "sha256": "7be3f1d46ce2e8f89d9e01eff15678f6a8a7a523c8abc2b594b771e9e847a2fd",
+          "color": "caramelo",
+          "source_id": "p09i04"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p9-i1",
+        "bolsas_e_relogios-f29-p9-i2"
+      ],
+      "revision": "9e437d1f02969afdf782f154976afc821eb1af4974a529c8946e5c827f9c3df3"
+    },
+    {
+      "code": "pdf26-bolsas-010",
+      "name": "Bolsa de viagem com alça de corrente",
+      "brand": "Pavão de Ouro",
+      "category": "Bolsas",
+      "description": "Bolsa de viagem com alça de corrente. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        10
+      ],
+      "photos": [
+        {
+          "file": "photos/34ffe9cb1a591a268d5521cc216f320bc2f9418b3e679c9580ec7f3928d4ea3c.jpg",
+          "sha256": "34ffe9cb1a591a268d5521cc216f320bc2f9418b3e679c9580ec7f3928d4ea3c",
+          "color": "off-white",
+          "source_id": "p10i01"
+        },
+        {
+          "file": "photos/d9c6124a35f750df227d6ddf76767fb287cab29a33dfb54030c91f6f730a72a8.jpg",
+          "sha256": "d9c6124a35f750df227d6ddf76767fb287cab29a33dfb54030c91f6f730a72a8",
+          "color": "preto",
+          "source_id": "p10i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f26-p10-i1",
+        "bolsas_e_relogios-f26-p10-i2"
+      ],
+      "revision": "650c628ba8f53ed359a39914aa9ecd49ca2483c74021d898e42e4a4e623bfbb2"
+    },
+    {
+      "code": "pdf26-bolsas-011",
+      "name": "Bolsa sacola com pingente de franjas",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola com pingente de franjas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        11
+      ],
+      "photos": [
+        {
+          "file": "photos/caceb8c98cc5e98aeff57b6fc85ec371ec704f8f1ed8f30380550633319d42f1.jpg",
+          "sha256": "caceb8c98cc5e98aeff57b6fc85ec371ec704f8f1ed8f30380550633319d42f1",
+          "color": "caramelo",
+          "source_id": "p11i01"
+        },
+        {
+          "file": "photos/18d126ffdbde595dbcf007b1b8efb584101772165c854fd91db7aac79bccc5fe.jpg",
+          "sha256": "18d126ffdbde595dbcf007b1b8efb584101772165c854fd91db7aac79bccc5fe",
+          "color": "preto",
+          "source_id": "p11i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p11-i1",
+        "bolsas_e_relogios-f29-p11-i2"
+      ],
+      "revision": "dc55e88c64dea9e9a302958d901c921fd6cb33e40605190514fd78eb880f9070"
+    },
+    {
+      "code": "pdf26-bolsas-012",
+      "name": "Bolsa slouchy de ombro",
+      "brand": "Pavão de Ouro",
+      "category": "Bolsas",
+      "description": "Bolsa slouchy de ombro. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 27,
+      "retail": "229.90",
+      "price": "249.90",
+      "cost": "160.93",
+      "pages": [
+        12
+      ],
+      "photos": [
+        {
+          "file": "photos/4936b9de92012053a4e1ee10f5057b6c0d6a4c71507a57d4b410e000f8e1390d.jpg",
+          "sha256": "4936b9de92012053a4e1ee10f5057b6c0d6a4c71507a57d4b410e000f8e1390d",
+          "color": "caramelo",
+          "source_id": "p12i01"
+        },
+        {
+          "file": "photos/4aaaf424d7e70f747ffdebc7429478220cb761c54a340fcaaa638aaa49ad1ffa.jpg",
+          "sha256": "4aaaf424d7e70f747ffdebc7429478220cb761c54a340fcaaa638aaa49ad1ffa",
+          "color": "várias cores",
+          "source_id": "p12i02"
+        },
+        {
+          "file": "photos/debedfee36df1f037b62c6b68ae3493b65bc8b33ffcfd2c84f55d94e52ee7c6e.jpg",
+          "sha256": "debedfee36df1f037b62c6b68ae3493b65bc8b33ffcfd2c84f55d94e52ee7c6e",
+          "color": "prata",
+          "source_id": "p12i03"
+        },
+        {
+          "file": "photos/f7724e39fa150d7bf896ca601cb81cde7b98260d4e99828d03eeb90977daeaa2.jpg",
+          "sha256": "f7724e39fa150d7bf896ca601cb81cde7b98260d4e99828d03eeb90977daeaa2",
+          "color": "preto",
+          "source_id": "p12i04"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f27-p12-i1",
+        "bolsas_e_relogios-f27-p12-i2",
+        "bolsas_e_relogios-f27-p12-i3",
+        "bolsas_e_relogios-f27-p12-i4"
+      ],
+      "revision": "492f5543af19974129d877d3d29c4661d0e3541afec21921c6bb0a5b8230d732"
+    },
+    {
+      "code": "pdf26-bolsas-013",
+      "name": "Bolsa saddle com pingente",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa saddle com pingente. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 19,
+      "retail": "149.90",
+      "price": "169.90",
+      "cost": "104.93",
+      "pages": [
+        13
+      ],
+      "photos": [
+        {
+          "file": "photos/57121f905c50b4c7410357f1006f43a282a0174c6f0bf9df209c2ead9e442f60.jpg",
+          "sha256": "57121f905c50b4c7410357f1006f43a282a0174c6f0bf9df209c2ead9e442f60",
+          "color": "preto",
+          "source_id": "p13i01"
+        },
+        {
+          "file": "photos/3f60cd40bea0ded4edf5ea5b808de61a4780bbaba6f56d37a039c4fb148b6c1f.jpg",
+          "sha256": "3f60cd40bea0ded4edf5ea5b808de61a4780bbaba6f56d37a039c4fb148b6c1f",
+          "color": "preto",
+          "source_id": "p13i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f19-p13-i1",
+        "bolsas_e_relogios-f19-p13-i2"
+      ],
+      "revision": "d7721405ad2bada0c92f5751c9f310ac7618551d7f9e882a08c0bde22abbfa12"
+    },
+    {
+      "code": "pdf26-bolsas-014",
+      "name": "Bolsa de mão com franja e alça transversal",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa de mão com franja e alça transversal. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        14
+      ],
+      "photos": [
+        {
+          "file": "photos/22e67ec805378493d84d3d8a396ef8d4e78562c15c5fd43fe3ce0ac0fb91880c.jpg",
+          "sha256": "22e67ec805378493d84d3d8a396ef8d4e78562c15c5fd43fe3ce0ac0fb91880c",
+          "color": "preto",
+          "source_id": "p14i01"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p14-i1"
+      ],
+      "revision": "95b9c0423ae0f541b3698195dd094ffd83e7b1eaa04d40ee7ec6a05c56ecb922"
+    },
+    {
+      "code": "pdf26-bolsas-015",
+      "name": "Bolsa sacola com recortes quadriculados",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa sacola com recortes quadriculados. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        14
+      ],
+      "photos": [
+        {
+          "file": "photos/602ea73e4367e91f6d81af5d8f375e6d74e266d8bcc4e06a764a68f287eb1d8f.jpg",
+          "sha256": "602ea73e4367e91f6d81af5d8f375e6d74e266d8bcc4e06a764a68f287eb1d8f",
+          "color": "caramelo",
+          "source_id": "p14i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p14-i2"
+      ],
+      "revision": "8f363239914dce81718fdff6d2d7d24514a557f43bdb053f4042ddd5d54cf212"
+    },
+    {
+      "code": "pdf26-bolsas-016",
+      "name": "Bolsa baguete com fecho dourado",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa baguete com fecho dourado. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 16,
+      "retail": "119.90",
+      "price": "139.90",
+      "cost": "83.93",
+      "pages": [
+        15
+      ],
+      "photos": [
+        {
+          "file": "photos/6573025a025a1c41cd73f1e2df6686a596358ffefba8a4aa5a26d320106782d3.jpg",
+          "sha256": "6573025a025a1c41cd73f1e2df6686a596358ffefba8a4aa5a26d320106782d3",
+          "color": "caramelo",
+          "source_id": "p15i01"
+        },
+        {
+          "file": "photos/49049cf49dca9f31acf06f84597aee7d23c7a9003a59fe2489694044a98ec960.jpg",
+          "sha256": "49049cf49dca9f31acf06f84597aee7d23c7a9003a59fe2489694044a98ec960",
+          "color": "várias cores",
+          "source_id": "p15i02"
+        },
+        {
+          "file": "photos/2d3a72b7f229fae455af2e410a6b94cbf09b0aae499098e39471f6d506749274.jpg",
+          "sha256": "2d3a72b7f229fae455af2e410a6b94cbf09b0aae499098e39471f6d506749274",
+          "color": "off-white",
+          "source_id": "p15i03"
+        },
+        {
+          "file": "photos/90e85137a3f01f5665b350915a985dab96bc838dc7eeef2a8acadb24cc78d55e.jpg",
+          "sha256": "90e85137a3f01f5665b350915a985dab96bc838dc7eeef2a8acadb24cc78d55e",
+          "color": "caramelo",
+          "source_id": "p15i04"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f16-p15-i1",
+        "bolsas_e_relogios-f16-p15-i2",
+        "bolsas_e_relogios-f16-p15-i3",
+        "bolsas_e_relogios-f16-p15-i4"
+      ],
+      "revision": "c20c89c9832b57b2e11fd0d68506c376b8b2c7093827e99c91a4e911dd941973"
+    },
+    {
+      "code": "pdf26-bolsas-017",
+      "name": "Bolsa transversal quadrada",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa transversal quadrada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        16
+      ],
+      "photos": [
+        {
+          "file": "photos/be1588492e5933c7fa24bfbe4151d6374a0121c59b66b2be05abc4809b66f6af.jpg",
+          "sha256": "be1588492e5933c7fa24bfbe4151d6374a0121c59b66b2be05abc4809b66f6af",
+          "color": "rosa",
+          "source_id": "p16i01"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p16-i1"
+      ],
+      "revision": "26f9e092ea8251037ecafed09e42184a7017c362d49454b6e07769b7bd29a6ab"
+    },
+    {
+      "code": "pdf26-bolsas-018",
+      "name": "Bolsa sacola texturizada com placa",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola texturizada com placa. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        16
+      ],
+      "photos": [
+        {
+          "file": "photos/86bedef33ab647c9e5376d3ac30c793b0e643324f4af39cdce955c6102d61070.jpg",
+          "sha256": "86bedef33ab647c9e5376d3ac30c793b0e643324f4af39cdce955c6102d61070",
+          "color": "bege",
+          "source_id": "p16i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p16-i2"
+      ],
+      "revision": "5eb0a74e2424b64400ee6e8d811d677a2d8ab94dd0f9a4bf02bfe2c4caedbaaa"
+    },
+    {
+      "code": "pdf26-bolsas-019",
+      "name": "Bolsa sacola de couro com alças longas",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa sacola de couro com alças longas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 27,
+      "retail": "229.90",
+      "price": "249.90",
+      "cost": "160.93",
+      "pages": [
+        17
+      ],
+      "photos": [
+        {
+          "file": "photos/c66788dcdcdb228564f0969617e24eb90b07391c8c37f874db3f573a1a4fc4e4.jpg",
+          "sha256": "c66788dcdcdb228564f0969617e24eb90b07391c8c37f874db3f573a1a4fc4e4",
+          "color": "vinho",
+          "source_id": "p17i01"
+        },
+        {
+          "file": "photos/ba0866bc10a45328ba747cf95b767b226c07b4f12ec643b04a5183b6f13af55d.jpg",
+          "sha256": "ba0866bc10a45328ba747cf95b767b226c07b4f12ec643b04a5183b6f13af55d",
+          "color": "várias cores",
+          "source_id": "p17i02"
+        },
+        {
+          "file": "photos/f5b1c2c22f5d0793f9add0b1930da6cf2895c1cc27b55766bc5602cdb6f0d5f0.jpg",
+          "sha256": "f5b1c2c22f5d0793f9add0b1930da6cf2895c1cc27b55766bc5602cdb6f0d5f0",
+          "color": "marrom",
+          "source_id": "p17i03"
+        },
+        {
+          "file": "photos/f9470871ecda40b2af3d154a025b8efa7854bb50cec8415f87dad812864d5229.jpg",
+          "sha256": "f9470871ecda40b2af3d154a025b8efa7854bb50cec8415f87dad812864d5229",
+          "color": "taupe",
+          "source_id": "p17i04"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f27-p17-i1",
+        "bolsas_e_relogios-f27-p17-i2",
+        "bolsas_e_relogios-f27-p17-i3",
+        "bolsas_e_relogios-f27-p17-i4"
+      ],
+      "revision": "a31075deee749741f562afcfa5bb8e0e46f4780870b5ca310da135fe048b496a"
+    },
+    {
+      "code": "pdf26-bolsas-020",
+      "name": "Bolsa de mão com alça de corrente",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa de mão com alça de corrente. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 26,
+      "retail": "219.90",
+      "price": "239.90",
+      "cost": "153.93",
+      "pages": [
+        18
+      ],
+      "photos": [
+        {
+          "file": "photos/0ad2ad066e6f4763b5783216a59e7c30893d44237a4c28aa2e084ed2c65f0464.jpg",
+          "sha256": "0ad2ad066e6f4763b5783216a59e7c30893d44237a4c28aa2e084ed2c65f0464",
+          "color": "preto",
+          "source_id": "p18i01"
+        },
+        {
+          "file": "photos/922f99254e706fb82d4a66331f28185e0f7ee99fc9f29acae2e6fd6b223fa740.jpg",
+          "sha256": "922f99254e706fb82d4a66331f28185e0f7ee99fc9f29acae2e6fd6b223fa740",
+          "color": "caramelo",
+          "source_id": "p18i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f26-p18-i1",
+        "bolsas_e_relogios-f26-p18-i2"
+      ],
+      "revision": "23b2abea6978da995224eed3bd5d1b813a7be85a8df2201cd4ff45d102fea9e8"
+    },
+    {
+      "code": "pdf26-bolsas-021",
+      "name": "Bolsa hobo de couro",
+      "brand": "Pavão de Ouro",
+      "category": "Bolsas",
+      "description": "Bolsa hobo de couro. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 27,
+      "retail": "229.90",
+      "price": "249.90",
+      "cost": "160.93",
+      "pages": [
+        19
+      ],
+      "photos": [
+        {
+          "file": "photos/133300480fe7c872c875de8fef721d012f59907476cb2918924b500d05bf2302.jpg",
+          "sha256": "133300480fe7c872c875de8fef721d012f59907476cb2918924b500d05bf2302",
+          "color": "preto",
+          "source_id": "p19i01"
+        },
+        {
+          "file": "photos/5265a2b1e5f3fc101534764a1b098f949cf568b1f6bf9097a186a1336d8540c1.jpg",
+          "sha256": "5265a2b1e5f3fc101534764a1b098f949cf568b1f6bf9097a186a1336d8540c1",
+          "color": "prata",
+          "source_id": "p19i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f27-p19-i1",
+        "bolsas_e_relogios-f27-p19-i2"
+      ],
+      "revision": "e79352d43ddc32f7f6e3a589282b622d47bf6bb58b1c1633b3bcbd0527bf4997"
+    },
+    {
+      "code": "pdf26-bolsas-022",
+      "name": "Bolsa sacola com pingente",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola com pingente. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        20
+      ],
+      "photos": [
+        {
+          "file": "photos/eb5ec6aac2eae0cfc695750c2788dedd0c76db37e13722f0e5292f185baf008e.jpg",
+          "sha256": "eb5ec6aac2eae0cfc695750c2788dedd0c76db37e13722f0e5292f185baf008e",
+          "color": "preto",
+          "source_id": "p20i01"
+        },
+        {
+          "file": "photos/575ce2fa2a0f0181a51fa249c1f2a85c9da9de784cb06aa076de6607a51c35a4.jpg",
+          "sha256": "575ce2fa2a0f0181a51fa249c1f2a85c9da9de784cb06aa076de6607a51c35a4",
+          "color": "marrom",
+          "source_id": "p20i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p20-i1",
+        "bolsas_e_relogios-f29-p20-i2"
+      ],
+      "revision": "c4d89f8a6831e148c374705b29b6bfc0add35c797e33a8be04009cf9b16add57"
+    },
+    {
+      "code": "pdf26-bolsas-023",
+      "name": "Bolsa sacola com fivelas",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola com fivelas. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        21
+      ],
+      "photos": [
+        {
+          "file": "photos/8ca60fe1286b5e6c54e9530979e0da1fd3948a33c36b98a64c8249424b7b439d.jpg",
+          "sha256": "8ca60fe1286b5e6c54e9530979e0da1fd3948a33c36b98a64c8249424b7b439d",
+          "color": "marrom",
+          "source_id": "p21i01"
+        },
+        {
+          "file": "photos/f43e344c6aba5cec149d2bdb7bea6e8d5adc6c5bccfd63ac7712d0624221e90c.jpg",
+          "sha256": "f43e344c6aba5cec149d2bdb7bea6e8d5adc6c5bccfd63ac7712d0624221e90c",
+          "color": "caramelo",
+          "source_id": "p21i02"
+        },
+        {
+          "file": "photos/5960516dee16fd36578fc2ce0fbf91b8a5bd55126d66f9e884752127b91431b2.jpg",
+          "sha256": "5960516dee16fd36578fc2ce0fbf91b8a5bd55126d66f9e884752127b91431b2",
+          "color": "preto",
+          "source_id": "p21i03"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p21-i1",
+        "bolsas_e_relogios-f29-p21-i2",
+        "bolsas_e_relogios-f29-p21-i3"
+      ],
+      "revision": "c93e1d7ca991ae74dafe60fe27052fb5d4f66a5e7d82bbd2b16486b2f9b3258e"
+    },
+    {
+      "code": "pdf26-bolsas-024",
+      "name": "Bolsa de mão matelassê com alça transversal",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa de mão matelassê com alça transversal. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 27,
+      "retail": "229.90",
+      "price": "249.90",
+      "cost": "160.93",
+      "pages": [
+        22
+      ],
+      "photos": [
+        {
+          "file": "photos/2f2e1e748a2f9245496c360a1a27f868660cdbef680204d7d3c4d5c757afae7c.jpg",
+          "sha256": "2f2e1e748a2f9245496c360a1a27f868660cdbef680204d7d3c4d5c757afae7c",
+          "color": "bege",
+          "source_id": "p22i01"
+        },
+        {
+          "file": "photos/0ea6598fc6149a335122dc87b0890125fd394675f7b330d77037238537eba5f8.jpg",
+          "sha256": "0ea6598fc6149a335122dc87b0890125fd394675f7b330d77037238537eba5f8",
+          "color": "caramelo",
+          "source_id": "p22i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f27-p22-i1",
+        "bolsas_e_relogios-f27-p22-i2"
+      ],
+      "revision": "af877f893d1c145c0a2b0ca7c2bc5d1d3259491758d65ed0265f20a92fd47ee2"
+    },
+    {
+      "code": "pdf26-bolsas-025",
+      "name": "Bolsa sacola com franja e divisória",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola com franja e divisória. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        23
+      ],
+      "photos": [
+        {
+          "file": "photos/3a3e63446db738daa2e4aba64108a2aa504dca44d56c1df3c4fcad4703eea923.jpg",
+          "sha256": "3a3e63446db738daa2e4aba64108a2aa504dca44d56c1df3c4fcad4703eea923",
+          "color": "caramelo",
+          "source_id": "p23i01"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p23-i1"
+      ],
+      "revision": "821985c4c8d458a473548bbf251a062d900a0245c67d0e17d98ffbd721494c69"
+    },
+    {
+      "code": "pdf26-bolsas-026",
+      "name": "Bolsa sacola com fecho metálico",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa sacola com fecho metálico. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        23,
+        25
+      ],
+      "photos": [
+        {
+          "file": "photos/5890dee2e7d821da4af19ccbbcb4de0a8795ef218615f0f95a6a94f55cd60391.jpg",
+          "sha256": "5890dee2e7d821da4af19ccbbcb4de0a8795ef218615f0f95a6a94f55cd60391",
+          "color": "marrom",
+          "source_id": "p23i02"
+        },
+        {
+          "file": "photos/48a74dfbb11a0880ca0eb6b2a98bc89280a477a579b8724e6558a9dd16ba352d.jpg",
+          "sha256": "48a74dfbb11a0880ca0eb6b2a98bc89280a477a579b8724e6558a9dd16ba352d",
+          "color": "marrom",
+          "source_id": "p25i01"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p23-i2",
+        "bolsas_e_relogios-f29-p25-i1"
+      ],
+      "revision": "27e47b5bbd02377a7d2c98ba72ac6d60d9e82c8fbb3ed5e81b7e9ba7e88d5ac0"
+    },
+    {
+      "code": "pdf26-bolsas-027",
+      "name": "Bolsa sacola com logo em relevo",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola com logo em relevo. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        24
+      ],
+      "photos": [
+        {
+          "file": "photos/5e34171e28ece31e7b0595acd90d01a3a9caf120910c8fabcefe5393e86b2ec4.jpg",
+          "sha256": "5e34171e28ece31e7b0595acd90d01a3a9caf120910c8fabcefe5393e86b2ec4",
+          "color": "caramelo",
+          "source_id": "p24i01"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p24-i1"
+      ],
+      "revision": "f738a2a15ac2202474d4a9c35804007cb7112bc16d2f48317150a11ef0a297c6"
+    },
+    {
+      "code": "pdf26-bolsas-028",
+      "name": "Bolsa sacola croco",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola croco. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        24,
+        28
+      ],
+      "photos": [
+        {
+          "file": "photos/6ca806cb4bc4ff09ec2af3238af2bfd7138899fb5c2aed95718b8e3fd9eb4485.jpg",
+          "sha256": "6ca806cb4bc4ff09ec2af3238af2bfd7138899fb5c2aed95718b8e3fd9eb4485",
+          "color": "off-white",
+          "source_id": "p24i02"
+        },
+        {
+          "file": "photos/4b52d32d1dcf0622d4dba9699f44c4708b9347f20ef0980c83699cc684e1df52.jpg",
+          "sha256": "4b52d32d1dcf0622d4dba9699f44c4708b9347f20ef0980c83699cc684e1df52",
+          "color": "off-white",
+          "source_id": "p28i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p24-i2",
+        "bolsas_e_relogios-f29-p28-i2"
+      ],
+      "revision": "2dce6b7404ccd93369e92febb24f3ed43dbf2c99a83cb68bed1bb39515d47b54"
+    },
+    {
+      "code": "pdf26-bolsas-029",
+      "name": "Bolsa sacola trançada",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola trançada. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        25
+      ],
+      "photos": [
+        {
+          "file": "photos/5777db0ce89a3e089c9cc286923b7f2ede14a5284fe904660f4763140c2d1a0a.jpg",
+          "sha256": "5777db0ce89a3e089c9cc286923b7f2ede14a5284fe904660f4763140c2d1a0a",
+          "color": "off-white",
+          "source_id": "p25i02"
+        },
+        {
+          "file": "photos/c51d4aca119bb939b6959684ad50122d683a6ba6d87a62b8a7044c9afe5d03c9.jpg",
+          "sha256": "c51d4aca119bb939b6959684ad50122d683a6ba6d87a62b8a7044c9afe5d03c9",
+          "color": "terracota",
+          "source_id": "p25i04"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p25-i2",
+        "bolsas_e_relogios-f29-p25-i4"
+      ],
+      "revision": "a433d2ca775659b5b135e3ea68925b974fc7e74b989628b22200bd527e1ed712"
+    },
+    {
+      "code": "pdf26-bolsas-030",
+      "name": "Bolsa de mão preta com placa",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa de mão preta com placa. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        25
+      ],
+      "photos": [
+        {
+          "file": "photos/8a7361577e822966556629ca07f91fe21f8a75fb3563cb0e04597da5d4191719.jpg",
+          "sha256": "8a7361577e822966556629ca07f91fe21f8a75fb3563cb0e04597da5d4191719",
+          "color": "preto",
+          "source_id": "p25i03"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p25-i3"
+      ],
+      "revision": "bc7432832250dfbcaae02cdddfab8ec1dfbb1bcbe7df0bb180eb89fd34530cef"
+    },
+    {
+      "code": "pdf26-bolsas-031",
+      "name": "Bolsa sacola lisa com alças",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa sacola lisa com alças. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        26
+      ],
+      "photos": [
+        {
+          "file": "photos/fe8359f6671cfb32079824b17a6518360a591b71acd44b8ae1d39c8cad7fb30c.jpg",
+          "sha256": "fe8359f6671cfb32079824b17a6518360a591b71acd44b8ae1d39c8cad7fb30c",
+          "color": "caramelo",
+          "source_id": "p26i01"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p26-i1"
+      ],
+      "revision": "04ae8d08caa860cd215d064eee94dbe4dd2840b540b31ab7899ecbfb3e753716"
+    },
+    {
+      "code": "pdf26-bolsas-032",
+      "name": "Bolsa sacola preta com pingente",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola preta com pingente. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        26
+      ],
+      "photos": [
+        {
+          "file": "photos/fa364cd49db0947eba5b2d59f969f930e31174d646ccbae1697ed1d5785f53ba.jpg",
+          "sha256": "fa364cd49db0947eba5b2d59f969f930e31174d646ccbae1697ed1d5785f53ba",
+          "color": "preto",
+          "source_id": "p26i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p26-i2"
+      ],
+      "revision": "a81b02e5d4a524e0a7e46cd8d15cdc812e700ed2e24c1df8a14cf869d6608251"
+    },
+    {
+      "code": "pdf26-bolsas-033",
+      "name": "Necessaire estampada com alça",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Necessaire estampada com alça. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        26
+      ],
+      "photos": [
+        {
+          "file": "photos/914b2a0e01f1176a7b001d3a4e0a0bb6c0501e84b36f283766474a4c6ae475b8.jpg",
+          "sha256": "914b2a0e01f1176a7b001d3a4e0a0bb6c0501e84b36f283766474a4c6ae475b8",
+          "color": "rosa",
+          "source_id": "p26i03"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p26-i3"
+      ],
+      "revision": "6447336194bf989d1985669a2690911e769a2f2e3445332da0f15685bc313fb4"
+    },
+    {
+      "code": "pdf26-bolsas-034",
+      "name": "Bolsa sacola trançada com pingente",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola trançada com pingente. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        26
+      ],
+      "photos": [
+        {
+          "file": "photos/3bda032c55d9f7bef0a75891e3a6013d30b937b7f7ce8fd24fd088e1673fe41b.jpg",
+          "sha256": "3bda032c55d9f7bef0a75891e3a6013d30b937b7f7ce8fd24fd088e1673fe41b",
+          "color": "terracota",
+          "source_id": "p26i04"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p26-i4"
+      ],
+      "revision": "1d519127b2a6cbef9ece5f0407a3978cf852e209a7df3bcae4ebc4b10a348e53"
+    },
+    {
+      "code": "pdf26-bolsas-035",
+      "name": "Bolsa sacola matelassê com bolso frontal",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola matelassê com bolso frontal. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        27
+      ],
+      "photos": [
+        {
+          "file": "photos/04a01ca95eb88e921de93bed7c2ebd1187ed61c6e0bca2ffb843b683747b547f.jpg",
+          "sha256": "04a01ca95eb88e921de93bed7c2ebd1187ed61c6e0bca2ffb843b683747b547f",
+          "color": "preto",
+          "source_id": "p27i01"
+        },
+        {
+          "file": "photos/72189edda9d6e226dad6b1a9e521a8a8dad1eb46bc58b1ad046b53c40f89008d.jpg",
+          "sha256": "72189edda9d6e226dad6b1a9e521a8a8dad1eb46bc58b1ad046b53c40f89008d",
+          "color": "vinho",
+          "source_id": "p27i03"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p27-i1",
+        "bolsas_e_relogios-f29-p27-i3"
+      ],
+      "revision": "a88bc0551c86e64a9ec7f5f1a13cc1f33f0f0c2632ab49d826cd316fc4810126"
+    },
+    {
+      "code": "pdf26-bolsas-036",
+      "name": "Bolsa sacola marrom com pingente",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola marrom com pingente. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        27
+      ],
+      "photos": [
+        {
+          "file": "photos/bab793ac56c0c28ab8cd1a70461eef020c28e448d37bf92f5cedec608ae09b36.jpg",
+          "sha256": "bab793ac56c0c28ab8cd1a70461eef020c28e448d37bf92f5cedec608ae09b36",
+          "color": "marrom",
+          "source_id": "p27i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p27-i2"
+      ],
+      "revision": "2e2b24b9c35c2f9e8df6f574850a08208f5af140a0b1034c7f9217f55a223b8a"
+    },
+    {
+      "code": "pdf26-bolsas-037",
+      "name": "Bolsa sacola preta com pingente e divisória",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola preta com pingente e divisória. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        28
+      ],
+      "photos": [
+        {
+          "file": "photos/27c7bab9148c59b3ba34331abce5810b7dd13863d4eb41a24dd42bc41b50ae0a.jpg",
+          "sha256": "27c7bab9148c59b3ba34331abce5810b7dd13863d4eb41a24dd42bc41b50ae0a",
+          "color": "preto",
+          "source_id": "p28i01"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p28-i1"
+      ],
+      "revision": "59320cdc089b5bcbff74d41be0cca87a096107ffdb5f24d5b99a1c410964a96c"
+    },
+    {
+      "code": "pdf26-bolsas-038",
+      "name": "Bolsa de mão trançada com pingente",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa de mão trançada com pingente. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        29
+      ],
+      "photos": [
+        {
+          "file": "photos/b5c95338d7787e99918db058023aa175eb1d96798c63fdd6b86abbfc408d8cf1.jpg",
+          "sha256": "b5c95338d7787e99918db058023aa175eb1d96798c63fdd6b86abbfc408d8cf1",
+          "color": "terracota",
+          "source_id": "p29i01"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p29-i1"
+      ],
+      "revision": "7f52a3a4d90c4358fd9e1b10a47d61fa881e62254573dbb6dff3450ce0a816b8"
+    },
+    {
+      "code": "pdf26-bolsas-039",
+      "name": "Bolsa sacola preta com pingente e alça transversal",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola preta com pingente e alça transversal. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        29
+      ],
+      "photos": [
+        {
+          "file": "photos/ee5009289fbb21de87690333fe17f0bcf56861dbe966460cb5ff5222847b20b2.jpg",
+          "sha256": "ee5009289fbb21de87690333fe17f0bcf56861dbe966460cb5ff5222847b20b2",
+          "color": "preto",
+          "source_id": "p29i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p29-i2"
+      ],
+      "revision": "bce04914a629a53b0c5176e521b74bb00454245b16e1eed4406aaa6129358996"
+    },
+    {
+      "code": "pdf26-bolsas-040",
+      "name": "Bolsa sacola preta com fecho metálico",
+      "brand": "",
+      "category": "Bolsas",
+      "description": "Bolsa sacola preta com fecho metálico. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        30
+      ],
+      "photos": [
+        {
+          "file": "photos/ce2fde5246035b78281b9dfe3698055437034b8fdfa3c6a22fd75b66d89d34d4.jpg",
+          "sha256": "ce2fde5246035b78281b9dfe3698055437034b8fdfa3c6a22fd75b66d89d34d4",
+          "color": "preto",
+          "source_id": "p30i01"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p30-i1"
+      ],
+      "revision": "d9d82d31e222f048a2009f221e75b67722c4e201a36ca54f84cad835f0648048"
+    },
+    {
+      "code": "pdf26-bolsas-041",
+      "name": "Bolsa sacola marrom com pingente e divisória",
+      "brand": "Rafitthy",
+      "category": "Bolsas",
+      "description": "Bolsa sacola marrom com pingente e divisória. Confira as cores nas fotos. Numeração e disponibilidade sob consulta.",
+      "quality": "Original",
+      "tier": 29,
+      "retail": "249.90",
+      "price": "269.90",
+      "cost": "174.93",
+      "pages": [
+        30
+      ],
+      "photos": [
+        {
+          "file": "photos/1b5b6dbe59c28ef4b1599311a5343bc4bb15b57a135723343f81b658ab79d2aa.jpg",
+          "sha256": "1b5b6dbe59c28ef4b1599311a5343bc4bb15b57a135723343f81b658ab79d2aa",
+          "color": "marrom",
+          "source_id": "p30i02"
+        }
+      ],
+      "aliases": [
+        "bolsas_e_relogios-f29-p30-i2"
+      ],
+      "revision": "ae2dbb7af284a106052af85d057a6938f71edf53390e1763108ddda6273b902b"
+    }
+  ],
+  "pending": []
+}
