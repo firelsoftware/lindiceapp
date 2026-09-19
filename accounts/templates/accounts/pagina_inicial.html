@@ -24,18 +24,8 @@
             <p class="capa-provas">
                 <span>Parcele sem cartão de crédito</span>
                 <span>{{ desconto_pix|floatformat:0 }}% de desconto no Pix</span>
-                <span>{{ total_produtos }} produtos</span>
             </p>
 
-            {% if capas|length > 1 %}
-                <div class="capa-pontos" role="tablist" aria-label="Escolher foto">
-                    {% for capa in capas %}
-                        <button class="capa-ponto{% if forloop.first %} ativo{% endif %}" type="button"
-                                data-capa-ponto="{{ forloop.counter0 }}"
-                                aria-label="{{ capa.titulo }}"></button>
-                    {% endfor %}
-                </div>
-            {% endif %}
         </div>
 
         {% if capas|length > 1 %}
@@ -53,7 +43,6 @@
             <p class="capa-provas">
                 <span>Parcele sem cartão de crédito</span>
                 <span>{{ desconto_pix|floatformat:0 }}% de desconto no Pix</span>
-                <span>{{ total_produtos }} produtos</span>
             </p>
         </div>
 
@@ -139,7 +128,7 @@
         </div>
 
         <a class="home-prateleira-mais" href="{% url 'store_front' %}">
-            Ver os {{ total_produtos }} produtos da loja
+            Ver produtos da loja
         </a>
     </section>
 {% endif %}
@@ -161,7 +150,7 @@
         </div>
 
         <a class="home-prateleira-mais" href="{% url 'store_front' %}?categoria={{ prateleira.categoria|urlencode }}">
-            Ver {{ prateleira.total }} produto{{ prateleira.total|pluralize }} em {{ prateleira.nome }}
+            Ver {{ prateleira.nome }}
         </a>
     </section>
 {% endfor %}
@@ -197,7 +186,7 @@
 <section class="home-fechamento">
     <h2>Gostou de alguma coisa?</h2>
     <p>
-        São {{ total_produtos }} produtos, com {{ desconto_pix|floatformat:0 }}% de desconto à vista no Pix
+        Compre com {{ desconto_pix|floatformat:0 }}% de desconto à vista no Pix
         — ou parcelado no crediário da loja, sem precisar de cartão de crédito.
     </p>
     <div class="action-row">

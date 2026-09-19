@@ -3845,32 +3845,6 @@
             right: 14px;
         }
 
-        /* No fluxo, logo abaixo da linha dos numeros: posicionado por cima eles
-           encostavam no texto conforme a tela mudava de tamanho. */
-        .capa-pontos {
-            display: flex;
-            gap: 8px;
-            margin-top: 14px;
-        }
-
-        .capa-ponto {
-            width: 9px;
-            height: 9px;
-            margin: 0;
-            padding: 0;
-            border: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.45);
-            cursor: pointer;
-            transition: background 200ms ease, width 200ms ease;
-        }
-
-        .capa-ponto.ativo {
-            width: 26px;
-            border-radius: 999px;
-            background: #fff;
-        }
-
         .capa-carrossel .capa-cartao {
             position: absolute;
             /* Fora do caminho do botao flutuante do WhatsApp, que e fixo em
@@ -7878,7 +7852,6 @@
                 }
 
                 var slides = Array.prototype.slice.call(caixa.querySelectorAll("[data-capa-slide]"));
-                var pontos = Array.prototype.slice.call(caixa.querySelectorAll("[data-capa-ponto]"));
 
                 if (slides.length < 2) {
                     return;
@@ -7896,10 +7869,6 @@
                         slide.classList.toggle("ativa", ativa);
                         slide.setAttribute("aria-hidden", ativa ? "false" : "true");
                         slide.setAttribute("tabindex", ativa ? "0" : "-1");
-                    });
-
-                    pontos.forEach(function (ponto, i) {
-                        ponto.classList.toggle("ativo", i === atual);
                     });
                 }
 
@@ -7955,13 +7924,6 @@
                         parar();
                     });
                 }
-
-                pontos.forEach(function (ponto, i) {
-                    ponto.addEventListener("click", function () {
-                        mostrar(i);
-                        parar();
-                    });
-                });
 
                 caixa.addEventListener("mouseenter", segurar);
                 caixa.addEventListener("mouseleave", soltar);

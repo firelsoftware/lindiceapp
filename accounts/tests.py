@@ -2875,8 +2875,8 @@ class StoreFlowTests(TestCase):
         self.assertIn(bota.name, pagina)
         self.assertIn('class="home-prateleira"', pagina)
         # Cada linha tem o botao que leva para a categoria inteira na loja.
-        self.assertIn("Ver 1 produto em Botas", pagina)
-        self.assertIn("Ver 9 produtos em Smartwatches", pagina)
+        self.assertIn("Ver Botas", pagina)
+        self.assertIn("Ver Smartwatches", pagina)
         self.assertIn("categoria=Botas", pagina)
 
     def test_no_family_is_pushed_out_of_the_homepage_by_the_row_limit(self):
@@ -2898,10 +2898,10 @@ class StoreFlowTests(TestCase):
         pagina = self.client.get("/").content.decode()
 
         # Bolsa e smartwatch tem uma categoria cada contra sete de calcado:
-        # sem rodizio, as seis vagas iam todas para sapato. O texto " em X" so
+        # sem rodizio, as seis vagas iam todas para sapato. O texto "Ver X" so
         # aparece no botao que fecha a linha daquela categoria.
-        self.assertIn(" em Bolsas", pagina)
-        self.assertIn(" em Smartwatches", pagina)
+        self.assertIn("Ver Bolsas", pagina)
+        self.assertIn("Ver Smartwatches", pagina)
         # E o teto continua valendo: seis linhas de categoria, mais a de
         # "Mais desejados", que tem botao proprio.
         self.assertEqual(pagina.count('class="home-prateleira-mais"'), 7)
@@ -3125,8 +3125,8 @@ class StoreFlowTests(TestCase):
         self.assertIn(bota.name, pagina)
         self.assertIn('class="home-prateleira"', pagina)
         # Cada linha tem o botao que leva para a categoria inteira na loja.
-        self.assertIn("Ver 1 produto em Botas", pagina)
-        self.assertIn("Ver 9 produtos em Bolsas", pagina)
+        self.assertIn("Ver Botas", pagina)
+        self.assertIn("Ver Bolsas", pagina)
         self.assertIn("categoria=Botas%20Femininas", pagina)
 
     def test_video_comes_right_after_the_cover(self):
@@ -3220,13 +3220,12 @@ class StoreFlowTests(TestCase):
 
         self.assertContains(resposta, 'class="capa-carrossel"', html=False)
         self.assertContains(resposta, "Moda fitness")
-        # Quatro fotos e quatro pontinhos. Conta a marcacao, nao o atributo:
+        # Quatro fotos sem indicadores. Conta a marcacao, nao o atributo:
         # o atributo tambem aparece no JavaScript do carrossel.
         pagina = resposta.content.decode()
         self.assertEqual(pagina.count('class="capa-slide'), 4)
-        # com o = no fim: o seletor do JavaScript e sem ele, e o
-        # contêiner "capa-pontos" tambem contem "capa-ponto".
-        self.assertEqual(pagina.count('data-capa-ponto="'), 4)
+        self.assertNotIn('data-capa-ponto="', pagina)
+        self.assertEqual(resposta.context['capas'][0].titulo, 'O tênis certo para andar o dia inteiro')
 
     def test_homepage_falls_back_to_the_brand_background_without_photos(self):
         # Loja que apagar todas as capas nao fica com a primeira tela quebrada.
