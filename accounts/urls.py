@@ -2,8 +2,11 @@ from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from . import seo, views, credit_views
+from .snake_views import snake_training
 
 urlpatterns = [
+    path("gestao/snake-training/", snake_training, name="snake_training"),
+    path("gestao/snake-training/<str:filename>", snake_training, name="snake_training_file"),
     path("crediario/compra/<int:sale_id>/pdf/", credit_views.purchase_pdf, name="credit_purchase_pdf"),
     path("crediario/contrato/", credit_views.my_contract, name="credit_contract"),
     path("crediario/contrato/<int:agreement_id>/pdf/", credit_views.contract_pdf, name="credit_contract_pdf"),

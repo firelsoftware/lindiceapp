@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>SNAKE TRAINING · Lindice</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <a class="brand" href="/gestao/"><span class="logo">S<span>↗</span></span><span><strong>SNAKE TRAINING</strong><small>Aprenda programação enquanto joga</small></span></a>
+    <div class="course"><div><strong>Aula 1 de 10</strong><span>Primeiros passos</span></div><progress id="progress" max="3" value="0" aria-label="Progresso da aula 1"></progress></div>
+    <div class="score">♜ <strong id="score">0</strong><span>pontos</span></div>
+    <span class="private">Área do administrador</span>
+  </header>
+  <main>
+    <div class="eyebrow">PYTHON · AULA 01 <span>INICIANTE</span></div>
+    <section class="intro"><h1>Seu primeiro <span>Olá mundo.</span></h1><h2>Objetivo: faça o programa escrever Olá mundo</h2><p>Colete os blocos de código na ordem correta para formar o comando em Python.</p></section>
+    <div class="workspace">
+      <section class="board-panel" aria-labelledby="board-title">
+        <div class="panel-heading"><h2 id="board-title"><span class="dot"></span> Campo de treinamento</h2><span id="count">0 / 4 blocos</span></div>
+        <div id="board" class="board" tabindex="0" role="group" aria-label="Tabuleiro Snake. Use as setas para mover e espaço para pausar." aria-describedby="board-help"><div id="pieces"></div><div id="snake"></div><div id="overlay" class="overlay"><strong>Vamos começar?</strong><span>Use as setas para guiar a cobrinha.</span></div></div>
+        <div class="board-footer"><span id="board-help">↑ ← ↓ → mover <span class="divider">/</span> espaço pausar</span><button id="pause" type="button">Começar</button><button id="restart" type="button" aria-label="Reiniciar tentativa">↻ Reiniciar</button></div>
+      </section>
+      <section class="code-panel" aria-labelledby="code-title">
+        <div class="panel-heading"><h2 id="code-title"><span class="code-icon">&lt;/&gt;</span> Seu código</h2><span class="language">Python</span></div>
+        <div class="editor"><div class="file-name">meu_primeiro_programa.py <span>●</span></div><div class="code-line"><span class="line-number">1</span><code id="code" aria-live="polite"></code></div><p id="placeholder">Seu código começa com uma descoberta.<br>Colete o primeiro bloco no tabuleiro.</p></div>
+        <div class="actions"><button id="execute" class="primary" type="button">▶ Executar</button><button id="clear" type="button">Limpar</button></div>
+        <div class="output"><h3><span>›_</span> Saída do programa</h3><pre id="output" aria-live="polite">Aguardando execução…</pre></div>
+        <p id="feedback" class="feedback" role="status">Uma peça de cada vez. Você consegue!</p>
+        <div id="success" class="success" hidden><strong>✓ Aula 1 concluída</strong><p>Muito bem! Você criou seu primeiro comando em Python.</p></div>
+      </section>
+    </div>
+    <section class="guide" aria-label="Orientações da aula">
+      <article><span class="card-icon">↗</span><h3>Como jogar?</h3><ol><li>Guie a cobrinha com as setas do teclado.</li><li>Colete os blocos de código na ordem correta.</li><li>Pressione Executar para ver o resultado.</li></ol></article>
+      <article><span class="card-icon">☀</span><h3>Dica</h3><p>Para mostrar uma mensagem na tela em Python, usamos a função:</p><code class="hint-code">print()</code></article>
+      <article><span class="card-icon">⌘</span><h3>Controles</h3><div class="keys"><button data-direction="up" aria-label="Mover para cima">↑</button><div><button data-direction="left" aria-label="Mover para esquerda">←</button><button data-direction="down" aria-label="Mover para baixo">↓</button><button data-direction="right" aria-label="Mover para direita">→</button></div></div><p class="keys-caption">Teclado ou botões acima</p></article>
+      <article><span class="card-icon">◎</span><h3>Meta desta aula</h3><ul class="goals"><li id="goal-code">○ <span>Formar <code>print("Olá mundo")</code></span></li><li id="goal-run">○ <span>Executar o programa</span></li><li id="goal-output">○ <span>Ver a mensagem na tela</span></li></ul></article>
+    </section>
+    <footer><span><strong>Lindice</strong> / laboratório de aprendizagem</span><span>Projeto de TCC · Sistemas para Internet · Protótipo da Aula 1</span></footer>
+  </main>
+</body>
+</html>

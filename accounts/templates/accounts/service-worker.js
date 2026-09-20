@@ -34,6 +34,11 @@ self.addEventListener("fetch", (event) => {
   }
 
   const request = event.request;
+  // O laboratório privado nunca pode ser servido do cache após sair da conta.
+  if (new URL(request.url).pathname.startsWith("/gestao/snake-training/")) {
+    event.respondWith(fetch(request, { cache: "no-store" }));
+    return;
+  }
   const acceptsHtml = request.headers.get("accept") && request.headers.get("accept").includes("text/html");
 
   if (request.mode === "navigate" || acceptsHtml) {
