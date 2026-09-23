@@ -5272,7 +5272,7 @@ class CashbackConversionTests(TestCase):
 
 
 class PointsRedemptionTests(TestCase):
-    """Resgate dos pontos no pagamento a vista/Pix."""
+    """Resgate dos pontos no Pix e no crediario. No cartao os pontos nao valem."""
 
     def setUp(self):
         self.loja = StoreSettings.load()
@@ -5342,7 +5342,8 @@ class PointsRedemptionTests(TestCase):
         sale.refresh_from_db()
 
         self.assertEqual(sale.points_used, 100)
-        self.assertEqual(sale.points_discount_amount, Decimal("8.50"))
+        # Pontos primeiro: 10% de R$ 100, e o Pix vem depois sobre R$ 90.
+        self.assertEqual(sale.points_discount_amount, Decimal("10.00"))
         self.assertEqual(sale.selected_total_with_interest, Decimal("76.50"))
 
     def test_points_are_only_spent_when_the_payment_is_confirmed(self):
@@ -5365,6 +5366,95 @@ class PointsRedemptionTests(TestCase):
         sale.mark_paid("mp-2")
 
         self.assertEqual(points_balance(user), balance_after_first)
+
+    def credit_ready(self, user):
+        # O crediario pede telefone verificado e CPF, alem do cadastro aprovado.
+        perfil = user.profile
+        perfil.credit_contract_required = False
+        perfil.phone_verified = True
+        perfil.cpf_last_digits = "4444"
+        perfil.save(update_fields=["credit_contract_required", "phone_verified", "cpf_last_digits"])
+
+        return user
+
+    def test_points_come_before_the_pix_discount(self):
+        # Regra da loja (set/2026): R$ 100 com 200 pontos vira R$ 80, e o Pix
+        # tira 10% disso - R$ 72.
+        self.loja.pix_discount_percent = Decimal("10.00")
+        self.loja.save(update_fields=["pix_discount_percent"])
+
+        option = self.sale_for(self.client_with_points(200), "100.00").pix_option(200)
+
+        self.assertEqual(option["points_discount"], Decimal("20.00"))
+        self.assertEqual(option["discount"], Decimal("8.00"))
+        self.assertEqual(option["total"], Decimal("72.00"))
+
+    def test_credit_takes_up_to_twenty_percent_in_points_and_nothing_else(self):
+        # No crediario vale so o desconto dos pontos, ate 20%. O do Pix nao entra.
+        user = self.credit_ready(self.client_with_points(200))
+        sale = self.sale_for(user, "500.00")
+
+        sale.choose_payment(CreditSale.CREDIT, installments=1, use_points=True)
+
+        sale.refresh_from_db()
+        self.assertEqual(sale.points_used, 200)
+        self.assertEqual(sale.points_discount_amount, Decimal("100.00"))
+        # Primeira compra no crediario: entrada de R$ 20 sobre a base com pontos,
+        # e o resto vai para o carne.
+        self.assertEqual(sale.entry_amount, Decimal("20.00"))
+        self.assertEqual(sale.principal_financed, Decimal("380.00"))
+        self.assertEqual(sale.selected_total_with_interest, Decimal("400.00"))
+        self.assertEqual(sum(divida.principal_amount for divida in sale.debts.all()), Decimal("380.00"))
+
+    def test_credit_spends_the_points_when_the_booklet_is_created(self):
+        # No crediario a compra acontece na confirmacao. Se os pontos so saissem
+        # num pagamento, a cliente levaria o desconto e ficaria com os pontos.
+        user = self.credit_ready(self.client_with_points(200))
+        sale = self.sale_for(user, "500.00")
+
+        sale.choose_payment(CreditSale.CREDIT, installments=1, use_points=True)
+        self.assertEqual(points_balance(user), 0)
+
+        # Pagar a entrada depois nao debita de novo; so credita os pontos da compra.
+        sale.mark_paid("entrada-1")
+        self.assertEqual(points_balance(user), self.loja.points_credit)
+
+    def test_card_does_not_use_points(self):
+        user = self.client_with_points(200)
+        sale = self.sale_for(user, "500.00")
+
+        sale.choose_payment(CreditSale.CARD, installments=1, use_points=True)
+
+        self.assertEqual(sale.points_used, 0)
+        self.assertEqual(sale.points_discount_amount, Decimal("0.00"))
+        self.assertEqual(points_balance(user), 200)
+
+    def test_credit_preview_with_points_does_not_stick_to_the_sale(self):
+        user = self.credit_ready(self.client_with_points(200))
+        sale = self.sale_for(user, "500.00")
+
+        with sale.com_pontos_no_crediario(200) as desconto:
+            self.assertEqual(desconto, Decimal("100.00"))
+            self.assertEqual(sale.credit_financed_amount(), Decimal("380.00"))
+
+        self.assertEqual(sale.credit_financed_amount(), Decimal("480.00"))
+
+    def test_points_promised_to_an_unpaid_pix_cannot_be_used_again(self):
+        # A revisao pegou: Pix com pontos ainda nao pago + crediario com os
+        # mesmos pontos davam dois descontos de 20% com 200 pontos.
+        user = self.credit_ready(self.client_with_points(200))
+        venda_pix = self.sale_for(user, "100.00")
+        venda_pix.choose_payment(CreditSale.PIX, use_points=True)
+
+        outra = self.sale_for(user, "500.00")
+        self.assertEqual(outra.available_points(), 0)
+        # A propria venda do Pix continua vendo os pontos, para trocar de forma.
+        self.assertEqual(venda_pix.available_points(), 200)
+
+        outra.choose_payment(CreditSale.CREDIT, installments=1, use_points=True)
+        outra.refresh_from_db()
+        self.assertEqual(outra.points_discount_amount, Decimal("0.00"))
+        self.assertEqual(points_balance(user), 200)
 
     def test_changing_to_card_gives_the_points_back(self):
         user = self.client_with_points(100)
@@ -5565,3 +5655,228 @@ class GoogleOAuthTests(TestCase):
         self.assertRedirects(self.client.get("/entrar/google/"), "/login/", fetch_redirect_response=False)
         self.assertNotIn("google_oauth_state", self.client.session)
         self.mock_profile.assert_not_called()
+
+
+@override_settings(CARRINHO_PIX_MERCADO_PAGO=True)
+class CartPixAndPointsTests(TestCase):
+    """O carrinho cobra o preco do Pix anunciado no produto e aceita pontos no Pix."""
+
+    def setUp(self):
+        self.loja = StoreSettings.load()
+        self.loja.pix_discount_percent = Decimal("10.00")
+        self.loja.save(update_fields=["pix_discount_percent"])
+
+    def cliente(self, pontos=0):
+        user = User.objects.create_user(
+            email="carrinho-pix@example.com", password="Teste12345!", full_name="Cliente Pix", preferred_name="Cliente"
+        )
+        ClientProfile.objects.create(
+            user=user,
+            cpf_hash=ClientProfile.generate_cpf_placeholder(),
+            cpf_last_digits="4444",
+            phone="61999999999",
+            phone_verified=True,
+            address="Endereco",
+            registration_status=ClientProfile.APPROVED,
+        )
+
+        if pontos:
+            PointsTransaction.objects.create(
+                user=user, kind=PointsTransaction.ADJUST, points=pontos, description="Saldo de teste"
+            )
+
+        self.client.force_login(user)
+
+        return user
+
+    def produto(self, preco):
+        return SupplierProduct.objects.create(
+            supplier_code=f"PIX{preco}",
+            name="Bota do carrinho",
+            category="Botas",
+            wholesale_price=Decimal("50.00"),
+            dropshipping_cost=Decimal("55.00"),
+            suggested_sale_price=Decimal(preco),
+            stock_quantity=5,
+            sizes="35,36",
+            is_active=True,
+            is_visible=True,
+        )
+
+    def fechar(self, produto, **extra):
+        self.client.post(f"/loja/carrinho/adicionar/{produto.id}/", {"selected_size": "35"})
+        dados = {
+            "customer_name": "Cliente Pix",
+            "customer_email": "carrinho-pix@example.com",
+            "customer_phone": "61999999999",
+            "shipping_state": "DF",
+            "shipping_address": "Rua Teste, 1",
+            "notes": "",
+            "accept_terms": "on",
+        }
+        dados.update(extra)
+        self.client.post("/loja/carrinho/finalizar/", dados)
+
+        return StoreOrder.objects.get()
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
+    def test_cart_charges_the_pix_price_the_product_advertises(self):
+        # O cartao do produto dizia "R$ 180,05 no Pix" e o carrinho cobrava o
+        # preco cheio mesmo no Pix: la dentro Pix e cartao saiam iguais.
+        self.cliente()
+        produto = self.produto("200.05")
+
+        pedido = self.fechar(produto, payment_method="pix")
+
+        preco_pix = produto.payment_options()["pix"]["total"]
+        self.assertEqual(pedido.unit_price, preco_pix)
+        self.assertEqual(pedido.total_amount, preco_pix + pedido.shipping_cost)
+        self.assertEqual(pedido.pix_discount_amount, Decimal("200.05") - preco_pix)
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
+    def test_card_keeps_the_full_price(self):
+        self.cliente()
+
+        pedido = self.fechar(self.produto("200.05"), payment_method="card")
+
+        self.assertEqual(pedido.unit_price, Decimal("200.05"))
+        self.assertEqual(pedido.pix_discount_amount, Decimal("0.00"))
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
+    def test_points_come_before_the_pix_discount_and_are_spent_on_payment(self):
+        # Regra da loja: R$ 100 com 200 pontos vira R$ 80, e o Pix tira 10% disso.
+        self.loja.points_active = True
+        self.loja.save(update_fields=["points_active"])
+        user = self.cliente(pontos=200)
+
+        pedido = self.fechar(self.produto("100.00"), payment_method="pix", use_points="on")
+
+        self.assertEqual(pedido.points_discount_amount, Decimal("20.00"))
+        self.assertEqual(pedido.pix_discount_amount, Decimal("8.00"))
+        self.assertEqual(pedido.unit_price, Decimal("72.00"))
+        # Os pontos so saem quando o pagamento confirma.
+        self.assertEqual(points_balance(user), 200)
+
+        pedido.mark_paid("mp-pontos", "pix")
+        self.assertEqual(points_balance(user), self.loja.points_pix)
+
+        # Confirmar de novo nao debita de novo.
+        pedido.mark_paid("mp-pontos", "pix")
+        self.assertEqual(points_balance(user), self.loja.points_pix)
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
+    def test_card_does_not_take_points(self):
+        self.loja.points_active = True
+        self.loja.save(update_fields=["points_active"])
+        user = self.cliente(pontos=200)
+
+        pedido = self.fechar(self.produto("100.00"), payment_method="card", use_points="on")
+
+        self.assertEqual(pedido.points_discount_amount, Decimal("0.00"))
+        self.assertEqual(pedido.points_used, 0)
+        pedido.mark_paid("mp-cartao", "card")
+        # Nada foi gasto (e o teto de 200 nao deixa ganhar mais).
+        self.assertEqual(points_balance(user), 200)
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="teste")
+    def test_the_payment_page_only_accepts_the_chosen_method(self):
+        # O preco do Pix nao pode ser pago no cartao.
+        self.cliente()
+        enviados = []
+
+        def falso(*args, **kwargs):
+            enviados.append(args[1] if len(args) > 1 else kwargs.get("payload"))
+            return {"id": "pref-1", "init_point": "https://mercadopago.test/pagar"}
+
+        with patch("accounts.payments.mercado_pago_request", side_effect=falso):
+            self.fechar(self.produto("100.00"), payment_method="pix")
+
+        excluidos = {tipo["id"] for tipo in enviados[0]["payment_methods"]["excluded_payment_types"]}
+        self.assertIn("credit_card", excluidos)
+        self.assertIn("debit_card", excluidos)
+        self.assertNotIn("bank_transfer", excluidos)
+        # Nem a prazo pelo Mercado Credito.
+        self.assertIn("digital_currency", excluidos)
+
+    def dados_do_checkout(self, **extra):
+        dados = {
+            "customer_name": "Cliente Pix",
+            "customer_email": "carrinho-pix@example.com",
+            "customer_phone": "61999999999",
+            "shipping_state": "DF",
+            "shipping_address": "Rua Teste, 1",
+            "notes": "",
+            "accept_terms": "on",
+        }
+        dados.update(extra)
+
+        return dados
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
+    def test_cart_pix_follows_the_product_own_pix_discount(self):
+        # Produto com desconto de Pix proprio: o carrinho cobra o que ele anuncia.
+        self.cliente()
+        produto = self.produto("100.00")
+        produto.pix_discount_override = Decimal("15.00")
+        produto.save(update_fields=["pix_discount_override"])
+
+        pedido = self.fechar(produto, payment_method="pix")
+
+        self.assertEqual(pedido.unit_price, produto.payment_options()["pix"]["total"])
+        self.assertEqual(pedido.unit_price, Decimal("85.00"))
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
+    def test_old_online_choice_still_closes_the_order_at_card_price(self):
+        # Pagina aberta antes da mudanca: o "Pagar agora" vira cartao, sem erro.
+        self.cliente()
+
+        pedido = self.fechar(self.produto("100.00"), payment_method="online")
+
+        self.assertEqual(pedido.unit_price, Decimal("100.00"))
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="")
+    def test_the_same_points_cannot_discount_two_carts(self):
+        self.loja.points_active = True
+        self.loja.save(update_fields=["points_active"])
+        self.cliente(pontos=200)
+
+        primeiro = self.fechar(self.produto("100.00"), payment_method="pix", use_points="on")
+        self.assertEqual(primeiro.points_used, 200)
+
+        segundo_produto = self.produto("120.00")
+        self.client.post(f"/loja/carrinho/adicionar/{segundo_produto.id}/", {"selected_size": "35"})
+        self.client.post("/loja/carrinho/finalizar/", self.dados_do_checkout(payment_method="pix", use_points="on"))
+        segundo = StoreOrder.objects.order_by("-id").first()
+
+        self.assertNotEqual(segundo.pk, primeiro.pk)
+        self.assertEqual(segundo.points_used, 0)
+        self.assertEqual(segundo.points_discount_amount, Decimal("0.00"))
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="teste")
+    def test_card_charge_does_not_try_to_exclude_mercado_pago_balance(self):
+        self.cliente()
+        enviados = []
+
+        def falso(*args, **kwargs):
+            enviados.append(args[1] if len(args) > 1 else kwargs.get("payload"))
+            return {"id": "pref-2", "init_point": "https://mercadopago.test/pagar"}
+
+        with patch("accounts.payments.mercado_pago_request", side_effect=falso):
+            self.fechar(self.produto("100.00"), payment_method="card")
+
+        excluidos = {tipo["id"] for tipo in enviados[0]["payment_methods"]["excluded_payment_types"]}
+        self.assertIn("bank_transfer", excluidos)
+        self.assertNotIn("account_money", excluidos)
+
+    @override_settings(MERCADO_PAGO_ACCESS_TOKEN="", CARRINHO_PIX_MERCADO_PAGO=False)
+    def test_without_the_switch_the_cart_has_no_pix_and_charges_full_price(self):
+        # Chave desligada: o carrinho fica como era, sem Pix e sem pontos.
+        self.cliente()
+        produto = self.produto("100.00")
+        self.client.post(f"/loja/carrinho/adicionar/{produto.id}/", {"selected_size": "35"})
+
+        tela = self.client.get("/loja/carrinho/finalizar/").content.decode()
+        self.assertNotIn('value="pix"', tela)
+
+        self.client.post("/loja/carrinho/finalizar/", self.dados_do_checkout(payment_method="pix"))
+        self.assertEqual(StoreOrder.objects.get().unit_price, Decimal("100.00"))

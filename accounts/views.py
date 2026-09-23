@@ -34,8 +34,8 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from . import google_oauth
-from .forms import LancamentoDePontosForm, MAX_PRODUCT_PHOTOS_PER_UPLOAD, validate_product_photo, CHECKOUT_PAYMENT_CREDIT, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, NewSupplierProductForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
-from .models import award_signup_points, CapaDoSite, StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance, points_balance_capped, points_discount_percent, PointsTransaction, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, WELCOME_DISCOUNT_PERCENT, add_months, money
+from .forms import LancamentoDePontosForm, MAX_PRODUCT_PHOTOS_PER_UPLOAD, validate_product_photo, CHECKOUT_PAYMENT_CREDIT, CHECKOUT_PAYMENT_PIX, CartCheckoutForm, CheckoutCpfForm, ClientApprovalForm, CreditSaleForm, CreditSaleProductFormSet, DocesEMaisProductForm, InstallmentChoiceForm, ManualDebtForm, MeasurementsForm, PersonalDebtForm, PhoneVerificationForm, ProductCostForm, ProductForm, PartnerBagForm, ProfilePhotoForm, PromoEmailForm, RegisterForm, StoreSettingsForm, StoreOrderForm, SupplierCatalogSourceForm, SupplierForm, NewSupplierProductForm, StoreReelForm, SupplierProductEditForm, SupplierProductPhotoFormSet, SupplierProductVariantFormSet, UserPasswordChangeForm
+from .models import award_signup_points, points_spendable, CapaDoSite, StoreReel, StoreSettings, cashback_balance, ClientProfile, CreditSale, CreditSaleProduct, Debt, get_or_create_referral_code, Notification, PaymentAlert, PersonalDebt, points_balance, points_balance_capped, points_discount_percent, PointsTransaction, credit_price_from_retail, retail_price_from_wholesale, Product, ProductCost, resolve_referrer, StoreOrder, Supplier, SupplierCatalogSource, SupplierProduct, SupplierProductPhoto, WELCOME_DISCOUNT_PERCENT, add_months, money
 from .bucket_publico import conferir_se_e_publico, copiar_vitrine, PREFIXOS_DA_VITRINE
 from .espaco import atualizar_medicao, resumo_do_espaco, somar_arquivos
 from .seo import endereco_publico
@@ -349,6 +349,23 @@ def build_finalize_whatsapp_link(sale, payment_link):
 def sale_checkout_context(sale, form, return_route):
     available_points = sale.available_points()
 
+    # Previa do crediario usando os pontos. Sem ela, a cliente marcava os
+    # pontos, escolhia 3x e levava "opcao invalida": com o desconto a parcela
+    # caia abaixo do minimo de R$ 70 e o 3x deixava de existir.
+    credit_with_points = None
+
+    if available_points and sale.can_use_credit():
+        with sale.com_pontos_no_crediario(available_points) as desconto:
+            if desconto > 0:
+                credit_with_points = {
+                    "discount": desconto,
+                    "points": sale.credit_points_option(available_points)[1],
+                    "financed": sale.credit_financed_amount(),
+                    "remainder": sale.credit_remainder_amount(),
+                    "above_limit": sale.credit_above_limit_amount(),
+                    "options": sale.credit_options(),
+                }
+
     return {
         "form": form,
         "sale": sale,
@@ -366,6 +383,10 @@ def sale_checkout_context(sale, form, return_route):
         "welcome_discount_preview": sale.available_welcome_discount_amount(),
         "credit_financed_amount": sale.credit_financed_amount(),
         "credit_remainder_amount": sale.credit_remainder_amount(),
+        "credit_with_points": credit_with_points,
+        "credit_installments_with_points": (
+            [option["installments"] for option in credit_with_points["options"]] if credit_with_points else []
+        ),
         "credit_late_fee_percent": Debt._meta.get_field("late_fee_percent").default,
         "credit_monthly_interest_percent": Debt._meta.get_field("monthly_interest_percent").default,
         "credit_requires_registration": not sale.can_use_credit(),
@@ -2379,6 +2400,26 @@ def cart_checkout(request):
     cashback_redeem_preview = min(cashback_available, cashback_cap, max(items_after_voucher_preview - Decimal("0.50"), Decimal("0.00")))
     cashback_redeem_preview = money(max(cashback_redeem_preview, Decimal("0.00")))
 
+    # Pontos no carrinho: so no Pix (e so com o Pix do carrinho ligado), e
+    # descontando o que ja esta prometido a outro Pix ainda nao pago.
+    pix_ligado = settings.CARRINHO_PIX_MERCADO_PAGO
+    points_available = (
+        points_spendable(request.user) if is_client and store_settings.points_active and pix_ligado else 0
+    )
+    pix_percent = store_settings.pix_discount_percent
+
+    def pix_do_produto(produto):
+        # O mesmo percentual que o produto anuncia: o proprio, se tiver.
+        if produto.pix_discount_override is not None:
+            return Decimal(produto.pix_discount_override)
+
+        return pix_percent
+
+    pix_items = [
+        {"total": float(item["total"]), "pix": float(pix_do_produto(item["product"]) / Decimal("100"))}
+        for item in items
+    ]
+
     if request.method == "POST":
         form = CartCheckoutForm(request.POST)
 
@@ -2386,10 +2427,22 @@ def cart_checkout(request):
             form.fields.pop("use_welcome_discount")
         if cashback_available <= 0:
             form.fields.pop("use_cashback")
+        if not points_available:
+            form.fields.pop("use_points")
+        else:
+            form.fields["use_points"].label = f"Usar meus {points_available} pontos nesta compra (só no Pix)"
 
         if form.is_valid():
             use_voucher = bool(welcome_profile and form.cleaned_data.get("use_welcome_discount"))
             use_cashback = bool(cashback_available > 0 and form.cleaned_data.get("use_cashback"))
+            forma = form.cleaned_data["payment_method"]
+
+            if forma == CHECKOUT_PAYMENT_PIX and not pix_ligado:
+                forma = "card"
+            use_points = bool(
+                points_available and forma == CHECKOUT_PAYMENT_PIX and form.cleaned_data.get("use_points")
+            )
+            pontos_percent = points_discount_percent(points_available, store_settings) if use_points else Decimal("0.00")
             checkout_reference = uuid.uuid4()
             shipping_state = form.cleaned_data["shipping_state"]
             shipping_cost = shipping_cost_for(shipping_state)
@@ -2436,6 +2489,19 @@ def cart_checkout(request):
                         item_discount = welcome_discount_amount(product.suggested_sale_price * item["quantity"])
                         unit_price = money(product.suggested_sale_price * (Decimal("1.00") - WELCOME_DISCOUNT_PERCENT / Decimal("100")))
 
+                    pontos_unidade = Decimal("0.00")
+                    pix_unidade = Decimal("0.00")
+
+                    if forma == CHECKOUT_PAYMENT_PIX:
+                        # Por unidade, para o total fechar em centavos exatos com
+                        # qualquer quantidade. Pontos primeiro; o Pix vem depois,
+                        # sobre o que sobrou, com a mesma conta do preco anunciado.
+                        pontos_unidade = money(unit_price * (pontos_percent / Decimal("100")))
+                        apos_pontos = unit_price - pontos_unidade
+                        cobrado = money(apos_pontos * (Decimal("100") - pix_do_produto(product)) / Decimal("100"))
+                        pix_unidade = apos_pontos - cobrado
+                        unit_price = cobrado
+
                     order = StoreOrder.objects.create(
                         product=product,
                         customer=request.user if request.user.is_authenticated and not request.user.is_staff else None,
@@ -2455,6 +2521,9 @@ def cart_checkout(request):
                         supplier_cost=product.dropshipping_cost,
                         total_amount=money(unit_price * item["quantity"] + (shipping_cost if index == 0 else Decimal("0.00"))),
                         welcome_discount_amount=item_discount,
+                        pix_discount_amount=money(pix_unidade * item["quantity"]),
+                        points_discount_amount=money(pontos_unidade * item["quantity"]),
+                        points_used=points_available if use_points and index == 0 else 0,
                         estimated_profit=money((unit_price - product.dropshipping_cost) * item["quantity"]),
                         checkout_reference=checkout_reference,
                     )
@@ -2484,7 +2553,8 @@ def cart_checkout(request):
             request.session["store_cart"] = {}
 
             try:
-                preference = create_cart_checkout_preference(orders, request)
+                # Com a chave desligada a cobranca fica como era: sem limitar a forma.
+                preference = create_cart_checkout_preference(orders, request, forma=forma if pix_ligado else None)
             except MercadoPagoNotConfigured:
                 messages.warning(request, "Pedido criado. Configure o Mercado Pago para ativar o pagamento online.")
                 return redirect("store_order_detail", public_token=orders[0].public_token)
@@ -2515,6 +2585,10 @@ def cart_checkout(request):
             form.fields.pop("use_welcome_discount")
         if cashback_available <= 0:
             form.fields.pop("use_cashback")
+        if not points_available:
+            form.fields.pop("use_points")
+        else:
+            form.fields["use_points"].label = f"Usar meus {points_available} pontos nesta compra (só no Pix)"
 
     return render(
         request,
@@ -2530,6 +2604,10 @@ def cart_checkout(request):
             "cashback_available": cashback_available,
             "cashback_redeem_preview": cashback_redeem_preview,
             "cashback_max_percent": cashback_max_percent,
+            "pix_percent": pix_percent,
+            "pix_items_json": json.dumps(pix_items),
+            "points_available": points_available,
+            "points_percent": points_discount_percent(points_available, store_settings) if points_available else 0,
             "shipping_rates": shipping_rates_payload(),
             "shipping_rates_json": json.dumps(shipping_rates_payload()),
         },
@@ -2667,7 +2745,7 @@ def payment_success(request):
 
     if order_code.startswith("cart:"):
         checkout_reference = order_code.split(":", 1)[1]
-        orders = StoreOrder.objects.filter(checkout_reference=checkout_reference)
+        orders = StoreOrder.objects.filter(checkout_reference=checkout_reference).order_by("created_at")
         first_order = orders.first()
 
         if not first_order:
@@ -2741,7 +2819,7 @@ def mercado_pago_webhook(request):
     payment_reference = str(payment.get("id", payment_id))
 
     if order_code.startswith("cart:"):
-        orders = StoreOrder.objects.filter(checkout_reference=order_code.split(":", 1)[1])
+        orders = StoreOrder.objects.filter(checkout_reference=order_code.split(":", 1)[1]).order_by("created_at")
 
         if not orders.exists():
             return JsonResponse({"ok": False, "error": "cart not found"}, status=404)

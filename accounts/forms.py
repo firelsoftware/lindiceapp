@@ -75,6 +75,12 @@ CHECKOUT_PAYMENT_METHOD_CHOICES = (
     (CHECKOUT_PAYMENT_CREDIT, "Solicitar crediario para analise"),
 )
 
+# O carrinho pergunta Pix ou cartao antes de ir ao Mercado Pago. Sem isso o
+# preco do Pix anunciado no produto nao valia no carrinho: la dentro Pix e
+# cartao saiam pelo mesmo valor, o cheio.
+CHECKOUT_PAYMENT_PIX = "pix"
+CHECKOUT_PAYMENT_CARD = "card"
+
 
 def client_label(user):
     profile_id = getattr(getattr(user, "profile", None), "id", user.id)
@@ -767,14 +773,16 @@ class InstallmentChoiceForm(forms.Form):
     def __init__(self, *args, sale, **kwargs):
         super().__init__(*args, **kwargs)
         self.sale = sale
-        # Os pontos so descontam no pagamento a vista, entao a opcao some quando
-        # o cliente nao tem pontos para usar.
+        # Os pontos descontam no Pix e no crediario; a opcao some quando o
+        # cliente nao tem pontos para usar.
         self.available_points = sale.available_points()
 
         if not self.available_points:
             self.fields.pop("use_points")
         else:
-            self.fields["use_points"].label = f"Usar meus {self.available_points} pontos nesta compra (só à vista/Pix)"
+            self.fields["use_points"].label = (
+                f"Usar meus {self.available_points} pontos nesta compra (vale no Pix e no crediário)"
+            )
 
         today = timezone.localdate()
         max_due_date = today + timedelta(days=30)
@@ -1435,21 +1443,54 @@ class CartCheckoutForm(forms.Form):
     notes = forms.CharField(label="Observacoes", required=False, widget=forms.Textarea(attrs={"rows": 3}))
     payment_method = forms.ChoiceField(
         label="Forma de pagamento",
-        choices=CHECKOUT_PAYMENT_METHOD_CHOICES,
-        initial=CHECKOUT_PAYMENT_ONLINE,
+        choices=(),
+        initial=CHECKOUT_PAYMENT_PIX,
         required=False,
         widget=forms.RadioSelect,
     )
     use_welcome_discount = forms.BooleanField(label="Usar voucher de 5% nesta compra", required=False)
     use_cashback = forms.BooleanField(label="Usar meu cashback nesta compra", required=False)
+    use_points = forms.BooleanField(label="Usar meus pontos nesta compra (só no Pix)", required=False)
     accept_terms = forms.BooleanField(
         label="Li e aceito os termos de uso e a politica de privacidade",
         required=True,
     )
 
     def __init__(self, *args, **kwargs):
+        pix_ligado = settings.CARRINHO_PIX_MERCADO_PAGO
+        dados = args[0] if args else kwargs.get("data")
+        escolha = dados.get("payment_method") if dados is not None else None
+
+        # O "online" de antes desta mudanca, ou um Pix enviado com a chave
+        # desligada, vira cartao antes da validacao. Deixado para o
+        # clean_payment_method, a escolha era recusada antes de ele rodar.
+        if escolha == CHECKOUT_PAYMENT_ONLINE or (escolha == CHECKOUT_PAYMENT_PIX and not pix_ligado):
+            dados = dados.copy()
+            dados["payment_method"] = CHECKOUT_PAYMENT_CARD
+
+            if args:
+                args = (dados,) + tuple(args[1:])
+            else:
+                kwargs["data"] = dados
+
         super().__init__(*args, **kwargs)
         self.fields["shipping_state"].choices = [("", "Selecione")] + shipping_choices_with_prices()
+        # Sem numero no rotulo: produto pode ter desconto de Pix proprio.
+        opcoes = [
+            (CHECKOUT_PAYMENT_CARD, "Cartão de crédito ou débito"),
+            (CHECKOUT_PAYMENT_CREDIT, "Solicitar crediário para análise"),
+        ]
+
+        if pix_ligado:
+            opcoes.insert(0, (CHECKOUT_PAYMENT_PIX, "Pix à vista, com desconto"))
+        else:
+            self.fields["payment_method"].initial = CHECKOUT_PAYMENT_CARD
+
+        self.fields["payment_method"].choices = opcoes
 
     def clean_payment_method(self):
-        return self.cleaned_data.get("payment_method") or CHECKOUT_PAYMENT_ONLINE
+        # Sem escolha (formulario antigo, ou o "online" de antes desta mudanca)
+        # fica o cartao, que e o preco que o carrinho cobrava ate aqui.
+        valor = self.cleaned_data.get("payment_method") or CHECKOUT_PAYMENT_CARD
+
+        return CHECKOUT_PAYMENT_CARD if valor == CHECKOUT_PAYMENT_ONLINE else valor

@@ -137,7 +137,7 @@ def create_checkout_preference(order, request):
     }
 
 
-def create_cart_checkout_preference(orders, request):
+def create_cart_checkout_preference(orders, request, forma=None):
     first_order = orders[0]
     base_url = site_url(request)
     items = [
@@ -170,6 +170,36 @@ def create_cart_checkout_preference(orders, request):
         "notification_url": f"{base_url}/loja/mercado-pago/webhook/",
         "auto_return": "approved",
     }
+
+    # A cobranca aceita so a forma que a cliente escolheu no carrinho: o preco
+    # do Pix nao pode ser pago no cartao, e quem escolheu cartao nao paga Pix
+    # pelo preco cheio por engano.
+    if forma == "pix":
+        payload["payment_methods"] = {
+            # Fora tudo que nao e Pix, inclusive o Mercado Credito: o preco do
+            # Pix nao pode ser pago a prazo.
+            "excluded_payment_types": [
+                {"id": "credit_card"},
+                {"id": "debit_card"},
+                {"id": "prepaid_card"},
+                {"id": "ticket"},
+                {"id": "atm"},
+                {"id": "digital_currency"},
+                {"id": "digital_wallet"},
+                {"id": "voucher_card"},
+                {"id": "crypto_transfer"},
+            ],
+        }
+    elif forma == "card":
+        payload["payment_methods"] = {
+            # O saldo do Mercado Pago fica: a documentacao diz que ele nao pode
+            # ser excluido, e tentar pode derrubar a cobranca inteira.
+            "excluded_payment_types": [
+                {"id": "bank_transfer"},
+                {"id": "ticket"},
+                {"id": "atm"},
+            ],
+        }
 
     if not is_test_environment():
         payload["payer"] = {

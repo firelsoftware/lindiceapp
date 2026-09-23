@@ -62,6 +62,14 @@
                     <strong id="cart-cashback-value">- R$ {{ cashback_redeem_preview|floatformat:2 }}</strong>
                 </div>
             {% endif %}
+            <div class="summary-row" id="cart-points-row" hidden>
+                <span>Pontos</span>
+                <strong id="cart-points-value"></strong>
+            </div>
+            <div class="summary-row" id="cart-pix-row" hidden>
+                <span>Desconto do Pix</span>
+                <strong id="cart-pix-value"></strong>
+            </div>
             <div class="summary-row">
                 <span>Frete</span>
                 <strong id="cart-shipping-value">Escolha a UF</strong>
@@ -108,7 +116,7 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <p class="checkout-inline-help">Para pagar agora, seguimos pelo checkout online. Se escolher crediario, sua compra vai para analise antes das parcelas.</p>
+            <p class="checkout-inline-help">No Pix você paga com desconto; no cartão, o preço cheio. As duas formas seguem para o pagamento seguro do Mercado Pago. Se escolher crediário, sua compra vai para análise antes das parcelas.</p>
             <div class="checkout-terms">
                 <p class="summary-caption">
                     Ao continuar, voce concorda com os
@@ -139,6 +147,15 @@
     var voucher = Number("{{ voucher_discount|default:'0.00'|floatformat:2 }}".replace(",", "."));
     var cashbackBalance = Number("{{ cashback_available|default:'0.00'|floatformat:2 }}".replace(",", "."));
     var cashbackPct = Number("{{ cashback_max_percent|default:'25'|floatformat:2 }}".replace(",", ".")) / 100;
+    // Percentual do Pix de cada item, o mesmo que cada produto anuncia.
+    var pixItems = JSON.parse('{{ pix_items_json|default:"[]"|escapejs }}');
+    var pointsPct = Number("{{ points_percent|default:'0'|floatformat:2 }}".replace(",", ".")) / 100;
+    var pointsField = document.getElementById("id_use_points");
+    var pointsRow = document.getElementById("cart-points-row");
+    var pointsNode = document.getElementById("cart-points-value");
+    var pixRow = document.getElementById("cart-pix-row");
+    var pixNode = document.getElementById("cart-pix-value");
+    var methodFields = document.querySelectorAll('input[name="payment_method"]');
     var rates = { ...JSON.parse('{{ shipping_rates_json|escapejs }}'), DEFAULT: "40.00" };
 
     function formatMoney(value) {
@@ -157,16 +174,41 @@
         var shipping = shippingFor(stateField ? stateField.value : "");
         var discount = voucherField && voucherField.checked ? voucher : 0;
         var itemsAfterVoucher = Math.max(subtotal - discount, 0);
+        var checked = document.querySelector('input[name="payment_method"]:checked');
+        var method = checked ? checked.value : "card";
+        // Pontos so no Pix, e antes do desconto do Pix - a mesma ordem da cobranca.
+        if (pointsField) { pointsField.disabled = method !== "pix"; }
+        var usarPontos = !!(method === "pix" && pointsField && pointsField.checked);
+        var fatorVoucher = subtotal > 0 ? itemsAfterVoucher / subtotal : 1;
+        var pontos = 0;
+        var pix = 0;
+        if (method === "pix") {
+            pixItems.forEach(function (item) {
+                var base = item.total * fatorVoucher;
+                var pontosItem = usarPontos ? base * pointsPct : 0;
+                pontos += pontosItem;
+                pix += (base - pontosItem) * item.pix;
+            });
+        }
+        var itemsAfterDiscounts = Math.max(itemsAfterVoucher - pontos - pix, 0);
+        if (pointsRow) {
+            pointsRow.hidden = pontos <= 0;
+            if (pointsNode) { pointsNode.textContent = "- " + formatMoney(pontos); }
+        }
+        if (pixRow) {
+            pixRow.hidden = pix <= 0;
+            if (pixNode) { pixNode.textContent = "- " + formatMoney(pix); }
+        }
         var cashback = 0;
         if (cashbackField && cashbackField.checked) {
-            cashback = Math.min(cashbackBalance, itemsAfterVoucher * cashbackPct, Math.max(itemsAfterVoucher - 0.5, 0));
+            cashback = Math.min(cashbackBalance, itemsAfterDiscounts * cashbackPct, Math.max(itemsAfterDiscounts - 0.5, 0));
             cashback = Math.max(cashback, 0);
         }
         if (cashbackRow) {
             cashbackRow.hidden = cashback <= 0;
             if (cashbackNode) { cashbackNode.textContent = "- " + formatMoney(cashback); }
         }
-        var total = itemsAfterVoucher - cashback + (shipping || 0);
+        var total = itemsAfterDiscounts - cashback + (shipping || 0);
 
         shippingNode.textContent = shipping === null ? "Escolha a UF" : formatMoney(shipping);
         totalNode.textContent = formatMoney(total);
@@ -183,6 +225,14 @@
     if (cashbackField) {
         cashbackField.addEventListener("change", refreshSummary);
     }
+
+    if (pointsField) {
+        pointsField.addEventListener("change", refreshSummary);
+    }
+
+    methodFields.forEach(function (field) {
+        field.addEventListener("change", refreshSummary);
+    });
 
     refreshSummary();
 })();

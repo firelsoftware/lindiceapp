@@ -111,8 +111,12 @@
                     <p>Entrada nesta compra: <strong>R$ {{ sale.credit_entry_amount|floatformat:2 }}</strong>, paga no fechamento junto com o Pix ou o cartão.</p>
                 {% endif %}
                 {% if sale.credit_above_limit_amount %}
-                    <p>Do valor da compra, <strong>R$ {{ sale.credit_financed_amount|floatformat:2 }}</strong> cabem no seu limite e vão para o carnê.
+                    <p data-credit-points="off">Do valor da compra, <strong>R$ {{ sale.credit_financed_amount|floatformat:2 }}</strong> cabem no seu limite e vão para o carnê.
                     Os outros <strong>R$ {{ sale.credit_above_limit_amount|floatformat:2 }}</strong> são pagos no fechamento.</p>
+                {% endif %}
+                {% if credit_with_points.above_limit %}
+                    <p data-credit-points="on" hidden>Com seus pontos, <strong>R$ {{ credit_with_points.financed|floatformat:2 }}</strong> cabem no seu limite e vão para o carnê.
+                    Os outros <strong>R$ {{ credit_with_points.above_limit|floatformat:2 }}</strong> são pagos no fechamento.</p>
                 {% endif %}
                 {% if not credit_options %}
                     <p>Sem parcelamento disponível para esta compra.
@@ -129,9 +133,10 @@
         <p>Valor com desconto: <strong>R$ {{ pix_option.total|floatformat:2 }}</strong></p>
         <p>Desconto aplicado: <strong>R$ {{ pix_option.discount|floatformat:2 }}</strong></p>
         {% if pix_option_with_points %}
-            <p>Usando seus {{ pix_option_with_points.points_used }} pontos, você tira mais
-            {{ pix_option_with_points.points_percent|floatformat:0 }}% e fica em
-            <strong>R$ {{ pix_option_with_points.total|floatformat:2 }}</strong>.</p>
+            <p>Usando seus {{ pix_option_with_points.points_used }} pontos: eles tiram
+            {{ pix_option_with_points.points_percent|floatformat:0 }}% (R$ {{ pix_option_with_points.points_discount|floatformat:2 }}),
+            e o Pix desconta mais R$ {{ pix_option_with_points.discount|floatformat:2 }} sobre o que sobrou.
+            Você paga <strong>R$ {{ pix_option_with_points.total|floatformat:2 }}</strong>.</p>
         {% endif %}
     </section>
 
@@ -209,11 +214,34 @@
             {% endif %}
             <p>O cliente pode escolher o primeiro vencimento entre hoje e os proximos 30 dias.</p>
             <p><strong>Antes de confirmar, lembre-se: atraso no crediario gera multa de {{ credit_late_fee_percent|floatformat:0 }}% e juros de {{ credit_monthly_interest_percent|floatformat:0 }}% ao mes.</strong></p>
-            {% if credit_remainder_amount > 0 %}
+            {% if credit_with_points %}
+                <section class="info-panel" data-credit-points="on" hidden>
+                    <h3>Com seus pontos</h3>
+                    <p>Seus {{ credit_with_points.points }} pontos tiram <strong>R$ {{ credit_with_points.discount|floatformat:2 }}</strong>
+                    da compra antes do carnê. No crediário é só esse desconto: o do Pix não entra.</p>
+                    {% if not credit_with_points.options %}
+                        <p><strong>Com os pontos, esta compra não tem valor para parcelar.</strong> Pague no Pix para usar os pontos.</p>
+                    {% endif %}
+                </section>
+            {% endif %}
+            {% if credit_remainder_amount > 0 or credit_with_points.remainder > 0 %}
                 <section class="info-panel">
                     <h3>Entrada da compra</h3>
-                    <p>Limite do crediario usado nesta compra: <strong>R$ {{ credit_financed_amount|floatformat:2 }}</strong></p>
-                    <p>Entrada a pagar: <strong>R$ {{ credit_remainder_amount|floatformat:2 }}</strong></p>
+                    {% comment %}
+                        So os numeros trocam com os pontos. A escolha de como pagar a
+                        entrada fica sempre a vista: escondida junto, a cliente ficaria
+                        sem onde escolher.
+                    {% endcomment %}
+                    <div data-credit-points="off">
+                        <p>Limite do crediario usado nesta compra: <strong>R$ {{ credit_financed_amount|floatformat:2 }}</strong></p>
+                        <p>Entrada a pagar: <strong>R$ {{ credit_remainder_amount|floatformat:2 }}</strong></p>
+                    </div>
+                    {% if credit_with_points %}
+                        <div data-credit-points="on" hidden>
+                            <p>Limite do crediario usado nesta compra: <strong>R$ {{ credit_with_points.financed|floatformat:2 }}</strong></p>
+                            <p>Entrada a pagar: <strong>R$ {{ credit_with_points.remainder|floatformat:2 }}</strong></p>
+                        </div>
+                    {% endif %}
                     <label for="{{ form.remainder_payment_method.id_for_label }}">Como pagar a entrada</label>
                     {{ form.remainder_payment_method }}
                     {% if form.remainder_payment_method.errors %}
@@ -227,7 +255,7 @@
                 <p><strong>Em caso de atraso, o valor em aberto recebe multa de {{ credit_late_fee_percent|floatformat:0 }}% e juros de {{ credit_monthly_interest_percent|floatformat:0 }}% ao m&ecirc;s.</strong></p>
                 <p>Confira o valor das parcelas e o total antes de confirmar.</p>
             </section>
-            <table>
+            <table data-credit-points="off">
                 <thead>
                     <tr>
                         <th>Parcelas</th>
@@ -247,6 +275,28 @@
                     {% endfor %}
                 </tbody>
             </table>
+            {% if credit_with_points %}
+                <table data-credit-points="on" hidden>
+                    <thead>
+                        <tr>
+                            <th>Parcelas</th>
+                            <th>Parcela</th>
+                            <th>Juros</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for option in credit_with_points.options %}
+                            <tr>
+                                <td>{{ option.installments }}x</td>
+                                <td>R$ {{ option.installment_amount|floatformat:2 }}</td>
+                                <td>{{ option.monthly_rate|floatformat:2 }}%</td>
+                                <td>R$ {{ option.total|floatformat:2 }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
             {% endif %}
         </section>
     </div>
@@ -262,18 +312,28 @@
 {% endif %}
 {{ card_installments|json_script:"card-installments" }}
 {{ credit_installments|json_script:"credit-installments" }}
+{{ credit_installments_with_points|json_script:"credit-installments-with-points" }}
 <script>
     const installmentSelect = document.getElementById("{{ form.installments.id_for_label }}");
     const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
     const installmentOptions = {
         card: JSON.parse(document.getElementById("card-installments").textContent),
         credit: JSON.parse(document.getElementById("credit-installments").textContent),
+        creditPoints: JSON.parse(document.getElementById("credit-installments-with-points").textContent),
     };
+    const pointsBox = document.getElementById("{{ form.use_points.id_for_label }}");
+    const temPreviaComPontos = {% if credit_with_points %}true{% else %}false{% endif %};
 
     const updateInstallments = () => {
         const paymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
         const previousValue = installmentSelect.value;
-        const options = installmentOptions[paymentMethod] || [];
+        // Com os pontos marcados, o crediario oferece as parcelas calculadas
+        // sobre o valor ja descontado.
+        // Mesmo com a lista vazia: sem parcela possivel, a tela nao pode voltar a
+        // oferecer as parcelas sem pontos que o servidor recusaria.
+        const usingCreditPoints = paymentMethod === "credit" && !!(pointsBox && pointsBox.checked)
+            && temPreviaComPontos;
+        const options = installmentOptions[usingCreditPoints ? "creditPoints" : paymentMethod] || [];
         const panels = document.querySelectorAll("[data-payment-panel]");
 
         installmentSelect.replaceChildren(new Option("Selecione", ""));
@@ -292,9 +352,14 @@
             const isInstallmentsPanel = panelName === "installments" && ["card", "credit"].includes(paymentMethod);
             panel.hidden = !(isSelectedPayment || isInstallmentsPanel);
         });
+
+        document.querySelectorAll("[data-credit-points]").forEach((node) => {
+            node.hidden = (node.dataset.creditPoints === "on") !== usingCreditPoints;
+        });
     };
 
     paymentMethods.forEach((input) => input.addEventListener("change", updateInstallments));
+    pointsBox?.addEventListener("change", updateInstallments);
     updateInstallments();
 
     const carousel = document.querySelector("[data-carousel]");

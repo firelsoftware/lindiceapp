@@ -311,6 +311,10 @@ MERCADO_PAGO_ACCESS_TOKEN = os.environ.get("MERCADO_PAGO_ACCESS_TOKEN", "")
 MERCADO_PAGO_WEBHOOK_SECRET = os.environ.get("MERCADO_PAGO_WEBHOOK_SECRET", "")
 MERCADO_PAGO_ACCOUNT_URL = os.environ.get("MERCADO_PAGO_ACCOUNT_URL", "")
 CARD_PAYMENT_ENABLED = env_bool("CARD_PAYMENT_ENABLED", default=True)
+# Pix do carrinho pelo Mercado Pago. Desligado, o carrinho segue so com cartao e
+# crediario: a cobranca do Pix aceita so Pix, e sem chave Pix cadastrada na
+# conta do Mercado Pago a cliente chegaria numa tela de pagamento sem opcao.
+CARRINHO_PIX_MERCADO_PAGO = env_bool("CARRINHO_PIX_MERCADO_PAGO", default=False)
 PUBLIC_SITE_URL = os.environ.get("PUBLIC_SITE_URL", "")
 # O endereco que o buscador deve guardar. O site atende em mais de um dominio
 # (app.lindice.com.br, e o www quando entrar): sem escolher um, o Google trata

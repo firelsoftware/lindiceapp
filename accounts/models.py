@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from decimal import Decimal, ROUND_CEILING, ROUND_HALF_UP
 import hashlib
 import uuid
@@ -754,6 +755,11 @@ class StoreOrder(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     welcome_discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     cashback_discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    # Quando a cliente escolhe Pix no carrinho: o desconto do Pix e o dos pontos,
+    # por item. Os pontos usados ficam no primeiro item da compra e saem uma vez.
+    pix_discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    points_discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
+    points_used = models.PositiveSmallIntegerField(default=0)
     estimated_profit = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default=PENDING_PAYMENT)
     # Como o cliente pagou de fato. Vem do Mercado Pago na confirmacao, porque
@@ -794,6 +800,7 @@ class StoreOrder(models.Model):
         redeem_cashback_for_order(self)
 
         if StoreSettings.load().points_active:
+            redeem_points_for_order(self)
             award_purchase_points(self.customer, self.payment_method or "card", store_order=self)
 
             if self.customer_id:
@@ -1083,6 +1090,32 @@ def redeem_points_for_sale(sale):
     )
 
 
+def redeem_points_for_order(order):
+    """Debita os pontos usados no pedido do carrinho, na confirmacao do pagamento (idempotente)."""
+    customer = order.customer
+    points = int(order.points_used or 0)
+
+    if customer is None or not getattr(customer, "pk", None) or points <= 0:
+        return None
+
+    if PointsTransaction.objects.filter(kind=PointsTransaction.REDEEM, store_order=order).exists():
+        return None
+
+    # Nunca debita mais do que a cliente tem agora.
+    debit = min(points, points_balance(customer))
+
+    if debit <= 0:
+        return None
+
+    return PointsTransaction.objects.create(
+        user=customer,
+        kind=PointsTransaction.REDEEM,
+        points=-debit,
+        description="Pontos usados como desconto",
+        store_order=order,
+    )
+
+
 def get_or_create_referral_code(user):
     """Codigo de indicacao unico e estavel do usuario."""
     profile = getattr(user, "profile", None)
@@ -1152,6 +1185,58 @@ def points_balance(user):
 def points_balance_capped(user):
     """Saldo mostrado ao cliente, limitado ao teto configurado."""
     return min(points_balance(user), StoreSettings.load().points_cap)
+
+
+# Por quanto tempo um Pix com pontos ainda nao pago segura os pontos. Passado
+# isso a cobranca ja expirou, e os pontos voltam a valer para outra compra.
+PONTOS_PRESOS_HORAS = 48
+
+
+def points_committed(user, *, except_sale=None):
+    """Pontos prometidos a compras no Pix que ainda nao foram pagas.
+
+    No Pix os pontos so saem quando o pagamento confirma. Sem contar o que ja
+    esta prometido, a cliente usava os mesmos 200 pontos num Pix pendente e
+    num crediario (ou em dois carrinhos), e levava dois descontos de 20%.
+    """
+    from datetime import timedelta
+
+    if user is None or not getattr(user, "pk", None):
+        return 0
+
+    desde = timezone.now() - timedelta(hours=PONTOS_PRESOS_HORAS)
+    resgates = PointsTransaction.objects.filter(kind=PointsTransaction.REDEEM)
+
+    vendas = CreditSale.objects.filter(
+        client=user,
+        status=CreditSale.ACCEPTED,
+        selected_payment_method=CreditSale.PIX,
+        points_used__gt=0,
+        accepted_at__gte=desde,
+    ).exclude(payment_status=CreditSale.PAYMENT_PAID).exclude(
+        id__in=resgates.filter(credit_sale__isnull=False).values("credit_sale_id")
+    )
+
+    if except_sale is not None and except_sale.pk:
+        vendas = vendas.exclude(pk=except_sale.pk)
+
+    pedidos = StoreOrder.objects.filter(
+        customer=user,
+        status=StoreOrder.PENDING_PAYMENT,
+        points_used__gt=0,
+        created_at__gte=desde,
+    ).exclude(id__in=resgates.filter(store_order__isnull=False).values("store_order_id"))
+
+    total = (vendas.aggregate(s=Sum("points_used"))["s"] or 0) + (pedidos.aggregate(s=Sum("points_used"))["s"] or 0)
+
+    return int(total)
+
+
+def points_spendable(user, *, except_sale=None):
+    """Pontos que a cliente pode usar agora: o saldo menos o ja prometido, ate o teto."""
+    livre = points_balance(user) - points_committed(user, except_sale=except_sale)
+
+    return max(0, min(livre, StoreSettings.load().points_cap))
 
 
 def can_earn_points(user):
@@ -1259,14 +1344,14 @@ def points_discount_percent(points, settings=None):
 
 
 def redeem_points_discount(base_amount, points, method, settings=None):
-    """Desconto em R$ que 'points' pontos dao sobre 'base_amount'. So vale a vista/Pix.
+    """Desconto em R$ que 'points' pontos dao sobre 'base_amount'.
 
-    A matematica e cumulativa: 'base_amount' ja deve vir apos o desconto padrao do
-    a vista/Pix (ex.: os 15%). Devolve (desconto, pontos_usados).
+    Vale no Pix e no crediario; no cartao nao (decisao da loja, set/2026). Os
+    pontos entram primeiro, sobre o valor da compra. No Pix, o desconto do Pix
+    vem depois, sobre o que sobrou. Devolve (desconto, pontos_usados).
     """
     settings = settings or StoreSettings.load()
-    # Resgate so em pagamento a vista / Pix.
-    if method not in ("pix",):
+    if method not in ("pix", "credit"):
         return (money(Decimal("0.00")), 0)
     base = Decimal(base_amount or 0)
     usable = min(max(0, int(points)), settings.points_cap)
@@ -1419,7 +1504,9 @@ class CreditSale(models.Model):
         if not self.client_id or not StoreSettings.load().points_active:
             return 0
 
-        return points_balance_capped(self.client)
+        # A propria venda nao conta: a cliente pode trocar de forma de pagamento
+        # e continuar vendo os pontos que ela mesma prometeu.
+        return points_spendable(self.client, except_sale=self)
 
     def apply_welcome_discount(self, use_welcome_discount=False):
         if not use_welcome_discount:
@@ -1440,6 +1527,43 @@ class CreditSale(models.Model):
         self.save(update_fields=["welcome_discount_amount"])
         profile.first_purchase_discount_used = True
         profile.save(update_fields=["first_purchase_discount_used"])
+
+    # Desconto dos pontos no crediario enquanto a compra ainda esta sendo
+    # decidida. Nao e campo: depois de confirmada, o valor mora em
+    # points_discount_amount.
+    _credit_points_discount = Decimal("0.00")
+
+    def credit_points_option(self, points):
+        """Quanto os pontos descontam se a compra for no crediario: ate o teto
+        (200 pontos, 20%), sobre o valor da compra. No crediario nenhum outro
+        desconto se soma - decisao da loja."""
+        return redeem_points_discount(self.discounted_total_amount(), points, self.CREDIT)
+
+    def credit_points_discount(self):
+        if self.status == self.ACCEPTED and self.selected_payment_method == self.CREDIT:
+            return self.points_discount_amount
+
+        return self._credit_points_discount
+
+    def credit_base_amount(self):
+        """O que o crediario divide em entrada, carne e o que passou do limite.
+
+        E a compra depois do voucher e dos pontos. Os pontos entram aqui, antes
+        da divisao, para o desconto valer igual em todas as partes - inclusive
+        no limite que a compra consome.
+        """
+        return money(max(Decimal("0.00"), self.discounted_total_amount() - self.credit_points_discount()))
+
+    @contextmanager
+    def com_pontos_no_crediario(self, points):
+        """Previa do crediario como se a cliente usasse os pontos."""
+        anterior = self._credit_points_discount
+        self._credit_points_discount = self.credit_points_option(points)[0]
+
+        try:
+            yield self._credit_points_discount
+        finally:
+            self._credit_points_discount = anterior
 
     def credit_options(self):
         options = []
@@ -1491,22 +1615,23 @@ class CreditSale(models.Model):
         return options
 
     def pix_option(self, points=0):
-        """Pagamento a vista. Os pontos entram depois do desconto do Pix, sobre
-        o valor ja abatido, como manda a regra de fidelidade."""
+        """Pagamento a vista. Primeiro os pontos, sobre o valor da compra; depois
+        o desconto do Pix, sobre o que sobrou. Regra da loja: R$ 100 com 200
+        pontos vira R$ 80, e o Pix tira 10% disso - R$ 72."""
         settings_loja = StoreSettings.load()
         percent = settings_loja.pix_discount_percent
         discounted_total = self.discounted_total_amount()
-        discount = money(discounted_total * (percent / Decimal("100")))
-        total = money(discounted_total - discount)
-        points_discount, points_used = redeem_points_discount(total, points, self.PIX, settings_loja)
+        points_discount, points_used = redeem_points_discount(discounted_total, points, self.PIX, settings_loja)
+        after_points = money(discounted_total - points_discount)
+        total = money(after_points * (Decimal("100") - percent) / Decimal("100"))
 
         return {
-            "discount": discount,
+            "discount": money(after_points - total),
             "discount_percent": percent,
             "points_discount": points_discount,
             "points_used": points_used,
             "points_percent": points_discount_percent(points_used, settings_loja),
-            "total": money(total - points_discount),
+            "total": total,
         }
 
     def credit_financed_amount(self):
@@ -1522,7 +1647,7 @@ class CreditSale(models.Model):
         if self.status == self.ACCEPTED and self.selected_payment_method == self.CREDIT:
             return self.principal_financed
 
-        a_parcelar = money(max(Decimal("0.00"), self.discounted_total_amount() - self.credit_entry_amount()))
+        a_parcelar = money(max(Decimal("0.00"), self.credit_base_amount() - self.credit_entry_amount()))
         perfil = self.client.profile
 
         # Limite zero e "a loja ainda nao definiu limite", nao "sem crediario".
@@ -1539,11 +1664,11 @@ class CreditSale(models.Model):
             return money(
                 max(
                     Decimal("0.00"),
-                    self.discounted_total_amount() - self.entry_amount - self.principal_financed,
+                    self.credit_base_amount() - self.entry_amount - self.principal_financed,
                 )
             )
 
-        a_parcelar = money(max(Decimal("0.00"), self.discounted_total_amount() - self.credit_entry_amount()))
+        a_parcelar = money(max(Decimal("0.00"), self.credit_base_amount() - self.credit_entry_amount()))
 
         return money(max(Decimal("0.00"), a_parcelar - self.credit_financed_amount()))
 
@@ -1556,7 +1681,7 @@ class CreditSale(models.Model):
         previous = self.client.credit_sales.filter(status=self.ACCEPTED, selected_payment_method=self.CREDIT).exclude(pk=self.pk)
         if previous.exists():
             return Decimal("0.00")
-        return min(Decimal("20.00"), self.discounted_total_amount())
+        return min(Decimal("20.00"), self.credit_base_amount())
 
     def credit_remainder_amount(self):
         """Tudo que o cliente paga fora do carne: a entrada mais o que passou do limite."""
@@ -1625,6 +1750,17 @@ class CreditSale(models.Model):
         if installments is None:
             raise ValueError("Escolha a quantidade de parcelas.")
 
+        if payment_method == self.CREDIT and use_points:
+            # No crediario os pontos descontam ate 20% da compra, e so isso. O
+            # desconto entra antes de a compra virar entrada e carne.
+            desconto, usados = self.credit_points_option(self.available_points())
+            self._credit_points_discount = desconto
+            self.points_used = usados
+            self.points_discount_amount = desconto
+
+            if self.credit_financed_amount() <= 0:
+                raise ValueError("Com os pontos, nao sobra valor para parcelar. Pague a vista no Pix.")
+
         options = self.card_options() if payment_method == self.CARD else self.credit_options()
         selected_option = None
 
@@ -1669,6 +1805,11 @@ class CreditSale(models.Model):
                 principal_amount=(self.principal_financed - principal_part * (installments - 1)) if number == installments else principal_part,
                 due_date=add_months(self.first_due_date, number - 1),
             )
+
+        # No crediario nao ha pagamento pelo Mercado Pago para confirmar: a
+        # compra acontece aqui, quando o carne nasce. Se os pontos so saissem no
+        # pagamento, a cliente levaria o desconto e continuaria com os pontos.
+        redeem_points_for_sale(self)
 
     def choose_installments(self, installments):
         self.choose_payment(self.CREDIT, installments)
