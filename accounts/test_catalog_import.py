@@ -33,7 +33,9 @@ class CatalogPriceTests(SimpleTestCase):
 
     def test_all_shipped_manifests_and_photos_validate(self):
         for path in ROOT.glob('*/manifest.json'):
-            self.assertGreater(len(read_manifest(path)['products']), 0)
+            dados = read_manifest(path)
+            # Catalogo inteiro fora do ar fica sem produtos, so com a lista de retirados.
+            self.assertGreater(len(dados['products']) + len(dados.get('withdrawn', [])), 0, path.parent.name)
 
 
 class CatalogImportTests(TestCase):

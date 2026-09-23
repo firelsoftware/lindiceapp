@@ -79,3 +79,7 @@ Nenhuma foto deste catálogo traz a marca do fornecedor. As marcas visíveis sã
 Do PDF `BOLSAS  RELÓGIOS (1).pdf`, de 51 páginas, entraram apenas as páginas 3 a 30, que formam a seção de bolsas; a seção de relógios, que começa na página 31, ficou de fora conforme a orientação do administrador, e o próprio comando recusa nome com "relógio". A revisão separou 77 recortes, todos aproveitados, e o manifesto `accounts/seed/catalogos_202609/bolsas/manifest.json` reúne 41 produtos com 75 equivalências do PDF antigo.
 
 Só as páginas 7 e 14 têm mais de uma faixa, e as duas foram conferidas pela linha que liga o preço à foto. As marcas visíveis nas peças, Rafitthy e Pavão de Ouro, foram mantidas. O ensaio passou, a importação local criou os 41 produtos e as 41 fichas locais responderam com preço, nome e galeria corretos.
+
+### Bolsas fora da vitrine (23/09/2026)
+
+A pedido do administrador, as 41 bolsas deste catálogo saíram da loja por ora. O manifesto ficou sem produtos e com os 41 códigos na lista `withdrawn`, então a importação apenas oculta os cadastros: eles continuam no banco, com os pedidos ligados a eles, e as fotos seguem no storage. As bolsas Ramosê, que vêm de outra fonte, não foram tocadas. Para voltar atrás, restaure `accounts/seed/catalogos_202609/bolsas/manifest.json` na versão do commit 2cee548 e reimporte.
